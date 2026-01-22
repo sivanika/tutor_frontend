@@ -1,4 +1,20 @@
+import { useNavigate } from "react-router-dom"
+
 export default function StudentHeader() {
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    // Clear token & user info
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
+
+    // Optional: show small feedback
+    alert("Logged out successfully 👋")
+
+    // Redirect to login page
+    navigate("/login")
+  }
+
   return (
     <header className="
       sticky top-0 z-50
@@ -16,15 +32,12 @@ export default function StudentHeader() {
             bg-gradient-to-br from-white/30 to-white/10
             flex items-center justify-center mr-3
             shadow-lg
-            group-hover:shadow-[0_0_20px_rgba(255,255,255,0.6)]
-            transition
           ">
             <i className="fas fa-user-graduate text-white text-xl"></i>
           </div>
           <span className="
             bg-clip-text text-transparent
             bg-gradient-to-r from-white via-[#FFD9C0] to-white
-            animate-pulse
           ">
             ProfessorOn
           </span>
@@ -38,23 +51,9 @@ export default function StudentHeader() {
                 <li key={i}>
                   <a
                     href="#"
-                    className="
-                      relative group text-white/90
-                      transition-all duration-300
-                      hover:text-[#FFD9C0]
-                    "
+                    className="text-white/90 hover:text-[#FFD9C0] transition"
                   >
                     {item}
-                    <span
-                      className="
-                        absolute left-1/2 -bottom-2 w-0 h-[3px]
-                        bg-gradient-to-r from-[#FFD9C0] to-white
-                        transition-all duration-300
-                        group-hover:w-full
-                        group-hover:left-0
-                        rounded-full
-                      "
-                    ></span>
                   </a>
                 </li>
               )
@@ -64,6 +63,7 @@ export default function StudentHeader() {
 
         {/* Logout Button */}
         <button
+          onClick={handleLogout}
           className="
             px-6 py-2 rounded-full font-semibold
             bg-gradient-to-r from-[#FFD9C0] to-white
