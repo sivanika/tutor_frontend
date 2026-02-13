@@ -8,43 +8,80 @@ export default function AdminLayout() {
     navigate("/login")
   }
 
+  const linkStyle = ({ isActive }) =>
+    `
+    flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium
+    transition
+    ${
+      isActive
+        ? "bg-slate-800 text-white"
+        : "text-slate-400 hover:bg-slate-800/60 hover:text-white"
+    }
+  `
+
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-slate-100 dark:bg-black transition-colors">
       {/* Sidebar */}
-      <div className="w-64 bg-slate-900 text-white p-4">
-        <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
+      <aside
+        className="
+          w-64 p-5
+          bg-slate-900
+          text-white
+          border-r border-slate-800
+          shadow-xl
+        "
+      >
+        <h2 className="text-xl font-bold mb-8 tracking-wide">
+          Admin Panel
+        </h2>
 
         <nav className="space-y-2">
-          <NavLink to="verify" className="block p-2 rounded hover:bg-slate-700">
+          <NavLink to="verify" className={linkStyle}>
             Profile Verification
           </NavLink>
-          <NavLink to="users" className="block p-2 rounded hover:bg-slate-700">
+
+          <NavLink to="users" className={linkStyle}>
             User Management
           </NavLink>
-          <NavLink to="analytics" className="block p-2 rounded hover:bg-slate-700">
+
+          <NavLink to="analytics" className={linkStyle}>
             Analytics
           </NavLink>
-          <NavLink to="logs" className="block p-2 rounded hover:bg-slate-700">
+
+          <NavLink to="logs" className={linkStyle}>
             Activity Logs
           </NavLink>
 
-          <NavLink to="settings" className="block p-2 rounded hover:bg-slate-700">
+          <NavLink to="settings" className={linkStyle}>
             Settings
           </NavLink>
 
+          {/* Logout */}
           <button
             onClick={logout}
-            className="w-full text-left p-2 rounded bg-red-600 hover:bg-red-700 mt-6"
+            className="
+              w-full text-left px-4 py-2.5 rounded-lg mt-6
+              bg-red-600 hover:bg-red-700
+              text-white font-medium
+              transition
+            "
           >
             Logout
           </button>
         </nav>
-      </div>
+      </aside>
 
       {/* Page Content */}
-      <div className="flex-1 p-6">
+      <main
+        className="
+          flex-1 p-8
+          bg-slate-50
+          dark:bg-gradient-to-br dark:from-slate-900 dark:to-black
+          transition-colors duration-500
+        "
+      >
         <Outlet />
-      </div>
+      </main>
     </div>
   )
 }

@@ -11,17 +11,18 @@ export function AuthProvider({ children }) {
 
   // 🔥 LOAD USER ON REFRESH
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"))
-    const token = localStorage.getItem("token")
+    const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
 
-    if (storedUser && token) {
-      setUser(storedUser)
+    // Check if we have valid user info with token
+    if (storedUserInfo && storedUserInfo.user && storedUserInfo.token) {
+      setUser(storedUserInfo.user)
 
       // 🔁 AUTO REDIRECT ON REFRESH
+      // Only redirect if we are at root
       if (window.location.pathname === "/") {
-        if (storedUser.role === "admin") {
+        if (storedUserInfo.user.role === "admin") {
           navigate("/admin/dashboard", { replace: true })
-        } else if (storedUser.role === "professor") {
+        } else if (storedUserInfo.user.role === "professor") {
           navigate("/professor/dashboard", { replace: true })
         } else {
           navigate("/student/dashboard", { replace: true })
@@ -36,10 +37,11 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     const res = await API.post("/auth/login", { email, password })
 
-    const userData = res.data.user
-    const token = res.data.token
+    const { user: userData, token } = res.data
 
-    localStorage.setItem("user", JSON.stringify(userData))
+    localStorage.setItem("userInfo", JSON.stringify({ user: userData, token }))
+
+    // Also set token separately if other parts of app expect it (just in case)
     localStorage.setItem("token", token)
 
     setUser(userData)
@@ -48,7 +50,7 @@ export function AuthProvider({ children }) {
 
   // LOGOUT
   const logout = () => {
-    localStorage.clear()
+    localStorage.clear() // This clears everything, which is safe.
     setUser(null)
     navigate("/", { replace: true })
   }

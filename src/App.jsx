@@ -4,8 +4,6 @@ import Login from "./pages/auth/Login"
 import Register from "./pages/auth/Register"
 import ForgotPassword from "./pages/auth/ForgotPassword"
 import ResetPassword from "./pages/auth/ResetPassword"
-
-// import StudentDashboard from "./pages/student/StudentDashboard"
 import ProfessorDashboard from "./pages/professor/ProfessorDashboard"
 import StudentDashboard from "./pages/student/StudentDashboard"
 import SessionChat from "./pages/chat/SessionChat"
@@ -42,7 +40,7 @@ function App() {
             element={<ResetPassword />}
           />
 
-          {/* Student */}
+          Student
           <Route
             path="/student/dashboard"
             element={

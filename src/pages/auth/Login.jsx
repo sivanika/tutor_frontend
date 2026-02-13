@@ -20,7 +20,7 @@ const submit = async (e) => {
 
     const { token, user } = data;
 
-    // ⭐ FIX HERE — store as userInfo
+    // Always store fresh user data
     localStorage.setItem(
       "userInfo",
       JSON.stringify({
@@ -29,20 +29,27 @@ const submit = async (e) => {
       })
     );
 
-    // ===== navigation logic =====
-    if (!user.profileCompleted) {
-      // if (user.role === "professor") return navigate("/professor/dashboard");
-      // if (user.role === "student") return navigate("/student/onboarding");
+    // ===== FINAL REDIRECT LOGIC =====
+    if (user.role === "admin") {
+      return navigate("/admin/dashboard");
     }
 
-    if (user.role === "admin") return navigate("/admin/dashboard");
-
     if (user.role === "professor") {
-      if (!user.isVerified) return navigate("/verification-pending");
+      if (!user.profileCompleted) {
+        return navigate("/professor/onboarding");
+      }
+      if (!user.isVerified) {
+        return navigate("/verification-pending");
+      }
       return navigate("/professor/dashboard");
     }
 
-    if (user.role === "student") return navigate("/student/dashboard");
+    if (user.role === "student") {
+      if (!user.profileCompleted) {
+        return navigate("/student/onboarding");
+      }
+      return navigate("/student/dashboard");
+    }
 
   } catch (err) {
     alert(err.response?.data?.message || "Login failed");
@@ -50,6 +57,7 @@ const submit = async (e) => {
     setLoading(false);
   }
 };
+
 
   return (
     <div

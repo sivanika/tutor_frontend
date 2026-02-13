@@ -76,43 +76,54 @@ export default function StudentOnboarding() {
         return Object.keys(err).length === 0;
     };
 
-    const submitProfile = async () => {
-        if (!validate()) return alert("Fix errors");
+const submitProfile = async () => {
+  if (!validate()) return alert("Fix errors");
 
-        try {
-            const form = new FormData();
+  try {
+    const form = new FormData();
 
-            Object.keys(formData).forEach((key) => {
-                if (key === "availability") {
-                    form.append("availability", JSON.stringify(formData.availability));
-                } else if (key !== "studentPhoto" && key !== "studentDocument") {
-                    form.append(key, formData[key]);
-                }
-            });
+    Object.keys(formData).forEach((key) => {
+      if (key === "availability") {
+        form.append("availability", JSON.stringify(formData.availability));
+      } else if (key !== "studentPhoto" && key !== "studentDocument") {
+        form.append(key, formData[key]);
+      }
+    });
 
+    if (formData.studentPhoto) {
+      form.append("studentPhoto", formData.studentPhoto);
+    }
 
-            if (formData.studentPhoto) {
-                form.append("studentPhoto", formData.studentPhoto);
-            }
+    if (formData.studentDocument) {
+      form.append("studentDocument", formData.studentDocument);
+    }
 
-            if (formData.studentDocument) {
-                form.append("studentDocument", formData.studentDocument);
-            }
+    const { data } = await API.put("/student/complete-profile", form, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
-            const { data } = await API.put("/student/complete-profile", form, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+    // 🔥🔥🔥 THIS IS THE FIX 🔥🔥🔥
+    const stored = JSON.parse(localStorage.getItem("userInfo"));
 
-            alert(data.message || "Student profile completed successfully");
-            setSubmitted(true);
-            navigate("/student/dashboard");
-        } catch (err) {
-            console.error(err);
-            alert(err.response?.data?.message || "Student profile submit failed");
-        }
-    };
+    localStorage.setItem(
+      "userInfo",
+      JSON.stringify({
+        ...stored,
+        user: {
+          ...stored.user,
+          profileCompleted: true, // ✅ FORCE UPDATE
+        },
+      })
+    );
+
+    alert(data.message || "Profile completed successfully");
+
+    navigate("/student/dashboard");
+  } catch (err) {
+    console.error(err);
+    alert(err.response?.data?.message || "Student profile submit failed");
+  }
+};
 
     const motionProps = {
         initial: { opacity: 0, x: 50 },

@@ -5,6 +5,7 @@ import API from "../../services/api";
 export default function RegisterStudent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const submit = async (e) => {
@@ -24,32 +25,144 @@ export default function RegisterStudent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <form onSubmit={submit} className="bg-white p-6 rounded shadow w-80">
-        <h2 className="text-xl font-bold mb-4 text-center">Student Register</h2>
+    <div
+      className="
+        min-h-screen flex items-center justify-center p-6
 
+        bg-slate-100
+        dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-950 dark:to-black
+
+        transition-colors duration-500
+      "
+    >
+      <form
+        onSubmit={submit}
+        className="
+          w-full max-w-md p-8 rounded-2xl space-y-5
+
+          bg-white/90 dark:bg-slate-900/80
+          backdrop-blur-2xl
+
+          border border-slate-200 dark:border-slate-800
+          shadow-xl dark:shadow-black/40
+
+          animate-[popup_.5s_ease]
+        "
+      >
+        {/* Title */}
+        <h2 className="text-2xl font-bold text-center text-slate-800 dark:text-slate-100">
+          Student Registration
+        </h2>
+
+        {/* Email */}
         <input
           type="email"
-          placeholder="Email"
-          className="border p-2 w-full mb-3"
+          placeholder="Email address"
+          className="
+            w-full p-3 rounded-lg
+            bg-slate-50 dark:bg-slate-800
+            border border-slate-300 dark:border-slate-700
+            text-slate-800 dark:text-slate-100
+            focus:outline-none focus:ring-2 focus:ring-slate-500
+            transition
+          "
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-2 w-full mb-4"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        {/* Password */}
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="
+              w-full p-3 rounded-lg pr-12
+              bg-slate-50 dark:bg-slate-800
+              border border-slate-300 dark:border-slate-700
+              text-slate-800 dark:text-slate-100
+              focus:outline-none focus:ring-2 focus:ring-slate-500
+              transition
+            "
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-        <button className="bg-blue-600 text-white w-full py-2 rounded">
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="
+              absolute right-3 top-3
+              text-slate-500 hover:text-slate-800
+              dark:hover:text-white
+            "
+          >
+            {showPassword ? "🙈" : "👁️"}
+          </button>
+        </div>
+
+        {/* Continue Button */}
+        <button
+          className="
+            w-full py-3 rounded-lg font-semibold
+
+            bg-slate-900 text-white
+            hover:bg-black
+
+            dark:bg-slate-100 dark:text-black
+            dark:hover:bg-white
+
+            transition-all duration-200
+            active:scale-95
+          "
+        >
           Continue
         </button>
+
+        {/* Divider */}
+        <div className="flex items-center gap-3 text-slate-400 text-sm">
+          <div className="flex-1 h-px bg-slate-300 dark:bg-slate-700" />
+          OR
+          <div className="flex-1 h-px bg-slate-300 dark:bg-slate-700" />
+        </div>
+
+        {/* Google Button (UI only) */}
+        <button
+          type="button"
+          className="
+            w-full py-3 rounded-lg font-medium
+
+            bg-white text-slate-800
+            border border-slate-300
+            hover:bg-slate-100
+
+            dark:bg-slate-800 dark:text-white
+            dark:border-slate-700
+            dark:hover:bg-slate-700
+
+            transition
+          "
+        >
+          Sign in with Google
+        </button>
       </form>
+
+      {/* animation */}
+      <style>
+        {`
+          @keyframes popup {
+            from {
+              opacity: 0;
+              transform: translateY(30px) scale(0.96);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+        `}
+      </style>
     </div>
   );
 }

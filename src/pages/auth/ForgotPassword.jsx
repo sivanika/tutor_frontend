@@ -22,28 +22,59 @@ function ForgotPassword() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div
+      className="
+        min-h-screen flex items-center justify-center p-6
+
+        bg-slate-100
+        dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-950 dark:to-black
+
+        transition-colors duration-500
+      "
+    >
       <form
         onSubmit={submit}
-        className="bg-white p-6 rounded shadow w-full max-w-sm"
+        className="
+          w-full max-w-md p-8 rounded-2xl space-y-5
+
+          bg-white/90 dark:bg-slate-900/80
+          backdrop-blur-2xl
+
+          border border-slate-200 dark:border-slate-800
+          shadow-xl dark:shadow-black/40
+
+          animate-[popup_.5s_ease]
+        "
       >
-        <h2 className="text-2xl font-bold mb-2 text-center">
+        <h2 className="text-2xl font-bold text-center text-slate-800 dark:text-slate-100">
           Forgot Password
         </h2>
 
-        <p className="text-sm text-gray-600 mb-4 text-center">
+        <p className="text-sm text-slate-600 dark:text-slate-400 text-center">
           Enter your email and we’ll send you a reset link
         </p>
 
         {sent ? (
-          <p className="text-green-600 text-center font-medium">
-            ✅ Reset link sent! Check your email.
-          </p>
+          <div className="text-center">
+            <p className="text-green-600 dark:text-green-400 font-medium">
+              ✅ Reset link sent!
+            </p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Please check your email.
+            </p>
+          </div>
         ) : (
           <>
             <input
               type="email"
-              className="border p-2 w-full mb-3 rounded"
+              className="
+                w-full p-3 rounded-lg
+                bg-slate-50 dark:bg-slate-800
+                border border-slate-300 dark:border-slate-700
+                text-slate-800 dark:text-slate-100
+                focus:outline-none focus:ring-2 focus:ring-slate-500
+                transition
+              "
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -52,19 +83,50 @@ function ForgotPassword() {
 
             <button
               disabled={loading}
-              className="bg-blue-600 text-white w-full py-2 rounded disabled:opacity-60"
+              className="
+                w-full py-3 rounded-lg font-semibold
+
+                bg-slate-900 text-white
+                hover:bg-black
+
+                dark:bg-slate-100 dark:text-black
+                dark:hover:bg-white
+
+                transition-all duration-200
+                active:scale-95
+                disabled:opacity-60
+              "
             >
               {loading ? "Sending..." : "Send Reset Link"}
             </button>
           </>
         )}
 
-        <div className="text-center mt-4">
-          <Link to="/" className="text-blue-600 text-sm">
+        <div className="text-center">
+          <Link
+            to="/"
+            className="text-sm text-slate-600 dark:text-slate-400 hover:underline"
+          >
             Back to Login
           </Link>
         </div>
       </form>
+
+      {/* animation */}
+      <style>
+        {`
+          @keyframes popup {
+            from {
+              opacity: 0;
+              transform: translateY(30px) scale(0.96);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+        `}
+      </style>
     </div>
   )
 }

@@ -46,12 +46,31 @@ function ResetPassword() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div
+      className="
+        min-h-screen flex items-center justify-center p-6
+
+        bg-slate-100
+        dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-950 dark:to-black
+
+        transition-colors duration-500
+      "
+    >
       <form
         onSubmit={submit}
-        className="bg-white p-6 rounded shadow w-full max-w-sm"
+        className="
+          w-full max-w-md p-8 rounded-2xl space-y-4
+
+          bg-white/90 dark:bg-slate-900/80
+          backdrop-blur-2xl
+
+          border border-slate-200 dark:border-slate-800
+          shadow-xl dark:shadow-black/40
+
+          animate-[popup_.5s_ease]
+        "
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">
+        <h2 className="text-2xl font-bold text-center text-slate-800 dark:text-slate-100">
           Reset Password
         </h2>
 
@@ -60,7 +79,14 @@ function ResetPassword() {
           <input
             type={showPassword ? "text" : "password"}
             placeholder="New password"
-            className="border p-2 w-full rounded pr-16"
+            className="
+              w-full p-3 rounded-lg pr-16
+              bg-slate-50 dark:bg-slate-800
+              border border-slate-300 dark:border-slate-700
+              text-slate-800 dark:text-slate-100
+              focus:outline-none focus:ring-2 focus:ring-slate-500
+              transition
+            "
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             onFocus={() => setShowRules(true)}
@@ -71,13 +97,13 @@ function ResetPassword() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-8 top-2.5"
+            className="absolute right-10 top-3 text-slate-500"
           >
             {showPassword ? "🙈" : "👁️"}
           </button>
 
           <span
-            className="absolute right-2 top-2.5 cursor-pointer"
+            className="absolute right-3 top-3 cursor-pointer"
             onMouseEnter={() => setShowRules(true)}
             onMouseLeave={() => setShowRules(false)}
           >
@@ -87,7 +113,7 @@ function ResetPassword() {
 
         {/* Rules */}
         {showRules && (
-          <div className="text-xs text-gray-600 mb-2 bg-gray-100 p-2 rounded">
+          <div className="text-xs text-slate-600 dark:text-slate-400 mb-2 bg-slate-100 dark:bg-slate-800 p-2 rounded">
             <p>• At least 8 characters</p>
             <p>• One uppercase letter</p>
             <p>• One number</p>
@@ -98,13 +124,13 @@ function ResetPassword() {
         {/* Strength bar */}
         {password && (
           <>
-            <div className="w-full h-2 bg-gray-200 rounded mb-1">
+            <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded mb-1">
               <div
                 className={`h-2 rounded ${strength.color}`}
                 style={{ width: `${strength.percent}%` }}
               />
             </div>
-            <p className="text-sm mb-2">
+            <p className="text-sm mb-2 text-slate-700 dark:text-slate-300">
               Strength: <b>{strength.label}</b>
             </p>
           </>
@@ -114,25 +140,60 @@ function ResetPassword() {
         <input
           type="password"
           placeholder="Confirm password"
-          className="border p-2 w-full mb-2 rounded"
+          className="
+            w-full p-3 rounded-lg
+            bg-slate-50 dark:bg-slate-800
+            border border-slate-300 dark:border-slate-700
+            text-slate-800 dark:text-slate-100
+            focus:outline-none focus:ring-2 focus:ring-slate-500
+            transition
+          "
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
 
         {!isMatch && confirmPassword && (
-          <p className="text-red-500 text-sm mb-2">
+          <p className="text-red-500 text-sm">
             Passwords do not match
           </p>
         )}
 
         <button
           disabled={!isMatch || strength.label === "Weak" || loading}
-          className="bg-green-600 text-white w-full py-2 rounded disabled:opacity-60"
+          className="
+            w-full py-3 rounded-lg font-semibold
+
+            bg-slate-900 text-white
+            hover:bg-black
+
+            dark:bg-slate-100 dark:text-black
+            dark:hover:bg-white
+
+            transition-all duration-200
+            active:scale-95
+            disabled:opacity-60
+          "
         >
           {loading ? "Resetting..." : "Reset Password"}
         </button>
       </form>
+
+      {/* animation */}
+      <style>
+        {`
+          @keyframes popup {
+            from {
+              opacity: 0;
+              transform: translateY(30px) scale(0.96);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+        `}
+      </style>
     </div>
   )
 }

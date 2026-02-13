@@ -14,7 +14,7 @@ import {
   Line,
 } from "recharts"
 
-const COLORS = ["#2563eb", "#7c3aed", "#16a34a", "#dc2626"]
+const COLORS = ["#334155", "#64748b", "#0f172a", "#1e293b"]
 
 export default function Analytics() {
   const [data, setData] = useState({
@@ -28,7 +28,6 @@ export default function Analytics() {
       .then((res) => {
         const apiData = res.data
 
-        // Convert backend response into chart-friendly format
         const roleChart = [
           { name: "Students", value: apiData.data?.[0] || 0 },
           { name: "Professors", value: apiData.data?.[1] || 0 },
@@ -53,27 +52,54 @@ export default function Analytics() {
   }, [])
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-6">Analytics Dashboard</h2>
+    <div className="space-y-6">
+      {/* Header */}
+      <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+        Analytics Dashboard
+      </h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
-        {/* Students vs Professors (Bar Chart) */}
-        <div className="bg-white p-4 rounded shadow">
-          <h3 className="font-semibold mb-2">Students vs Professors</h3>
+        {/* Students vs Professors */}
+        <div
+          className="
+            p-5 rounded-2xl
+
+            bg-white dark:bg-slate-900
+            border border-slate-200 dark:border-slate-800
+
+            shadow-sm dark:shadow-black/30
+            backdrop-blur
+          "
+        >
+          <h3 className="font-semibold mb-4 text-slate-700 dark:text-slate-300">
+            Students vs Professors
+          </h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={data.roleChart}>
-              <XAxis dataKey="name" />
-              <YAxis />
+              <XAxis stroke="#64748b" dataKey="name" />
+              <YAxis stroke="#64748b" />
               <Tooltip />
-              <Bar dataKey="value" fill="#2563eb" />
+              <Bar dataKey="value" fill="#334155" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Verified vs Pending (Pie Chart) */}
-        <div className="bg-white p-4 rounded shadow">
-          <h3 className="font-semibold mb-2">Professor Verification Status</h3>
+        {/* Verified vs Pending */}
+        <div
+          className="
+            p-5 rounded-2xl
+
+            bg-white dark:bg-slate-900
+            border border-slate-200 dark:border-slate-800
+
+            shadow-sm dark:shadow-black/30
+            backdrop-blur
+          "
+        >
+          <h3 className="font-semibold mb-4 text-slate-700 dark:text-slate-300">
+            Professor Verification Status
+          </h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -92,18 +118,31 @@ export default function Analytics() {
         </div>
 
         {/* Growth Chart */}
-        <div className="bg-white p-4 rounded shadow col-span-1 lg:col-span-2">
-          <h3 className="font-semibold mb-2">User Growth</h3>
+        <div
+          className="
+            p-5 rounded-2xl col-span-1 lg:col-span-2
+
+            bg-white dark:bg-slate-900
+            border border-slate-200 dark:border-slate-800
+
+            shadow-sm dark:shadow-black/30
+            backdrop-blur
+          "
+        >
+          <h3 className="font-semibold mb-4 text-slate-700 dark:text-slate-300">
+            User Growth
+          </h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={data.growthData}>
-              <XAxis dataKey="week" />
-              <YAxis />
+              <XAxis stroke="#64748b" dataKey="week" />
+              <YAxis stroke="#64748b" />
               <Tooltip />
               <Line
                 type="monotone"
                 dataKey="users"
-                stroke="#16a34a"
+                stroke="#0f172a"
                 strokeWidth={3}
+                dot={{ r: 4 }}
               />
             </LineChart>
           </ResponsiveContainer>
