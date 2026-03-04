@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================
+   BRAND COLOR SYSTEM
+   Primary  : #6A11CB (deep violet)
+   Secondary: #2575FC (electric blue)
+   Accent   : #FF4E9B (hot pink)
+   ============================================ */
+:root {
+  --brand-purple: #6A11CB;
+  --brand-blue:   #2575FC;
+  --brand-pink:   #FF4E9B;
+  --brand-grad:   linear-gradient(135deg, #6A11CB, #2575FC);
+  /* light-mode surface */
+  --surface:      #ffffff;
+  --surface-alt:  #f5f3ff;
+  --text-primary: #1a0e33;
+  --text-muted:   #6b7280;
+  --border:       rgba(106,17,203,0.15);
+}
+.dark {
+  --surface:      #0f0720;
+  --surface-alt:  #160d2e;
+  --text-primary: #f3f0ff;
+  --text-muted:   #a78bfa;
+  --border:       rgba(106,17,203,0.30);
+}
+
+/* Gradient text utility */
+.grad-text {
+  background: var(--brand-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient background */
+.grad-bg {
+  background: var(--brand-grad);
+}
+
+/* Glass card */
+.glass {
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.dark .glass {
+  background: rgba(106,17,203,0.10);
+  border: 1px solid rgba(106,17,203,0.25);
+}
+
+/* ============ Animations ============ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+@keyframes bounce-slow {
+  0%,100% { transform: translateY(0);    }
+  50%     { transform: translateY(-12px); }
+}
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0;   }
+}
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.animate-fadeIn     { animation: fadeIn     0.35s ease; }
+.animate-slideUp    { animation: slideUp    0.45s ease; }
+.animate-bounce-slow{ animation: bounce-slow 4s infinite; }
+.animate-pulse-ring { animation: pulse-ring  2s ease-out infinite; }
+
