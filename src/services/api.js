@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "https://tutor-backend-vjpj.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_URL || "https://tutor-backend-mqz1.onrender.com/api",
 });
 
 

@@ -1,6 +1,6 @@
 import { io } from "socket.io-client"
 
-const socket = io("https://tutor-backend-vjpj.onrender.com", {
+const socket = io("https://tutor-backend-mqz1.onrender.com", {
   autoConnect: false,
 })
 
