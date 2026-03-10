@@ -1,13 +1,61 @@
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import API from "../../services/api";
+
+
+const GRADIENTS = [
+  { from: "#6A11CB", to: "#2575FC" },
+  { from: "#FF4E9B", to: "#FF8C42" },
+  { from: "#2575FC", to: "#00C9FF" },
+  { from: "#11998e", to: "#38ef7d" },
+  { from: "#f7971e", to: "#ffd200" },
+  { from: "#8E2DE2", to: "#4A00E0" },
+];
+
+const BACKEND_URL =
+  import.meta.env.VITE_API_URL?.replace("/api", "") ||
+  "https://tutor-backend-mqz1.onrender.com";
+
 export default function TutorCards() {
-  const tutors = [
-    { name: "Dr. Sarah Johnson", subject: "Mathematics", rating: "4.7", sessions: 430, color: "#6A11CB" },
-    { name: "Prof. Michael Chen", subject: "Computer Science", rating: "5.0", sessions: 812, color: "#FF4E9B" },
-    { name: "Dr. Elena Rodriguez", subject: "Languages", rating: "4.9", sessions: 620, color: "#2575FC" },
-  ];
+  const navigate = useNavigate();
+  const [tutors, setTutors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const trackRef = useRef(null);
+
+  useEffect(() => {
+    API.get("/professors/featured")
+      .then((res) => setTutors(res.data))
+      .catch((err) => {
+        console.error("Failed to load featured tutors:", err);
+        setTutors([]);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Watch scroll position to highlight the active dot
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const onScroll = () => {
+      const cardWidth = track.scrollWidth / Math.max(tutors.length, 1);
+      const idx = Math.round(track.scrollLeft / cardWidth);
+      setActiveIndex(idx);
+    };
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => track.removeEventListener("scroll", onScroll);
+  }, [tutors.length]);
+
+  const scrollTo = (dir) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const cardWidth = track.querySelector("[data-card]")?.offsetWidth ?? 320;
+    track.scrollBy({ left: dir * (cardWidth + 32), behavior: "smooth" });
+  };
 
   return (
     <section className="py-20 bg-[#f5f3ff] dark:bg-[#0f0720] transition-colors duration-500 overflow-hidden relative">
-
+      {/* Ambient blobs */}
       <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#6A11CB]/06 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-[#FF4E9B]/05 blur-3xl pointer-events-none" />
 
@@ -22,63 +70,203 @@ export default function TutorCards() {
           </h2>
         </div>
 
-        {/* Cards */}
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-          {tutors.map((t, i) => (
-            <div
-              key={i}
-              className="
-                group relative p-7 rounded-2xl overflow-hidden
-                bg-white dark:bg-[#160d2e]
-                border border-[#6A11CB]/10 dark:border-[#6A11CB]/20
-                shadow-md dark:shadow-[#6A11CB]/05
-                hover:-translate-y-2 hover:shadow-xl hover:shadow-[#6A11CB]/15
-                transition-all duration-300
-              "
-            >
-              {/* Gradient top border */}
-              <div
-                className="absolute top-0 left-0 w-full h-1 rounded-t-2xl"
-                style={{ background: `linear-gradient(135deg, ${t.color}, #2575FC)` }}
-              />
+        {/* Loading */}
+        {loading && (
+          <div className="flex justify-center items-center py-16">
+            <div className="w-10 h-10 border-4 border-[#6A11CB]/30 border-t-[#6A11CB] rounded-full animate-spin" />
+          </div>
+        )}
 
-              {/* Avatar */}
-              <div
-                className="w-16 h-16 mb-5 rounded-2xl flex items-center justify-center font-black text-2xl text-white shadow-lg transition-transform duration-300 group-hover:scale-110"
-                style={{ background: `linear-gradient(135deg, ${t.color}, #2575FC)`, boxShadow: `0 8px 20px ${t.color}40` }}
-              >
-                {t.name.charAt(0)}
-              </div>
+        {/* Empty */}
+        {!loading && tutors.length === 0 && (
+          <div className="text-center py-16 text-[#6b7280] dark:text-[#a78bfa]">
+            <p className="text-2xl mb-2">🎓</p>
+            <p className="text-lg font-semibold">No tutors available yet</p>
+            <p className="text-sm mt-1">Check back soon — we're growing!</p>
+          </div>
+        )}
 
-              <h3 className="text-lg font-bold text-[#1a0e33] dark:text-white">{t.name}</h3>
-              <p className="text-[#6b7280] dark:text-[#a78bfa] text-sm mt-1">{t.subject}</p>
-
-              {/* Stats row */}
-              <div className="flex items-center gap-4 mt-4">
-                <span className="text-sm font-semibold" style={{ color: t.color }}>
-                  ★ {t.rating}
-                </span>
-                <span className="text-xs text-[#6b7280] dark:text-[#a78bfa]">
-                  {t.sessions} sessions
-                </span>
-              </div>
-
+        {/* Carousel */}
+        {!loading && tutors.length > 0 && (
+          <div className="relative">
+            {/* Prev button */}
+            {activeIndex > 0 && (
               <button
+                onClick={() => scrollTo(-1)}
+                aria-label="Scroll left"
                 className="
-                  mt-5 w-full py-2.5 rounded-xl font-semibold text-sm text-white
-                  transition-all duration-300
-                  hover:scale-105 hover:shadow-lg
+                  hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20
+                  w-10 h-10 rounded-full bg-white dark:bg-[#1a0e33]
+                  border border-[#6A11CB]/20 shadow-lg
+                  items-center justify-center
+                  text-[#6A11CB] dark:text-[#a78bfa]
+                  hover:scale-110 transition-transform duration-200
                 "
-                style={{
-                  background: `linear-gradient(135deg, ${t.color}, #2575FC)`,
-                  boxShadow: `0 4px 16px ${t.color}30`,
-                }}
               >
-                View Profile →
+                ‹
               </button>
+            )}
+            {/* Next button */}
+            {activeIndex < tutors.length - 1 && (
+              <button
+                onClick={() => scrollTo(1)}
+                aria-label="Scroll right"
+                className="
+                  hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20
+                  w-10 h-10 rounded-full bg-white dark:bg-[#1a0e33]
+                  border border-[#6A11CB]/20 shadow-lg
+                  items-center justify-center
+                  text-[#6A11CB] dark:text-[#a78bfa]
+                  hover:scale-110 transition-transform duration-200
+                "
+              >
+                ›
+              </button>
+            )}
+
+            {/* Scroll track */}
+            <div
+              ref={trackRef}
+              className="flex gap-8 overflow-x-auto pb-6 px-8 md:px-16 scrollbar-hide"
+              style={{
+                scrollSnapType: "x mandatory",
+                WebkitOverflowScrolling: "touch",
+                scrollBehavior: "smooth",
+              }}
+            >
+              {tutors.map((t, i) => {
+                const grad = GRADIENTS[i % GRADIENTS.length];
+                const gradientStyle = `linear-gradient(135deg, ${grad.from}, ${grad.to})`;
+                const photoUrl = t.profilePhoto
+                  ? `${BACKEND_URL}/${t.profilePhoto.replace(/\\/g, "/")}`
+                  : null;
+                const displayName = t.name || "Tutor";
+                const initials = displayName
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .substring(0, 2)
+                  .toUpperCase();
+                const ratingLabel =
+                  t.avgRating != null ? t.avgRating.toFixed(1) : "New";
+                const sessionLabel =
+                  t.sessionCount > 0
+                    ? `${t.sessionCount} sessions`
+                    : "New tutor";
+
+                return (
+                  <div
+                    key={t._id}
+                    data-card
+                    className="
+                      group relative p-7 rounded-2xl overflow-hidden flex-shrink-0
+                      w-[85vw] sm:w-72 md:w-80
+                      bg-white dark:bg-[#160d2e]
+                      border border-[#6A11CB]/10 dark:border-[#6A11CB]/20
+                      shadow-md dark:shadow-[#6A11CB]/05
+                      hover:-translate-y-2 hover:shadow-xl hover:shadow-[#6A11CB]/15
+                      transition-all duration-300
+                      will-change-transform
+                    "
+                    style={{ scrollSnapAlign: "start" }}
+                  >
+                    {/* Top gradient border */}
+                    <div
+                      className="absolute top-0 left-0 w-full h-1 rounded-t-2xl"
+                      style={{ background: gradientStyle }}
+                    />
+
+                    {/* Avatar */}
+                    {photoUrl ? (
+                      <img
+                        src={photoUrl}
+                        alt={displayName}
+                        loading="lazy"
+                        decoding="async"
+                        width={64}
+                        height={64}
+                        className="w-16 h-16 mb-5 rounded-2xl object-cover shadow-lg transition-transform duration-300 group-hover:scale-110"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          e.target.nextSibling.style.display = "flex";
+                        }}
+                      />
+                    ) : null}
+
+                    {/* Initials fallback */}
+                    <div
+                      className="w-16 h-16 mb-5 rounded-2xl items-center justify-center font-black text-2xl text-white shadow-lg transition-transform duration-300 group-hover:scale-110"
+                      style={{
+                        background: gradientStyle,
+                        boxShadow: `0 8px 20px ${grad.from}40`,
+                        display: photoUrl ? "none" : "flex",
+                      }}
+                    >
+                      {initials}
+                    </div>
+
+                    <h3 className="text-lg font-bold text-[#1a0e33] dark:text-white truncate">
+                      {displayName}
+                    </h3>
+                    <p className="text-[#6b7280] dark:text-[#a78bfa] text-sm mt-1 truncate">
+                      {t.subjects || "General Tutoring"}
+                    </p>
+
+                    <div className="flex items-center gap-4 mt-4">
+                      <span
+                        className="text-sm font-semibold"
+                        style={{ color: grad.from }}
+                      >
+                        ★ {ratingLabel}
+                      </span>
+                      <span className="text-xs text-[#6b7280] dark:text-[#a78bfa]">
+                        {sessionLabel}
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => navigate(`/tutor/${t._id}`)}
+                      className="mt-5 w-full py-2.5 rounded-xl font-semibold text-sm text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                      style={{
+                        background: gradientStyle,
+                        boxShadow: `0 4px 16px ${grad.from}30`,
+                      }}
+                    >
+                      View Profile →
+                    </button>
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
+
+            {/* Dot indicators */}
+            <div className="flex justify-center gap-2 mt-2">
+              {tutors.map((_, i) => (
+                <button
+                  key={i}
+                  aria-label={`Go to tutor ${i + 1}`}
+                  onClick={() => {
+                    const track = trackRef.current;
+                    if (!track) return;
+                    const card = track.querySelector("[data-card]");
+                    if (!card) return;
+                    track.scrollTo({
+                      left: i * (card.offsetWidth + 32),
+                      behavior: "smooth",
+                    });
+                  }}
+                  className="rounded-full transition-all duration-300"
+                  style={{
+                    width: i === activeIndex ? "24px" : "8px",
+                    height: "8px",
+                    background:
+                      i === activeIndex ? "#6A11CB" : "rgba(106,17,203,0.25)",
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

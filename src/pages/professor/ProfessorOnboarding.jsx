@@ -9,10 +9,12 @@ import StepExperience from "./components/StepExperience";
 import StepVerification from "./components/StepVerification";
 import ProfilePreview from "./components/ProfilePreview";
 import ProfessorPaymentStep from "./components/ProfessorPaymentStep";
+import TutorAgreementModal from "./components/TutorAgreementModal";
 
 export default function ProfessorOnboarding() {
   const [step, setStep] = useState(1);
   const [savingProfile, setSavingProfile] = useState(false);
+  const [showAgreementModal, setShowAgreementModal] = useState(false);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -188,7 +190,7 @@ export default function ProfessorOnboarding() {
           <ProfilePreview
             formData={formData}
             restart={() => setStep(1)}
-            submit={submitProfileThenPay}   /* saves profile → goes to step 6 */
+            submit={() => setShowAgreementModal(true)}   /* show agreement first */
           />
         )}
 
@@ -198,6 +200,16 @@ export default function ProfessorOnboarding() {
         )}
 
       </div>
+
+      {/* Tutor Agreement Modal — shown before profile submit */}
+      {showAgreementModal && (
+        <TutorAgreementModal
+          onAccept={() => {
+            setShowAgreementModal(false);
+            submitProfileThenPay();
+          }}
+        />
+      )}
 
       {/* Saving overlay */}
       {savingProfile && (

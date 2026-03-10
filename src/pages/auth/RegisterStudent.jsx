@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 export default function RegisterStudent() {
@@ -7,6 +7,7 @@ export default function RegisterStudent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -107,9 +108,30 @@ export default function RegisterStudent() {
           </button>
         </div>
 
+        {/* Terms & Privacy consent */}
+        <label className="flex items-start gap-2.5 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            className="mt-0.5 h-4 w-4 rounded border-gray-300 text-[#6A11CB] focus:ring-[#6A11CB] cursor-pointer flex-shrink-0"
+            checked={agreed}
+            onChange={(e) => setAgreed(e.target.checked)}
+            required
+          />
+          <span className="text-xs text-gray-600 leading-relaxed">
+            I agree to the{" "}
+            <Link to="/terms" target="_blank" className="text-[#6A11CB] underline hover:text-[#2575FC]">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link to="/privacy" target="_blank" className="text-[#6A11CB] underline hover:text-[#2575FC]">
+              Privacy Policy
+            </Link>
+          </span>
+        </label>
+
         {/* Continue Button */}
         <button
-          disabled={loading}
+          disabled={loading || !agreed}
           className="
             w-full py-3 rounded-lg font-semibold
             bg-gradient-to-r from-[#6A11CB] to-[#2575FC]

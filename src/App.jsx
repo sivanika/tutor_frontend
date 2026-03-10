@@ -26,6 +26,14 @@ import RegisterProfessor from "./pages/auth/RegisterProfessor";
 import AdminLogin from "./pages/auth/AdminLogin";
 import Careers from "./pages/Careers";
 import PaymentPage from "./pages/payment/PaymentPage";
+import TutorProfilePage from "./pages/student/TutorProfilePage";
+import LegalHub from "./pages/legal/LegalHub";
+import Terms from "./pages/legal/Terms";
+import Privacy from "./pages/legal/Privacy";
+import RefundPolicy from "./pages/legal/RefundPolicy";
+import CookiePolicy from "./pages/legal/DataCookies";
+import TutorAgreementPage from "./pages/legal/TutorAgreement";
+import InstitutionAgreement from "./pages/legal/InstitutionAgreement";
 
 function App() {
   return (
@@ -45,8 +53,18 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/tutor/:id" element={<TutorProfilePage />} />
           <Route path="/professor/onboarding" element={<ProfessorOnboarding />} />
           <Route path="/student/onboarding" element={<StudentOnboarding />} />
+
+          {/* Legal */}
+          <Route path="/legal" element={<LegalHub />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
+          <Route path="/tutor-agreement" element={<TutorAgreementPage />} />
+          <Route path="/institution-agreement" element={<InstitutionAgreement />} />
 
           {/* Student */}
           <Route

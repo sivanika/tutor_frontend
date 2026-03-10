@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import API from "../../../services/api"
 import socket from "../../../services/socket"
 import { useAuth } from "../../../context/AuthContext"
-import {
-  FiSearch, FiClock, FiBook, FiCheckCircle,
-} from "react-icons/fi"
+import { FiSearch, FiClock, FiBook, FiCheckCircle, FiLock, FiUser } from "react-icons/fi"
+
+/* Premium check — mirrors TutorProfilePage */
+function isPremiumStudent(user) {
+  if (!user || user.role !== "student") return false;
+  return (
+    user.subscriptionStatus === "active" &&
+    (user.subscriptionTier === "premium" || user.subscriptionTier === "pay_per_session")
+  );
+}
 
 export default function TutorsTab() {
   const [sessions, setSessions] = useState([])
   const [loading, setLoading] = useState(true)
-  const [filters, setFilters] = useState({
-    subject: "",
-    level: "",
-    time: "",
-  })
+  const [filters, setFilters] = useState({ subject: "", level: "", time: "" })
   const { user } = useAuth()
+  const navigate = useNavigate()
+  const isPremium = isPremiumStudent(user)
 
   const fetchSessions = async () => {
     try {
@@ -30,10 +36,8 @@ export default function TutorsTab() {
 
   useEffect(() => {
     fetchSessions()
-
     socket.connect()
     socket.on("dashboard:update", fetchSessions)
-
     return () => {
       socket.off("dashboard:update", fetchSessions)
       socket.disconnect()
@@ -44,25 +48,21 @@ export default function TutorsTab() {
     try {
       const res = await API.post(`/sessions/${id}/enroll`)
       alert(res.data.message || "Enrolled successfully 🎉")
-
-      // real time update trigger (socket)
       socket.emit("dashboard:update")
-
     } catch (err) {
       console.error(err)
       alert("Enrollment failed")
     }
   }
 
-  // Check if current user is enrolled in a session
-  const isEnrolled = (session) => {
-    return session.students?.some(
-      (s) => (s.student?._id || s.student) === user?._id ||
+  const isEnrolled = (session) =>
+    session.students?.some(
+      (s) =>
+        (s.student?._id || s.student) === user?._id ||
         (s.student?._id || s.student)?.toString() === user?._id
     )
-  }
 
-  const filtered = sessions.filter(s => {
+  const filtered = sessions.filter((s) => {
     if (filters.subject && !s.title.toLowerCase().includes(filters.subject.toLowerCase())) return false
     if (filters.level && s.level !== filters.level) return false
     if (filters.time && !s.time.includes(filters.time)) return false
@@ -72,18 +72,45 @@ export default function TutorsTab() {
   return (
     <div className="animate-fadeIn">
 
+      {/* FREE PLAN BANNER */}
+      {!isPremium && (
+        <div
+          className="mb-6 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-2"
+          style={{
+            background: "linear-gradient(135deg, #6A11CB10, #FF4E9B08)",
+            borderColor: "#6A11CB25",
+          }}
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">🔒</span>
+            <div>
+              <p className="font-bold text-gray-800 text-sm">Limited Access — Free Plan</p>
+              <p className="text-gray-500 text-xs mt-0.5">
+                Upgrade to Premium to book sessions & view full tutor profiles.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => navigate("/payment?plan=premium&returnTo=student")}
+            className="flex-shrink-0 px-4 py-2 rounded-xl text-sm font-bold text-white transition-all hover:scale-105"
+            style={{ background: "linear-gradient(135deg, #6A11CB, #FF4E9B)" }}
+          >
+            Upgrade Now →
+          </button>
+        </div>
+      )}
+
       {/* FILTERS */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
         <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
           <FiSearch className="text-[#6A11CB]" />
           Search Filters
         </h3>
-
-        <div className="grid md:grid-cols-3 gap-4 mb-4">
+        <div className="grid md:grid-cols-3 gap-4">
           <select
             className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#6A11CB]/40 focus:outline-none transition"
             value={filters.subject}
-            onChange={e => setFilters({ ...filters, subject: e.target.value })}
+            onChange={(e) => setFilters({ ...filters, subject: e.target.value })}
           >
             <option value="">All Subjects</option>
             <option value="math">Mathematics</option>
@@ -91,22 +118,20 @@ export default function TutorsTab() {
             <option value="data">Data Structures</option>
             <option value="physics">Physics</option>
           </select>
-
           <select
             className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#6A11CB]/40 focus:outline-none transition"
             value={filters.level}
-            onChange={e => setFilters({ ...filters, level: e.target.value })}
+            onChange={(e) => setFilters({ ...filters, level: e.target.value })}
           >
             <option value="">All Levels</option>
             <option value="Beginner">Beginner</option>
             <option value="Intermediate">Intermediate</option>
             <option value="Advanced">Advanced</option>
           </select>
-
           <select
             className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#6A11CB]/40 focus:outline-none transition"
             value={filters.time}
-            onChange={e => setFilters({ ...filters, time: e.target.value })}
+            onChange={(e) => setFilters({ ...filters, time: e.target.value })}
           >
             <option value="">Any Time</option>
             <option value="AM">Morning</option>
@@ -122,38 +147,34 @@ export default function TutorsTab() {
         </div>
       )}
 
-      {/* EMPTY STATE */}
+      {/* EMPTY */}
       {!loading && filtered.length === 0 && (
         <div className="text-center py-16 text-gray-500">
           <FiSearch size={48} className="mx-auto mb-3 opacity-40" />
-          <p className="text-lg font-semibold text-gray-600">No tutors found</p>
+          <p className="text-lg font-semibold text-gray-600">No sessions found</p>
           <p className="text-sm text-gray-400 mt-1">Try adjusting your filters</p>
         </div>
       )}
 
-      {/* TUTOR CARDS */}
+      {/* SESSION CARDS */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map(s => {
+        {filtered.map((s) => {
           const enrolled = isEnrolled(s)
+          const professorId = s.professor?._id || s.professor
 
           return (
             <div
               key={s._id}
-              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6
-                         hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
             >
               {/* Header */}
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#6A11CB] to-[#2575FC] text-white flex items-center justify-center mr-3 font-bold text-sm shadow">
                   {s.professor?.name?.[0]?.toUpperCase() || "P"}
                 </div>
-                <div>
-                  <h4 className="font-bold text-gray-800">
-                    {s.professor?.name}
-                  </h4>
-                  <p className="text-sm text-gray-400">
-                    {s.title} · {s.level}
-                  </p>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-bold text-gray-800 truncate">{s.professor?.name}</h4>
+                  <p className="text-sm text-gray-400 truncate">{s.title} · {s.level}</p>
                 </div>
               </div>
 
@@ -169,34 +190,52 @@ export default function TutorsTab() {
                 </p>
               </div>
 
-              {/* Slot */}
               <div className="mb-4">
                 <span className="bg-green-50 text-green-600 px-2.5 py-1 rounded-full text-xs font-medium">
                   {s.time}
                 </span>
               </div>
 
-              {/* Button */}
-              {enrolled ? (
-                <button
-                  disabled
-                  className="w-full py-2.5 rounded-xl font-semibold text-sm bg-green-50 text-green-600 flex items-center justify-center gap-2 cursor-not-allowed"
-                >
-                  <FiCheckCircle size={14} />
-                  Already Enrolled
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleEnroll(s._id)}
-                  className="w-full py-2.5 rounded-xl font-semibold text-sm text-white
-                             bg-gradient-to-r from-[#6A11CB] to-[#2575FC]
-                             hover:from-[#5A0EAD] hover:to-[#1D63D8]
-                             hover:shadow-lg hover:scale-105
-                             transition-all duration-300"
-                >
-                  Book Session
-                </button>
-              )}
+              {/* Actions */}
+              <div className="flex flex-col gap-2">
+                {/* View Profile — always visible */}
+                {professorId && (
+                  <button
+                    onClick={() => navigate(`/tutor/${professorId}`)}
+                    className="w-full py-2 rounded-xl font-semibold text-sm border-2 border-[#6A11CB] text-[#6A11CB] hover:bg-[#6A11CB] hover:text-white transition-all duration-200 flex items-center justify-center gap-2"
+                  >
+                    <FiUser size={14} />
+                    View Profile
+                  </button>
+                )}
+
+                {/* Book Session — gated for free users */}
+                {enrolled ? (
+                  <button
+                    disabled
+                    className="w-full py-2.5 rounded-xl font-semibold text-sm bg-green-50 text-green-600 flex items-center justify-center gap-2 cursor-not-allowed"
+                  >
+                    <FiCheckCircle size={14} />
+                    Already Enrolled
+                  </button>
+                ) : isPremium ? (
+                  <button
+                    onClick={() => handleEnroll(s._id)}
+                    className="w-full py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#6A11CB] to-[#2575FC] hover:from-[#5A0EAD] hover:to-[#1D63D8] hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  >
+                    Book Session
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => navigate("/payment?plan=premium&returnTo=student")}
+                    className="w-full py-2.5 rounded-xl font-semibold text-sm text-white flex items-center justify-center gap-2"
+                    style={{ background: "linear-gradient(135deg, #FF4E9B, #6A11CB)" }}
+                  >
+                    <FiLock size={13} />
+                    Upgrade to Book
+                  </button>
+                )}
+              </div>
             </div>
           )
         })}

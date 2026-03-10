@@ -4,11 +4,17 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const footerLinks = {
   Platform: ["Find Tutors", "Become a Tutor", "Pricing", "Dashboard"],
   Resources: ["Blog", "Help Center", "Guides", "Community"],
-  Company: ["About Us", "Careers", "Privacy Policy", "Terms"],
+  Legal: [
+    { label: "Privacy Policy", to: "/privacy" },
+    { label: "Terms of Service", to: "/terms" },
+    { label: "Refund Policy", to: "/refund-policy" },
+    { label: "All Policies", to: "/legal" },
+  ],
 };
 
 export default function Footer() {
@@ -70,16 +76,28 @@ export default function Footer() {
                 {title}
               </h3>
               <ul className="space-y-3">
-                {links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-sm text-[#a78bfa] hover:text-[#FF4E9B] transition-colors duration-200"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
+                {links.map((link) => {
+                  const isObj = typeof link === "object";
+                  return (
+                    <li key={isObj ? link.label : link}>
+                      {isObj ? (
+                        <Link
+                          to={link.to}
+                          className="text-sm text-[#a78bfa] hover:text-[#FF4E9B] transition-colors duration-200"
+                        >
+                          {link.label}
+                        </Link>
+                      ) : (
+                        <a
+                          href="#"
+                          className="text-sm text-[#a78bfa] hover:text-[#FF4E9B] transition-colors duration-200"
+                        >
+                          {link}
+                        </a>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
@@ -95,8 +113,8 @@ export default function Footer() {
             All systems operational
           </div>
           <div className="flex gap-2">
-            <span className="text-xs px-3 py-1 rounded-full border border-[#6A11CB]/30 text-[#a78bfa]">Privacy</span>
-            <span className="text-xs px-3 py-1 rounded-full border border-[#6A11CB]/30 text-[#a78bfa]">Terms</span>
+            <Link to="/privacy" className="text-xs px-3 py-1 rounded-full border border-[#6A11CB]/30 text-[#a78bfa] hover:text-white hover:border-[#6A11CB] transition-colors">Privacy</Link>
+            <Link to="/terms" className="text-xs px-3 py-1 rounded-full border border-[#6A11CB]/30 text-[#a78bfa] hover:text-white hover:border-[#6A11CB] transition-colors">Terms</Link>
           </div>
         </div>
       </div>
