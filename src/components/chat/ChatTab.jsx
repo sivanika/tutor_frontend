@@ -187,6 +187,19 @@ export default function ChatTab({ preOpenUserId = null }) {
   useEffect(() => {
     if (!me) return
 
+    /* ── Ensure personal room is registered on EVERY connection/reconnection ─ */
+    const registerRoom = () => {
+      socket.emit("joinUser", { userId: me })
+      console.log("🔑 joinUser emitted for", me)
+    }
+
+    // Connect if not already (dashboard may or may not have done this)
+    if (!socket.connected) socket.connect()
+    // Register immediately if already connected
+    if (socket.connected) registerRoom()
+    // Also register on every future connect/reconnect
+    socket.on("connect", registerRoom)
+
     const onNewMessage = (msg) => {
       const convId  = String(msg.conversationId || msg.conversation)
       const sender  = String(msg.sender?._id || msg.sender)
@@ -231,19 +244,20 @@ export default function ChatTab({ preOpenUserId = null }) {
     const onOnline     = ({ userId }) => setOnlineSet(s => new Set([...s, String(userId)]))
     const onOffline    = ({ userId }) => setOnlineSet(s => { const n = new Set(s); n.delete(String(userId)); return n })
 
-    socket.on("newMessage",  onNewMessage)
-    socket.on("typing",      onTyping)
-    socket.on("stopTyping",  onStopTyping)
-    socket.on("messagesRead",onRead)
-    socket.on("userOnline",  onOnline)
-    socket.on("userOffline", onOffline)
+    socket.on("newMessage",   onNewMessage)
+    socket.on("typing",       onTyping)
+    socket.on("stopTyping",   onStopTyping)
+    socket.on("messagesRead", onRead)
+    socket.on("userOnline",   onOnline)
+    socket.on("userOffline",  onOffline)
     return () => {
-      socket.off("newMessage",  onNewMessage)
-      socket.off("typing",      onTyping)
-      socket.off("stopTyping",  onStopTyping)
-      socket.off("messagesRead",onRead)
-      socket.off("userOnline",  onOnline)
-      socket.off("userOffline", onOffline)
+      socket.off("connect",      registerRoom)
+      socket.off("newMessage",   onNewMessage)
+      socket.off("typing",       onTyping)
+      socket.off("stopTyping",   onStopTyping)
+      socket.off("messagesRead", onRead)
+      socket.off("userOnline",   onOnline)
+      socket.off("userOffline",  onOffline)
     }
   }, [me])
 
