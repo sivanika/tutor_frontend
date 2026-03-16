@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import API from "../../services/api";
 import socket from "../../services/socket";
-import { FiSearch, FiMail, FiUser, FiBookOpen, FiCheckCircle, FiClock } from "react-icons/fi";
+import { FiSearch, FiMail, FiUser, FiBookOpen, FiCheckCircle, FiClock, FiMessageSquare } from "react-icons/fi";
 
-export default function Students() {
+export default function Students({ onChatOpen }) {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -149,14 +149,17 @@ export default function Students() {
                 </div>
               </div>
 
-              {/* Status badge */}
+              {/* Status + Chat action */}
               <div className="mt-4 flex items-center justify-between">
                 {getStatusBadge(s.status)}
-                <div className="flex gap-1 text-gray-300">
-                  {[1, 2, 3, 4, 5].map(i => (
-                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-indigo-400 opacity-60" />
-                  ))}
-                </div>
+                <button
+                  onClick={() => onChatOpen?.(s._id)}
+                  title="Message student"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-600 text-xs font-semibold hover:bg-indigo-100 transition-all duration-200"
+                >
+                  <FiMessageSquare size={13} />
+                  Chat
+                </button>
               </div>
             </div>
           ))}

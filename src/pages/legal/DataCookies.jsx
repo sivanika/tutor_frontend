@@ -37,7 +37,7 @@ export default function DataCookiesPolicy() {
     return (
         <>
             <Header />
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-gray-50 dark:bg-[#0f0720]">
                 <div className="bg-gradient-to-r from-[#6A11CB] to-[#2575FC] py-14 px-6 text-center">
                     <h1 className="text-4xl font-extrabold text-white mb-2">Cookie Policy</h1>
                     <p className="text-indigo-100 max-w-lg mx-auto text-sm">
@@ -52,11 +52,11 @@ export default function DataCookiesPolicy() {
                 <div className="max-w-3xl mx-auto px-6 py-12 space-y-8">
                     {sections.map((s) => (
                         <div key={s.title}>
-                            <h2 className="text-lg font-bold text-gray-800 mb-2">{s.title}</h2>
-                            <p className="text-gray-600 leading-relaxed text-sm">{s.body}</p>
+                            <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-2">{s.title}</h2>
+                            <p className="text-gray-600 dark:text-[#a78bfa]/70 leading-relaxed text-sm">{s.body}</p>
                         </div>
                     ))}
-                    <p className="text-xs text-gray-400 border-t pt-6">
+                    <p className="text-xs text-gray-400 dark:text-[#a78bfa]/40 border-t dark:border-[#6A11CB]/20 pt-6">
                         © {new Date().getFullYear()} TutorHours Pvt. Ltd. All rights reserved.
                     </p>
                 </div>

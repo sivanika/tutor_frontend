@@ -60,6 +60,7 @@ function Login() {
       className="
         min-h-screen flex items-center justify-center p-6
         bg-gradient-to-br from-[#6A11CB] via-[#4B34C9] to-[#2575FC]
+        dark:from-[#0f0720] dark:via-[#130a2e] dark:to-[#0a0418]
         transition-colors duration-500
       "
     >
@@ -69,10 +70,10 @@ function Login() {
         className="
           w-full max-w-md p-8 rounded-2xl
 
-          bg-white/95
+          bg-white/95 dark:bg-[#1a1035]/95
           backdrop-blur-2xl
 
-          border border-white/50
+          border border-white/50 dark:border-[#6A11CB]/20
           shadow-2xl shadow-black/20
 
           animate-[fadeIn_.5s_ease]
@@ -81,14 +82,14 @@ function Login() {
         "
       >
         {/* Title */}
-        <h2 className="text-3xl font-bold text-center text-gray-800">
+        <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white">
           Welcome Back
         </h2>
-        <p className="text-center text-sm text-gray-500 -mt-3">Log in to TutorHours</p>
+        <p className="text-center text-sm text-gray-500 dark:text-[#a78bfa] -mt-3">Log in to TutorHours</p>
 
         {/* Error message */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-600 text-center animate-[fadeIn_.3s_ease]">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-sm text-red-600 dark:text-red-400 text-center animate-[fadeIn_.3s_ease]">
             {error}
           </div>
         )}
@@ -99,9 +100,10 @@ function Login() {
           placeholder="Email address"
           className="
             w-full p-3 rounded-lg
-            bg-gray-50
-            border border-gray-200
-            text-gray-800
+            bg-gray-50 dark:bg-[#0f0720]
+            border border-gray-200 dark:border-[#6A11CB]/20
+            text-gray-800 dark:text-white
+            placeholder:text-gray-400 dark:placeholder:text-[#a78bfa]/50
             focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40
             transition
           "
@@ -117,9 +119,10 @@ function Login() {
             placeholder="Password"
             className="
               w-full p-3 rounded-lg pr-12
-              bg-gray-50
-              border border-gray-200
-              text-gray-800
+              bg-gray-50 dark:bg-[#0f0720]
+              border border-gray-200 dark:border-[#6A11CB]/20
+              text-gray-800 dark:text-white
+              placeholder:text-gray-400 dark:placeholder:text-[#a78bfa]/50
               focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40
               transition
             "
@@ -133,7 +136,7 @@ function Login() {
             onClick={() => setShowPassword(!showPassword)}
             className="
               absolute right-3 top-3
-              text-gray-400 hover:text-gray-700
+              text-gray-400 hover:text-gray-700 dark:hover:text-white
             "
           >
             {showPassword ? "🙈" : "👁️"}
@@ -167,13 +170,13 @@ function Login() {
         </button>
 
         {/* Register */}
-        <p className="text-sm text-center text-gray-500">
+        <p className="text-sm text-center text-gray-500 dark:text-[#a78bfa]/70">
           Don't have an account?{" "}
-          <Link to="/register" className="font-medium text-[#6A11CB] hover:underline">
+          <Link to="/register" className="font-medium text-[#6A11CB] dark:text-[#a78bfa] hover:underline">
             Register
           </Link>
         </p>
-        <Link to="/" className="block text-sm text-center text-gray-500 hover:text-[#6A11CB] hover:underline">
+        <Link to="/" className="block text-sm text-center text-gray-500 dark:text-[#a78bfa]/60 hover:text-[#6A11CB] dark:hover:text-white hover:underline">
           Back to Home
         </Link>
       </form>

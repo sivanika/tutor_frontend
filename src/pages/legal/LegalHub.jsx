@@ -51,7 +51,7 @@ export default function LegalHub() {
     return (
         <>
             <Header />
-            <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+            <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-[#0f0720] dark:via-[#130a2e] dark:to-[#0a0418]">
                 {/* Hero Banner */}
                 <div className="bg-gradient-to-r from-[#6A11CB] to-[#2575FC] py-16 px-6 text-center">
                     <h1 className="text-4xl font-extrabold text-white mb-3">Legal &amp; Policies</h1>
@@ -73,22 +73,22 @@ export default function LegalHub() {
                             <Link
                                 key={doc.path}
                                 to={doc.path}
-                                className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 p-7 flex flex-col gap-3"
+                                className="group bg-white dark:bg-[#1a1035] rounded-2xl border border-gray-100 dark:border-[#6A11CB]/20 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 p-7 flex flex-col gap-3"
                             >
                                 <span className="text-4xl">{doc.icon}</span>
                                 <div>
-                                    <h2 className="text-lg font-bold text-gray-800 group-hover:text-indigo-700 transition-colors">
+                                    <h2 className="text-lg font-bold text-gray-800 dark:text-white group-hover:text-indigo-700 dark:group-hover:text-[#a78bfa] transition-colors">
                                         {doc.title}
                                     </h2>
-                                    <p className="text-sm text-gray-500 mt-1 leading-relaxed">{doc.description}</p>
+                                    <p className="text-sm text-gray-500 dark:text-[#a78bfa]/60 mt-1 leading-relaxed">{doc.description}</p>
                                 </div>
-                                <p className="text-xs text-gray-400 mt-auto">Last updated: {doc.updated}</p>
+                                <p className="text-xs text-gray-400 dark:text-[#a78bfa]/40 mt-auto">Last updated: {doc.updated}</p>
                             </Link>
                         ))}
                     </div>
 
                     {/* Footer note */}
-                    <p className="text-center text-sm text-gray-400 mt-14">
+                    <p className="text-center text-sm text-gray-400 dark:text-[#a78bfa]/50 mt-14">
                         Questions?{" "}
                         <a href="mailto:legal@tutorhours.com" className="text-indigo-600 hover:underline">
                             legal@tutorhours.com

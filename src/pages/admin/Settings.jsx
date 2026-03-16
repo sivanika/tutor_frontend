@@ -1,22 +1,17 @@
 import { useState, useEffect } from "react"
 import API from "../../services/api"
+import { FiUser, FiMail, FiSave, FiLoader, FiCheckCircle, FiAlertCircle, FiSettings } from "react-icons/fi"
 
 export default function Settings() {
   const storedUser = JSON.parse(localStorage.getItem("user"))
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-  })
-
+  const [form, setForm] = useState({ name: "", email: "" })
   const [message, setMessage] = useState("")
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (storedUser) {
-      setForm({
-        name: storedUser.name,
-        email: storedUser.email,
-      })
+      setForm({ name: storedUser.name, email: storedUser.email })
     }
   }, [])
 
@@ -26,124 +21,152 @@ export default function Settings() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setSaving(true)
+    setMessage("")
     try {
       const res = await API.put("/admin/update-profile", form)
       setMessage("Profile updated successfully")
       localStorage.setItem("user", JSON.stringify(res.data.user))
     } catch (err) {
       setMessage("Failed to update profile")
+    } finally {
+      setSaving(false)
     }
   }
 
+  const initials = form.name
+    ? form.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()
+    : "A"
+
   return (
-    <div className="max-w-md space-y-6">
-      {/* Title */}
-      <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-        Settings
-      </h2>
+    <div className="space-y-5 max-w-xl animate-fadeIn">
 
-      {/* Profile Card */}
-      <form
-        onSubmit={handleSubmit}
-        className="
-          p-6 rounded-2xl space-y-4
+      {/* ─── Header ─── */}
+      <div>
+        <h2 className="text-2xl font-bold text-gray-800">Settings</h2>
+        <p className="text-sm text-gray-400 mt-0.5">Manage your admin account configuration</p>
+      </div>
 
-          bg-white/90 dark:bg-slate-900/80
-          backdrop-blur-xl
-
-          border border-slate-200 dark:border-slate-800
-          shadow-md dark:shadow-black/30
-        "
-      >
-        <div>
-          <label className="block mb-1 text-sm font-medium text-slate-700 dark:text-slate-300">
-            Admin Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            className="
-              w-full p-3 rounded-lg
-              bg-slate-50 dark:bg-slate-800
-              border border-slate-300 dark:border-slate-700
-              text-slate-800 dark:text-slate-100
-              focus:outline-none focus:ring-2 focus:ring-slate-500
-              transition
-            "
-            required
-          />
+      {/* ─── Admin Profile Card ─── */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        {/* Card Header */}
+        <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+          <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
+            <FiUser size={15} className="text-[#6A11CB]" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-800">Admin Profile</h3>
+            <p className="text-xs text-gray-400">Update your name and email address</p>
+          </div>
         </div>
 
-        <div>
-          <label className="block mb-1 text-sm font-medium text-slate-700 dark:text-slate-300">
-            Admin Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            className="
-              w-full p-3 rounded-lg
-              bg-slate-50 dark:bg-slate-800
-              border border-slate-300 dark:border-slate-700
-              text-slate-800 dark:text-slate-100
-              focus:outline-none focus:ring-2 focus:ring-slate-500
-              transition
-            "
-            required
-          />
+        <div className="p-6">
+          {/* Avatar preview */}
+          <div className="flex items-center gap-4 mb-6 p-4 bg-gradient-to-r from-[#6A11CB]/5 to-[#2575FC]/5 rounded-xl border border-[#6A11CB]/10">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center text-white font-bold text-xl shadow-lg">
+              {initials}
+            </div>
+            <div>
+              <p className="font-semibold text-gray-800">{form.name || "Admin"}</p>
+              <p className="text-sm text-gray-400">{form.email}</p>
+              <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-50 text-[#6A11CB] border border-purple-100">
+                Administrator
+              </span>
+            </div>
+          </div>
+
+          {/* Message */}
+          {message && (
+            <div className={`flex items-center gap-2 p-3 rounded-xl mb-4 text-sm ${
+              message.includes("success")
+                ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                : "bg-red-50 text-red-600 border border-red-100"
+            }`}>
+              {message.includes("success")
+                ? <FiCheckCircle size={15} />
+                : <FiAlertCircle size={15} />}
+              {message}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Name */}
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+                Admin Name
+              </label>
+              <div className="relative">
+                <FiUser size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                  placeholder="Your full name"
+                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+                Admin Email
+              </label>
+              <div className="relative">
+                <FiMail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="admin@example.com"
+                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="submit"
+                disabled={saving}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
+              >
+                {saving ? (
+                  <><FiLoader size={14} className="animate-spin" /> Saving...</>
+                ) : (
+                  <><FiSave size={14} /> Update Profile</>
+                )}
+              </button>
+              <p className="text-xs text-gray-400">Changes apply immediately</p>
+            </div>
+          </form>
         </div>
+      </div>
 
-        <button
-          type="submit"
-          className="
-            w-full py-3 rounded-lg font-semibold
-
-            bg-slate-900 text-white
-            hover:bg-black
-
-            dark:bg-slate-100 dark:text-black
-            dark:hover:bg-white
-
-            transition-all duration-200
-            active:scale-95
-          "
-        >
-          Update Profile
-        </button>
-
-        {message && (
-          <p className="text-sm mt-2 text-green-600 dark:text-green-400">
-            {message}
-          </p>
-        )}
-      </form>
-
-      {/* Future Settings */}
-      <div
-        className="
-          p-6 rounded-2xl
-
-          bg-white/90 dark:bg-slate-900/80
-          backdrop-blur-xl
-
-          border border-slate-200 dark:border-slate-800
-          shadow-md dark:shadow-black/30
-        "
-      >
-        <h3 className="font-semibold mb-3 text-slate-800 dark:text-slate-100">
-          Future Configurations
-        </h3>
-
-        <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 text-sm space-y-1">
-          <li>Change password</li>
-          <li>System maintenance mode</li>
-          <li>Email notification settings</li>
-          <li>Theme preferences</li>
-        </ul>
+      {/* ─── Future Settings ─── */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+          <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
+            <FiSettings size={15} className="text-amber-500" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-800">Future Configurations</h3>
+            <p className="text-xs text-gray-400">Planned features coming soon</p>
+          </div>
+        </div>
+        <div className="p-6">
+          <ul className="space-y-3">
+            {["Change password", "System maintenance mode", "Email notification settings", "Theme preferences"].map((item) => (
+              <li key={item} className="flex items-center gap-3 text-sm text-gray-500">
+                <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#6A11CB] to-[#2575FC]" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   )

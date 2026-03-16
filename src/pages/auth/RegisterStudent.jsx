@@ -33,25 +33,26 @@ export default function RegisterStudent() {
       className="
         min-h-screen flex items-center justify-center p-6
         bg-gradient-to-br from-[#6A11CB] via-[#4B34C9] to-[#2575FC]
+        dark:from-[#0f0720] dark:via-[#130a2e] dark:to-[#0a0418]
       "
     >
       <form
         onSubmit={submit}
         className="
           w-full max-w-md p-8 rounded-2xl space-y-5
-          bg-white/95
+          bg-white/95 dark:bg-[#1a1035]/95
           backdrop-blur-2xl
-          border border-white/50
+          border border-white/50 dark:border-[#6A11CB]/20
           shadow-2xl shadow-black/20
           animate-[popup_.5s_ease]
         "
       >
         {/* Title */}
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
             Student Registration
           </h2>
-          <p className="text-sm text-gray-500 mt-1">Create your student account</p>
+          <p className="text-sm text-gray-500 dark:text-[#a78bfa] mt-1">Create your student account</p>
 
           {/* Show selected plan badge */}
           {plan && (
@@ -70,9 +71,10 @@ export default function RegisterStudent() {
           placeholder="Email address"
           className="
             w-full p-3 rounded-lg
-            bg-gray-50
-            border border-gray-200
-            text-gray-800
+            bg-gray-50 dark:bg-[#0f0720]
+            border border-gray-200 dark:border-[#6A11CB]/20
+            text-gray-800 dark:text-white
+            placeholder:text-gray-400 dark:placeholder:text-[#a78bfa]/50
             focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40
             transition
           "
@@ -88,9 +90,10 @@ export default function RegisterStudent() {
             placeholder="Password"
             className="
               w-full p-3 rounded-lg pr-12
-              bg-gray-50
-              border border-gray-200
-              text-gray-800
+              bg-gray-50 dark:bg-[#0f0720]
+              border border-gray-200 dark:border-[#6A11CB]/20
+              text-gray-800 dark:text-white
+              placeholder:text-gray-400 dark:placeholder:text-[#a78bfa]/50
               focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40
               transition
             "
@@ -102,7 +105,7 @@ export default function RegisterStudent() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-3 text-gray-400 hover:text-gray-700"
+            className="absolute right-3 top-3 text-gray-400 hover:text-gray-700 dark:hover:text-white"
           >
             {showPassword ? "🙈" : "👁️"}
           </button>
@@ -117,7 +120,7 @@ export default function RegisterStudent() {
             onChange={(e) => setAgreed(e.target.checked)}
             required
           />
-          <span className="text-xs text-gray-600 leading-relaxed">
+          <span className="text-xs text-gray-600 dark:text-[#a78bfa]/70 leading-relaxed">
             I agree to the{" "}
             <Link to="/terms" target="_blank" className="text-[#6A11CB] underline hover:text-[#2575FC]">
               Terms of Service
@@ -157,10 +160,10 @@ export default function RegisterStudent() {
         </button>
 
         {/* Divider */}
-        <div className="flex items-center gap-3 text-gray-400 text-sm">
-          <div className="flex-1 h-px bg-gray-200" />
+        <div className="flex items-center gap-3 text-gray-400 dark:text-[#a78bfa]/40 text-sm">
+          <div className="flex-1 h-px bg-gray-200 dark:bg-[#6A11CB]/20" />
           OR
-          <div className="flex-1 h-px bg-gray-200" />
+          <div className="flex-1 h-px bg-gray-200 dark:bg-[#6A11CB]/20" />
         </div>
 
         {/* Google Button (UI only) */}
@@ -168,9 +171,9 @@ export default function RegisterStudent() {
           type="button"
           className="
             w-full py-3 rounded-lg font-medium
-            bg-white text-gray-700
-            border border-gray-200
-            hover:bg-gray-50
+            bg-white dark:bg-[#0f0720] text-gray-700 dark:text-white
+            border border-gray-200 dark:border-[#6A11CB]/20
+            hover:bg-gray-50 dark:hover:bg-[#1a1035]
             transition
           "
         >

@@ -21,6 +21,10 @@ import StudentOnboarding from "./pages/student/StudentOnboarding"
 import VerificationPending from "./pages/VerificationPending"
 import ProfessorApproval from "./pages/admin/ProfessorApproval";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminStudents from "./pages/admin/AdminStudents";
+import AdminProfessors from "./pages/admin/AdminProfessors";
+import AdminEarnings from "./pages/admin/AdminEarnings";
+import AdminAnnouncements from "./pages/admin/AdminAnnouncements";
 import RegisterStudent from "./pages/auth/RegisterStudent";
 import RegisterProfessor from "./pages/auth/RegisterProfessor";
 import AdminLogin from "./pages/auth/AdminLogin";
@@ -111,6 +115,10 @@ function App() {
             <Route path="users" element={<UserManagement />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="students" element={<AdminStudents />} />
+            <Route path="professors" element={<AdminProfessors />} />
+            <Route path="earnings" element={<AdminEarnings />} />
+            <Route path="announcements" element={<AdminAnnouncements />} />
           </Route>
 
           {/* Admin professor approval */}

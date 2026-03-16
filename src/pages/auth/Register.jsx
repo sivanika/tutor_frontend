@@ -12,6 +12,7 @@ export default function Register() {
       className="
         min-h-screen flex items-center justify-center p-6
         bg-gradient-to-br from-[#6A11CB] via-[#4B34C9] to-[#2575FC]
+        dark:from-[#0f0720] dark:via-[#130a2e] dark:to-[#0a0418]
         transition-colors duration-500
       "
     >
@@ -19,18 +20,18 @@ export default function Register() {
       <div
         className="
           w-full max-w-md p-10 rounded-2xl text-center
-          bg-white/95
+          bg-white/95 dark:bg-[#1a1035]/95
           backdrop-blur-2xl
-          border border-white/50
+          border border-white/50 dark:border-[#6A11CB]/20
           shadow-2xl shadow-black/20
           animate-[popup_.5s_ease]
         "
       >
         {/* Title */}
-        <h2 className="text-3xl font-bold mb-2 text-gray-800">
+        <h2 className="text-3xl font-bold mb-2 text-gray-800 dark:text-white">
           Register As
         </h2>
-        <p className="text-sm text-gray-500 mb-8">Choose your role to get started</p>
+        <p className="text-sm text-gray-500 dark:text-[#a78bfa] mb-8">Choose your role to get started</p>
 
         {/* Options */}
         <div className="flex flex-col gap-5">
@@ -70,11 +71,11 @@ export default function Register() {
         </div>
 
         {/* Back to login */}
-        <p className="mt-8 text-sm text-gray-500">
+        <p className="mt-8 text-sm text-gray-500 dark:text-[#a78bfa]/70">
           Already have an account?{" "}
           <span
             onClick={() => navigate("/login")}
-            className="cursor-pointer font-medium text-[#6A11CB] hover:underline"
+            className="cursor-pointer font-medium text-[#6A11CB] dark:text-[#a78bfa] hover:underline"
           >
             Login
           </span>

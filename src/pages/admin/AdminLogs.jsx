@@ -1,5 +1,21 @@
 import { useEffect, useState } from "react"
 import API from "../../services/api"
+import { FiActivity, FiClock, FiUser, FiTag, FiFileText } from "react-icons/fi"
+
+const ACTION_COLORS = {
+  approve: "bg-emerald-50 text-emerald-600",
+  reject: "bg-red-50 text-red-600",
+  ban: "bg-red-50 text-red-700",
+  disable: "bg-amber-50 text-amber-600",
+  activate: "bg-blue-50 text-blue-600",
+  feature: "bg-purple-50 text-[#6A11CB]",
+  update: "bg-gray-100 text-gray-600",
+}
+
+function actionBadgeClass(action = "") {
+  const key = Object.keys(ACTION_COLORS).find(k => action.toLowerCase().includes(k))
+  return key ? ACTION_COLORS[key] : "bg-gray-100 text-gray-500"
+}
 
 export default function AdminLogs() {
   const [logs, setLogs] = useState([])
@@ -11,77 +27,96 @@ export default function AdminLogs() {
   }, [])
 
   return (
-    <div className="space-y-6">
-      {/* Title */}
-      <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-        Admin Activity Logs
-      </h2>
+    <div className="space-y-5 animate-fadeIn">
 
-      {/* Table Card */}
-      <div
-        className="
-          rounded-2xl overflow-hidden
-
-          bg-white/90 dark:bg-slate-900/80
-          backdrop-blur-xl
-
-          border border-slate-200 dark:border-slate-800
-          shadow-md dark:shadow-black/30
-        "
-      >
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            {/* Header */}
-            <thead className="bg-slate-900 text-white dark:bg-black">
-              <tr>
-                <th className="p-3 text-left font-semibold">Admin</th>
-                <th className="p-3 text-left font-semibold">Action</th>
-                <th className="p-3 text-left font-semibold">Target</th>
-                <th className="p-3 text-left font-semibold">Description</th>
-                <th className="p-3 text-left font-semibold">Time</th>
-              </tr>
-            </thead>
-
-            {/* Body */}
-            <tbody>
-              {logs.map((log) => (
-                <tr
-                  key={log._id}
-                  className="
-                    border-b border-slate-200 dark:border-slate-800
-                    hover:bg-slate-50 dark:hover:bg-slate-800/50
-                    transition
-                  "
-                >
-                  <td className="p-3">
-                    <div className="font-medium text-slate-800 dark:text-slate-100">
-                      {log.admin?.name}
-                    </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">
-                      {log.admin?.email}
-                    </div>
-                  </td>
-
-                  <td className="p-3 font-semibold text-slate-700 dark:text-slate-300">
-                    {log.action}
-                  </td>
-
-                  <td className="p-3 text-slate-700 dark:text-slate-300">
-                    {log.target}
-                  </td>
-
-                  <td className="p-3 text-slate-600 dark:text-slate-400">
-                    {log.description}
-                  </td>
-
-                  <td className="p-3 text-xs text-slate-500 dark:text-slate-400">
-                    {new Date(log.createdAt).toLocaleString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* ─── Header ─── */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800">Activity Logs</h2>
+          <p className="text-sm text-gray-400 mt-0.5">Audit trail of all admin actions</p>
         </div>
+        <div className="flex items-center gap-2 bg-purple-50 text-[#6A11CB] px-3 py-1.5 rounded-full text-xs font-semibold border border-purple-100">
+          <FiActivity size={12} />
+          {logs.length} entries
+        </div>
+      </div>
+
+      {/* ─── Logs Table ─── */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        {logs.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 gap-3 text-gray-400">
+            <FiFileText size={32} className="opacity-30" />
+            <p className="text-sm">No activity logs found</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-100 bg-gray-50/80">
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <span className="flex items-center gap-1.5"><FiUser size={11} /> Admin</span>
+                  </th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <span className="flex items-center gap-1.5"><FiTag size={11} /> Action</span>
+                  </th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Target</th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Description</th>
+                  <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <span className="flex items-center gap-1.5"><FiClock size={11} /> Time</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {logs.map((log) => {
+                  const initials = log.admin?.name
+                    ? log.admin.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()
+                    : "A"
+                  return (
+                    <tr key={log._id} className="hover:bg-gray-50/60 transition-colors group">
+                      {/* Admin */}
+                      <td className="px-5 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                            {initials}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-medium text-gray-800 text-xs leading-tight">{log.admin?.name || "Admin"}</p>
+                            <p className="text-xs text-gray-400 truncate">{log.admin?.email}</p>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Action */}
+                      <td className="px-5 py-4">
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${actionBadgeClass(log.action)}`}>
+                          {log.action}
+                        </span>
+                      </td>
+
+                      {/* Target */}
+                      <td className="px-5 py-4 text-gray-600 text-xs max-w-[140px] truncate">
+                        {log.target}
+                      </td>
+
+                      {/* Description */}
+                      <td className="px-5 py-4 text-gray-500 text-xs max-w-[200px]">
+                        <p className="line-clamp-2 leading-relaxed">{log.description}</p>
+                      </td>
+
+                      {/* Time */}
+                      <td className="px-5 py-4 text-xs text-gray-400 whitespace-nowrap">
+                        {new Date(log.createdAt).toLocaleString("en-US", {
+                          month: "short", day: "numeric",
+                          hour: "2-digit", minute: "2-digit"
+                        })}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   )

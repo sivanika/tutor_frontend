@@ -16,11 +16,29 @@ export function AuthProvider({ children }) {
     setUser(userData)
   }
 
+  // ── Helper: check if token is expired (client-side, no library needed) ──
+  const isTokenExpired = (token) => {
+    if (!token) return true
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]))
+      return payload.exp * 1000 < Date.now()
+    } catch {
+      return true
+    }
+  }
+
   // 🔥 LOAD USER ON REFRESH
   useEffect(() => {
-    const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
+    const storedUserInfo = JSON.parse(localStorage.getItem("userInfo") || "{}")
 
     if (storedUserInfo?.user && storedUserInfo?.token) {
+      // Auto-logout if token already expired
+      if (isTokenExpired(storedUserInfo.token)) {
+        localStorage.clear()
+        setLoading(false)
+        return
+      }
+
       setUser(storedUserInfo.user)
 
       // 🔁 AUTO REDIRECT ON REFRESH (only if at root)

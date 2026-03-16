@@ -1,10 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 import {
   FiGrid, FiSearch, FiBook, FiTrendingUp,
-  FiLogOut, FiMenu, FiX, FiChevronRight, FiBell
+  FiLogOut, FiMenu, FiX, FiChevronRight, FiBell, FiMessageSquare
 } from "react-icons/fi"
+import ChatTab from "../../components/chat/ChatTab"
+import socket from "../../services/socket"
 
 import DashboardTab from "./tabs/DashboardTab"
 import TutorsTab from "./tabs/TutorsTab"
@@ -15,14 +17,58 @@ const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: FiGrid },
   { id: "tutors", label: "Browse Tutors", icon: FiSearch },
   { id: "sessions", label: "My Sessions", icon: FiBook },
+  { id: "messages", label: "Messages", icon: FiMessageSquare },
   { id: "progress", label: "My Progress", icon: FiTrendingUp },
 ]
 
 export default function StudentDashboardUI() {
   const [activeTab, setActiveTab] = useState("dashboard")
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [chatUnread, setChatUnread] = useState(0)
+  const activeTabRef = useRef("dashboard")
   const navigate = useNavigate()
   const { user, logout } = useAuth()
+
+  // ── Persistent socket: connect once, stay alive for notifications ──
+  useEffect(() => {
+    if (!user) return
+    const userId = user.id || user._id
+    if (!userId) return
+
+    // Join personal room after confirmed connection (avoids race condition)
+    const onConnect = () => {
+      socket.emit("joinUser", { userId })
+    }
+
+    socket.on("connect", onConnect)
+
+    // If socket is already connected (e.g. hot-reload), join immediately
+    if (socket.connected) {
+      socket.emit("joinUser", { userId })
+    } else {
+      socket.connect()
+    }
+
+    const onNewMsg = () => {
+      if (activeTabRef.current !== "messages") {
+        setChatUnread((n) => n + 1)
+      }
+    }
+    socket.on("newMessageBadge", onNewMsg)
+
+    return () => {
+      socket.off("connect", onConnect)
+      socket.off("newMessageBadge", onNewMsg)
+      // Don't disconnect here — ChatTab shares this socket instance
+    }
+  }, [user])
+
+  const handleTabChange = (id) => {
+    activeTabRef.current = id
+    setActiveTab(id)
+    if (id === "messages") setChatUnread(0)
+    setSidebarOpen(false)
+  }
 
   const handleLogout = () => {
     logout()
@@ -75,7 +121,7 @@ export default function StudentDashboardUI() {
             return (
               <button
                 key={id}
-                onClick={() => { setActiveTab(id); setSidebarOpen(false) }}
+                onClick={() => handleTabChange(id)}
                 className={`
                   w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium
                   transition-all duration-200 group relative
@@ -91,6 +137,11 @@ export default function StudentDashboardUI() {
                 <Icon size={18} className={active ? "text-white" : "text-white/50 group-hover:text-white/80"} />
                 <span>{label}</span>
                 {active && <FiChevronRight size={14} className="ml-auto text-[#FF4E9B]" />}
+                {id === "messages" && chatUnread > 0 && !active && (
+                  <span className="ml-auto bg-[#FF4E9B] text-white text-[10px] font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 animate-pulse">
+                    {chatUnread > 9 ? "9+" : chatUnread}
+                  </span>
+                )}
               </button>
             )
           })}
@@ -148,11 +199,12 @@ export default function StudentDashboardUI() {
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-y-auto p-6">
-          <div key={activeTab} className="animate-fadeIn">
+        <main className={`flex-1 overflow-y-auto ${activeTab === "messages" ? "p-4" : "p-6"}`}>
+          <div key={activeTab} className={`animate-fadeIn ${activeTab === "messages" ? "h-full" : ""}`}>
             {activeTab === "dashboard" && <DashboardTab />}
             {activeTab === "tutors" && <TutorsTab />}
             {activeTab === "sessions" && <SessionsTab />}
+            {activeTab === "messages" && <ChatTab />}
             {activeTab === "progress" && <ProgressTab />}
           </div>
         </main>

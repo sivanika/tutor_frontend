@@ -1,22 +1,18 @@
+import { useEffect, useState } from "react"
+import API from "../../services/api"
+
 export default function NoticeBoard() {
-  const notices = [
-    {
-      title: "System Maintenance",
-      text: "Platform will be unavailable Sunday 2AM – 6AM.",
-      urgent: true,
-      icon: "⚠️",
-    },
-    {
-      title: "New Feature: Group Sessions",
-      text: "Now students can learn together with exclusive discounts.",
-      icon: "🚀",
-    },
-    {
-      title: "Tutor of the Month",
-      text: "Congratulations Dr. Sarah Johnson! 🎉",
-      icon: "🏆",
-    },
-  ];
+  const [notices, setNotices] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    API.get("/announcements")
+      .then((r) => setNotices(r.data || []))
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  if (!loading && notices.length === 0) return null
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-16 transition-colors duration-500">
@@ -39,42 +35,55 @@ export default function NoticeBoard() {
           </span>
         </div>
 
-        {/* Cards */}
-        <div className="grid md:grid-cols-3 gap-5">
-          {notices.map((n, i) => (
-            <div
-              key={i}
-              className={`
-                group relative p-5 rounded-2xl border overflow-hidden
-                transition-all duration-300 hover:-translate-y-1
-                ${n.urgent
-                  ? "bg-[#FF4E9B]/08 border-[#FF4E9B]/25 dark:bg-[#FF4E9B]/05 dark:border-[#FF4E9B]/20"
-                  : "bg-white dark:bg-[#0f0720] border-[#6A11CB]/10 dark:border-[#6A11CB]/20"
-                }
-                hover:shadow-xl hover:shadow-[#6A11CB]/10
-              `}
-            >
-              {/* Glow on urgent */}
-              {n.urgent && (
-                <div className="absolute top-0 right-0 w-24 h-24 bg-[#FF4E9B]/10 rounded-full blur-2xl pointer-events-none" />
-              )}
+        {/* Loading skeleton */}
+        {loading ? (
+          <div className="grid md:grid-cols-3 gap-5">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="p-5 rounded-2xl border bg-white dark:bg-[#0f0720] border-[#6A11CB]/10 animate-pulse">
+                <div className="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 mb-3" />
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3 mb-2" />
+                <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded w-full" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* Cards */
+          <div className="grid md:grid-cols-3 gap-5">
+            {notices.map((n) => (
+              <div
+                key={n._id}
+                className={`
+                  group relative p-5 rounded-2xl border overflow-hidden
+                  transition-all duration-300 hover:-translate-y-1
+                  ${n.priority
+                    ? "bg-[#FF4E9B]/08 border-[#FF4E9B]/25 dark:bg-[#FF4E9B]/05 dark:border-[#FF4E9B]/20"
+                    : "bg-white dark:bg-[#0f0720] border-[#6A11CB]/10 dark:border-[#6A11CB]/20"
+                  }
+                  hover:shadow-xl hover:shadow-[#6A11CB]/10
+                `}
+              >
+                {/* Glow on priority */}
+                {n.priority && (
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-[#FF4E9B]/10 rounded-full blur-2xl pointer-events-none" />
+                )}
 
-              <div className="text-2xl mb-3">{n.icon}</div>
-              <h3 className={`font-bold mb-1.5 text-sm ${n.urgent ? "text-[#FF4E9B]" : "text-[#1a0e33] dark:text-white"}`}>
-                {n.title}
-              </h3>
-              <p className="text-xs leading-relaxed text-[#6b7280] dark:text-[#a78bfa]">
-                {n.text}
-              </p>
-              {n.urgent && (
-                <span className="inline-block mt-3 text-[10px] font-bold uppercase tracking-widest text-[#FF4E9B] bg-[#FF4E9B]/10 px-2 py-0.5 rounded-full">
-                  Priority
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
+                <div className="text-2xl mb-3">{n.icon || "📢"}</div>
+                <h3 className={`font-bold mb-1.5 text-sm ${n.priority ? "text-[#FF4E9B]" : "text-[#1a0e33] dark:text-white"}`}>
+                  {n.title}
+                </h3>
+                <p className="text-xs leading-relaxed text-[#6b7280] dark:text-[#a78bfa]">
+                  {n.text}
+                </p>
+                {n.priority && (
+                  <span className="inline-block mt-3 text-[10px] font-bold uppercase tracking-widest text-[#FF4E9B] bg-[#FF4E9B]/10 px-2 py-0.5 rounded-full">
+                    Priority
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
-  );
+  )
 }
