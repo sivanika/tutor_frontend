@@ -1,68 +1,49 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-const PLANS = [
-    {
-        id: "free_trial",
-        name: "Free Trial",
-        price: "₹0",
-        period: "for 7 days",
-        color: "#6A11CB",
-        gradient: "linear-gradient(135deg, #6A11CB, #2575FC)",
-        shadow: "rgba(106,17,203,0.25)",
-        features: [
-            "Access to limited tutors",
-            "2 demo sessions",
-            "Basic dashboard",
-            "Community support",
-        ],
-        badge: null,
-        cta: "Start Free Trial →",
-    },
-    {
-        id: "premium",
-        name: "Premium",
-        price: "₹99",
-        period: "/month",
-        color: "#FF4E9B",
-        gradient: "linear-gradient(135deg, #FF4E9B, #6A11CB)",
-        shadow: "rgba(255,78,155,0.3)",
-        features: [
-            "Unlimited sessions",
-            "All verified professors",
-            "Priority booking",
-            "Session recordings",
-            "Analytics & progress tracking",
-        ],
-        badge: "Most Popular",
-        cta: "Pay ₹99 Securely →",
-    },
-    {
-        id: "pay_per_session",
-        name: "Pay Per Session",
-        price: "18%",
-        period: " commission",
-        color: "#2575FC",
-        gradient: "linear-gradient(135deg, #2575FC, #6A11CB)",
-        shadow: "rgba(37,117,252,0.25)",
-        features: [
-            "No monthly fee",
-            "Book anytime",
-            "All tutors access",
-            "Pay only when you learn",
-            "Flexible payments",
-        ],
-        badge: null,
-        cta: "Activate Free →",
-    },
-];
+import API from "../../../services/api";
 
 export default function PaymentStep() {
     const navigate = useNavigate();
     const [hoveredPlan, setHoveredPlan] = useState(null);
+    const [plans, setPlans] = useState([]);
+
+    useEffect(() => {
+        API.get("/subscriptions/plans")
+            .then(res => {
+                const enhanced = res.data.map((p) => {
+                    const isPremium = p.price > 10000 || p.name.toLowerCase().includes("premium");
+                    const isFree = p.price === 0;
+
+                    const color = isPremium ? "#FF4E9B" : (isFree ? "#6A11CB" : "#2575FC");
+                    const gradient = isPremium ? "linear-gradient(135deg, #FF4E9B, #6A11CB)" : 
+                                    (isFree ? "linear-gradient(135deg, #6A11CB, #2575FC)" : "linear-gradient(135deg, #2575FC, #6A11CB)");
+                    const shadow = isPremium ? "rgba(255,78,155,0.3)" : (isFree ? "rgba(106,17,203,0.25)" : "rgba(37,117,252,0.25)");
+                    
+                    return {
+                        ...p,
+                        id: p._id,
+                        displayPrice: isFree ? "Free" : `₹${p.price / 100}`,
+                        displayPeriod: p.period === "monthly" ? "/month" : `/${p.period}`,
+                        color,
+                        gradient,
+                        shadow,
+                        badge: isPremium ? "Most Popular" : null,
+                        cta: isFree ? `Activate ${p.name} →` : `Pay ₹${p.price / 100} Securely →`,
+                        features: [
+                            p.maxSessions === null ? "Unlimited bookings" : `Up to ${p.maxSessions} sessions`,
+                            p.maxProfileViews === null ? "View all profiles" : `View ${p.maxProfileViews} profiles`,
+                            p.priorityBooking ? "Priority booking" : "Standard access",
+                            "Secure dashboard access",
+                            "24/7 Support"
+                        ]
+                    };
+                });
+                setPlans(enhanced);
+            })
+            .catch(err => console.error("Failed to fetch plans", err));
+    }, []);
 
     const handlePlanClick = (planId) => {
-        // Navigate to the full dedicated payment page
         navigate(`/payment?plan=${planId}&returnTo=student`);
     };
 
@@ -92,7 +73,7 @@ export default function PaymentStep() {
 
             {/* Plan Cards */}
             <div className="grid md:grid-cols-3 gap-6">
-                {PLANS.map((plan) => {
+                {plans.map((plan) => {
                     const isHovered = hoveredPlan === plan.id;
                     return (
                         <div
@@ -134,8 +115,8 @@ export default function PaymentStep() {
 
                                 {/* Price */}
                                 <div className="mb-5">
-                                    <span className="text-4xl font-black text-[#1a0e33]">{plan.price}</span>
-                                    <span className="text-sm text-slate-400 ml-1">{plan.period}</span>
+                                    <span className="text-4xl font-black text-[#1a0e33]">{plan.displayPrice}</span>
+                                    <span className="text-sm text-slate-400 ml-1">{plan.displayPeriod}</span>
                                 </div>
 
                                 {/* Features */}

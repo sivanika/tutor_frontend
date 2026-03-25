@@ -175,6 +175,12 @@ export default function TutorsTab() {
                 <div className="flex-1 min-w-0">
                   <h4 className="font-bold text-gray-800 truncate">{s.professor?.name}</h4>
                   <p className="text-sm text-gray-400 truncate">{s.title} · {s.level}</p>
+                  {/* Hourly Rate */}
+                  {s.professor?.hourlyRate ? (
+                    <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[11px] font-bold text-white bg-gradient-to-r from-[#6A11CB] to-[#2575FC]">
+                      💰 ₹{s.professor.hourlyRate}/hr
+                    </span>
+                  ) : null}
                 </div>
               </div>
 

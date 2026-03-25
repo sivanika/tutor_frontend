@@ -11,6 +11,7 @@ export default function SessionsTab() {
   const [sessions, setSessions] = useState([])
   const [loading, setLoading] = useState(true)
   const [completing, setCompleting] = useState(null)
+  const [cancelling, setCancelling] = useState(null)
   const navigate = useNavigate()
 
   // Calendar state
@@ -67,6 +68,22 @@ export default function SessionsTab() {
       alert("Failed to mark as complete")
     } finally {
       setCompleting(null)
+    }
+  }
+
+  // ── Cancel Enrollment ──
+  const handleCancelEnrollment = async (sessionId) => {
+    if (!window.confirm("Are you sure you want to cancel this booking?")) return;
+    try {
+      setCancelling(sessionId)
+      await API.post(`/sessions/${sessionId}/cancel-enrollment`)
+      socket.emit("dashboard:update")
+      fetchSessions()
+    } catch (err) {
+      console.error(err)
+      alert("Failed to cancel booking")
+    } finally {
+      setCancelling(null)
     }
   }
 
@@ -243,9 +260,14 @@ export default function SessionsTab() {
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-[#2575FC]">
-                      Enrolled
-                    </span>
+                    <button
+                      onClick={() => handleCancelEnrollment(s._id)}
+                      disabled={cancelling === s._id}
+                      className="px-3 py-1.5 rounded-full border border-red-200 text-red-500 hover:bg-red-50 text-xs font-semibold
+                                 transition flex items-center gap-1 disabled:opacity-50"
+                    >
+                      {cancelling === s._id ? "Cancelling..." : "Cancel"}
+                    </button>
                     <button
                       onClick={() => handleJoinSession(s.meetLink)}
                       className="px-4 py-1.5 bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white rounded-full text-xs font-semibold

@@ -108,7 +108,7 @@ export default function AdminDashboard() {
       {/* ─── Quick Actions Grid ─── */}
       <div>
         <h3 className="font-semibold text-gray-700 mb-4 text-sm uppercase tracking-wider">Quick Access</h3>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {items.map((item) => {
             const Icon = item.icon
             return (

@@ -35,7 +35,7 @@ export default function Header() {
     localStorage.setItem("theme", next ? "dark" : "light");
   };
 
-  const navLinks = ["Features", "Pricing", "Testimonials"];
+  const navLinks = ["Features", "Pricing", "Testimonials", "Contact"];
 
   return (
     <>

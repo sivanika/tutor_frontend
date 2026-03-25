@@ -107,8 +107,9 @@ export default function AdminAnnouncements() {
             <p className="text-sm mt-1">Click "New Announcement" to create one</p>
           </div>
         ) : (
-          <table className="w-full text-sm">
-            <thead>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
               <tr className="bg-gray-50 border-b border-gray-100">
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Icon</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Title</th>
@@ -160,6 +161,7 @@ export default function AdminAnnouncements() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

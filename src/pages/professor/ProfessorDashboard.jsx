@@ -7,6 +7,7 @@ import {
 } from "react-icons/fi"
 import ChatTab from "../../components/chat/ChatTab"
 import socket from "../../services/socket"
+import NotificationBell from "../../components/common/NotificationBell"
 
 import Dashboard from "../../components/professorDashboard/Dashboard"
 import Students from "../../components/professorDashboard/Students"
@@ -198,10 +199,7 @@ export default function ProfessorDashboard() {
           </div>
 
           <div className="ml-auto flex items-center gap-3">
-            <button className="relative p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition">
-              <FiBell size={18} className="text-gray-600" />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[#FF4E9B]" />
-            </button>
+            <NotificationBell />
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center font-bold text-sm text-white shadow">
               {user?.email?.[0]?.toUpperCase() || "P"}
             </div>

@@ -310,27 +310,43 @@ export default function TutorProfilePage() {
                         <h2 className="text-sm font-bold uppercase tracking-widest text-[#6A11CB] dark:text-[#a78bfa] mb-4">
                             📬 Contact Details
                         </h2>
-                        <div className="space-y-2">
-                            {tutor.email && (
-                                <div className="flex items-center gap-3 text-sm">
-                                    <span className="text-[#6b7280]">Email:</span>
-                                    <a href={`mailto:${tutor.email}`} className="text-[#6A11CB] dark:text-[#c4b5fd] font-medium hover:underline">
-                                        {tutor.email}
-                                    </a>
-                                </div>
-                            )}
-                            {tutor.phone && (
-                                <div className="flex items-center gap-3 text-sm">
-                                    <span className="text-[#6b7280]">Phone:</span>
-                                    <a href={`tel:${tutor.phone}`} className="text-[#6A11CB] dark:text-[#c4b5fd] font-medium hover:underline">
-                                        {tutor.phone}
-                                    </a>
-                                </div>
-                            )}
-                            {!tutor.email && !tutor.phone && (
-                                <p className="text-[#6b7280] text-sm">No contact info added yet.</p>
-                            )}
-                        </div>
+                        {isPremium ? (
+                            <div className="space-y-2">
+                                {tutor.email && (
+                                    <div className="flex items-center gap-3 text-sm">
+                                        <span className="text-[#6b7280]">Email:</span>
+                                        <a href={`mailto:${tutor.email}`} className="text-[#6A11CB] dark:text-[#c4b5fd] font-medium hover:underline">
+                                            {tutor.email}
+                                        </a>
+                                    </div>
+                                )}
+                                {tutor.phone && (
+                                    <div className="flex items-center gap-3 text-sm">
+                                        <span className="text-[#6b7280]">Phone:</span>
+                                        <a href={`tel:${tutor.phone}`} className="text-[#6A11CB] dark:text-[#c4b5fd] font-medium hover:underline">
+                                            {tutor.phone}
+                                        </a>
+                                    </div>
+                                )}
+                                {!tutor.email && !tutor.phone && (
+                                    <p className="text-[#6b7280] text-sm">No contact info added yet.</p>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-6 bg-[#f5f3ff] dark:bg-[#1f1635] rounded-xl border border-dashed border-[#6A11CB]/30">
+                                <span className="text-2xl mb-2">🔒</span>
+                                <p className="text-sm text-center text-[#6b7280] dark:text-[#a78bfa] max-w-xs">
+                                    Contact info is premium only. <br/>
+                                    <button
+                                        onClick={() => navigate("/payment?plan=premium&returnTo=student")}
+                                        className="text-[#6A11CB] dark:text-[#c4b5fd] font-bold hover:underline mt-1"
+                                    >
+                                        Upgrade to Premium
+                                    </button>
+                                    {" "}to view details.
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
 

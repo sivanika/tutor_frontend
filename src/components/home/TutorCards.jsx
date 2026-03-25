@@ -212,7 +212,23 @@ export default function TutorCards() {
                       {t.subjects || "General Tutoring"}
                     </p>
 
-                    <div className="flex items-center gap-4 mt-4">
+                    {/* Hourly Rate Badge */}
+                    <div className="mt-3">
+                      {t.hourlyRate ? (
+                        <span
+                          className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-white"
+                          style={{ background: gradientStyle }}
+                        >
+                          💰 ₹{t.hourlyRate}/hr
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-[#6b7280] dark:text-[#a78bfa] bg-gray-100 dark:bg-[#1a0e33]">
+                          Contact for price
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-4 mt-3">
                       <span
                         className="text-sm font-semibold"
                         style={{ color: grad.from }}

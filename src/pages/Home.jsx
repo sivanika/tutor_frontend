@@ -6,6 +6,7 @@ import TutorCards from "../components/home/TutorCards";
 import Features from "../components/home/Features";
 import Pricing from "../components/home/Pricing";
 import Testimonials from "../components/home/Testimonials";
+import ContactUs from "../components/home/ContactUs";
 import CTA from "../components/home/CTA";
 import Footer from "../components/home/Footer";
 
@@ -33,6 +34,7 @@ export default function Home() {
         <Features />
         <Pricing />
         <Testimonials />
+        <ContactUs />
         <CTA />
       </main>
 

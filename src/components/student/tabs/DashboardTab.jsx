@@ -5,7 +5,9 @@ import { useAuth } from "../../../context/AuthContext"
 import {
   FiBook, FiClock, FiCheckCircle, FiArrowUpRight,
   FiCalendar, FiVideo, FiExternalLink, FiSearch, FiAlertCircle,
+  FiZap,
 } from "react-icons/fi"
+import { useNavigate } from "react-router-dom"
 import { Line } from "react-chartjs-2"
 import {
   Chart as ChartJS, LineElement, PointElement,
@@ -24,7 +26,18 @@ function getGreeting() {
 export default function DashboardTab() {
   const [sessions, setSessions] = useState([])
   const [loading, setLoading] = useState(true)
+  const [subscription, setSubscription] = useState(null)
   const { user } = useAuth()
+  const navigate = useNavigate()
+
+  const fetchSubscription = async () => {
+    try {
+      const res = await API.get("/payment/subscription")
+      setSubscription(res.data)
+    } catch (err) {
+      // silently fail — subscription may not be set up
+    }
+  }
 
   const fetchSessions = async () => {
     try {
@@ -40,6 +53,7 @@ export default function DashboardTab() {
 
   useEffect(() => {
     fetchSessions()
+    fetchSubscription()
     socket.connect()
     socket.on("dashboard:update", fetchSessions)
     return () => {
@@ -139,6 +153,61 @@ export default function DashboardTab() {
         <div className="absolute -right-4 -bottom-10 w-28 h-28 rounded-full bg-white/10" />
         <div className="absolute right-24 -top-4 w-16 h-16 rounded-full bg-[#FF4E9B]/30" />
       </div>
+
+      {/* ── Subscription Usage Banner ── */}
+      {subscription && subscription.subscriptionPlan && (
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
+                <FiZap size={15} className="text-[#6A11CB]" />
+              </div>
+              <div>
+                <p className="font-semibold text-gray-800 text-sm">{subscription.subscriptionPlan.name} Plan</p>
+                <p className="text-xs text-gray-400">Active · expires {subscription.subscriptionExpiryDate ? new Date(subscription.subscriptionExpiryDate).toLocaleDateString("en-IN") : "N/A"}</p>
+              </div>
+            </div>
+            <button
+              onClick={() => navigate("/payment")}
+              className="text-xs font-semibold text-white px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#6A11CB] to-[#2575FC] hover:shadow-md transition"
+            >
+              Upgrade ↗
+            </button>
+          </div>
+          <div className="space-y-3">
+            {/* Sessions booked bar */}
+            {subscription.subscriptionPlan.maxSessions !== null && (
+              <div>
+                <div className="flex justify-between text-xs text-gray-500 mb-1">
+                  <span>Sessions Booked</span>
+                  <span className="font-semibold">{subscription.currentPlanSessionsBooked} / {subscription.subscriptionPlan.maxSessions}</span>
+                </div>
+                <div className="h-2 bg-gray-100 rounded-full">
+                  <div
+                    className="h-2 rounded-full bg-gradient-to-r from-[#6A11CB] to-[#2575FC] transition-all"
+                    style={{ width: `${Math.min(100, (subscription.currentPlanSessionsBooked / subscription.subscriptionPlan.maxSessions) * 100)}%` }}
+                  />
+                </div>
+              </div>
+            )}
+            {/* Views bar */}
+            {subscription.subscriptionPlan.maxProfileViews !== null && (
+              <div>
+                <div className="flex justify-between text-xs text-gray-500 mb-1">
+                  <span>Profiles Viewed</span>
+                  <span className="font-semibold">{subscription.viewedProfessorsCount} / {subscription.subscriptionPlan.maxProfileViews}</span>
+                </div>
+                <div className="h-2 bg-gray-100 rounded-full">
+                  <div
+                    className="h-2 rounded-full bg-gradient-to-r from-[#FF4E9B] to-[#6A11CB] transition-all"
+                    style={{ width: `${Math.min(100, (subscription.viewedProfessorsCount / subscription.subscriptionPlan.maxProfileViews) * 100)}%` }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* ── Stat Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

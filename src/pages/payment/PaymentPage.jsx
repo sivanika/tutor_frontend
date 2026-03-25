@@ -4,66 +4,6 @@ import API from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 
 /* ─────────────────────────────────────────────────────────────
-   PLAN DEFINITIONS  (same as home page Pricing.jsx)
-───────────────────────────────────────────────────────────── */
-const PLANS = {
-    free_trial: {
-        id: "free_trial",
-        name: "Free Trial",
-        tagline: "Try before you commit",
-        price: 0,
-        displayPrice: "₹0",
-        period: "7 days",
-        color: "#6A11CB",
-        gradient: "linear-gradient(135deg, #6A11CB, #2575FC)",
-        features: [
-            "Access to limited tutors",
-            "2 demo sessions",
-            "Basic dashboard",
-            "Community support",
-        ],
-        requiresPayment: false,
-    },
-    premium: {
-        id: "premium",
-        name: "Premium",
-        tagline: "Best for serious learners",
-        price: 9900, // paise
-        displayPrice: "₹99",
-        period: "/month",
-        color: "#FF4E9B",
-        gradient: "linear-gradient(135deg, #FF4E9B, #6A11CB)",
-        features: [
-            "Unlimited sessions",
-            "All verified professors",
-            "Priority booking",
-            "Session recordings",
-            "Analytics & progress tracking",
-        ],
-        requiresPayment: true,
-        badge: "Most Popular",
-    },
-    pay_per_session: {
-        id: "pay_per_session",
-        name: "Pay Per Session",
-        tagline: "Flexible, pay as you go",
-        price: 0,
-        displayPrice: "18%",
-        period: " commission",
-        color: "#2575FC",
-        gradient: "linear-gradient(135deg, #2575FC, #6A11CB)",
-        features: [
-            "No monthly fee",
-            "Book anytime",
-            "All tutors access",
-            "Pay only when you learn",
-            "Flexible payments",
-        ],
-        requiresPayment: false,
-    },
-};
-
-/* ─────────────────────────────────────────────────────────────
    PAYMENT METHOD ICONS
 ───────────────────────────────────────────────────────────── */
 const PaymentMethods = [
@@ -136,18 +76,50 @@ export default function PaymentPage() {
     const navigate = useNavigate();
     const { user } = useAuth();
 
-    const planId = searchParams.get("plan") || "premium";
+    // Can be DB ObjectId, or legacy string like "free_trial"
+    const planParam = searchParams.get("plan");
     const returnTo = searchParams.get("returnTo") || "student";
-    const plan = PLANS[planId] || PLANS.premium;
 
+    const [plan, setPlan] = useState(null);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
     const [paymentId, setPaymentId] = useState("");
 
+    // Load plan from DB
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-    }, []);
+        API.get("/subscriptions/plans").then((res) => {
+            const plans = res.data;
+            // Try to match by _id first, then by name (case-insensitive)
+            let found = plans.find((p) => p._id === planParam);
+            if (!found) found = plans.find((p) => p.name.toLowerCase().replace(/\s/g, "_") === planParam);
+            if (!found && plans.length) found = plans[0]; // fallback to first plan
+            if (found) {
+                // Enrich with UI display fields
+                const isFree = found.price === 0;
+                const isPremium = found.price > 10000 || found.name.toLowerCase().includes("premium");
+                setPlan({
+                    ...found,
+                    planId: found._id,
+                    displayPrice: isFree ? "₹0" : `₹${found.price / 100}`,
+                    period: found.period === "monthly" ? "/month" : `/${found.period}`,
+                    color: isPremium ? "#FF4E9B" : (isFree ? "#6A11CB" : "#2575FC"),
+                    gradient: isPremium ? "linear-gradient(135deg, #FF4E9B, #6A11CB)" : (isFree ? "linear-gradient(135deg, #6A11CB, #2575FC)" : "linear-gradient(135deg, #2575FC, #6A11CB)"),
+                    tagline: found.description || found.name,
+                    requiresPayment: !isFree,
+                    badge: isPremium ? "Most Popular" : null,
+                    features: [
+                        found.maxSessions === null ? "Unlimited session bookings" : `Up to ${found.maxSessions} session bookings`,
+                        found.maxProfileViews === null ? "View all professor profiles" : `View up to ${found.maxProfileViews} professor profiles`,
+                        found.priorityBooking ? "Priority booking" : "Standard booking access",
+                        "Full dashboard access",
+                        "Community & tech support",
+                    ],
+                });
+            }
+        }).catch(() => {});
+    }, [planParam]);
 
     /* ── Get user info from localStorage for prefill ── */
     const getUserInfo = () => {
@@ -159,12 +131,21 @@ export default function PaymentPage() {
         }
     };
 
+    /* ── Loading state ── */
+    if (!plan) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0720] via-[#1a0e33] to-[#0d1b4b]">
+                <div className="animate-spin w-10 h-10 rounded-full border-4 border-white/30 border-t-white" />
+            </div>
+        );
+    }
+
     /* ── Activate free plan ── */
     const activateFreePlan = async () => {
         setLoading(true);
         setError("");
         try {
-            await API.post("/payment/activate-free", { plan: plan.id });
+            await API.post("/payment/activate-free", { planId: plan.planId });
             setSuccess(true);
             setTimeout(() => redirectAfterPayment(), 2000);
         } catch (err) {
@@ -188,7 +169,7 @@ export default function PaymentPage() {
             }
 
             /* Create server-side order */
-            const { data } = await API.post("/payment/create-order", { plan: plan.id });
+            const { data } = await API.post("/payment/create-order", { planId: plan.planId });
             const userInfo = getUserInfo();
 
             const options = {
@@ -245,7 +226,7 @@ export default function PaymentPage() {
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_signature: response.razorpay_signature,
-                            plan: plan.id,
+                            planId: plan.planId,
                         });
 
                         if (verifyRes.data.success) {

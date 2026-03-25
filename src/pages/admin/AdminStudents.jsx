@@ -32,11 +32,16 @@ function getInitials(name, email) {
 function StudentDetailModal({ student: initialStudent, onClose, onStatusChange }) {
   const [student, setStudent] = useState(initialStudent)
   const [saving, setSaving] = useState(null)
+  const [plans, setPlans] = useState([])
 
   // Re-fetch to always show latest
   useEffect(() => {
     API.get(`/admin/student/${initialStudent._id}`)
       .then(r => setStudent(r.data))
+      .catch(() => {})
+      
+    API.get("/subscriptions/admin/plans")
+      .then(r => setPlans(r.data))
       .catch(() => {})
   }, [initialStudent._id])
 
@@ -55,6 +60,18 @@ function StudentDetailModal({ student: initialStudent, onClose, onStatusChange }
       toast.error("Failed to update status")
     } finally {
       setSaving(null)
+    }
+  }
+
+  const handlePlanChange = async (planId) => {
+    try {
+      await API.put(`/subscriptions/admin/users/${student._id}/plan`, { planId: planId || null })
+      toast.success("Plan updated manually")
+      const r = await API.get(`/admin/student/${student._id}`)
+      setStudent(r.data)
+      onStatusChange?.()
+    } catch {
+      toast.error("Failed to update plan")
     }
   }
 
@@ -102,7 +119,22 @@ function StudentDetailModal({ student: initialStudent, onClose, onStatusChange }
               <InfoRow label="Expires" value={student.subscriptionExpiryDate
                 ? new Date(student.subscriptionExpiryDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
                 : null} />
+              <InfoRow label="Sessions Booked" value={`${student.currentPlanSessionsBooked || 0} ${student.subscriptionPlan?.maxSessions ? `/ ${student.subscriptionPlan.maxSessions}` : ''}`} />
+              <InfoRow label="Profiles Viewed" value={`${student.viewedProfessors?.length || 0} ${student.subscriptionPlan?.maxProfileViews ? `/ ${student.subscriptionPlan.maxProfileViews}` : ''}`} />
             </div>
+            
+            <div className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-100 space-y-2">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Manual Upgrade</p>
+              <select 
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#8E2DE2]"
+                onChange={(e) => handlePlanChange(e.target.value)}
+                value={student.subscriptionPlan?._id || student.subscriptionPlan || ""}
+              >
+                <option value="">No Plan</option>
+                {plans.map(p => <option key={p._id} value={p._id}>{p.name} (₹{p.price/100})</option>)}
+              </select>
+            </div>
+
             {(student.razorpayPaymentId || student.razorpayOrderId) && (
               <div className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-100 space-y-1.5">
                 <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Razorpay IDs</p>

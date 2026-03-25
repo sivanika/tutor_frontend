@@ -1,66 +1,54 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import API from "../../services/api";
 
 export default function Pricing() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [plans, setPlans] = useState([]);
+
+  useEffect(() => {
+    API.get("/subscriptions/plans")
+      .then(res => {
+        const enhanced = res.data.map((p) => {
+          // Identify plan tiers by price or name 
+          const isPremium = p.price > 10000 || p.name.toLowerCase().includes("premium");
+          const isFree = p.price === 0;
+
+          // Assign gradient and color statically for UI matching
+          const color = isPremium ? "#FF4E9B" : (isFree ? "#6A11CB" : "#2575FC");
+          
+          return {
+            ...p,
+            planId: p._id,
+            displayPrice: isFree ? "Free" : `₹${p.price / 100}`,
+            displayPeriod: p.period === "monthly" ? "/month" : `/${p.period}`,
+            highlight: isPremium,
+            color,
+            features: [
+              p.maxSessions === null ? "Unlimited live sessions" : `Up to ${p.maxSessions} session bookings`,
+              p.maxProfileViews === null ? "View all professor profiles" : `View ${p.maxProfileViews} verified professor profiles`,
+              p.priorityBooking ? "Priority session scheduling" : "Standard scheduling access",
+              "Secure dashboard access",
+              "Community and tech support"
+            ]
+          };
+        });
+        setPlans(enhanced);
+      })
+      .catch((err) => {
+        console.error("Failed to load plans:", err);
+      });
+  }, []);
 
   const handleGetStarted = (planId) => {
     if (user) {
-      // Already logged in — go directly to payment page with the plan
       navigate(`/payment?plan=${planId}&returnTo=${user.role}`);
     } else {
-      // Not logged in — send to register and pass plan as param
       navigate(`/register?plan=${planId}`);
     }
   };
-
-  const plans = [
-    {
-      planId: "free_trial",
-      name: "Free Trial",
-      price: "₹0",
-      period: "/7 days",
-      highlight: false,
-      color: "#6A11CB",
-      features: [
-        "Access to limited tutors",
-        "2 demo sessions",
-        "Basic dashboard",
-        "Community support",
-      ],
-    },
-    {
-      planId: "premium",
-      name: "Premium",
-      price: "₹99",
-      period: "/month",
-      highlight: true,
-      color: "#FF4E9B",
-      features: [
-        "Unlimited sessions",
-        "All verified professors",
-        "Priority booking",
-        "Session recordings",
-        "Analytics & progress tracking",
-      ],
-    },
-    {
-      planId: "pay_per_session",
-      name: "Pay Per Session",
-      price: "18%",
-      period: " commission",
-      highlight: false,
-      color: "#2575FC",
-      features: [
-        "No monthly fee",
-        "Book anytime",
-        "All tutors access",
-        "Pay only when you learn",
-        "Flexible payments",
-      ],
-    },
-  ];
 
 
   return (
@@ -122,8 +110,8 @@ export default function Pricing() {
 
               {/* Price */}
               <div className="mb-6">
-                <span className="text-5xl font-black text-[#1a0e33] dark:text-white">{plan.price}</span>
-                <span className="text-sm text-[#6b7280] dark:text-[#a78bfa] ml-1">{plan.period}</span>
+                <span className="text-5xl font-black text-[#1a0e33] dark:text-white">{plan.displayPrice}</span>
+                <span className="text-sm text-[#6b7280] dark:text-[#a78bfa] ml-1">{plan.displayPeriod}</span>
               </div>
 
               {/* Features */}
