@@ -30,6 +30,7 @@ export default function TutorProfilePage() {
     const { user } = useAuth();
 
     const [tutor, setTutor] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -37,11 +38,20 @@ export default function TutorProfilePage() {
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        API.get(`/professors/${id}`)
-            .then((res) => setTutor(res.data))
+        Promise.all([
+          API.get(`/professors/${id}`),
+          API.get(`/users/me`)
+        ])
+            .then(([profRes, userRes]) => {
+              setTutor(profRes.data);
+              setCurrentUser(userRes.data);
+            })
             .catch((err) => {
+                const isLimit = err.response?.status === 402;
                 setError(
-                    err.response?.status === 404
+                    isLimit 
+                      ? err.response?.data?.detail || "You have reached your free plan limit for viewing profiles."
+                      : err.response?.status === 404
                         ? "This tutor profile was not found."
                         : "Failed to load profile. Please try again."
                 );
@@ -62,17 +72,25 @@ export default function TutorProfilePage() {
     if (error || !tutor) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#f5f3ff] dark:bg-[#0f0720] p-6 text-center">
-                <span className="text-5xl">😕</span>
-                <p className="text-xl font-bold text-[#1a0e33] dark:text-white">
+                <span className="text-5xl">🔒</span>
+                <p className="text-lg font-bold text-[#1a0e33] dark:text-white max-w-md">
                     {error || "Tutor not found"}
                 </p>
-                <button
-                    onClick={() => navigate(-1)}
-                    className="mt-2 px-6 py-2 rounded-xl text-sm font-semibold text-white"
-                    style={{ background: "linear-gradient(135deg, #6A11CB, #2575FC)" }}
-                >
-                    ← Go Back
-                </button>
+                <div className="flex gap-4 mt-4">
+                  <button
+                      onClick={() => navigate(-1)}
+                      className="px-6 py-2.5 rounded-xl text-sm justify-center font-bold text-[#6A11CB] bg-white border-2 border-[#6A11CB] hover:bg-[#f5f3ff]"
+                  >
+                      ← Go Back
+                  </button>
+                  <button
+                      onClick={() => navigate("/payment?plan=premium&returnTo=student")}
+                      className="px-6 py-2.5 rounded-xl text-sm font-bold text-white shadow-md hover:scale-105 transition-all"
+                      style={{ background: "linear-gradient(135deg, #FF4E9B, #6A11CB)" }}
+                  >
+                      Upgrade Plan →
+                  </button>
+                </div>
             </div>
         );
     }
@@ -352,7 +370,7 @@ export default function TutorProfilePage() {
 
                 {/* ── BOOK SESSION BUTTON ── */}
                 <div>
-                    {isPremium ? (
+                    {isPremium || (currentUser?.subscriptionPlan && currentUser.currentPlanSessionsBooked < currentUser.subscriptionPlan.maxSessions) ? (
                         <button
                             onClick={() => navigate(`/student/dashboard`)}
                             className="w-full py-4 rounded-2xl font-black text-white text-base transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl"
@@ -361,7 +379,7 @@ export default function TutorProfilePage() {
                                 boxShadow: "0 8px 32px #6A11CB50",
                             }}
                         >
-                            📅 Book a Session →
+                            📅 Go to Dashboard to Book →
                         </button>
                     ) : (
                         <div className="relative">
@@ -370,7 +388,7 @@ export default function TutorProfilePage() {
                                 className="w-full py-4 rounded-2xl font-black text-white text-base opacity-50 cursor-not-allowed"
                                 style={{ background: "linear-gradient(135deg, #6A11CB, #2575FC)" }}
                             >
-                                🔒 Book a Session (Premium Only)
+                                🔒 Book a Session (Limit Reached)
                             </button>
                             <p className="text-center text-xs text-[#6b7280] dark:text-[#a78bfa] mt-2">
                                 <button
@@ -379,7 +397,7 @@ export default function TutorProfilePage() {
                                 >
                                     Upgrade to Premium
                                 </button>{" "}
-                                to book sessions with this tutor.
+                                to book more sessions.
                             </p>
                         </div>
                     )}

@@ -5,7 +5,7 @@ import socket from "../../../services/socket"
 import { useAuth } from "../../../context/AuthContext"
 import { FiSearch, FiClock, FiBook, FiCheckCircle, FiLock, FiUser } from "react-icons/fi"
 
-/* Premium check — mirrors TutorProfilePage */
+/* Premium check — determines if user has UNLIMITED access */
 function isPremiumStudent(user) {
   if (!user || user.role !== "student") return false;
   return (
@@ -16,17 +16,22 @@ function isPremiumStudent(user) {
 
 export default function TutorsTab() {
   const [sessions, setSessions] = useState([])
+  const [currentUser, setCurrentUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState({ subject: "", level: "", time: "" })
   const { user } = useAuth()
   const navigate = useNavigate()
-  const isPremium = isPremiumStudent(user)
+  const isPremium = isPremiumStudent(currentUser || user)
 
-  const fetchSessions = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true)
-      const res = await API.get("/sessions")
-      setSessions(res.data)
+      const [sessionsRes, userRes] = await Promise.all([
+        API.get("/sessions"),
+        API.get("/users/me")
+      ])
+      setSessions(sessionsRes.data)
+      setCurrentUser(userRes.data)
     } catch (err) {
       console.error(err)
     } finally {
@@ -35,11 +40,11 @@ export default function TutorsTab() {
   }
 
   useEffect(() => {
-    fetchSessions()
+    fetchData()
     socket.connect()
-    socket.on("dashboard:update", fetchSessions)
+    socket.on("dashboard:update", fetchData)
     return () => {
-      socket.off("dashboard:update", fetchSessions)
+      socket.off("dashboard:update", fetchData)
       socket.disconnect()
     }
   }, [])
@@ -72,30 +77,41 @@ export default function TutorsTab() {
   return (
     <div className="animate-fadeIn">
 
-      {/* FREE PLAN BANNER */}
-      {!isPremium && (
+      {/* FREE PLAN BANNER - Shows limits dynamically */}
+      {!isPremium && currentUser?.subscriptionPlan && (
         <div
-          className="mb-6 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-2"
+          className="mb-6 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border-2"
           style={{
             background: "linear-gradient(135deg, #6A11CB10, #FF4E9B08)",
             borderColor: "#6A11CB25",
           }}
         >
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🔒</span>
+          <div className="flex items-start gap-3">
+            <span className="text-2xl mt-1">🔒</span>
             <div>
-              <p className="font-bold text-gray-800 text-sm">Limited Access — Free Plan</p>
-              <p className="text-gray-500 text-xs mt-0.5">
-                Upgrade to Premium to book sessions & view full tutor profiles.
-              </p>
+              <p className="font-bold text-gray-800 text-sm mb-1">{currentUser.subscriptionPlan.name} (Limited Access)</p>
+              <div className="flex flex-wrap gap-4 text-xs font-medium text-gray-600">
+                <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-lg border border-gray-150 shadow-sm">
+                  <FiBook className="text-[#6A11CB]" /> 
+                  <span className={currentUser.currentPlanSessionsBooked >= currentUser.subscriptionPlan.maxSessions ? 'text-red-500 font-bold' : ''}>
+                    {currentUser.currentPlanSessionsBooked || 0} / {currentUser.subscriptionPlan.maxSessions} Bookings
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-lg border border-gray-150 shadow-sm">
+                  <FiUser className="text-[#2575FC]" /> 
+                  <span className={currentUser.viewedProfessors?.length >= currentUser.subscriptionPlan.maxProfileViews ? 'text-red-500 font-bold' : ''}>
+                    {currentUser.viewedProfessors?.length || 0} / {currentUser.subscriptionPlan.maxProfileViews} Profile Views
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
           <button
             onClick={() => navigate("/payment?plan=premium&returnTo=student")}
-            className="flex-shrink-0 px-4 py-2 rounded-xl text-sm font-bold text-white transition-all hover:scale-105"
-            style={{ background: "linear-gradient(135deg, #6A11CB, #FF4E9B)" }}
+            className="flex-shrink-0 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-105 shadow-md hover:shadow-lg"
+            style={{ background: "linear-gradient(135deg, #FF4E9B, #6A11CB)" }}
           >
-            Upgrade Now →
+            Upgrade to Premium →
           </button>
         </div>
       )}
@@ -161,6 +177,15 @@ export default function TutorsTab() {
         {filtered.map((s) => {
           const enrolled = isEnrolled(s)
           const professorId = s.professor?._id || s.professor
+          
+          let canBook = true;
+          let upgradeReason = null;
+          if (!isPremium && currentUser?.subscriptionPlan) {
+             if (currentUser.currentPlanSessionsBooked >= currentUser.subscriptionPlan.maxSessions) {
+               canBook = false;
+               upgradeReason = "Limit Reached";
+             }
+          }
 
           return (
             <div
@@ -215,7 +240,7 @@ export default function TutorsTab() {
                   </button>
                 )}
 
-                {/* Book Session — gated for free users */}
+                {/* Book Session — Dynamic access */}
                 {enrolled ? (
                   <button
                     disabled
@@ -224,7 +249,7 @@ export default function TutorsTab() {
                     <FiCheckCircle size={14} />
                     Already Enrolled
                   </button>
-                ) : isPremium ? (
+                ) : isPremium || canBook ? (
                   <button
                     onClick={() => handleEnroll(s._id)}
                     className="w-full py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#6A11CB] to-[#2575FC] hover:from-[#5A0EAD] hover:to-[#1D63D8] hover:shadow-lg hover:scale-105 transition-all duration-300"
@@ -238,7 +263,7 @@ export default function TutorsTab() {
                     style={{ background: "linear-gradient(135deg, #FF4E9B, #6A11CB)" }}
                   >
                     <FiLock size={13} />
-                    Upgrade to Book
+                    {upgradeReason || "Upgrade to Book"}
                   </button>
                 )}
               </div>
