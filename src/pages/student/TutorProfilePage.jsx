@@ -33,31 +33,42 @@ export default function TutorProfilePage() {
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [isLimitError, setIsLimitError] = useState(false);
 
     const isPremium = isPremiumStudent(user);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        Promise.all([
-          API.get(`/professors/${id}`),
-          API.get(`/users/me`)
-        ])
-            .then(([profRes, userRes]) => {
-              setTutor(profRes.data);
-              setCurrentUser(userRes.data);
-            })
+
+        // Always fetch the professor profile (backend uses optionalProtect — public route)
+        const fetchProfile = API.get(`/professors/${id}`)
+            .then((res) => setTutor(res.data))
             .catch((err) => {
-                const isLimit = err.response?.status === 402;
-                setError(
-                    isLimit 
-                      ? err.response?.data?.detail || "You have reached your free plan limit for viewing profiles."
-                      : err.response?.status === 404
-                        ? "This tutor profile was not found."
-                        : "Failed to load profile. Please try again."
-                );
-            })
-            .finally(() => setLoading(false));
-    }, [id]);
+                const status = err.response?.status;
+                if (status === 402) {
+                    setIsLimitError(true);
+                    setError(
+                        err.response?.data?.detail ||
+                        "You have reached your profile view limit. Please upgrade your plan."
+                    );
+                } else if (status === 404) {
+                    setError("This tutor profile was not found.");
+                } else {
+                    setError("Failed to load profile. Please try again.");
+                }
+            });
+
+        // Only fetch /users/me if already logged in — failure is non-blocking
+        const fetchCurrentUser = user
+            ? API.get(`/users/me`)
+                .then((res) => setCurrentUser(res.data))
+                .catch(() => {
+                    // Silently ignore — currentUser stays null, premium features stay locked
+                })
+            : Promise.resolve();
+
+        Promise.all([fetchProfile, fetchCurrentUser]).finally(() => setLoading(false));
+    }, [id, user]);
 
     /* ── Loading ── */
     if (loading) {
@@ -72,7 +83,7 @@ export default function TutorProfilePage() {
     if (error || !tutor) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#f5f3ff] dark:bg-[#0f0720] p-6 text-center">
-                <span className="text-5xl">🔒</span>
+                <span className="text-5xl">{isLimitError ? "🚀" : "😕"}</span>
                 <p className="text-lg font-bold text-[#1a0e33] dark:text-white max-w-md">
                     {error || "Tutor not found"}
                 </p>
@@ -83,13 +94,15 @@ export default function TutorProfilePage() {
                   >
                       ← Go Back
                   </button>
-                  <button
-                      onClick={() => navigate("/payment?plan=premium&returnTo=student")}
-                      className="px-6 py-2.5 rounded-xl text-sm font-bold text-white shadow-md hover:scale-105 transition-all"
-                      style={{ background: "linear-gradient(135deg, #FF4E9B, #6A11CB)" }}
-                  >
-                      Upgrade Plan →
-                  </button>
+                  {isLimitError && (
+                    <button
+                        onClick={() => navigate("/payment?plan=premium&returnTo=student")}
+                        className="px-6 py-2.5 rounded-xl text-sm font-bold text-white shadow-md hover:scale-105 transition-all"
+                        style={{ background: "linear-gradient(135deg, #FF4E9B, #6A11CB)" }}
+                    >
+                        Upgrade Plan →
+                    </button>
+                  )}
                 </div>
             </div>
         );

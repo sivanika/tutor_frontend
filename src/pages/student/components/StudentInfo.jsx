@@ -1,5 +1,32 @@
 import { useFormContext } from "react-hook-form";
 
+/** Reusable floating-label field wrapper */
+function Field({ label, error, children }) {
+  return (
+    <div className="relative">
+      <label className="block text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1.5">
+        {label}
+      </label>
+      {children}
+      {error && (
+        <p className="mt-1.5 text-xs text-red-500 flex items-center gap-1">
+          <svg className="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+const inputCls = `
+  w-full px-4 py-3 rounded-xl text-sm text-slate-800
+  bg-white border border-slate-200
+  focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent
+  placeholder-slate-300 transition-all duration-200 shadow-sm
+  hover:border-indigo-300
+`;
 
 export default function StudentInfo() {
   const {
@@ -7,160 +34,79 @@ export default function StudentInfo() {
     formState: { errors },
   } = useFormContext();
 
-  const inputStyle = `
-    w-full p-3 rounded-lg
-    bg-slate-50 dark:bg-slate-800
-    border border-slate-300 dark:border-slate-700
-    text-slate-800 dark:text-slate-100
-    placeholder-slate-400
-    focus:outline-none focus:ring-2 focus:ring-slate-500
-    transition
-  `;
-
-  const errorStyle = "text-red-500 text-sm mt-1";
-  const step1Fields = [
-  "firstName",
-  "lastName",
-  "email",
-  "phone",
-  "birthDate",
-  "gradeLevel",
-  "school",
-  "learningGoals",
-  "subjects",
-];
-
   return (
-    <div
-      className="
-        bg-white/90 dark:bg-slate-900/80
-        backdrop-blur-xl
-        p-8 rounded-2xl
-        border border-slate-200 dark:border-slate-800
-        shadow-lg dark:shadow-black/30
-        transition
-      "
-    >
-      <h2 className="text-2xl font-bold mb-6 text-slate-800 dark:text-slate-100">
-        Student Information
-      </h2>
-
-      {/* Name */}
-      <div className="grid md:grid-cols-2 gap-5">
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-lg shadow-lg shadow-indigo-200">
+          👤
+        </div>
         <div>
-          <input
-            {...register("firstName")}
-            className={inputStyle}
-            placeholder="First Name"
+          <h2 className="text-xl font-bold text-slate-800 leading-tight">Student Information</h2>
+          <p className="text-xs text-slate-400 mt-0.5">Tell us about yourself so we can find your perfect tutor</p>
+        </div>
+      </div>
+
+      <div className="space-y-5">
+        {/* Name row */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <Field label="First Name" error={errors.firstName?.message}>
+            <input {...register("firstName")} className={inputCls} placeholder="e.g. Alex" />
+          </Field>
+          <Field label="Last Name" error={errors.lastName?.message}>
+            <input {...register("lastName")} className={inputCls} placeholder="e.g. Johnson" />
+          </Field>
+        </div>
+
+        {/* Contact row */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <Field label="Email Address" error={errors.email?.message}>
+            <input {...register("email")} className={inputCls} placeholder="you@example.com" />
+          </Field>
+          <Field label="Phone Number" error={errors.phone?.message}>
+            <input {...register("phone")} className={inputCls} placeholder="+1 (555) 000-0000" />
+          </Field>
+        </div>
+
+        {/* DOB + Grade */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <Field label="Date of Birth" error={errors.birthDate?.message}>
+            <input type="date" {...register("birthDate")} className={inputCls} />
+          </Field>
+          <Field label="Grade Level" error={errors.gradeLevel?.message}>
+            <select {...register("gradeLevel")} className={inputCls}>
+              <option value="">Select level…</option>
+              <option value="High School">High School</option>
+              <option value="College">College</option>
+            </select>
+          </Field>
+        </div>
+
+        {/* School */}
+        <Field label="School / Institution" error={errors.school?.message}>
+          <input {...register("school")} className={inputCls} placeholder="Name of your school or university" />
+        </Field>
+
+        {/* Learning Goals */}
+        <Field label="Learning Goals" error={errors.learningGoals?.message}>
+          <textarea
+            {...register("learningGoals")}
+            rows={3}
+            className={`${inputCls} resize-none`}
+            placeholder="What do you hope to achieve with tutoring?"
           />
-          {errors.firstName && (
-            <p className={errorStyle}>{errors.firstName.message}</p>
-          )}
-        </div>
+        </Field>
 
-        <div>
-          <input
-            {...register("lastName")}
-            className={inputStyle}
-            placeholder="Last Name"
+        {/* Subjects */}
+        <Field label="Subjects Needing Help" error={errors.subjects?.message}>
+          <textarea
+            {...register("subjects")}
+            rows={3}
+            className={`${inputCls} resize-none`}
+            placeholder="e.g. Calculus, Physics, English Literature…"
           />
-          {errors.lastName && (
-            <p className={errorStyle}>{errors.lastName.message}</p>
-          )}
-        </div>
+        </Field>
       </div>
-
-      {/* Contact */}
-      <div className="grid md:grid-cols-2 gap-5 mt-5">
-        <div>
-          <input
-            {...register("email")}
-            className={inputStyle}
-            placeholder="Email Address"
-          />
-          {errors.email && (
-            <p className={errorStyle}>{errors.email.message}</p>
-          )}
-        </div>
-
-        <div>
-          <input
-            {...register("phone")}
-            className={inputStyle}
-            placeholder="Phone Number"
-          />
-          {errors.phone && (
-            <p className={errorStyle}>{errors.phone.message}</p>
-          )}
-        </div>
-      </div>
-
-      {/* DOB + Grade */}
-      <div className="grid md:grid-cols-2 gap-5 mt-5">
-        <div>
-          <input
-            type="date"
-            {...register("birthDate")}
-            className={inputStyle}
-          />
-          {errors.birthDate && (
-            <p className={errorStyle}>{errors.birthDate.message}</p>
-          )}
-        </div>
-
-        <div>
-          <select
-            {...register("gradeLevel")}
-            className={inputStyle}
-          >
-            <option value="">Select Grade Level</option>
-            <option>High School</option>
-            <option>College</option>
-          </select>
-          {errors.gradeLevel && (
-            <p className={errorStyle}>{errors.gradeLevel.message}</p>
-          )}
-        </div>
-      </div>
-
-      {/* School */}
-      <div className="mt-5">
-        <input
-          {...register("school")}
-          className={inputStyle}
-          placeholder="School Name"
-        />
-        {errors.school && (
-          <p className={errorStyle}>{errors.school.message}</p>
-        )}
-      </div>
-
-      {/* Learning Goals */}
-      <div className="mt-5">
-        <textarea
-          {...register("learningGoals")}
-          className={`${inputStyle} min-h-[100px]`}
-          placeholder="Learning Goals"
-        />
-        {errors.learningGoals && (
-          <p className={errorStyle}>
-            {errors.learningGoals.message}
-          </p>
-        )}
-      </div>
-
-      {/* Subjects */}
-      <div className="mt-5">
-        <textarea
-          {...register("subjects")}
-          className={`${inputStyle} min-h-[100px]`}
-          placeholder="Subjects Needing Help"
-        />
-        {errors.subjects && (
-          <p className={errorStyle}>{errors.subjects.message}</p>
-        )}
-      </div>
-      
     </div>
   );
 }

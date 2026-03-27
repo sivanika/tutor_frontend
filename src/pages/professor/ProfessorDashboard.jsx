@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 import {
-  FiGrid, FiUsers, FiPlusCircle, FiUser, FiAward,
+  FiGrid, FiUsers, FiPlusCircle, FiUser, FiAward, FiSearch,
   FiLogOut, FiMenu, FiX, FiChevronRight, FiBell, FiMessageSquare
 } from "react-icons/fi"
 import ChatTab from "../../components/chat/ChatTab"
@@ -11,12 +11,15 @@ import NotificationBell from "../../components/common/NotificationBell"
 
 import Dashboard from "../../components/professorDashboard/Dashboard"
 import Students from "../../components/professorDashboard/Students"
+import BrowseStudents from "../../components/professorDashboard/BrowseStudents"
 import Profile from "../../components/professorDashboard/Profile"
 import Credentials from "../../components/professorDashboard/Credentials"
+
 import CreateSessionTab from "../../components/professorDashboard/CreateSessionTab"
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: FiGrid },
+  { id: "browse", label: "Browse Students", icon: FiSearch },
   { id: "students", label: "My Students", icon: FiUsers },
   { id: "messages", label: "Messages", icon: FiMessageSquare },
   { id: "create", label: "Create Session", icon: FiPlusCircle },
@@ -210,6 +213,7 @@ export default function ProfessorDashboard() {
         <main className={`flex-1 overflow-y-auto ${activeTab === "messages" ? "p-4" : "p-6"}`}>
           <div key={activeTab} className={`animate-fadeIn ${activeTab === "messages" ? "h-full" : ""}`}>
             {activeTab === "dashboard" && <Dashboard />}
+            {activeTab === "browse" && <BrowseStudents onChatOpen={handleChatOpen} />}
             {activeTab === "students" && <Students onChatOpen={handleChatOpen} />}
             {activeTab === "messages" && <ChatTab preOpenUserId={chatTargetUserId} />}
             {activeTab === "create" && <CreateSessionTab />}

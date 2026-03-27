@@ -1,45 +1,41 @@
 import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext"
 import socket from "../../services/socket"
 
 export default function SessionChat() {
   const { sessionId } = useParams()
+  const { user } = useAuth()
+  const me = String(user?.id || user?._id || "")
+
   const [messages, setMessages] = useState([])
   const [text, setText] = useState("")
   const bottomRef = useRef(null)
 
   useEffect(() => {
     socket.connect()
-    socket.emit("join-session", { sessionId })
+    socket.emit("joinSession", { sessionId })         // ✅ fixed: was "join-session"
 
     const handler = (msg) => {
       console.log("📩 CLIENT RECEIVED:", msg)
       setMessages((prev) => [...prev, msg])
     }
 
-    socket.on("receive-message", handler)
-
-    return () => socket.off("receive-message", handler)
+    socket.on("newMessage", handler)                  // ✅ fixed: was "receive-message"
+    return () => socket.off("newMessage", handler)
   }, [sessionId])
 
-  // 🔽 Auto scroll to bottom
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
   const send = () => {
     if (!text.trim()) return
-
-    socket.emit("send-message", {
+    socket.emit("sendMessage", {                      // ✅ fixed: was "send-message"
       sessionId,
+      userId: me,                                     // ✅ fixed: was sender: "user"
       text,
-      sender: "user",
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
     })
-
     setText("")
   }
 
@@ -53,30 +49,31 @@ export default function SessionChat() {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.length === 0 && (
-          <p className="text-center text-gray-400 mt-10">
-            No messages yet 👋
-          </p>
+          <p className="text-center text-gray-400 mt-10">No messages yet 👋</p>
         )}
 
         {messages.map((m, i) => {
-          const isMe = m.sender === "user"
+          const isMe = String(m.sender?._id || m.sender) === me   // ✅ fixed: compares real IDs
 
           return (
-            <div
-              key={i}
-              className={`flex ${isMe ? "justify-end" : "justify-start"}`}
-            >
+            <div key={i} className={`flex flex-col ${isMe ? "items-end" : "items-start"}`}>
+              {!isMe && (
+                <p className="text-xs text-gray-500 mb-1 ml-1">
+                  {m.sender?.name || "User"}
+                </p>
+              )}
               <div
                 className={`max-w-[70%] px-4 py-2 rounded-2xl text-sm shadow
-                ${
-                  isMe
+                  ${isMe
                     ? "bg-blue-600 text-white rounded-br-none"
                     : "bg-white text-gray-800 rounded-bl-none"
-                }`}
+                  }`}
               >
                 <p>{m.text}</p>
                 <p className="text-[10px] opacity-70 text-right mt-1">
-                  {m.time || ""}
+                  {m.createdAt
+                    ? new Date(m.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                    : ""}
                 </p>
               </div>
             </div>

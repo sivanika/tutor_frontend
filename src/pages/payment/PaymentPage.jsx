@@ -17,7 +17,6 @@ const PaymentMethods = [
             { name: "BHIM", color: "#2468B0", text: "B" },
         ],
         description: "Pay instantly using any UPI app",
-        razorpay: true,
     },
     {
         id: "card",
@@ -28,7 +27,6 @@ const PaymentMethods = [
             { name: "RuPay", color: "#1B4E9B", text: "RP" },
         ],
         description: "All major credit and debit cards accepted",
-        razorpay: true,
     },
     {
         id: "netbanking",
@@ -40,7 +38,6 @@ const PaymentMethods = [
             { name: "Axis", color: "#97144D", text: "Axis" },
         ],
         description: "50+ banks supported",
-        razorpay: true,
     },
     {
         id: "wallet",
@@ -51,7 +48,6 @@ const PaymentMethods = [
             { name: "Airtel", color: "#E40000", text: "A" },
         ],
         description: "Paytm, Mobikwik, Airtel Money & more",
-        razorpay: true,
     },
 ];
 
@@ -69,6 +65,43 @@ const loadRazorpayScript = () =>
     });
 
 /* ─────────────────────────────────────────────────────────────
+   ENRICH RAW PLAN FROM DB WITH UI FIELDS
+───────────────────────────────────────────────────────────── */
+function enrichPlan(found) {
+    const isFree = found.price === 0;
+    const isPremium =
+        found.price > 10000 || found.name.toLowerCase().includes("premium");
+    const isBasic = found.name.toLowerCase().includes("basic");
+
+    return {
+        ...found,
+        planId: found._id,
+        displayPrice: isFree ? "₹0" : `₹${found.price / 100}`,
+        period: found.period === "monthly" ? "/month" : `/${found.period}`,
+        color: isPremium ? "#FF4E9B" : isBasic ? "#2575FC" : "#6A11CB",
+        gradient: isPremium
+            ? "linear-gradient(135deg, #FF4E9B, #6A11CB)"
+            : isBasic
+            ? "linear-gradient(135deg, #2575FC, #6A11CB)"
+            : "linear-gradient(135deg, #6A11CB, #2575FC)",
+        tagline: found.description || found.name,
+        requiresPayment: !isFree,
+        badge: isPremium ? "Most Popular" : isBasic ? "Great Value" : null,
+        features: [
+            found.maxSessions === null
+                ? "Unlimited session bookings"
+                : `Up to ${found.maxSessions} session bookings`,
+            found.maxProfileViews === null
+                ? "View all professor profiles"
+                : `View up to ${found.maxProfileViews} professor profiles`,
+            found.priorityBooking ? "Priority booking" : "Standard booking access",
+            "Full dashboard access",
+            "Community & tech support",
+        ],
+    };
+}
+
+/* ─────────────────────────────────────────────────────────────
    MAIN COMPONENT
 ───────────────────────────────────────────────────────────── */
 export default function PaymentPage() {
@@ -76,52 +109,51 @@ export default function PaymentPage() {
     const navigate = useNavigate();
     const { user } = useAuth();
 
-    // Can be DB ObjectId, or legacy string like "free_trial"
     const planParam = searchParams.get("plan");
     const returnTo = searchParams.get("returnTo") || "student";
 
-    const [plan, setPlan] = useState(null);
+    const [allPlans, setAllPlans] = useState([]);
+    const [selectedPlan, setSelectedPlan] = useState(null);
+    const [plansLoading, setPlansLoading] = useState(true);
+
+    // Checkout state
+    const [step, setStep] = useState("select"); // "select" | "checkout"
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
     const [paymentId, setPaymentId] = useState("");
 
-    // Load plan from DB
+    /* ── Load all plans on mount ── */
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        API.get("/subscriptions/plans").then((res) => {
-            const plans = res.data;
-            // Try to match by _id first, then by name (case-insensitive)
-            let found = plans.find((p) => p._id === planParam);
-            if (!found) found = plans.find((p) => p.name.toLowerCase().replace(/\s/g, "_") === planParam);
-            if (!found && plans.length) found = plans[0]; // fallback to first plan
-            if (found) {
-                // Enrich with UI display fields
-                const isFree = found.price === 0;
-                const isPremium = found.price > 10000 || found.name.toLowerCase().includes("premium");
-                setPlan({
-                    ...found,
-                    planId: found._id,
-                    displayPrice: isFree ? "₹0" : `₹${found.price / 100}`,
-                    period: found.period === "monthly" ? "/month" : `/${found.period}`,
-                    color: isPremium ? "#FF4E9B" : (isFree ? "#6A11CB" : "#2575FC"),
-                    gradient: isPremium ? "linear-gradient(135deg, #FF4E9B, #6A11CB)" : (isFree ? "linear-gradient(135deg, #6A11CB, #2575FC)" : "linear-gradient(135deg, #2575FC, #6A11CB)"),
-                    tagline: found.description || found.name,
-                    requiresPayment: !isFree,
-                    badge: isPremium ? "Most Popular" : null,
-                    features: [
-                        found.maxSessions === null ? "Unlimited session bookings" : `Up to ${found.maxSessions} session bookings`,
-                        found.maxProfileViews === null ? "View all professor profiles" : `View up to ${found.maxProfileViews} professor profiles`,
-                        found.priorityBooking ? "Priority booking" : "Standard booking access",
-                        "Full dashboard access",
-                        "Community & tech support",
-                    ],
-                });
-            }
-        }).catch(() => {});
+        API.get("/subscriptions/plans")
+            .then((res) => {
+                const enriched = res.data
+                    .filter((p) => p.isActive)
+                    .map(enrichPlan);
+                setAllPlans(enriched);
+
+                // Pre-select plan from URL param
+                let preSelected = null;
+                if (planParam) {
+                    preSelected = enriched.find((p) => p._id === planParam);
+                    if (!preSelected)
+                        preSelected = enriched.find(
+                            (p) =>
+                                p.name.toLowerCase().replace(/\s/g, "_") === planParam
+                        );
+                }
+                // Default to first paid plan if none matched
+                if (!preSelected)
+                    preSelected =
+                        enriched.find((p) => p.requiresPayment) || enriched[0];
+                setSelectedPlan(preSelected);
+            })
+            .catch(() => {})
+            .finally(() => setPlansLoading(false));
     }, [planParam]);
 
-    /* ── Get user info from localStorage for prefill ── */
+    /* ── Get user info for Razorpay prefill ── */
     const getUserInfo = () => {
         try {
             const stored = JSON.parse(localStorage.getItem("userInfo"));
@@ -131,21 +163,12 @@ export default function PaymentPage() {
         }
     };
 
-    /* ── Loading state ── */
-    if (!plan) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0720] via-[#1a0e33] to-[#0d1b4b]">
-                <div className="animate-spin w-10 h-10 rounded-full border-4 border-white/30 border-t-white" />
-            </div>
-        );
-    }
-
     /* ── Activate free plan ── */
     const activateFreePlan = async () => {
         setLoading(true);
         setError("");
         try {
-            await API.post("/payment/activate-free", { planId: plan.planId });
+            await API.post("/payment/activate-free", { planId: selectedPlan.planId });
             setSuccess(true);
             setTimeout(() => redirectAfterPayment(), 2000);
         } catch (err) {
@@ -159,7 +182,6 @@ export default function PaymentPage() {
     const openRazorpayCheckout = async () => {
         setLoading(true);
         setError("");
-
         try {
             const loaded = await loadRazorpayScript();
             if (!loaded) {
@@ -168,8 +190,9 @@ export default function PaymentPage() {
                 return;
             }
 
-            /* Create server-side order */
-            const { data } = await API.post("/payment/create-order", { planId: plan.planId });
+            const { data } = await API.post("/payment/create-order", {
+                planId: selectedPlan.planId,
+            });
             const userInfo = getUserInfo();
 
             const options = {
@@ -177,18 +200,13 @@ export default function PaymentPage() {
                 amount: data.amount,
                 currency: data.currency,
                 name: "TutorHours",
-                description: `${plan.name} Plan — ${plan.period}`,
-                image: "https://i.ibb.co/your-logo.png", // Optional logo URL
+                description: `${selectedPlan.name} Plan — ${selectedPlan.period}`,
                 order_id: data.orderId,
-
-                /* ── Prefill user data ── */
                 prefill: {
                     name: userInfo.name || "",
                     email: userInfo.email || "",
                     contact: userInfo.phone || "",
                 },
-
-                /* ── Show all payment methods ── */
                 config: {
                     display: {
                         blocks: {
@@ -212,23 +230,19 @@ export default function PaymentPage() {
                         preferences: { show_default_blocks: true },
                     },
                 },
-
                 theme: {
-                    color: plan.color,
+                    color: selectedPlan.color,
                     backdrop_color: "rgba(26,14,51,0.7)",
                     hide_topbar: false,
                 },
-
-                /* ── Payment success handler ── */
                 handler: async (response) => {
                     try {
                         const verifyRes = await API.post("/payment/verify", {
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_signature: response.razorpay_signature,
-                            planId: plan.planId,
+                            planId: selectedPlan.planId,
                         });
-
                         if (verifyRes.data.success) {
                             setPaymentId(response.razorpay_payment_id);
                             setSuccess(true);
@@ -240,29 +254,21 @@ export default function PaymentPage() {
                         setLoading(false);
                     }
                 },
-
                 modal: {
-                    ondismiss: () => {
-                        setLoading(false);
-                    },
+                    ondismiss: () => setLoading(false),
                     escape: true,
                     animation: true,
                 },
             };
 
             const rzp = new window.Razorpay(options);
-
             rzp.on("payment.failed", (resp) => {
-                setError(
-                    `Payment failed: ${resp.error.description} (Code: ${resp.error.code})`
-                );
+                setError(`Payment failed: ${resp.error.description} (Code: ${resp.error.code})`);
                 setLoading(false);
             });
-
             rzp.open();
         } catch (err) {
             if (err.response?.status === 400 && err.response?.data?.free) {
-                // Server said it's a free plan
                 setSuccess(true);
                 setTimeout(() => redirectAfterPayment(), 2000);
             } else {
@@ -273,7 +279,7 @@ export default function PaymentPage() {
     };
 
     const handleProceed = () => {
-        if (plan.requiresPayment) {
+        if (selectedPlan.requiresPayment) {
             openRazorpayCheckout();
         } else {
             activateFreePlan();
@@ -288,18 +294,26 @@ export default function PaymentPage() {
         }
     };
 
-    /* ─────────────── SUCCESS SCREEN ─────────────── */
-    if (success) {
+    /* ─────────── LOADING SKELETON ─────────── */
+    if (plansLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0720] via-[#1a0e33] to-[#0d1b4b]">
+                <div className="animate-spin w-10 h-10 rounded-full border-4 border-white/30 border-t-white" />
+            </div>
+        );
+    }
+
+    /* ─────────── SUCCESS SCREEN ─────────── */
+    if (success && selectedPlan) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0720] via-[#1a0e33] to-[#0d1b4b] p-6">
                 <div className="text-center space-y-6 max-w-md mx-auto">
-                    {/* Animated checkmark */}
                     <div className="relative mx-auto w-28 h-28">
                         <div
                             className="w-28 h-28 rounded-full flex items-center justify-center text-5xl shadow-2xl"
                             style={{
-                                background: plan.gradient,
-                                boxShadow: `0 0 60px ${plan.color}60`,
+                                background: selectedPlan.gradient,
+                                boxShadow: `0 0 60px ${selectedPlan.color}60`,
                                 animation: "successPop 0.6s ease",
                             }}
                         >
@@ -307,16 +321,15 @@ export default function PaymentPage() {
                         </div>
                         <div
                             className="absolute inset-0 rounded-full animate-ping opacity-25"
-                            style={{ background: plan.gradient }}
+                            style={{ background: selectedPlan.gradient }}
                         />
                     </div>
-
                     <div>
                         <h1 className="text-3xl font-black text-white mb-2">
                             Payment Successful!
                         </h1>
                         <p className="text-[#a78bfa] text-lg">
-                            {plan.name} plan is now active 🎉
+                            {selectedPlan.name} plan is now active 🎉
                         </p>
                         {paymentId && (
                             <p className="text-[#6b7280] text-xs mt-2 font-mono">
@@ -324,16 +337,15 @@ export default function PaymentPage() {
                             </p>
                         )}
                     </div>
-
                     <div
                         className="p-5 rounded-2xl border border-white/10 text-left space-y-2"
                         style={{ background: "rgba(255,255,255,0.05)" }}
                     >
-                        {plan.features.map((f, i) => (
+                        {selectedPlan.features.map((f, i) => (
                             <div key={i} className="flex items-center gap-3 text-sm text-[#d4caff]">
                                 <span
                                     className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0"
-                                    style={{ background: plan.gradient }}
+                                    style={{ background: selectedPlan.gradient }}
                                 >
                                     ✓
                                 </span>
@@ -341,14 +353,12 @@ export default function PaymentPage() {
                             </div>
                         ))}
                     </div>
-
                     <p className="text-[#6b7280] text-sm animate-pulse">
                         {returnTo === "professor"
                             ? "Redirecting to verification page..."
                             : "Redirecting to your dashboard..."}
                     </p>
                 </div>
-
                 <style>{`
           @keyframes successPop {
             0% { transform: scale(0); opacity: 0; }
@@ -360,17 +370,174 @@ export default function PaymentPage() {
         );
     }
 
-    /* ─────────────── PAYMENT PAGE ─────────────── */
+    /* ─────────── PLAN SELECTION STEP ─────────── */
+    if (step === "select") {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-[#0f0720] via-[#1a0e33] to-[#0d1b4b] flex flex-col">
+
+                {/* NAV */}
+                <nav className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="flex items-center gap-2 text-[#a78bfa] hover:text-white transition-colors text-sm"
+                    >
+                        ← Back
+                    </button>
+                    <span className="text-white font-bold tracking-wider text-sm">
+                        🎓 TutorHours
+                    </span>
+                    <div className="flex items-center gap-2 text-[#a78bfa] text-xs">
+                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                        Secure Checkout
+                    </div>
+                </nav>
+
+                <div className="flex-1 max-w-5xl mx-auto w-full px-4 py-10">
+
+                    {/* HEADER */}
+                    <div className="text-center mb-10">
+                        <h1 className="text-3xl md:text-4xl font-black text-white mb-3">
+                            Choose Your Plan
+                        </h1>
+                        <p className="text-[#a78bfa] text-sm">
+                            Select the plan that fits you best. You can upgrade anytime.
+                        </p>
+                    </div>
+
+                    {/* PLAN CARDS */}
+                    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-10">
+                        {allPlans.map((plan) => {
+                            const isSelected = selectedPlan?._id === plan._id;
+                            return (
+                                <div
+                                    key={plan._id}
+                                    onClick={() => setSelectedPlan(plan)}
+                                    className="relative cursor-pointer rounded-3xl border-2 p-6 flex flex-col transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl"
+                                    style={{
+                                        background: isSelected
+                                            ? "rgba(106,17,203,0.18)"
+                                            : "rgba(255,255,255,0.04)",
+                                        borderColor: isSelected ? plan.color : "rgba(255,255,255,0.10)",
+                                        boxShadow: isSelected ? `0 0 32px ${plan.color}40` : "none",
+                                        backdropFilter: "blur(20px)",
+                                    }}
+                                >
+                                    {/* Top gradient bar */}
+                                    <div
+                                        className="absolute top-0 left-0 w-full h-1 rounded-t-3xl"
+                                        style={{ background: plan.gradient }}
+                                    />
+
+                                    {/* Badge */}
+                                    {plan.badge && (
+                                        <div
+                                            className="inline-block self-start mb-3 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-white"
+                                            style={{ background: plan.gradient }}
+                                        >
+                                            {plan.badge}
+                                        </div>
+                                    )}
+
+                                    {/* Plan name */}
+                                    <p
+                                        className="text-xs font-bold uppercase tracking-widest mb-1"
+                                        style={{ color: plan.color }}
+                                    >
+                                        {plan.name}
+                                    </p>
+                                    <p className="text-[#a78bfa] text-xs mb-4 leading-relaxed">
+                                        {plan.tagline}
+                                    </p>
+
+                                    {/* Price */}
+                                    <div className="flex items-baseline gap-1 mb-5">
+                                        <span className="text-4xl font-black text-white">
+                                            {plan.displayPrice}
+                                        </span>
+                                        <span className="text-[#a78bfa] text-sm">{plan.period}</span>
+                                    </div>
+
+                                    {/* Features */}
+                                    <div className="space-y-2 flex-1">
+                                        {plan.features.map((f, i) => (
+                                            <div key={i} className="flex items-start gap-2.5 text-xs text-[#d4caff]">
+                                                <span
+                                                    className="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5"
+                                                    style={{ background: plan.gradient }}
+                                                >
+                                                    ✓
+                                                </span>
+                                                {f}
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {/* Select indicator */}
+                                    <div className="mt-5 pt-4 border-t border-white/10 flex items-center justify-between">
+                                        <span className="text-[#6b7280] text-xs">
+                                            {plan.requiresPayment ? "Billed monthly" : "Free forever"}
+                                        </span>
+                                        <div
+                                            className="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0"
+                                            style={{
+                                                borderColor: isSelected ? plan.color : "rgba(255,255,255,0.2)",
+                                                background: isSelected ? plan.gradient : "transparent",
+                                            }}
+                                        >
+                                            {isSelected && (
+                                                <span className="text-white text-[10px] font-black">✓</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* PROCEED BUTTON */}
+                    {selectedPlan && (
+                        <div className="max-w-sm mx-auto space-y-4">
+                            <button
+                                onClick={() => setStep("checkout")}
+                                className="w-full py-4 rounded-2xl font-black text-white text-base transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl relative overflow-hidden"
+                                style={{
+                                    background: selectedPlan.gradient,
+                                    boxShadow: `0 8px 32px ${selectedPlan.color}50`,
+                                }}
+                            >
+                                Continue with {selectedPlan.name} →
+                            </button>
+                            <p className="text-center text-[#6b7280] text-xs">
+                                Selected: <span className="text-[#a78bfa] font-semibold">{selectedPlan.name}</span>
+                                {selectedPlan.requiresPayment
+                                    ? ` — ${selectedPlan.displayPrice}${selectedPlan.period}`
+                                    : " — Free"}
+                            </p>
+                        </div>
+                    )}
+                </div>
+
+                <style>{`
+          @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+          }
+        `}</style>
+            </div>
+        );
+    }
+
+    /* ─────────── CHECKOUT STEP ─────────── */
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#0f0720] via-[#1a0e33] to-[#0d1b4b] flex flex-col">
 
-            {/* ── TOP NAVBAR ── */}
+            {/* NAV */}
             <nav className="flex items-center justify-between px-6 py-4 border-b border-white/10">
                 <button
-                    onClick={() => navigate(-1)}
+                    onClick={() => { setStep("select"); setError(""); }}
                     className="flex items-center gap-2 text-[#a78bfa] hover:text-white transition-colors text-sm"
                 >
-                    ← Back
+                    ← Change Plan
                 </button>
                 <span className="text-white font-bold tracking-wider text-sm">
                     🎓 TutorHours
@@ -383,47 +550,42 @@ export default function PaymentPage() {
 
             <div className="flex-1 max-w-6xl mx-auto w-full px-4 py-10 grid lg:grid-cols-2 gap-10 items-start">
 
-                {/* ──────────────────────────────────────
-            LEFT: PLAN SUMMARY
-        ────────────────────────────────────── */}
+                {/* LEFT: PLAN SUMMARY */}
                 <div className="space-y-6">
-
-                    {/* Plan card */}
                     <div
                         className="relative p-8 rounded-3xl border border-white/10 overflow-hidden"
                         style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(20px)" }}
                     >
-                        {/* Gradient glow top */}
                         <div
                             className="absolute top-0 left-0 w-full h-1.5 rounded-t-3xl"
-                            style={{ background: plan.gradient }}
+                            style={{ background: selectedPlan.gradient }}
                         />
 
-                        {plan.badge && (
+                        {selectedPlan.badge && (
                             <div
                                 className="inline-block mb-4 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-white"
-                                style={{ background: plan.gradient }}
+                                style={{ background: selectedPlan.gradient }}
                             >
-                                {plan.badge}
+                                {selectedPlan.badge}
                             </div>
                         )}
 
-                        <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: plan.color }}>
-                            {plan.name}
+                        <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: selectedPlan.color }}>
+                            {selectedPlan.name}
                         </p>
-                        <p className="text-[#a78bfa] text-sm mb-4">{plan.tagline}</p>
+                        <p className="text-[#a78bfa] text-sm mb-4">{selectedPlan.tagline}</p>
 
                         <div className="flex items-baseline gap-2 mb-6">
-                            <span className="text-5xl font-black text-white">{plan.displayPrice}</span>
-                            <span className="text-[#a78bfa] text-sm">{plan.period}</span>
+                            <span className="text-5xl font-black text-white">{selectedPlan.displayPrice}</span>
+                            <span className="text-[#a78bfa] text-sm">{selectedPlan.period}</span>
                         </div>
 
                         <div className="space-y-3">
-                            {plan.features.map((f, i) => (
+                            {selectedPlan.features.map((f, i) => (
                                 <div key={i} className="flex items-center gap-3 text-sm text-[#d4caff]">
                                     <span
                                         className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0"
-                                        style={{ background: plan.gradient }}
+                                        style={{ background: selectedPlan.gradient }}
                                     >
                                         ✓
                                     </span>
@@ -432,14 +594,12 @@ export default function PaymentPage() {
                             ))}
                         </div>
 
-                        {/* Billing note */}
                         <div className="mt-6 pt-5 border-t border-white/10 flex justify-between items-center text-sm">
                             <span className="text-[#6b7280]">
-                                {plan.requiresPayment ? "Billed monthly · Cancel anytime" : "No payment required"}
+                                {selectedPlan.requiresPayment ? "Billed monthly · Cancel anytime" : "No payment required"}
                             </span>
                             <span className="text-white font-bold">
-                                {plan.displayPrice}
-                                {plan.requiresPayment ? "/mo" : ""}
+                                {selectedPlan.displayPrice}{selectedPlan.requiresPayment ? "/mo" : ""}
                             </span>
                         </div>
                     </div>
@@ -462,31 +622,27 @@ export default function PaymentPage() {
                         ))}
                     </div>
 
-                    {/* Powered by */}
                     <div className="flex items-center justify-center gap-3 text-[#6b7280] text-xs">
                         <span>Payments secured by</span>
                         <span className="font-black text-[#3395FF] text-sm tracking-tight">razorpay</span>
                     </div>
                 </div>
 
-                {/* ──────────────────────────────────────
-            RIGHT: PAYMENT METHODS + CTA
-        ────────────────────────────────────── */}
+                {/* RIGHT: PAYMENT METHODS + CTA */}
                 <div className="space-y-5">
-
                     <div>
                         <h1 className="text-2xl font-black text-white mb-1">
-                            {plan.requiresPayment ? "Choose Payment Method" : "Activate Your Plan"}
+                            {selectedPlan.requiresPayment ? "Choose Payment Method" : "Activate Your Plan"}
                         </h1>
                         <p className="text-[#a78bfa] text-sm">
-                            {plan.requiresPayment
+                            {selectedPlan.requiresPayment
                                 ? "Razorpay will show all available methods after you click Pay"
                                 : "Your plan is free — click below to activate instantly"}
                         </p>
                     </div>
 
-                    {/* Payment method preview cards */}
-                    {plan.requiresPayment && (
+                    {/* Payment method preview */}
+                    {selectedPlan.requiresPayment && (
                         <div className="space-y-3">
                             {PaymentMethods.map((method) => (
                                 <div
@@ -494,7 +650,6 @@ export default function PaymentPage() {
                                     className="flex items-center gap-4 p-4 rounded-2xl border border-white/10 transition-all hover:border-white/20"
                                     style={{ background: "rgba(255,255,255,0.04)" }}
                                 >
-                                    {/* Method icons */}
                                     <div className="flex gap-1.5 flex-shrink-0">
                                         {method.icons.map((icon) => (
                                             <div
@@ -507,14 +662,10 @@ export default function PaymentPage() {
                                             </div>
                                         ))}
                                     </div>
-
-                                    {/* Method info */}
                                     <div className="flex-1 min-w-0">
                                         <p className="text-white text-sm font-semibold">{method.label}</p>
                                         <p className="text-[#6b7280] text-xs truncate">{method.description}</p>
                                     </div>
-
-                                    {/* Checkmark */}
                                     <div
                                         className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-bold text-white"
                                         style={{ background: "linear-gradient(135deg, #6A11CB, #2575FC)" }}
@@ -527,7 +678,7 @@ export default function PaymentPage() {
                     )}
 
                     {/* Free plan visual */}
-                    {!plan.requiresPayment && (
+                    {!selectedPlan.requiresPayment && (
                         <div
                             className="p-6 rounded-2xl border border-white/10 text-center space-y-3"
                             style={{ background: "rgba(255,255,255,0.04)" }}
@@ -535,9 +686,7 @@ export default function PaymentPage() {
                             <div className="text-4xl">🆓</div>
                             <p className="text-white font-bold">No Credit Card Required</p>
                             <p className="text-[#a78bfa] text-sm">
-                                {plan.id === "free_trial"
-                                    ? "Start your 7-day free trial immediately — no payment info needed."
-                                    : "Activate now for free. You only pay 18% when you complete a session."}
+                                Activate now for free. Upgrade to access more features anytime.
                             </p>
                         </div>
                     )}
@@ -549,15 +698,15 @@ export default function PaymentPage() {
                         </div>
                     )}
 
-                    {/* ORDER SUMMARY ROW (for paid plans) */}
-                    {plan.requiresPayment && (
+                    {/* Order summary */}
+                    {selectedPlan.requiresPayment && (
                         <div
                             className="p-4 rounded-2xl border border-white/10"
                             style={{ background: "rgba(255,255,255,0.04)" }}
                         >
                             <div className="flex justify-between items-center text-sm mb-2">
-                                <span className="text-[#a78bfa]">{plan.name} Plan</span>
-                                <span className="text-white font-semibold">{plan.displayPrice}</span>
+                                <span className="text-[#a78bfa]">{selectedPlan.name} Plan</span>
+                                <span className="text-white font-semibold">{selectedPlan.displayPrice}</span>
                             </div>
                             <div className="flex justify-between items-center text-sm mb-2">
                                 <span className="text-[#a78bfa]">Platform fee</span>
@@ -569,22 +718,21 @@ export default function PaymentPage() {
                             </div>
                             <div className="flex justify-between items-center pt-3 border-t border-white/10">
                                 <span className="text-white font-bold">Total Due Today</span>
-                                <span className="text-white font-black text-lg">{plan.displayPrice}</span>
+                                <span className="text-white font-black text-lg">{selectedPlan.displayPrice}</span>
                             </div>
                         </div>
                     )}
 
-                    {/* ──── MAIN PAY / ACTIVATE BUTTON ──── */}
+                    {/* PAY / ACTIVATE BUTTON */}
                     <button
                         onClick={handleProceed}
                         disabled={loading}
                         className="w-full py-4 rounded-2xl font-black text-white text-base transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 relative overflow-hidden"
                         style={{
-                            background: plan.gradient,
-                            boxShadow: `0 8px 32px ${plan.color}50`,
+                            background: selectedPlan.gradient,
+                            boxShadow: `0 8px 32px ${selectedPlan.color}50`,
                         }}
                     >
-                        {/* Shimmer animation */}
                         {!loading && (
                             <div
                                 className="absolute inset-0 opacity-0 hover:opacity-20 transition-opacity"
@@ -594,23 +742,22 @@ export default function PaymentPage() {
                                 }}
                             />
                         )}
-
                         {loading ? (
                             <span className="flex items-center justify-center gap-3">
                                 <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                                 </svg>
-                                {plan.requiresPayment ? "Opening Razorpay..." : "Activating..."}
+                                {selectedPlan.requiresPayment ? "Opening Razorpay..." : "Activating..."}
                             </span>
-                        ) : plan.requiresPayment ? (
-                            <span>🔒 Pay {plan.displayPrice} Securely →</span>
+                        ) : selectedPlan.requiresPayment ? (
+                            <span>🔒 Pay {selectedPlan.displayPrice} Securely →</span>
                         ) : (
-                            <span>✅ Activate {plan.name} — Free →</span>
+                            <span>✅ Activate {selectedPlan.name} — Free →</span>
                         )}
                     </button>
 
-                    {plan.requiresPayment && (
+                    {selectedPlan.requiresPayment && (
                         <p className="text-center text-[#6b7280] text-xs leading-relaxed">
                             Clicking the button opens Razorpay's secure checkout where you can pay via{" "}
                             <span className="text-[#a78bfa]">UPI, Card, Net Banking or Wallet</span>.
@@ -618,7 +765,6 @@ export default function PaymentPage() {
                         </p>
                     )}
 
-                    {/* Cancel link */}
                     <div className="text-center">
                         <button
                             onClick={() => navigate(-1)}

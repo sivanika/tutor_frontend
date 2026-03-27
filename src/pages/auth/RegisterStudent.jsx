@@ -179,6 +179,17 @@ export default function RegisterStudent() {
         >
           Sign in with Google
         </button>
+
+        {/* Login redirect */}
+        <p className="text-center text-sm text-gray-500 dark:text-[#a78bfa]/70">
+          Already have an account?{" "}
+          <span
+            onClick={() => navigate("/login")}
+            className="cursor-pointer font-semibold text-[#6A11CB] dark:text-[#a78bfa] hover:underline"
+          >
+            Login
+          </span>
+        </p>
       </form>
 
       {/* animation */}
