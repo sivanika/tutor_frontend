@@ -39,6 +39,7 @@ import RefundPolicy from "./pages/legal/RefundPolicy";
 import CookiePolicy from "./pages/legal/DataCookies";
 import TutorAgreementPage from "./pages/legal/TutorAgreement";
 import InstitutionAgreement from "./pages/legal/InstitutionAgreement";
+import StudentProfilePage from "./pages/professor/StudentProfilePage";
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
           <Route path="/careers" element={<Careers />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/tutor/:id" element={<TutorProfilePage />} />
+          <Route path="/student/:id" element={<StudentProfilePage />} />
           <Route path="/professor/onboarding" element={<ProfessorOnboarding />} />
           <Route path="/student/onboarding" element={<StudentOnboarding />} />
 

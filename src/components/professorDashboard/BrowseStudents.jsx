@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
-import { FiSearch, FiTarget, FiMapPin, FiMessageSquare, FiBookOpen } from "react-icons/fi";
+import { FiSearch, FiMapPin, FiUser, FiLock } from "react-icons/fi";
 
-export default function BrowseStudents({ onChatOpen }) {
+export default function BrowseStudents() {
   const [students, setStudents] = useState([]);
+  const [quota, setQuota] = useState(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({ subject: "", level: "" });
+  const navigate = useNavigate();
 
   const fetchStudents = async () => {
     try {
       setLoading(true);
       const res = await API.get("/student/browse");
-      setStudents(res.data || []);
+      setStudents(res.data.students || []);
+      setQuota(res.data.professorQuota || null);
     } catch (err) {
       console.error("Fetch students error:", err.message);
     } finally {
@@ -51,6 +55,18 @@ export default function BrowseStudents({ onChatOpen }) {
     return true;
   });
 
+  const getProfileLimit = () => {
+    if (!quota) return 5;
+    const tier = (quota.planTier || quota.subscriptionTier || "").toLowerCase();
+    if (tier.includes("premium") || tier === "499") return 30; // 499 rs
+    if (tier.includes("basic") || tier === "99") return 15; // 99 rs
+    return 5; // free trial
+  };
+
+  const limit = getProfileLimit();
+  const viewedCount = quota?.viewedStudents?.length || 0;
+  const isLimitReached = viewedCount >= limit;
+
   return (
     <div className="space-y-6 max-w-6xl animate-fadeIn">
       {/* Header */}
@@ -60,6 +76,28 @@ export default function BrowseStudents({ onChatOpen }) {
           <p className="text-sm text-gray-500 mt-1">Discover students looking for tutoring in your subjects.</p>
         </div>
       </div>
+
+      {/* Usage Banner */}
+      {!loading && quota && (
+        <div className={`rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border ${isLimitReached ? 'bg-red-50 border-red-200' : 'bg-[#FF4E9B]/5 border-[#FF4E9B]/20'}`}>
+          <div>
+            <p className={`font-bold text-sm ${isLimitReached ? 'text-red-700' : 'text-[#1a0e33] dark:text-white'}`}>
+              Student Profile Views: {viewedCount} / {limit}
+            </p>
+            <p className={`text-xs mt-1 ${isLimitReached ? 'text-red-600' : 'text-gray-600 dark:text-gray-400'}`}>
+              {isLimitReached ? 'You have reached your limit. Upgrade to view more profiles.' : `You can view ${Math.max(0, limit - viewedCount)} more student profiles with your current plan.`}
+            </p>
+          </div>
+          {isLimitReached && (
+            <button
+              onClick={() => navigate("/payment?plan=premium&returnTo=professor")}
+              className="px-4 py-2 bg-[#FF4E9B] text-white text-sm font-bold rounded-lg hover:bg-[#e63e88] transition-colors"
+            >
+              Upgrade Plan
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Filters Bar */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
@@ -180,14 +218,32 @@ export default function BrowseStudents({ onChatOpen }) {
               </div>
 
               {/* Action */}
-              <button
-                onClick={() => onChatOpen?.(s._id)}
-                className="w-full py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300
-                  bg-gray-50 text-gray-600 hover:bg-[#FF4E9B] hover:text-white group-hover:shadow-md"
-              >
-                <FiMessageSquare size={16} />
-                Message Student
-              </button>
+              {(() => {
+                const hasViewed = quota?.viewedStudents?.includes(s._id);
+                if (!hasViewed && isLimitReached) {
+                  return (
+                    <button
+                      onClick={() => navigate("/payment?plan=premium&returnTo=professor")}
+                      className="w-full py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300
+                        bg-red-50 text-red-600 hover:bg-red-100 border border-red-200"
+                    >
+                      <FiLock size={16} />
+                      Unlock Profile
+                    </button>
+                  );
+                }
+                
+                return (
+                  <button
+                    onClick={() => navigate(`/student/${s._id}`)}
+                    className="w-full py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300
+                      bg-gray-50 text-[#FF4E9B] hover:bg-[#FF4E9B] hover:text-white group-hover:shadow-md border border-[#FF4E9B]/20 hover:border-transparent"
+                  >
+                    <FiUser size={16} />
+                    {hasViewed ? "View Profile Again" : "View Profile"}
+                  </button>
+                );
+              })()}
             </div>
           ))}
         </div>
