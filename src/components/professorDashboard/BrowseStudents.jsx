@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
-import { FiSearch, FiMapPin, FiUser, FiLock } from "react-icons/fi";
+import { FiSearch, FiMapPin, FiUser, FiLock, FiZap, FiCheckCircle, FiX } from "react-icons/fi";
+import ProfessorUpgradeModal from "./ProfessorUpgradeModal";
+import { toast } from "react-hot-toast";
 
 export default function BrowseStudents() {
   const [students, setStudents] = useState([]);
@@ -9,6 +11,7 @@ export default function BrowseStudents() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({ subject: "", level: "" });
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const navigate = useNavigate();
 
   const fetchStudents = async () => {
@@ -27,6 +30,17 @@ export default function BrowseStudents() {
   useEffect(() => {
     fetchStudents();
   }, []);
+
+  const handleApply = async (subjectId, studentName, subjectName) => {
+    try {
+      await API.post(`/student-subjects/${subjectId}/apply`);
+      toast.success(`Interest sent to ${studentName} for ${subjectName}!`);
+      // Refresh to update the 'applied' state if needed, or update locally
+      fetchStudents();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to send interest");
+    }
+  };
 
   const filtered = students.filter((s) => {
     const term = search.toLowerCase();
@@ -90,10 +104,10 @@ export default function BrowseStudents() {
           </div>
           {isLimitReached && (
             <button
-              onClick={() => navigate("/payment?plan=premium&returnTo=professor")}
+              onClick={() => setShowUpgradeModal(true)}
               className="px-4 py-2 bg-[#FF4E9B] text-white text-sm font-bold rounded-lg hover:bg-[#e63e88] transition-colors"
             >
-              Upgrade Plan
+              Upgrade Plan ✨
             </button>
           )}
         </div>
@@ -215,6 +229,58 @@ export default function BrowseStudents() {
                     </p>
                   </div>
                 )}
+
+                {/* 🎯 Real-time Subject Requests (Live) */}
+                {s.subjectRequests && s.subjectRequests.length > 0 && (
+                  <div className="pt-3 border-t border-gray-100">
+                    <span className="text-[10px] uppercase font-bold text-[#FF4E9B] tracking-wider flex items-center gap-1.5 mb-2">
+                       <FiZap size={10} className="fill-[#FF4E9B] animate-pulse" /> Live Requests
+                    </span>
+                    <div className="space-y-2">
+                      {s.subjectRequests.map((subReq) => (
+                        <div key={subReq._id} className="bg-[#FF4E9B]/5 rounded-xl p-3 border border-[#FF4E9B]/10 group/req hover:bg-[#FF4E9B]/10 transition-all">
+                          <div className="flex items-center justify-between gap-2 mb-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-lg">{subReq.icon || "📚"}</span>
+                              <span className="text-sm font-bold text-gray-800">{subReq.name}</span>
+                            </div>
+                            <span className="text-[10px] px-1.5 py-0.5 bg-white text-[#FF4E9B] font-bold rounded border border-[#FF4E9B]/20">
+                              {subReq.status}
+                            </span>
+                          </div>
+                          {subReq.requirement?.topic && (
+                            <p className="text-xs text-gray-600 font-medium mb-2 line-clamp-1">
+                              Need help with: <span className="text-gray-900">{subReq.requirement.topic}</span>
+                            </p>
+                          )}
+                          
+                          {subReq.status === "Engaged" ? (
+                            <div className="w-full py-1.5 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1.5 
+                              bg-red-50 text-red-600 border border-red-200 shadow-sm">
+                              <FiX size={12} />
+                              Already Engaged
+                            </div>
+                          ) : subReq.hasApplied ? (
+                            <div className="w-full py-1.5 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1.5 
+                              bg-green-50 text-green-600 border border-green-200 shadow-sm">
+                              <FiCheckCircle size={10} />
+                              Interested
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => handleApply(subReq._id, s.name, subReq.name)}
+                              className="w-full py-1.5 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all
+                                bg-white text-[#FF4E9B] border border-[#FF4E9B]/30 hover:bg-[#FF4E9B] hover:text-white shadow-sm hover:shadow"
+                            >
+                              <FiZap size={10} />
+                              Approach Student
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Action */}
@@ -223,12 +289,12 @@ export default function BrowseStudents() {
                 if (!hasViewed && isLimitReached) {
                   return (
                     <button
-                      onClick={() => navigate("/payment?plan=premium&returnTo=professor")}
+                      onClick={() => setShowUpgradeModal(true)}
                       className="w-full py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300
                         bg-red-50 text-red-600 hover:bg-red-100 border border-red-200"
                     >
                       <FiLock size={16} />
-                      Unlock Profile
+                      Unlock — Upgrade Plan
                     </button>
                   );
                 }
@@ -247,6 +313,11 @@ export default function BrowseStudents() {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Professor Upgrade Modal */}
+      {showUpgradeModal && (
+        <ProfessorUpgradeModal onClose={() => setShowUpgradeModal(false)} />
       )}
     </div>
   );

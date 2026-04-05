@@ -1,20 +1,13 @@
 /**
  * ChatTab.jsx — Real-time chat with HTTP-based message send
- *
- * Architecture:
- *   SEND: POST /api/conversations/:id/messages (REST)
- *     → server saves to DB
- *     → server pushes io.to(userId).emit("newMessage") to ALL participants' personal rooms
- *   RECEIVE: socket.on("newMessage") — fires instantly on both sender & receiver
- *
- * Personal rooms (userId) are established at login via joinUser and
- * persist for the entire session — robust, no dependency on which tab is open.
+ * (Light UI Theme based on user design)
  */
 
 import { useEffect, useRef, useState, useCallback } from "react"
 import { useAuth } from "../../context/AuthContext"
 import API from "../../services/api"
 import socket from "../../services/socket"
+import { FiPhone, FiSearch, FiSend, FiChevronLeft } from "react-icons/fi"
 
 /* ─── helpers ──────────────────────────────────────────────── */
 const uid = (user) => String(user?.id || user?._id || "")
@@ -33,17 +26,20 @@ const fmtDay = (d) => {
 /* ─── Avatar ──────────────────────────────────────────────── */
 function Av({ user, sz = 40, online }) {
   const url = photoURL(user)
+  const isProf = user?.role === "professor"
+  const bg = isProf ? "bg-purple-600" : "bg-[#10b981]" // Purple for prof, Green for student
   return (
-    <div style={{ position: "relative", flexShrink: 0 }}>
-      {url
-        ? <img src={url} alt="" style={{ width: sz, height: sz, borderRadius: "50%", objectFit: "cover", border: "2px solid rgba(255,255,255,.15)" }} />
-        : <div style={{ width: sz, height: sz, borderRadius: "50%", background: "linear-gradient(135deg,#7c3aed,#4f46e5)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: sz * .38 }}>
-            {(user?.name || "?")[0].toUpperCase()}
-          </div>
-      }
-      {online !== undefined &&
-        <span style={{ position: "absolute", bottom: 1, right: 1, width: 10, height: 10, borderRadius: "50%", background: online ? "#22c55e" : "#6b7280", border: "2px solid #1a0533" }} />
-      }
+    <div style={{ width: sz, height: sz }} className="relative flex-shrink-0">
+      {url ? (
+        <img src={url} alt="" className="w-full h-full rounded-full object-cover shadow-sm" />
+      ) : (
+        <div className={`w-full h-full rounded-full ${bg} flex items-center justify-center text-white font-semibold shadow-sm`} style={{ fontSize: sz * 0.4 }}>
+          {((user?.name || user?.email || "?")[0]).toUpperCase()}
+        </div>
+      )}
+      {online !== undefined && (
+        <span className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white ${online ? 'bg-green-500' : 'bg-gray-400'}`} />
+      )}
     </div>
   )
 }
@@ -52,40 +48,49 @@ function Av({ user, sz = 40, online }) {
 function Bubble({ msg, isMe }) {
   const isOpt = String(msg._id).startsWith("opt-")
   const read = (msg.readBy?.length || 0) > 1
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: isMe ? "flex-end" : "flex-start", marginBottom: 10 }}>
-      {!isMe && <span style={{ fontSize: 11, color: "#7c3aed", fontWeight: 600, marginLeft: 4, marginBottom: 3 }}>{msg.sender?.name || "User"}</span>}
-      <div style={{
-        maxWidth: "68%", padding: "9px 14px", fontSize: 14, lineHeight: 1.5, wordBreak: "break-word",
-        borderRadius: isMe ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
-        background: isMe ? "linear-gradient(135deg,#7c3aed,#4f46e5)" : "#fff",
-        color: isMe ? "#fff" : "#111827",
-        border: isMe ? "none" : "1px solid #e5e7eb",
-        boxShadow: "0 1px 3px rgba(0,0,0,.1)",
-        opacity: isOpt ? .6 : 1,
-      }}>
-        {msg.text}
+    <div className={`flex items-end gap-2 mb-4 max-w-[85%] ${isMe ? 'ml-auto justify-end' : ''}`}>
+      {!isMe && <Av user={msg.sender} sz={28} />}
+      <div className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
+        {!isMe && <span className="text-[11px] text-gray-500 font-medium ml-1 mb-1">{msg.sender?.name || "User"}</span>}
+        <div 
+          className={`px-4 py-2.5 text-sm shadow-sm
+          ${isMe 
+            ? 'bg-purple-600 text-white rounded-2xl rounded-br-sm' 
+            : 'bg-[#f4f4f5] text-gray-800 rounded-2xl rounded-bl-sm border border-gray-100'
+          }`}
+          style={{ wordBreak: "break-word", opacity: isOpt ? 0.7 : 1 }}
+        >
+          {msg.text}
+        </div>
+        <div className="flex items-center gap-1 mt-1 px-1">
+          <span className="text-[10px] text-gray-400">{fmtTime(msg.createdAt)}</span>
+          {isMe && (
+            <svg width="14" height="10" viewBox="0 0 16 12" fill="none">
+              {read
+                ? <><path d="M1 6l4 4L13 1" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M5 6l4 4" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></>
+                : <path d="M1 6l4 4L13 1" stroke={isOpt ? "#d1d5db" : "#9ca3af"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              }
+            </svg>
+          )}
+        </div>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 3, marginTop: 2, paddingInline: 2 }}>
-        <span style={{ fontSize: 10, color: "#9ca3af" }}>{fmtTime(msg.createdAt)}</span>
-        {isMe && (
-          <svg width="14" height="10" viewBox="0 0 16 12" fill="none">
-            {read
-              ? <><path d="M1 6l4 4L13 1" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M5 6l4 4" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></>
-              : <path d="M1 6l4 4L13 1" stroke={isOpt ? "#d1d5db" : "#9ca3af"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            }
-          </svg>
-        )}
-      </div>
+      {isMe && <Av user={msg.sender} sz={28} />}
     </div>
   )
 }
 
 /* ─── Typing dots ─────────────────────────────────────────── */
-function Typing() {
+function Typing({ user }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 4, padding: "9px 14px", background: "#fff", borderRadius: "18px 18px 18px 4px", width: "fit-content", boxShadow: "0 1px 3px rgba(0,0,0,.1)", border: "1px solid #e5e7eb", marginBottom: 10 }}>
-      {[0, 1, 2].map(i => <span key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: "#9ca3af", display: "inline-block", animation: "tdot 1.2s infinite", animationDelay: `${i * .2}s` }} />)}
+    <div className="flex items-end gap-2 mb-4 max-w-[80%]">
+      {user && <Av user={user} sz={28} />}
+      <div className="flex items-center gap-1 px-4 py-3 bg-[#f4f4f5] border border-gray-100 rounded-2xl rounded-bl-sm shadow-sm w-fit">
+        {[0, 1, 2].map(i => (
+          <span key={i} className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+        ))}
+      </div>
     </div>
   )
 }
@@ -94,22 +99,27 @@ function Typing() {
 function Row({ conv, myId, active, online, onClick }) {
   const o = conv.participants?.find(p => String(p._id) !== myId) || {}
   return (
-    <button onClick={onClick} style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "11px 14px", border: "none", cursor: "pointer", background: active ? "rgba(124,58,237,.18)" : "transparent", borderLeft: `3px solid ${active ? "#7c3aed" : "transparent"}`, textAlign: "left" }}>
-      <Av user={o} sz={42} online={online} />
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <span style={{ fontWeight: 600, fontSize: 13, color: "#fff", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{o.name || "User"}</span>
-          <span style={{ fontSize: 10, color: "rgba(255,255,255,.35)", flexShrink: 0, marginLeft: 6 }}>{fmtDay(conv.lastMessage?.createdAt)}</span>
+    <button 
+      onClick={onClick} 
+      className={`w-full flex items-center gap-3 p-4 border-b border-gray-100 transition-colors text-left
+        ${active ? 'bg-gray-50 border-l-4 border-l-purple-600' : 'bg-white hover:bg-gray-50 border-l-4 border-l-transparent'}
+      `}
+    >
+      <Av user={o} sz={44} online={online} />
+      <div className="flex-1 min-w-0">
+        <div className="flex justify-between items-baseline mb-1">
+          <span className="font-semibold text-gray-800 text-sm truncate">{o.name || "User"}</span>
+          <span className="text-[10px] text-gray-400 flex-shrink-0 ml-2">{fmtDay(conv.lastMessage?.createdAt)}</span>
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
-          <span style={{ fontSize: 12, color: conv.unreadCount > 0 ? "rgba(255,255,255,.75)" : "rgba(255,255,255,.38)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: conv.unreadCount > 0 ? 600 : 400 }}>
+        <div className="flex justify-between items-center">
+          <span className={`text-xs truncate ${conv.unreadCount > 0 ? 'font-semibold text-gray-800' : 'text-gray-500'}`}>
             {conv.lastMessage?.text || "Say hello 👋"}
           </span>
-          {conv.unreadCount > 0 &&
-            <span style={{ flexShrink: 0, marginLeft: 6, background: "#7c3aed", color: "#fff", fontSize: 10, fontWeight: 700, minWidth: 18, height: 18, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 4px" }}>
+          {conv.unreadCount > 0 && (
+            <span className="flex-shrink-0 ml-2 bg-purple-600 text-white text-[10px] font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1">
               {conv.unreadCount > 99 ? "99+" : conv.unreadCount}
             </span>
-          }
+          )}
         </div>
       </div>
     </button>
@@ -187,17 +197,12 @@ export default function ChatTab({ preOpenUserId = null }) {
   useEffect(() => {
     if (!me) return
 
-    /* ── Ensure personal room is registered on EVERY connection/reconnection ─ */
     const registerRoom = () => {
       socket.emit("joinUser", { userId: me })
-      console.log("🔑 joinUser emitted for", me)
     }
 
-    // Connect if not already (dashboard may or may not have done this)
     if (!socket.connected) socket.connect()
-    // Register immediately if already connected
     if (socket.connected) registerRoom()
-    // Also register on every future connect/reconnect
     socket.on("connect", registerRoom)
 
     const onNewMessage = (msg) => {
@@ -206,7 +211,6 @@ export default function ChatTab({ preOpenUserId = null }) {
       const cur     = activeRef.current
 
       if (cur && String(cur._id) === convId) {
-        /* replace optimistic or append */
         setMsgs(prev => {
           if (msg._id && prev.some(m => String(m._id) === String(msg._id))) return prev
           const optIdx = prev.findIndex(m =>
@@ -217,7 +221,6 @@ export default function ChatTab({ preOpenUserId = null }) {
           return [...prev, msg]
         })
 
-        /* mark read for received messages */
         if (sender !== me) {
           socket.emit("markRead", { conversationId: convId, userId: me, senderId: sender })
           API.put(`/conversations/${convId}/read`).catch(() => {})
@@ -228,7 +231,6 @@ export default function ChatTab({ preOpenUserId = null }) {
           : c
         ))
       } else {
-        /* not viewing this conv → bump unread badge */
         if (sender !== me) {
           setConvs(prev => prev.map(c => String(c._id) === convId
             ? { ...c, unreadCount: (c.unreadCount || 0) + 1, lastMessage: { text: msg.text, createdAt: msg.createdAt } }
@@ -273,12 +275,13 @@ export default function ChatTab({ preOpenUserId = null }) {
     clearTimeout(typingTimer.current)
     socket.emit("stopTyping", { conversationId: active._id, receiverId: other?._id })
 
-    /* optimistic message */
+    const myAvatarUser = { _id: me, name: user?.name, role: user?.role, profilePhoto: user?.profilePhoto, studentPhoto: user?.studentPhoto, email: user?.email };
+
     const opt = {
       _id: `opt-${Date.now()}`,
       conversation: active._id,
       conversationId: String(active._id),
-      sender: { _id: me, name: user?.name, role: user?.role },
+      sender: myAvatarUser,
       text: t,
       readBy: [me],
       createdAt: new Date().toISOString(),
@@ -286,10 +289,8 @@ export default function ChatTab({ preOpenUserId = null }) {
     setMsgs(prev => [...prev, opt])
 
     try {
-      /* server saves to DB and pushes socket to all participants */
       await API.post(`/conversations/${active._id}/messages`, { text: t })
     } catch (e) {
-      /* rollback optimistic on error */
       setMsgs(prev => prev.filter(m => m._id !== opt._id))
       console.error("send error:", e)
     } finally {
@@ -326,26 +327,29 @@ export default function ChatTab({ preOpenUserId = null }) {
   return (
     <>
       <style>{`
-        @keyframes tdot { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-5px)} }
-        @keyframes spin  { to { transform:rotate(360deg) } }
-        .ci:focus { outline:none; box-shadow: 0 0 0 2px rgba(124,58,237,.4); }
         @media(min-width:768px){ .mob-list{display:flex!important} .mob-chat{display:flex!important} }
       `}</style>
 
-      <div style={{ display: "flex", height: "calc(100vh - 130px)", minHeight: 500, borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 40px rgba(0,0,0,.25)", border: "1px solid rgba(255,255,255,.08)" }}>
-
+      <div className="flex h-[calc(100vh-130px)] min-h-[500px] rounded-2xl overflow-hidden shadow-sm border border-gray-200 bg-white">
+        
         {/* ══ SIDEBAR ══ */}
-        <div className="mob-list" style={{ display: mobileV === "chat" ? "none" : "flex", flexDirection: "column", width: 290, flexShrink: 0, background: "linear-gradient(160deg,#1a0533,#0e1b3e)", borderRight: "1px solid rgba(255,255,255,.07)" }}>
-          <div style={{ padding: "16px 14px 10px", borderBottom: "1px solid rgba(255,255,255,.07)" }}>
-            <p style={{ color: "#fff", fontWeight: 700, fontSize: 15, margin: "0 0 10px" }}>💬 Messages</p>
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search…" className="ci"
-              style={{ width: "100%", padding: "8px 12px", borderRadius: 10, background: "rgba(255,255,255,.07)", border: "1px solid rgba(255,255,255,.1)", color: "#fff", fontSize: 13, boxSizing: "border-box" }} />
+        <div className="mob-list flex-col w-[320px] flex-shrink-0 border-r border-gray-200 bg-white" style={{ display: mobileV === "chat" ? "none" : "flex" }}>
+          <div className="p-5 border-b border-gray-100">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Messages</h2>
+            <div className="relative">
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input 
+                value={search} onChange={e => setSearch(e.target.value)} 
+                type="text" placeholder="Search conversations..." 
+                className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-purple-500 transition-shadow" 
+              />
+            </div>
           </div>
-          <div style={{ flex: 1, overflowY: "auto" }}>
+          <div className="flex-1 overflow-y-auto bg-white">
             {loadConvs
-              ? <div style={{ display: "flex", justifyContent: "center", padding: 40 }}><div style={{ width: 26, height: 26, border: "3px solid #7c3aed", borderTopColor: "transparent", borderRadius: "50%", animation: "spin .8s linear infinite" }} /></div>
+              ? <div className="flex justify-center p-10"><div className="w-6 h-6 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" /></div>
               : filtered.length === 0
-                ? <p style={{ textAlign: "center", color: "rgba(255,255,255,.3)", fontSize: 13, padding: 40 }}>No conversations</p>
+                ? <p className="text-center text-gray-400 text-sm p-10">No conversations</p>
                 : filtered.map(conv => {
                     const o = conv.participants?.find(p => String(p._id) !== me)
                     return <Row key={conv._id} conv={conv} myId={me} active={String(active?._id) === String(conv._id)} online={o && onlineSet.has(String(o._id))} onClick={() => openConv(conv)} />
@@ -355,58 +359,73 @@ export default function ChatTab({ preOpenUserId = null }) {
         </div>
 
         {/* ══ CHAT PANEL ══ */}
-        <div className="mob-chat" style={{ display: mobileV === "list" ? "none" : "flex", flex: 1, flexDirection: "column", background: "#f6f6f8", minWidth: 0 }}>
+        <div className="mob-chat flex-col flex-1 min-w-0 bg-white" style={{ display: mobileV === "list" ? "none" : "flex" }}>
           {!active
-            ? <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, color: "#9ca3af", textAlign: "center", padding: 24 }}>
-                <div style={{ width: 72, height: 72, borderRadius: "50%", background: "linear-gradient(135deg,#7c3aed,#4f46e5)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28 }}>💬</div>
-                <div><p style={{ fontWeight: 700, fontSize: 17, color: "#374151", margin: 0 }}>Select a conversation</p><p style={{ fontSize: 13, color: "#9ca3af", margin: "4px 0 0" }}>Choose someone from the left</p></div>
+            ? <div className="flex-1 flex flex-col items-center justify-center gap-3 text-gray-400 text-center p-6 bg-gray-50/50">
+                <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-3xl">💬</div>
+                <div>
+                  <p className="font-bold text-lg text-gray-700 m-0">Select a conversation</p>
+                  <p className="text-sm text-gray-500 mt-1">Choose someone from the left to start chatting.</p>
+                </div>
               </div>
             : <>
                 {/* Header */}
-                <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 16px", background: "#fff", borderBottom: "1px solid #e5e7eb", boxShadow: "0 1px 4px rgba(0,0,0,.05)", flexShrink: 0 }}>
-                  <button onClick={() => setMobileV("list")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, color: "#6b7280", padding: "0 4px 0 0" }}>←</button>
-                  <Av user={other} sz={40} online={otherOnline} />
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ margin: 0, fontWeight: 700, fontSize: 14, color: "#111827" }}>{other?.name || "User"}</p>
-                    <p style={{ margin: 0, fontSize: 11, color: isTyping ? "#7c3aed" : otherOnline ? "#22c55e" : "#9ca3af", fontWeight: isTyping ? 600 : 400 }}>
-                      {isTyping ? "typing…" : otherOnline ? "Online" : (other?.role === "professor" ? "Professor" : "Student")}
-                    </p>
+                <div className="flex items-center justify-between p-4 bg-white border-b border-gray-200 flex-shrink-0">
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => setMobileV("list")} className="md:hidden p-1 text-gray-500 hover:text-gray-700">
+                      <FiChevronLeft size={24} />
+                    </button>
+                    <Av user={other} sz={44} online={otherOnline} />
+                    <div>
+                      <h2 className="font-bold text-gray-800 text-base">{other?.name || "User"}</h2>
+                      <p className="text-xs text-gray-500">
+                        {other?.role === "professor" ? "Professor" : (other?.major ? `${other.major} - Enrolled` : "Student")}
+                      </p>
+                    </div>
                   </div>
+                  <button className="p-2 text-gray-400 hover:text-gray-600 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 transition">
+                    <FiPhone size={18} />
+                  </button>
                 </div>
 
                 {/* Messages */}
-                <div style={{ flex: 1, overflowY: "auto", padding: 16, background: "#f6f6f8" }}>
+                <div className="flex-1 overflow-y-auto p-6 bg-white">
                   {loadMsgs
-                    ? <div style={{ display: "flex", justifyContent: "center", paddingTop: 40 }}><div style={{ width: 26, height: 26, border: "3px solid #7c3aed", borderTopColor: "transparent", borderRadius: "50%", animation: "spin .8s linear infinite" }} /></div>
+                    ? <div className="flex justify-center pt-10"><div className="w-6 h-6 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" /></div>
                     : msgs.length === 0
-                      ? <div style={{ textAlign: "center", paddingTop: 60, color: "#9ca3af" }}><div style={{ fontSize: 36, marginBottom: 8 }}>👋</div><p style={{ fontWeight: 500, fontSize: 14 }}>Start the conversation!</p></div>
+                      ? <div className="text-center pt-16 text-gray-400"><div className="text-4xl mb-3">👋</div><p className="font-medium text-sm">Start the conversation!</p></div>
                       : grouped.map(item =>
                           item.sep
-                            ? <div key={item.key} style={{ display: "flex", alignItems: "center", gap: 8, margin: "14px 0" }}>
-                                <div style={{ flex: 1, height: 1, background: "#e5e7eb" }} />
-                                <span style={{ fontSize: 11, color: "#9ca3af", background: "#f6f6f8", padding: "2px 10px", borderRadius: 20, border: "1px solid #e5e7eb", whiteSpace: "nowrap" }}>{item.label}</span>
-                                <div style={{ flex: 1, height: 1, background: "#e5e7eb" }} />
+                            ? <div key={item.key} className="flex items-center gap-3 my-6">
+                                <div className="flex-1 h-px bg-gray-100" />
+                                <span className="text-xs font-medium text-gray-400">{item.label}</span>
+                                <div className="flex-1 h-px bg-gray-100" />
                               </div>
                             : <Bubble key={item.key} msg={item.msg} isMe={String(item.msg.sender?._id || item.msg.sender) === me} />
                         )
                   }
-                  {isTyping && <Typing />}
+                  {isTyping && <Typing user={other} />}
                   <div ref={bottomRef} />
                 </div>
 
                 {/* Input */}
-                <div style={{ padding: "11px 14px", background: "#fff", borderTop: "1px solid #e5e7eb", flexShrink: 0 }}>
-                  <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                <div className="p-4 bg-white border-t border-gray-200 flex-shrink-0">
+                  <div className="flex items-center gap-3 max-w-4xl mx-auto">
                     <input
                       value={text}
                       onChange={e => handleInput(e.target.value)}
                       onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send() } }}
-                      placeholder={`Message ${other?.name || ""}…`}
-                      className="ci"
-                      style={{ flex: 1, padding: "10px 16px", borderRadius: 24, background: "#f3f4f6", border: "1.5px solid #e5e7eb", fontSize: 14, color: "#111827", transition: "border .2s, box-shadow .2s" }}
+                      placeholder="Type a message..."
+                      className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-5 py-3 text-sm text-gray-800 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 transition-all"
                     />
-                    <button onClick={send} disabled={!text.trim() || sending} style={{ width: 42, height: 42, borderRadius: "50%", border: "none", cursor: text.trim() && !sending ? "pointer" : "not-allowed", background: text.trim() ? "linear-gradient(135deg,#7c3aed,#4f46e5)" : "#e5e7eb", color: text.trim() ? "#fff" : "#9ca3af", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 17, transition: "all .2s" }}>
-                      ➤
+                    <button 
+                      onClick={send} 
+                      disabled={!text.trim() || sending} 
+                      className={`w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200
+                        ${text.trim() && !sending ? 'bg-purple-600 hover:bg-purple-700 text-white shadow-md hover:shadow-lg' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}
+                      `}
+                    >
+                      <FiSend size={18} className={text.trim() && !sending ? 'ml-1' : ''} />
                     </button>
                   </div>
                 </div>

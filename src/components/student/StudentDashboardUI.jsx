@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 import {
   FiGrid, FiSearch, FiBook, FiTrendingUp,
-  FiLogOut, FiMenu, FiX, FiChevronRight, FiBell, FiMessageSquare
+  FiLogOut, FiMenu, FiX, FiChevronRight, FiBell, FiMessageSquare, FiBookOpen
 } from "react-icons/fi"
 import ChatTab from "../../components/chat/ChatTab"
 import socket from "../../services/socket"
@@ -13,11 +13,13 @@ import DashboardTab from "./tabs/DashboardTab"
 import SessionsTab from "./tabs/SessionsTab"
 import ProgressTab from "./tabs/ProgressTab"
 import TutorsTab from "./tabs/TutorsTab"
+import MySubjectsTab from "./tabs/MySubjectsTab"
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: FiGrid },
   { id: "tutors", label: "Browse Tutors", icon: FiSearch },
   { id: "sessions", label: "My Sessions", icon: FiBook },
+  { id: "subjects", label: "My Subjects", icon: FiBookOpen },
   { id: "messages", label: "Messages", icon: FiMessageSquare },
   { id: "progress", label: "My Progress", icon: FiTrendingUp },
 ]
@@ -202,6 +204,7 @@ export default function StudentDashboardUI() {
             {activeTab === "dashboard" && <DashboardTab />}
             {activeTab === "tutors" && <TutorsTab />}
             {activeTab === "sessions" && <SessionsTab />}
+            {activeTab === "subjects" && <MySubjectsTab />}
             {activeTab === "messages" && <ChatTab />}
             {activeTab === "progress" && <ProgressTab />}
           </div>

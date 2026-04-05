@@ -40,6 +40,8 @@ import CookiePolicy from "./pages/legal/DataCookies";
 import TutorAgreementPage from "./pages/legal/TutorAgreement";
 import InstitutionAgreement from "./pages/legal/InstitutionAgreement";
 import StudentProfilePage from "./pages/professor/StudentProfilePage";
+import ProfessorApply from "./pages/professor/ProfessorApply";
+import ProfessorPaymentPage from "./pages/payment/ProfessorPaymentPage";
 
 function App() {
   return (
@@ -89,6 +91,22 @@ function App() {
             element={
               <ProtectedRoute role="professor">
                 <ProfessorDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/professor/apply"
+            element={
+              <ProtectedRoute role="professor">
+                <ProfessorApply />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/professor/payment"
+            element={
+              <ProtectedRoute role="professor">
+                <ProfessorPaymentPage />
               </ProtectedRoute>
             }
           />
