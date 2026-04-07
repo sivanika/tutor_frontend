@@ -56,12 +56,18 @@ export default function ProfessorDashboard() {
       socket.connect()
     }
 
-    const onNewMsg = () => {
+    const onNewMsg = (msg) => {
+      console.log("📨 Dashboard received newMessage:", msg);
+      // If we are NOT on the messages tab, show notification
       if (activeTabRef.current !== "messages") {
-        setChatUnread((n) => n + 1)
+        setChatUnread((n) => n + 1);
+        toast.success(`New message from ${msg.sender?.name || "Student"}`, {
+          icon: "💬",
+          duration: 4000,
+        });
       }
-    }
-    socket.on("newMessageBadge", onNewMsg)
+    };
+    socket.on("newMessage", onNewMsg);
 
     return () => {
       socket.off("connect", onConnect)

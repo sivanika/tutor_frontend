@@ -195,22 +195,26 @@ export default function ChatTab({ preOpenUserId = null }) {
 
   /* ─── socket listeners ─── */
   useEffect(() => {
-    if (!me) return
+    if (!me) return;
 
+    // If socket isn't connected, the dashboard will handle it. 
+    // We just ensure we are listening.
     const registerRoom = () => {
-      socket.emit("joinUser", { userId: me })
+      if (me) socket.emit("joinUser", { userId: me });
     }
 
-    if (!socket.connected) socket.connect()
-    if (socket.connected) registerRoom()
-    socket.on("connect", registerRoom)
+    if (socket.connected) registerRoom();
+    socket.on("connect", registerRoom);
 
     const onNewMessage = (msg) => {
+      console.log("📨 ChatTab received newMessage:", msg);
       const convId  = String(msg.conversationId || msg.conversation)
       const sender  = String(msg.sender?._id || msg.sender)
       const cur     = activeRef.current
 
+      // 1. Update Message List (if active)
       if (cur && String(cur._id) === convId) {
+        console.log("✅ Message belongs to active conversation. Updating msgs state.");
         setMsgs(prev => {
           if (msg._id && prev.some(m => String(m._id) === String(msg._id))) return prev
           const optIdx = prev.findIndex(m =>
@@ -225,19 +229,32 @@ export default function ChatTab({ preOpenUserId = null }) {
           socket.emit("markRead", { conversationId: convId, userId: me, senderId: sender })
           API.put(`/conversations/${convId}/read`).catch(() => {})
         }
-
-        setConvs(prev => prev.map(c => String(c._id) === convId
-          ? { ...c, unreadCount: 0, lastMessage: { text: msg.text, createdAt: msg.createdAt } }
-          : c
-        ))
-      } else {
-        if (sender !== me) {
-          setConvs(prev => prev.map(c => String(c._id) === convId
-            ? { ...c, unreadCount: (c.unreadCount || 0) + 1, lastMessage: { text: msg.text, createdAt: msg.createdAt } }
-            : c
-          ))
-        }
       }
+
+      // 2. Update Conversations List (Sidebar)
+      setConvs(prev => {
+        const idx = prev.findIndex(c => String(c._id) === convId);
+        if (idx === -1) {
+          // If it's a new conversation not in list, we might need a refresh or just fetch it
+          console.log("ℹ️ Conversation not in list, skipping sidebar update.");
+          return prev;
+        }
+        
+        const updated = [...prev];
+        const conv = updated[idx];
+        
+        // Update fields
+        const isCurrentActive = cur && String(cur._id) === convId;
+        updated[idx] = {
+          ...conv,
+          lastMessage: { text: msg.text, createdAt: msg.createdAt },
+          unreadCount: isCurrentActive ? 0 : (conv.unreadCount || 0) + (sender !== me ? 1 : 0)
+        };
+        
+        // Move to top
+        const item = updated.splice(idx, 1)[0];
+        return [item, ...updated];
+      });
     }
 
     const onTyping     = ({ conversationId }) => { if (String(conversationId) === String(activeRef.current?._id)) setIsTyping(true) }

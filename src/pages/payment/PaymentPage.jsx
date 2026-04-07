@@ -129,7 +129,13 @@ export default function PaymentPage() {
         API.get("/subscriptions/plans")
             .then((res) => {
                 const enriched = res.data
-                    .filter((p) => p.isActive && p.targetAudience !== "professor")
+                    .filter((p) => {
+                        if (!p.isActive) return false;
+                        if (returnTo === "professor") {
+                            return p.targetAudience === "professor" || p.targetAudience === "all";
+                        }
+                        return p.targetAudience !== "professor";
+                    })
                     .map(enrichPlan);
                 setAllPlans(enriched);
 

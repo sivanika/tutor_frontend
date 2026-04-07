@@ -52,12 +52,17 @@ export default function StudentDashboardUI() {
       socket.connect()
     }
 
-    const onNewMsg = () => {
+    const onNewMsg = (msg) => {
+      console.log("📨 Student Dashboard received newMessage:", msg);
       if (activeTabRef.current !== "messages") {
-        setChatUnread((n) => n + 1)
+        setChatUnread((n) => n + 1);
+        toast.success(`New message from ${msg.sender?.name || "Professor"}`, {
+          icon: "💬",
+          duration: 4000,
+        });
       }
-    }
-    socket.on("newMessageBadge", onNewMsg)
+    };
+    socket.on("newMessage", onNewMsg);
 
     return () => {
       socket.off("connect", onConnect)

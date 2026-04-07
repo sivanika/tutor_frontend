@@ -107,6 +107,7 @@ export default function MySubjectsTab() {
   const [toasts,         setToasts]         = useState([])
   const [showAddModal,   setShowAddModal]   = useState(false)
   const [subjectSearch,  setSubjectSearch]  = useState("")
+  const [isCustomMode,   setIsCustomMode]   = useState(false)
   const [reqModal,       setReqModal]       = useState(null)   // { subjectId, mode:"create"|"edit" }
   const [reqForm,        setReqForm]        = useState({ topic:"", description:"", time:"", budget:"" })
   const [reqModal2Show,  setReqModal2Show]  = useState(null)   // subject id for professor requests modal
@@ -190,6 +191,16 @@ export default function MySubjectsTab() {
     } catch (err) {
       toast(err.response?.data?.message || "Failed to add subject", "error")
     }
+  }
+
+  const addCustomSubject = async (name) => {
+    if (!name.trim()) return
+    const sub = {
+      id: "custom-" + name.toLowerCase().trim().replace(/\s+/g, '-'),
+      name: name.trim(),
+      icon: "📚" // Default icon for custom subjects
+    }
+    await addSubject(sub)
   }
 
   const openReqModal = (subjectId, mode) => {
@@ -356,7 +367,7 @@ export default function MySubjectsTab() {
 
       {/* ADD SUBJECT MODAL */}
       {showAddModal && (
-        <ModalBackdrop onClose={() => { setShowAddModal(false); setSubjectSearch("") }}>
+        <ModalBackdrop onClose={() => { setShowAddModal(false); setSubjectSearch(""); setIsCustomMode(false); }}>
           <div className="ms-modal" style={{ background:"#fff", borderRadius:22, padding:28, width:"100%", maxWidth:500, maxHeight:"80vh", display:"flex", flexDirection:"column", gap:16 }}>
             <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
               <div>
@@ -366,35 +377,81 @@ export default function MySubjectsTab() {
               <CloseBtn onClose={() => { setShowAddModal(false); setSubjectSearch("") }} />
             </div>
 
-            {/* search */}
-            <div style={{ position:"relative" }}>
-              <FiSearch style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)", color:"#9ca3af" }} size={15}/>
-              <input
-                autoFocus
-                placeholder="Search subjects…"
-                value={subjectSearch}
-                onChange={e => setSubjectSearch(e.target.value)}
-                style={{ width:"100%", padding:"9px 12px 9px 36px", borderRadius:12, border:"1.5px solid #e2e8f0", fontSize:13, outline:"none", boxSizing:"border-box", fontFamily:"inherit" }}
-              />
-            </div>
+            {!isCustomMode ? (
+              <>
+                {/* search */}
+                <div style={{ position:"relative" }}>
+                  <FiSearch style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)", color:"#9ca3af" }} size={15}/>
+                  <input
+                    autoFocus
+                    placeholder="Search subjects…"
+                    value={subjectSearch}
+                    onChange={e => setSubjectSearch(e.target.value)}
+                    style={{ width:"100%", padding:"9px 12px 9px 36px", borderRadius:12, border:"1.5px solid #e2e8f0", fontSize:13, outline:"none", boxSizing:"border-box", fontFamily:"inherit" }}
+                  />
+                </div>
 
-            {/* pill grid */}
-            <div style={{ display:"flex", flexWrap:"wrap", gap:10, overflowY:"auto", maxHeight:340, padding:2 }}>
-              {searchedPool.length === 0 ? (
-                <p style={{ color:"#9ca3af", fontSize:13, padding:"12px 0" }}>No matches found.</p>
-              ) : searchedPool.map(s => (
-                <button
-                  key={s.id}
-                  onClick={() => addSubject(s)}
-                  className="ms-pill"
-                  style={{ display:"flex", alignItems:"center", gap:7, padding:"8px 16px", borderRadius:999, border:"1.5px solid #e2e8f0", background:"#f8fafc", cursor:"pointer", fontSize:13, fontWeight:600, color:"#374151", transition:"all .18s" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor="#6A11CB"; e.currentTarget.style.color="#6A11CB"; e.currentTarget.style.background="#f5f3ff" }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor="#e2e8f0"; e.currentTarget.style.color="#374151"; e.currentTarget.style.background="#f8fafc" }}
-                >
-                  <span style={{ fontSize:16 }}>{s.icon}</span> {s.name}
-                </button>
-              ))}
-            </div>
+                {/* pill grid */}
+                <div style={{ display:"flex", flexWrap:"wrap", gap:10, overflowY:"auto", maxHeight:340, padding:2 }}>
+                  {searchedPool.length === 0 ? (
+                    <div style={{ width:"100%", textAlign:"center", padding:"30px 10px", background:"#f8fafc", borderRadius:16, border:"1px solid #e2e8f0" }}>
+                      <p style={{ color:"#9ca3af", fontSize:13, margin:"0 0 16px" }}>No matching standard subjects found.</p>
+                      <button
+                        onClick={() => setIsCustomMode(true)}
+                        style={{ ...btnPrimary, marginInline:"auto", padding:"8px 20px" }}
+                      >
+                        <FiPlus size={14}/> Add Custom Subject
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      {searchedPool.map(s => (
+                        <button
+                          key={s.id}
+                          onClick={() => addSubject(s)}
+                          className="ms-pill"
+                          style={{ display:"flex", alignItems:"center", gap:7, padding:"8px 16px", borderRadius:999, border:"1.5px solid #e2e8f0", background:"#f8fafc", cursor:"pointer", fontSize:13, fontWeight:600, color:"#374151", transition:"all .18s" }}
+                          onMouseEnter={e => { e.currentTarget.style.borderColor="#6A11CB"; e.currentTarget.style.color="#6A11CB"; e.currentTarget.style.background="#f5f3ff" }}
+                          onMouseLeave={e => { e.currentTarget.style.borderColor="#e2e8f0"; e.currentTarget.style.color="#374151"; e.currentTarget.style.background="#f8fafc" }}
+                        >
+                          <span style={{ fontSize:16 }}>{s.icon}</span> {s.name}
+                        </button>
+                      ))}
+                      {/* Explicit "Other" button */}
+                      <button
+                        onClick={() => setIsCustomMode(true)}
+                        style={{ display:"flex", alignItems:"center", gap:7, padding:"8px 16px", borderRadius:999, border:"1.5px solid #6A11CB", background:"#fff", color:"#6A11CB", cursor:"pointer", fontSize:13, fontWeight:700 }}
+                      >
+                        <FiPlus size={14}/> Other / Custom
+                      </button>
+                    </>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="ms-fade" style={{ display:"flex", flexDirection:"column", gap:16 }}>
+                <div>
+                  <label style={{ fontSize:12, fontWeight:700, color:"#374151", display:"block", marginBottom:8 }}>Subject Name</label>
+                  <input
+                    autoFocus
+                    placeholder="Enter your subject name…"
+                    value={subjectSearch}
+                    onChange={e => setSubjectSearch(e.target.value)}
+                    style={{ ...inputStyle, width:"100%" }}
+                  />
+                </div>
+                <div style={{ display:"flex", gap:10 }}>
+                  <button onClick={() => setIsCustomMode(false)} style={{ ...btnSecondary, flex:1 }}>Back</button>
+                  <button 
+                    onClick={() => addCustomSubject(subjectSearch)} 
+                    style={{ ...btnPrimary, flex:2 }}
+                    disabled={!subjectSearch.trim()}
+                  >
+                    Add Subject
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </ModalBackdrop>
       )}

@@ -16,7 +16,8 @@ export default function AdminSubscriptions() {
     period: "monthly",
     maxSessions: "",
     maxProfileViews: "",
-    isActive: true
+    isActive: true,
+    targetAudience: "student"
   })
 
   const fetchPlans = async () => {
@@ -41,11 +42,12 @@ export default function AdminSubscriptions() {
         ...plan,
         maxSessions: plan.maxSessions === null ? "" : plan.maxSessions,
         maxProfileViews: plan.maxProfileViews === null ? "" : plan.maxProfileViews,
+        targetAudience: plan.targetAudience || "student"
       })
     } else {
       setFormData({
         _id: null, name: "", description: "", price: 0, period: "monthly",
-        maxSessions: "", maxProfileViews: "", isActive: true
+        maxSessions: "", maxProfileViews: "", isActive: true, targetAudience: "student"
       })
     }
     setShowModal(true)
@@ -125,6 +127,10 @@ export default function AdminSubscriptions() {
                   <span className="font-semibold text-gray-800">{plan.maxProfileViews === null ? "Unlimited" : plan.maxProfileViews}</span>
                 </div>
                 <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Target Audience:</span>
+                  <span className="font-semibold text-[#6A11CB] uppercase tracking-wide text-xs mt-0.5">{plan.targetAudience || "STUDENT"}</span>
+                </div>
+                <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Status:</span>
                   <span className={`font-semibold flex items-center gap-1 ${plan.isActive ? 'text-green-600' : 'text-red-500'}`}>
                     {plan.isActive ? <FiCheckCircle /> : <FiXCircle />} {plan.isActive ? "Active" : "Disabled"}
@@ -188,12 +194,21 @@ export default function AdminSubscriptions() {
                   <label className="block text-xs font-semibold text-gray-600 mb-1">Period (e.g., 'monthly', '7 days')</label>
                   <input type="text" value={formData.period} onChange={e => setFormData({...formData, period: e.target.value})} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#6A11CB] outline-none" />
                 </div>
-                <div className="flex items-center mt-6">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" checked={formData.isActive} onChange={e => setFormData({...formData, isActive: e.target.checked})} className="w-5 h-5 accent-[#6A11CB]" />
-                    <span className="text-sm font-semibold text-gray-700">Plan is Active</span>
-                  </label>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">Target Audience</label>
+                  <select value={formData.targetAudience} onChange={e => setFormData({...formData, targetAudience: e.target.value})} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#6A11CB] outline-none">
+                    <option value="student">Student</option>
+                    <option value="professor">Professor</option>
+                    <option value="all">All</option>
+                  </select>
                 </div>
+              </div>
+
+              <div className="flex items-center mt-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" checked={formData.isActive} onChange={e => setFormData({...formData, isActive: e.target.checked})} className="w-5 h-5 accent-[#6A11CB]" />
+                  <span className="text-sm font-semibold text-gray-700">Plan is Active</span>
+                </label>
               </div>
 
               <div className="pt-4 border-t border-gray-100 flex justify-end gap-3">

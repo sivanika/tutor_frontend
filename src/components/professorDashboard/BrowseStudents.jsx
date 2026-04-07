@@ -12,6 +12,7 @@ export default function BrowseStudents() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({ subject: "", level: "" });
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [isSubjSearchMode, setIsSubjSearchMode] = useState(false);
   const navigate = useNavigate();
 
   const fetchStudents = async () => {
@@ -53,13 +54,24 @@ export default function BrowseStudents() {
     // Filter by subject/specializations
     if (filters.subject) {
       let hasSubject = false;
+      const subTerm = filters.subject.toLowerCase();
+
+      // Check in specializations (static)
       if (Array.isArray(s.specializations)) {
         hasSubject = s.specializations.some((subj) => 
-          subj.toLowerCase().includes(filters.subject.toLowerCase())
+          subj.toLowerCase().includes(subTerm)
         );
       } else if (typeof s.specializations === "string") {
-        hasSubject = s.specializations.toLowerCase().includes(filters.subject.toLowerCase());
+        hasSubject = s.specializations.toLowerCase().includes(subTerm);
       }
+
+      // Check in subjectRequests (live)
+      if (!hasSubject && Array.isArray(s.subjectRequests)) {
+        hasSubject = s.subjectRequests.some((req) => 
+          req.name.toLowerCase().includes(subTerm)
+        );
+      }
+
       if (!hasSubject) return false;
     }
     
@@ -126,18 +138,53 @@ export default function BrowseStudents() {
             placeholder="Search by name..."
             className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4E9B]/40 bg-gray-50 focus:bg-white transition-all shadow-sm"
           />
-          <select
-            className="w-full border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#FF4E9B]/40 focus:outline-none transition shadow-sm"
-            value={filters.subject}
-            onChange={(e) => setFilters({ ...filters, subject: e.target.value })}
-          >
-            <option value="">All Subjects</option>
-            <option value="math">Math</option>
-            <option value="science">Science</option>
-            <option value="physics">Physics</option>
-            <option value="english">English</option>
-            <option value="history">History</option>
-          </select>
+          {!isSubjSearchMode ? (
+            <div className="relative group/subj">
+              <select
+                className="w-full border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#FF4E9B]/40 focus:outline-none transition shadow-sm appearance-none pr-10"
+                value={filters.subject}
+                onChange={(e) => {
+                  if (e.target.value === "__OTHER__") {
+                    setIsSubjSearchMode(true);
+                    setFilters({ ...filters, subject: "" });
+                  } else {
+                    setFilters({ ...filters, subject: e.target.value });
+                  }
+                }}
+              >
+                <option value="">All Subjects</option>
+                <option value="math">Math</option>
+                <option value="science">Science</option>
+                <option value="physics">Physics</option>
+                <option value="english">English</option>
+                <option value="history">History</option>
+                <option value="__OTHER__">🔍 Other / Specific Subject...</option>
+              </select>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 group-hover/subj:text-[#FF4E9B] transition-colors">
+                <FiZap size={14} />
+              </div>
+            </div>
+          ) : (
+            <div className="relative">
+              <input
+                autoFocus
+                value={filters.subject}
+                onChange={(e) => setFilters({ ...filters, subject: e.target.value })}
+                placeholder="Type specific subject..."
+                className="w-full px-4 py-2.5 text-sm rounded-xl border border-[#FF4E9B]/40 focus:outline-none focus:ring-2 focus:ring-[#FF4E9B]/40 bg-white transition-all shadow-sm pr-10"
+              />
+              <button
+                onClick={() => {
+                  setIsSubjSearchMode(false);
+                  setFilters({ ...filters, subject: "" });
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors"
+                title="Back to list"
+              >
+                <FiX size={16} />
+              </button>
+            </div>
+          )}
           <select
             className="w-full border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#FF4E9B]/40 focus:outline-none transition shadow-sm"
             value={filters.level}
