@@ -42,7 +42,6 @@ import InstitutionAgreement from "./pages/legal/InstitutionAgreement";
 import StudentProfilePage from "./pages/professor/StudentProfilePage";
 import ProfessorApply from "./pages/professor/ProfessorApply";
 import ProfessorPaymentPage from "./pages/payment/ProfessorPaymentPage";
-
 function App() {
   return (
     <BrowserRouter>

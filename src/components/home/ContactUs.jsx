@@ -9,12 +9,35 @@ export default function ContactUs() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    
+    try {
+      const res = await fetch("http://localhost:5000/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: "support@tutorhours.com", // You can change this to your desired receiving email
+          subject: formData.subject || "Contact Us Inquiry",
+          message: `Name: ${formData.name}<br/>Email: ${formData.email}<br/><br/>Message:<br/>${formData.message}`,
+        }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      if (data.success) {
+        toast.success("Message sent successfully! We'll get back to you soon.");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        toast.error("Failed to send message.");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while sending the email.");
+    } finally {
       setLoading(false);
-      toast.success("Message sent successfully! We'll get back to you soon.");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    }, 1500);
+    }
   };
 
   return (
