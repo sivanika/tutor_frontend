@@ -4,8 +4,8 @@ export default function ProfessorPaymentStep() {
     const navigate = useNavigate();
 
     const handleActivate = () => {
-        // Professors use pay_per_session (free listing, 18% commission)
-        navigate("/payment?plan=pay_per_session&returnTo=professor");
+        // Redirect to the new dedicated professor payment page
+        navigate("/professor/payment");
     };
 
     return (

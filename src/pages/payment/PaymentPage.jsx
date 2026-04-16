@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import API from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
+import socket from "../../services/socket";
+import { toast } from "react-hot-toast";
 
 /* ─────────────────────────────────────────────────────────────
    PAYMENT METHOD ICONS
@@ -69,35 +71,53 @@ const loadRazorpayScript = () =>
 ───────────────────────────────────────────────────────────── */
 function enrichPlan(found) {
     const isFree = found.price === 0;
-    const isPremium =
-        found.price > 10000 || found.name.toLowerCase().includes("premium");
-    const isBasic = found.name.toLowerCase().includes("basic");
+    const isPro = found.price > 10000; // Rs 499 is 49900 paise
+    const isPremium = found.price > 0 && !isPro;
+
+    let features = [
+        "View professor profiles",
+        "Community & tech support",
+        "Full dashboard access",
+    ];
+
+    if (isFree) {
+        features = [
+            "Up to 2 session bookings",
+            "View 5 professor profiles",
+            ...features
+        ];
+    } else if (isPremium) {
+        features = [
+            "Up to 10 session bookings",
+            "View 30 professor profiles",
+            "Priority booking access",
+            ...features
+        ];
+    } else if (isPro) {
+        features = [
+            "Unlimited session bookings",
+            "Unlimited profile views",
+            "VIP Priority booking",
+            "Direct student support",
+            ...features
+        ];
+    }
 
     return {
         ...found,
         planId: found._id,
         displayPrice: isFree ? "₹0" : `₹${found.price / 100}`,
         period: found.period === "monthly" ? "/month" : `/${found.period}`,
-        color: isPremium ? "#FF4E9B" : isBasic ? "#2575FC" : "#6A11CB",
-        gradient: isPremium
+        color: isPro ? "#FF4E9B" : isPremium ? "#2575FC" : "#6A11CB",
+        gradient: isPro
             ? "linear-gradient(135deg, #FF4E9B, #6A11CB)"
-            : isBasic
+            : isPremium
             ? "linear-gradient(135deg, #2575FC, #6A11CB)"
             : "linear-gradient(135deg, #6A11CB, #2575FC)",
         tagline: found.description || found.name,
         requiresPayment: !isFree,
-        badge: isPremium ? "Most Popular" : isBasic ? "Great Value" : null,
-        features: [
-            found.maxSessions === null
-                ? "Unlimited session bookings"
-                : `Up to ${found.maxSessions} session bookings`,
-            found.maxProfileViews === null
-                ? "View all professor profiles"
-                : `View up to ${found.maxProfileViews} professor profiles`,
-            found.priorityBooking ? "Priority booking" : "Standard booking access",
-            "Full dashboard access",
-            "Community & tech support",
-        ],
+        badge: isPro ? "Professional" : isPremium ? "Most Popular" : "Starter",
+        features,
     };
 }
 
@@ -110,7 +130,6 @@ export default function PaymentPage() {
     const { user } = useAuth();
 
     const planParam = searchParams.get("plan");
-    const returnTo = searchParams.get("returnTo") || "student";
 
     const [allPlans, setAllPlans] = useState([]);
     const [selectedPlan, setSelectedPlan] = useState(null);
@@ -131,9 +150,6 @@ export default function PaymentPage() {
                 const enriched = res.data
                     .filter((p) => {
                         if (!p.isActive) return false;
-                        if (returnTo === "professor") {
-                            return p.targetAudience === "professor" || p.targetAudience === "all";
-                        }
                         return p.targetAudience !== "professor";
                     })
                     .map(enrichPlan);
@@ -158,6 +174,31 @@ export default function PaymentPage() {
             .catch(() => {})
             .finally(() => setPlansLoading(false));
     }, [planParam]);
+
+    /* ── Realtime: Listen for payment confirmation ── */
+    useEffect(() => {
+        const onPaymentVerified = (data) => {
+            console.log("⚡ Realtime Payment Verified:", data);
+            if (data.success) {
+                setPaymentId(data.paymentId);
+                setSuccess(true);
+                setLoading(false);
+                toast.success("Payment confirmed in realtime! 🎉");
+                setTimeout(() => redirectAfterPayment(), 3000);
+            }
+        };
+
+        socket.on("payment_verified", onPaymentVerified);
+        
+        // Ensure socket is connected if not already
+        if (!socket.connected) {
+            socket.connect();
+        }
+
+        return () => {
+            socket.off("payment_verified", onPaymentVerified);
+        };
+    }, []);
 
     /* ── Get user info for Razorpay prefill ── */
     const getUserInfo = () => {
@@ -293,11 +334,7 @@ export default function PaymentPage() {
     };
 
     const redirectAfterPayment = () => {
-        if (returnTo === "professor") {
-            navigate("/verification-pending");
-        } else {
-            navigate("/student/dashboard");
-        }
+        navigate("/student/dashboard");
     };
 
     /* ─────────── LOADING SKELETON ─────────── */
@@ -360,9 +397,7 @@ export default function PaymentPage() {
                         ))}
                     </div>
                     <p className="text-[#6b7280] text-sm animate-pulse">
-                        {returnTo === "professor"
-                            ? "Redirecting to verification page..."
-                            : "Redirecting to your dashboard..."}
+                        Redirecting to your dashboard...
                     </p>
                 </div>
                 <style>{`
@@ -408,12 +443,6 @@ export default function PaymentPage() {
                         <p className="text-[#a78bfa] text-sm">
                             Select the plan that fits you best. You can upgrade anytime.
                         </p>
-                        {returnTo === "professor" && (
-                            <div className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-white/5 border border-white/10 text-white/60">
-                                <span>🇮🇳</span>
-                                <span>Prices shown in <span className="text-white font-bold">Indian Rupees (₹)</span> — powered by Razorpay</span>
-                            </div>
-                        )}
                     </div>
 
                     {/* PLAN CARDS */}
