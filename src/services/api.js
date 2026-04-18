@@ -13,8 +13,19 @@ API.interceptors.response.use(
       // Clear all auth data
       localStorage.removeItem("userInfo");
       localStorage.removeItem("token");
+      // Define public paths that shouldn't auto-redirect
+      const isPublicPath = [
+        "/login",
+        "/",
+        "/register",
+        "/register/student",
+        "/register/professor",
+        "/forgot-password",
+        "/admin/login"
+      ].includes(window.location.pathname) || window.location.pathname.startsWith("/reset-password") || window.location.pathname.startsWith("/tutor/");
+
       // Redirect to login (hard reload clears all component state)
-      if (window.location.pathname !== "/login" && window.location.pathname !== "/") {
+      if (!isPublicPath) {
         window.location.href = "/login";
       }
     }
