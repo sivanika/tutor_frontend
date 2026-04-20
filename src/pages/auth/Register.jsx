@@ -19,7 +19,7 @@ export default function Register() {
       {/* Card */}
       <div
         className="
-          w-full max-w-md p-10 rounded-2xl text-center
+          w-full max-w-md p-6 md:p-10 rounded-2xl text-center
           bg-white/95 dark:bg-[#1a1035]/95
           backdrop-blur-2xl
           border border-white/50 dark:border-[#6A11CB]/20

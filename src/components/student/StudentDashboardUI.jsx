@@ -204,7 +204,7 @@ export default function StudentDashboardUI() {
         </header>
 
         {/* Content */}
-        <main className={`flex-1 overflow-y-auto ${activeTab === "messages" ? "p-4" : "p-6"}`}>
+        <main className={`flex-1 overflow-y-auto ${activeTab === "messages" ? "p-4" : "p-4 md:p-6"}`}>
           <div key={activeTab} className={`animate-fadeIn ${activeTab === "messages" ? "h-full" : ""}`}>
             {activeTab === "dashboard" && <DashboardTab />}
             {activeTab === "tutors" && <TutorsTab />}

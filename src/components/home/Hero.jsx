@@ -16,7 +16,7 @@ export default function Hero() {
         style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.3) 1px,transparent 1px)", backgroundSize: "48px 48px" }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 py-28 md:py-36 relative z-10 grid md:grid-cols-2 gap-16 items-center w-full">
+      <div className="max-w-7xl mx-auto px-6 py-20 md:py-36 relative z-10 grid md:grid-cols-2 gap-12 md:gap-16 items-center w-full">
 
         {/* ── LEFT ── */}
         <div className="space-y-8 animate-slideUp">
@@ -28,7 +28,7 @@ export default function Hero() {
           </div>
 
           {/* Heading */}
-          <h1 className="text-5xl md:text-7xl font-black leading-[1.05] tracking-tight text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.1] md:leading-[1.05] tracking-tight text-white">
             Learn{" "}
             <span className="relative inline-block">
               Smarter.
@@ -42,7 +42,7 @@ export default function Hero() {
           </h1>
 
           {/* Subtext */}
-          <p className="text-lg md:text-xl text-white/70 max-w-xl leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-xl leading-relaxed">
             Connect with verified professors through live virtual classrooms,
             progress tracking, and personalized learning experiences —
             anywhere, anytime.

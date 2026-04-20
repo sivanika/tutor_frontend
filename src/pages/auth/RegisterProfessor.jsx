@@ -39,7 +39,7 @@ export default function RegisterProfessor() {
       <form
         onSubmit={submit}
         className="
-          w-full max-w-md p-8 rounded-2xl space-y-5
+          w-full max-w-md p-6 md:p-8 rounded-2xl space-y-5
           bg-white/95 dark:bg-[#1a1035]/95
           backdrop-blur-2xl
           border border-white/50 dark:border-[#6A11CB]/20

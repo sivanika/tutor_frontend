@@ -315,36 +315,36 @@ export default function Dashboard() {
             )}
             {sessions.slice(0, 5).map(s => (
               <div key={s._id} className="space-y-2">
-                <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition group">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${s.status === "cancelled" ? "bg-red-50" : "bg-purple-50"}`}>
-                    <FiBookOpen size={16} className={s.status === "cancelled" ? "text-red-400" : "text-[#6A11CB]"} />
+                <div className="flex items-center gap-3 md:gap-4 p-3 rounded-xl hover:bg-gray-50 transition group">
+                  <div className={`w-9 h-9 md:w-10 md:h-10 rounded-xl flex items-center justify-center shrink-0 ${s.status === "cancelled" ? "bg-red-50" : "bg-purple-50"}`}>
+                    <FiBookOpen size={14} className={s.status === "cancelled" ? "text-red-400" : "text-[#6A11CB] md:size-[16px]"} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className={`font-medium text-sm truncate ${s.status === "cancelled" ? "text-gray-400 line-through" : "text-gray-800"}`}>{s.title}</p>
-                    <p className="text-xs text-gray-400">{s.date || "No date"} · Level: {s.level}</p>
+                    <p className={`font-medium text-xs md:text-sm truncate ${s.status === "cancelled" ? "text-gray-400 line-through" : "text-gray-800"}`}>{s.title}</p>
+                    <p className="text-[10px] md:text-xs text-gray-400 truncate">{s.date || "No date"} · Level: {s.level}</p>
                   </div>
-                  <div className="flex items-center gap-1.5 shrink-0">
+                  <div className="flex items-center gap-1 md:gap-1.5 shrink-0">
                     {s.status === "cancelled" ? (
-                      <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-red-50 text-red-500">Cancelled</span>
+                      <span className="text-[10px] md:text-xs font-semibold px-2 md:px-2.5 py-0.5 md:py-1 rounded-full bg-red-50 text-red-500">Cancelled</span>
                     ) : (
                       <>
-                        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${s.students.length > 0 ? "bg-green-50 text-green-600" : "bg-gray-100 text-gray-500"}`}>
-                          {s.students.length > 0 ? `${s.students.length} enrolled` : "Empty"}
+                        <span className={`text-[10px] md:text-xs font-semibold px-2 md:px-2.5 py-0.5 md:py-1 rounded-full ${s.students.length > 0 ? "bg-green-50 text-green-600" : "bg-gray-100 text-gray-500"}`}>
+                          {s.students.length > 0 ? `${s.students.length} enr.` : "Empty"}
                         </span>
                         <button
                           onClick={() => { setRescheduleId(rescheduleId === s._id ? null : s._id); setRescDate(""); setRescTime(""); }}
-                          className="p-1.5 rounded-lg text-[#2575FC] hover:bg-blue-50 transition"
+                          className="p-1 md:p-1.5 rounded-lg text-[#2575FC] hover:bg-blue-50 transition"
                           title="Reschedule"
                         >
-                          <FiRefreshCw size={13} />
+                          <FiRefreshCw size={12} />
                         </button>
                         <button
                           onClick={() => handleCancel(s._id)}
                           disabled={actionLoading}
-                          className="p-1.5 rounded-lg text-red-400 hover:bg-red-50 transition disabled:opacity-50"
+                          className="p-1 md:p-1.5 rounded-lg text-red-400 hover:bg-red-50 transition disabled:opacity-50"
                           title="Cancel Session"
                         >
-                          <FiXCircle size={13} />
+                          <FiXCircle size={12} />
                         </button>
                       </>
                     )}

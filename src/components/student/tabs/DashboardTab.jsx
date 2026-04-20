@@ -342,22 +342,22 @@ function SessionRow({ session, status }) {
   const isUpcoming = status === "Upcoming"
   return (
     <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition group">
-      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${isUpcoming ? "bg-blue-50" : "bg-pink-50"
+      <div className={`w-9 h-9 md:w-10 md:h-10 rounded-xl flex items-center justify-center shrink-0 ${isUpcoming ? "bg-blue-50" : "bg-pink-50"
         }`}>
         {isUpcoming
-          ? <FiVideo size={16} className="text-[#2575FC]" />
-          : <FiCheckCircle size={16} className="text-[#FF4E9B]" />
+          ? <FiVideo size={14} className="text-[#2575FC] md:size-[16px]" />
+          : <FiCheckCircle size={14} className="text-[#FF4E9B] md:size-[16px]" />
         }
       </div>
       <div className="flex-1 min-w-0">
-        <p className="font-medium text-gray-800 text-sm truncate">{session.title}</p>
-        <p className="text-xs text-gray-400 truncate">
+        <p className="font-medium text-gray-800 text-xs md:text-sm truncate">{session.title}</p>
+        <p className="text-[10px] md:text-xs text-gray-400 truncate">
           {session.professor?.name || "Professor"} ·{" "}
           {session.date} {session.time}
         </p>
       </div>
-      <div className="flex items-center gap-2 shrink-0">
-        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${isUpcoming
+      <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+        <span className={`text-[10px] md:text-xs font-semibold px-2 md:px-2.5 py-0.5 md:py-1 rounded-full ${isUpcoming
           ? "bg-blue-50 text-[#2575FC]"
           : "bg-pink-50 text-[#FF4E9B]"
           }`}>
@@ -368,9 +368,9 @@ function SessionRow({ session, status }) {
             href={session.meetLink}
             target="_blank"
             rel="noreferrer"
-            className="p-1.5 rounded-lg bg-gray-100 hover:bg-purple-100 text-gray-400 hover:text-[#6A11CB] transition"
+            className="p-1 px-1.5 rounded-lg bg-gray-100 hover:bg-purple-100 text-gray-400 hover:text-[#6A11CB] transition"
           >
-            <FiExternalLink size={13} />
+            <FiExternalLink size={12} />
           </a>
         )}
       </div>

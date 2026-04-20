@@ -8,7 +8,7 @@ export default function PaymentStep() {
     const [plans, setPlans] = useState([]);
 
     useEffect(() => {
-        API.get("/subscriptions/plans")
+        API.get("/subscriptions/plans?targetAudience=student")
             .then(res => {
                 const enhanced = res.data.map((p) => {
                     const isPremium = p.price > 10000 || p.name.toLowerCase().includes("premium");

@@ -65,7 +65,7 @@ export default function TutorCards() {
           <p className="text-sm font-semibold uppercase tracking-widest text-[#6A11CB] dark:text-[#a78bfa] mb-2">
             Our educators
           </p>
-          <h2 className="text-4xl font-black text-[#1a0e33] dark:text-white">
+          <h2 className="text-3xl md:text-4xl font-black text-[#1a0e33] dark:text-white">
             Recommended <span className="grad-text">Tutors</span>
           </h2>
         </div>
@@ -127,7 +127,7 @@ export default function TutorCards() {
             {/* Scroll track */}
             <div
               ref={trackRef}
-              className="flex gap-8 overflow-x-auto pb-6 px-8 md:px-16 scrollbar-hide"
+              className="flex gap-6 md:gap-8 overflow-x-auto pb-6 px-6 md:px-16 scrollbar-hide"
               style={{
                 scrollSnapType: "x mandatory",
                 WebkitOverflowScrolling: "touch",
@@ -159,8 +159,8 @@ export default function TutorCards() {
                     key={t._id}
                     data-card
                     className="
-                      group relative p-7 rounded-2xl overflow-hidden flex-shrink-0
-                      w-[85vw] sm:w-72 md:w-80
+                      group relative p-6 md:p-7 rounded-2xl overflow-hidden flex-shrink-0
+                      w-[82vw] sm:w-72 md:w-80
                       bg-white dark:bg-[#160d2e]
                       border border-[#6A11CB]/10 dark:border-[#6A11CB]/20
                       shadow-md dark:shadow-[#6A11CB]/05

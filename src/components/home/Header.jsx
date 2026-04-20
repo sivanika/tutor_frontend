@@ -142,6 +142,7 @@ export default function Header() {
             <button
               onClick={() => { setShowRegister(true); setMenuOpen(false); }}
               className="
+              hidden sm:block
               px-5 py-2 rounded-xl text-sm font-semibold text-white
               grad-bg
               shadow-lg shadow-[#6A11CB]/30

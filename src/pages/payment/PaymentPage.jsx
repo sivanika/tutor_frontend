@@ -145,13 +145,11 @@ export default function PaymentPage() {
     /* ── Load all plans on mount ── */
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        API.get("/subscriptions/plans")
+        const audience = user?.role || "student";
+        API.get(`/subscriptions/plans?targetAudience=${audience}`)
             .then((res) => {
                 const enriched = res.data
-                    .filter((p) => {
-                        if (!p.isActive) return false;
-                        return p.targetAudience !== "professor";
-                    })
+                    .filter((p) => p.isActive)
                     .map(enrichPlan);
                 setAllPlans(enriched);
 

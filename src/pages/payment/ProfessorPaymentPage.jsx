@@ -117,10 +117,10 @@ export default function ProfessorPaymentPage() {
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        API.get("/subscriptions/plans")
+        API.get("/subscriptions/plans?targetAudience=professor")
             .then((res) => {
                 const enriched = res.data
-                    .filter((p) => p.isActive && (p.targetAudience === "professor" || p.targetAudience === "all"))
+                    .filter((p) => p.isActive)
                     .map(enrichPlan);
                 setAllPlans(enriched);
                 setSelectedPlan(enriched[0] || null);

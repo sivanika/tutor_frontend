@@ -9,7 +9,8 @@ export default function Pricing() {
   const [plans, setPlans] = useState([]);
 
   useEffect(() => {
-    API.get("/subscriptions/plans")
+    const audience = user?.role || "student";
+    API.get(`/subscriptions/plans?targetAudience=${audience}`)
       .then(res => {
         const enhanced = res.data.map((p) => {
           // Identify plan tiers by price or name 
@@ -82,7 +83,7 @@ export default function Pricing() {
                 border transition-all duration-300
                 hover:-translate-y-2
                 ${plan.highlight
-                  ? "bg-[#f5f3ff] dark:bg-[#160d2e] border-[#6A11CB]/30 dark:border-[#6A11CB]/40 shadow-2xl shadow-[#6A11CB]/20 scale-105"
+                  ? "bg-[#f5f3ff] dark:bg-[#160d2e] border-[#6A11CB]/30 dark:border-[#6A11CB]/40 shadow-2xl shadow-[#6A11CB]/20 md:scale-105"
                   : "bg-white dark:bg-[#160d2e] border-[#6A11CB]/10 dark:border-[#6A11CB]/20 shadow-md hover:shadow-xl hover:shadow-[#6A11CB]/10"
                 }
               `}

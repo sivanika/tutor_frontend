@@ -39,7 +39,7 @@ export default function RegisterStudent() {
       <form
         onSubmit={submit}
         className="
-          w-full max-w-md p-8 rounded-2xl space-y-5
+          w-full max-w-md p-6 md:p-8 rounded-2xl space-y-5
           bg-white/95 dark:bg-[#1a1035]/95
           backdrop-blur-2xl
           border border-white/50 dark:border-[#6A11CB]/20
@@ -56,7 +56,7 @@ export default function RegisterStudent() {
 
           {/* Show selected plan badge */}
           {plan && (
-            <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6A11CB]/10 text-[#6A11CB] text-xs font-semibold">
+            <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6A11CB]/10 text-[#6A11CB] text-[10px] sm:text-xs font-semibold">
               <span>🎯</span>
               {plan === "premium" ? "Premium Plan selected"
                 : plan === "free_trial" ? "Free Trial selected"

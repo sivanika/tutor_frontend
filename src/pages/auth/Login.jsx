@@ -68,8 +68,7 @@ function Login() {
       <form
         onSubmit={submit}
         className="
-          w-full max-w-md p-8 rounded-2xl
-
+          w-full max-w-md p-6 md:p-8 rounded-2xl
           bg-white/95 dark:bg-[#1a1035]/95
           backdrop-blur-2xl
 
@@ -82,7 +81,7 @@ function Login() {
         "
       >
         {/* Title */}
-        <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white">
+        <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-800 dark:text-white">
           Welcome Back
         </h2>
         <p className="text-center text-sm text-gray-500 dark:text-[#a78bfa] -mt-3">Log in to TutorHours</p>
