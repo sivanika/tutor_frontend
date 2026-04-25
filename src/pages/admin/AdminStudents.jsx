@@ -9,8 +9,8 @@ import {
 import toast from "react-hot-toast"
 
 const TIER_STYLES = {
-  premium:         { label: "Premium",         cls: "bg-purple-50 text-[#6A11CB] border-purple-100" },
-  free_trial:      { label: "Free Trial",      cls: "bg-blue-50 text-[#2575FC] border-blue-100" },
+  premium:         { label: "Premium",         cls: "bg-purple-50 text-[var(--primary)] border-purple-100" },
+  free_trial:      { label: "Free Trial",      cls: "bg-blue-50 text-[var(--primary)] border-blue-100" },
   pay_per_session: { label: "Pay Per Session", cls: "bg-amber-50 text-amber-600 border-amber-100" },
   null:            { label: "No Plan",         cls: "bg-gray-100 text-gray-400 border-gray-200" },
 }
@@ -80,7 +80,7 @@ function StudentDetailModal({ student: initialStudent, onClose, onStatusChange }
       <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
 
         {/* Modal Header */}
-        <div className="flex items-center gap-4 p-6 bg-gradient-to-r from-[#2575FC] to-[#FF4E9B] text-white shrink-0">
+        <div className="flex items-center gap-4 p-6 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white shrink-0">
           <div className="w-14 h-14 rounded-2xl bg-white/20 border-2 border-white/30 flex items-center justify-center font-bold text-xl">
             {initials}
           </div>
@@ -141,13 +141,13 @@ function StudentDetailModal({ student: initialStudent, onClose, onStatusChange }
                 {student.razorpayPaymentId && (
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-500">Payment ID</span>
-                    <code className="text-xs bg-purple-50 text-[#6A11CB] px-2 py-0.5 rounded font-mono">{student.razorpayPaymentId}</code>
+                    <code className="text-xs bg-purple-50 text-[var(--primary)] px-2 py-0.5 rounded font-mono">{student.razorpayPaymentId}</code>
                   </div>
                 )}
                 {student.razorpayOrderId && (
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-500">Order ID</span>
-                    <code className="text-xs bg-blue-50 text-[#2575FC] px-2 py-0.5 rounded font-mono">{student.razorpayOrderId}</code>
+                    <code className="text-xs bg-blue-50 text-[var(--primary)] px-2 py-0.5 rounded font-mono">{student.razorpayOrderId}</code>
                   </div>
                 )}
               </div>
@@ -217,7 +217,7 @@ function StudentDetailModal({ student: initialStudent, onClose, onStatusChange }
               cls="bg-red-50 text-red-600 border border-red-100 hover:bg-red-100"
             />
           </div>
-          <button onClick={onClose} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-[#2575FC] to-[#FF4E9B] text-white hover:shadow-md hover:-translate-y-0.5 transition-all">
+          <button onClick={onClose} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white hover:shadow-md hover:-translate-y-0.5 transition-all">
             <FiX size={14} /> Close
           </button>
         </div>
@@ -266,7 +266,7 @@ export default function AdminStudents() {
           <h2 className="text-2xl font-bold text-gray-800">Student Management</h2>
           <p className="text-sm text-gray-400 mt-0.5">Full registered student profiles, subscriptions, and account controls</p>
         </div>
-        <button onClick={fetchStudents} className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-[#6A11CB] transition">
+        <button onClick={fetchStudents} className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-[var(--primary)] transition">
           <FiRefreshCw size={13} /> Refresh
         </button>
       </div>
@@ -274,9 +274,9 @@ export default function AdminStudents() {
       {/* Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Total Students",       value: totalAll,     grad: "from-[#2575FC] to-[#FF4E9B]" },
+          { label: "Total Students",       value: totalAll,     grad: "from-[var(--primary)] to-[var(--accent)]" },
           { label: "Active Accounts",      value: totalActive,  grad: "from-emerald-400 to-teal-400" },
-          { label: "Premium Members",      value: totalPremium, grad: "from-[#6A11CB] to-[#2575FC]" },
+          { label: "Premium Members",      value: totalPremium, grad: "from-[var(--primary)] to-[var(--primary)]" },
           { label: "Free / Trial Users",   value: totalFree,    grad: "from-amber-400 to-yellow-400" },
         ].map(({ label, value, grad }) => (
           <div key={label} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all">
@@ -295,20 +295,20 @@ export default function AdminStudents() {
             placeholder="Search name or email..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2575FC]/30 focus:border-[#2575FC] focus:bg-white transition-all"
+            className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] focus:bg-white transition-all"
           />
         </div>
         <div className="flex items-center gap-2">
           <FiFilter size={13} className="text-gray-400" />
           <select value={tier} onChange={e => setTier(e.target.value)}
-            className="px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#2575FC]/30 focus:border-[#2575FC] transition-all">
+            className="px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] transition-all">
             <option value="">All Plans</option>
             <option value="premium">Premium</option>
             <option value="free_trial">Free Trial</option>
             <option value="pay_per_session">Pay Per Session</option>
           </select>
           <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
-            className="px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#2575FC]/30 focus:border-[#2575FC] transition-all">
+            className="px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] transition-all">
             <option value="">All Status</option>
             <option value="active">Active</option>
             <option value="disabled">Disabled</option>
@@ -352,7 +352,7 @@ export default function AdminStudents() {
                       onClick={() => setSelected(s)}>
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#2575FC] to-[#FF4E9B] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center text-white text-xs font-bold shrink-0">
                             {getInitials(s.name, s.email)}
                           </div>
                           <div className="min-w-0">
@@ -410,7 +410,7 @@ function Section({ title, icon: Icon, children }) {
   return (
     <div>
       <div className="flex items-center gap-2 mb-3">
-        {Icon && <Icon size={13} className="text-[#2575FC]" />}
+        {Icon && <Icon size={13} className="text-[var(--primary)]" />}
         <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{title}</h3>
       </div>
       {children}

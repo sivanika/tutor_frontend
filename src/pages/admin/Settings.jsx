@@ -52,7 +52,7 @@ export default function Settings() {
         {/* Card Header */}
         <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gray-50/50">
           <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
-            <FiUser size={15} className="text-[#6A11CB]" />
+            <FiUser size={15} className="text-[var(--primary)]" />
           </div>
           <div>
             <h3 className="font-semibold text-gray-800">Admin Profile</h3>
@@ -62,14 +62,14 @@ export default function Settings() {
 
         <div className="p-6">
           {/* Avatar preview */}
-          <div className="flex items-center gap-4 mb-6 p-4 bg-gradient-to-r from-[#6A11CB]/5 to-[#2575FC]/5 rounded-xl border border-[#6A11CB]/10">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center text-white font-bold text-xl shadow-lg">
+          <div className="flex items-center gap-4 mb-6 p-4 bg-gradient-to-r from-[var(--primary)]/5 to-[var(--primary)]/5 rounded-xl border border-[var(--primary)]/10">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] flex items-center justify-center text-white font-bold text-xl shadow-lg">
               {initials}
             </div>
             <div>
               <p className="font-semibold text-gray-800">{form.name || "Admin"}</p>
               <p className="text-sm text-gray-400">{form.email}</p>
-              <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-50 text-[#6A11CB] border border-purple-100">
+              <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-50 text-[var(--primary)] border border-purple-100">
                 Administrator
               </span>
             </div>
@@ -104,7 +104,7 @@ export default function Settings() {
                   onChange={handleChange}
                   required
                   placeholder="Your full name"
-                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all"
+                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -123,7 +123,7 @@ export default function Settings() {
                   onChange={handleChange}
                   required
                   placeholder="admin@example.com"
-                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all"
+                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function Settings() {
               <button
                 type="submit"
                 disabled={saving}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
               >
                 {saving ? (
                   <><FiLoader size={14} className="animate-spin" /> Saving...</>
@@ -161,7 +161,7 @@ export default function Settings() {
           <ul className="space-y-3">
             {["Change password", "System maintenance mode", "Email notification settings", "Theme preferences"].map((item) => (
               <li key={item} className="flex items-center gap-3 text-sm text-gray-500">
-                <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#6A11CB] to-[#2575FC]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]" />
                 {item}
               </li>
             ))}

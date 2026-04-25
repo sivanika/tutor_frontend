@@ -112,11 +112,11 @@ export default function Dashboard() {
       {
         label: "Enrolled Students",
         data: sessions.map(s => s.students.length),
-        borderColor: "#6A11CB",
+        borderColor: "var(--primary)",
         backgroundColor: "rgba(106,17,203,0.1)",
         tension: 0.4,
         fill: true,
-        pointBackgroundColor: "#6A11CB",
+        pointBackgroundColor: "var(--primary)",
         pointRadius: 4,
       },
     ],
@@ -126,7 +126,7 @@ export default function Dashboard() {
     labels: levelLabels.length ? levelLabels : ["No sessions"],
     datasets: [{
       data: levelValues.length ? levelValues : [1],
-      backgroundColor: ["#6A11CB", "#2575FC", "#FF4E9B", "#8B5CF6", "#06B6D4"],
+      backgroundColor: ["var(--primary)", "var(--primary)", "var(--accent)", "#8B5CF6", "#06B6D4"],
       borderWidth: 0,
     }],
   };
@@ -171,27 +171,27 @@ export default function Dashboard() {
       label: "Total Students",
       value: totalStudents,
       icon: FiUsers,
-      color: "from-[#6A11CB] to-[#2575FC]",
+      color: "from-[var(--primary)] to-[var(--primary)]",
       bg: "bg-purple-50",
-      textColor: "text-[#6A11CB]",
+      textColor: "text-[var(--primary)]",
       sub: "Unique enrolled",
     },
     {
       label: "Sessions",
       value: activeSessions,
       icon: FiBookOpen,
-      color: "from-[#2575FC] to-[#6A11CB]",
+      color: "from-[var(--primary)] to-[var(--primary)]",
       bg: "bg-blue-50",
-      textColor: "text-[#2575FC]",
+      textColor: "text-[var(--primary)]",
       sub: "Total created",
     },
     {
       label: "Avg Rating",
       value: avgRating.toFixed(1),
       icon: FiStar,
-      color: "from-[#FF4E9B] to-[#FF6B6B]",
+      color: "from-[var(--accent)] to-[#FF6B6B]",
       bg: "bg-pink-50",
-      textColor: "text-[#FF4E9B]",
+      textColor: "text-[var(--accent)]",
       sub: `From ${feedbacks.length} reviews`,
     },
     {
@@ -209,7 +209,7 @@ export default function Dashboard() {
     <div className="space-y-6 max-w-7xl">
 
       {/* ── Greeting Banner ── */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#6A11CB] to-[#2575FC] rounded-2xl p-6 text-white shadow-lg">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] rounded-2xl p-6 text-white shadow-lg">
         <div className="relative z-10">
           <p className="text-white/70 text-sm font-medium mb-1">{getGreeting()},</p>
           <h2 className="text-2xl font-bold mb-1">{user?.email?.split("@")[0] || "Professor"} 👋</h2>
@@ -220,7 +220,7 @@ export default function Dashboard() {
         </div>
         <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10" />
         <div className="absolute -right-4 -bottom-10 w-28 h-28 rounded-full bg-white/10" />
-        <div className="absolute right-24 -top-4 w-16 h-16 rounded-full bg-[#FF4E9B]/30" />
+        <div className="absolute right-24 -top-4 w-16 h-16 rounded-full bg-[var(--accent)]/30" />
       </div>
 
       {/* ── Stat Cards ── */}
@@ -250,7 +250,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-                <FiTrendingUp size={16} className="text-[#6A11CB]" />
+                <FiTrendingUp size={16} className="text-[var(--primary)]" />
                 Student Enrollment Trend
               </h3>
               <p className="text-xs text-gray-400 mt-0.5">Students per session</p>
@@ -302,10 +302,10 @@ export default function Dashboard() {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-5">
             <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-              <FiClock size={16} className="text-[#2575FC]" />
+              <FiClock size={16} className="text-[var(--primary)]" />
               Recent Sessions
             </h3>
-            <span className="text-xs bg-purple-50 text-[#6A11CB] px-2.5 py-1 rounded-full font-medium">
+            <span className="text-xs bg-purple-50 text-[var(--primary)] px-2.5 py-1 rounded-full font-medium">
               {activeSessions} total
             </span>
           </div>
@@ -317,7 +317,7 @@ export default function Dashboard() {
               <div key={s._id} className="space-y-2">
                 <div className="flex items-center gap-3 md:gap-4 p-3 rounded-xl hover:bg-gray-50 transition group">
                   <div className={`w-9 h-9 md:w-10 md:h-10 rounded-xl flex items-center justify-center shrink-0 ${s.status === "cancelled" ? "bg-red-50" : "bg-purple-50"}`}>
-                    <FiBookOpen size={14} className={s.status === "cancelled" ? "text-red-400" : "text-[#6A11CB] md:size-[16px]"} />
+                    <FiBookOpen size={14} className={s.status === "cancelled" ? "text-red-400" : "text-[var(--primary)] md:size-[16px]"} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className={`font-medium text-xs md:text-sm truncate ${s.status === "cancelled" ? "text-gray-400 line-through" : "text-gray-800"}`}>{s.title}</p>
@@ -333,7 +333,7 @@ export default function Dashboard() {
                         </span>
                         <button
                           onClick={() => { setRescheduleId(rescheduleId === s._id ? null : s._id); setRescDate(""); setRescTime(""); }}
-                          className="p-1 md:p-1.5 rounded-lg text-[#2575FC] hover:bg-blue-50 transition"
+                          className="p-1 md:p-1.5 rounded-lg text-[var(--primary)] hover:bg-blue-50 transition"
                           title="Reschedule"
                         >
                           <FiRefreshCw size={12} />
@@ -356,15 +356,15 @@ export default function Dashboard() {
                     <div className="relative flex-1">
                       <FiCalendar size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
                       <input type="date" value={rescDate} onChange={e => setRescDate(e.target.value)}
-                        className="w-full pl-8 pr-2 py-2 text-xs rounded-lg border border-gray-200 focus:outline-none focus:ring-1 focus:ring-[#6A11CB]/40 bg-gray-50" />
+                        className="w-full pl-8 pr-2 py-2 text-xs rounded-lg border border-gray-200 focus:outline-none focus:ring-1 focus:ring-[var(--primary)]/40 bg-gray-50" />
                     </div>
                     <div className="relative flex-1">
                       <FiClock size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
                       <input type="time" value={rescTime} onChange={e => setRescTime(e.target.value)}
-                        className="w-full pl-8 pr-2 py-2 text-xs rounded-lg border border-gray-200 focus:outline-none focus:ring-1 focus:ring-[#6A11CB]/40 bg-gray-50" />
+                        className="w-full pl-8 pr-2 py-2 text-xs rounded-lg border border-gray-200 focus:outline-none focus:ring-1 focus:ring-[var(--primary)]/40 bg-gray-50" />
                     </div>
                     <button type="submit" disabled={actionLoading}
-                      className="px-3 py-2 text-xs rounded-lg font-semibold text-white bg-gradient-to-r from-[#6A11CB] to-[#2575FC] disabled:opacity-60">
+                      className="px-3 py-2 text-xs rounded-lg font-semibold text-white bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] disabled:opacity-60">
                       {actionLoading ? "…" : "Save"}
                     </button>
                   </form>
@@ -377,10 +377,10 @@ export default function Dashboard() {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-5">
             <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-              <FiStar size={16} className="text-[#FF4E9B]" />
+              <FiStar size={16} className="text-[var(--accent)]" />
               Recent Feedback
             </h3>
-            <span className="text-xs bg-pink-50 text-[#FF4E9B] px-2.5 py-1 rounded-full font-medium">
+            <span className="text-xs bg-pink-50 text-[var(--accent)] px-2.5 py-1 rounded-full font-medium">
               {avgRating.toFixed(1)} ⭐ avg
             </span>
           </div>
@@ -392,7 +392,7 @@ export default function Dashboard() {
               <div key={f._id} className="p-3 rounded-xl bg-gray-50 border border-gray-100">
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-medium text-gray-700 text-sm">{f.student?.name || "Student"}</p>
-                  <div className="flex gap-0.5 text-[#FF4E9B] text-xs">
+                  <div className="flex gap-0.5 text-[var(--accent)] text-xs">
                     {[1, 2, 3, 4, 5].map(star => (
                       <span key={star}>{star <= f.rating ? "★" : "☆"}</span>
                     ))}
@@ -408,15 +408,15 @@ export default function Dashboard() {
       {/* ── Quick Actions ── */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
-          <FiZap size={16} className="text-[#FF4E9B]" />
+          <FiZap size={16} className="text-[var(--accent)]" />
           Quick Actions
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: "Create Session", icon: "📚", color: "from-[#6A11CB] to-[#2575FC]" },
-            { label: "View Students", icon: "👥", color: "from-[#2575FC] to-[#6A11CB]" },
-            { label: "Update Profile", icon: "✏️", color: "from-[#FF4E9B] to-[#FF6B6B]" },
-            { label: "Add Credentials", icon: "🎓", color: "from-[#6A11CB] to-[#FF4E9B]" },
+            { label: "Create Session", icon: "📚", color: "from-[var(--primary)] to-[var(--primary)]" },
+            { label: "View Students", icon: "👥", color: "from-[var(--primary)] to-[var(--primary)]" },
+            { label: "Update Profile", icon: "✏️", color: "from-[var(--accent)] to-[#FF6B6B]" },
+            { label: "Add Credentials", icon: "🎓", color: "from-[var(--primary)] to-[var(--accent)]" },
           ].map(({ label, icon, color }) => (
             <button
               key={label}

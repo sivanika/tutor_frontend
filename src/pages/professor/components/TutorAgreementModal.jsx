@@ -8,7 +8,7 @@ export default function TutorAgreementModal({ onAccept }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
             <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh]">
                 {/* Header */}
-                <div className="bg-gradient-to-r from-[#6A11CB] to-[#2575FC] px-8 py-6 flex-shrink-0">
+                <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] px-8 py-6 flex-shrink-0">
                     <div className="flex items-center gap-3">
                         <span className="text-3xl">🎓</span>
                         <div>
@@ -89,7 +89,7 @@ export default function TutorAgreementModal({ onAccept }) {
                         disabled={!agreed}
                         className="
               w-full py-3 rounded-xl font-bold text-sm
-              bg-gradient-to-r from-[#6A11CB] to-[#2575FC]
+              bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]
               text-white
               hover:shadow-lg hover:shadow-indigo-400/30
               transition-all duration-200

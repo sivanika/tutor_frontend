@@ -90,7 +90,7 @@ export default function NotificationBell() {
       >
         <FiBell size={18} className="text-gray-600" />
         {unreadCount > 0 && (
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#FF4E9B] animate-pulse" />
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse" />
         )}
       </button>
 
@@ -101,7 +101,7 @@ export default function NotificationBell() {
             {unreadCount > 0 && (
               <button 
                 onClick={markAllAsRead}
-                className="text-xs text-[#6A11CB] hover:text-[#520dc2] font-medium transition-colors"
+                className="text-xs text-[var(--primary)] hover:text-[#520dc2] font-medium transition-colors"
               >
                 Mark all read
               </button>

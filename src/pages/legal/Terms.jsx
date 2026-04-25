@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import Header from "../../components/home/Header";
-import Footer from "../../components/home/Footer";
 
 const sections = [
     {
@@ -55,33 +53,29 @@ const sections = [
 
 export default function Terms() {
     return (
-        <>
-            <Header />
-            <div className="min-h-screen bg-gray-50 dark:bg-[#0f0720]">
-                <div className="bg-gradient-to-r from-[#6A11CB] to-[#2575FC] py-14 px-6 text-center">
-                    <h1 className="text-4xl font-extrabold text-white mb-2">Terms of Service</h1>
-                    <p className="text-indigo-100 max-w-lg mx-auto text-sm">
-                        Please read these terms carefully before using TutorHours.
-                    </p>
-                    <p className="text-indigo-200 text-xs mt-3">Last updated: March 2025</p>
-                    <div className="flex justify-center gap-4 mt-5 text-sm">
-                        <Link to="/legal" className="text-indigo-200 hover:text-white transition underline underline-offset-4">← All Policies</Link>
-                        <Link to="/" className="text-indigo-200 hover:text-white transition underline underline-offset-4">Home</Link>
-                    </div>
-                </div>
-                <div className="max-w-3xl mx-auto px-6 py-12 space-y-8">
-                    {sections.map((s) => (
-                        <div key={s.title}>
-                            <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-2">{s.title}</h2>
-                            <p className="text-gray-600 dark:text-[#a78bfa]/70 leading-relaxed text-sm">{s.body}</p>
-                        </div>
-                    ))}
-                    <p className="text-xs text-gray-400 dark:text-[#a78bfa]/40 border-t dark:border-[#6A11CB]/20 pt-6">
-                        © {new Date().getFullYear()} TutorHours Pvt. Ltd. All rights reserved.
-                    </p>
+        <div className="bg-gray-50 dark:bg-[var(--surface)]">
+            <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] py-14 px-6 text-center">
+                <h1 className="text-4xl font-extrabold text-white mb-2">Terms of Service</h1>
+                <p className="text-indigo-100 max-w-lg mx-auto text-sm">
+                    Please read these terms carefully before using TutorHours.
+                </p>
+                <p className="text-indigo-200 text-xs mt-3">Last updated: March 2025</p>
+                <div className="flex justify-center gap-4 mt-5 text-sm">
+                    <Link to="/legal" className="text-indigo-200 hover:text-white transition underline underline-offset-4">← All Policies</Link>
+                    <Link to="/" className="text-indigo-200 hover:text-white transition underline underline-offset-4">Home</Link>
                 </div>
             </div>
-            <Footer />
-        </>
+            <div className="max-w-3xl mx-auto px-6 py-12 space-y-8">
+                {sections.map((s) => (
+                    <div key={s.title}>
+                        <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-2">{s.title}</h2>
+                        <p className="text-gray-600 dark:text-[var(--accent)]/70 leading-relaxed text-sm">{s.body}</p>
+                    </div>
+                ))}
+                <p className="text-xs text-gray-400 dark:text-[var(--accent)]/40 border-t dark:border-[var(--primary)]/20 pt-6">
+                    © {new Date().getFullYear()} TutorHours Pvt. Ltd. All rights reserved.
+                </p>
+            </div>
+        </div>
     );
 }

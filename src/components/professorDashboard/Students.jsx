@@ -76,7 +76,7 @@ export default function Students({ onChatOpen }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin w-10 h-10 rounded-full border-4 border-[#6A11CB] border-t-transparent" />
+        <div className="animate-spin w-10 h-10 rounded-full border-4 border-[var(--primary)] border-t-transparent" />
       </div>
     );
   }
@@ -143,7 +143,7 @@ export default function Students({ onChatOpen }) {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-400">Level</span>
-                  <span className="text-xs font-semibold text-[#6A11CB] bg-purple-50 px-2 py-0.5 rounded-full">
+                  <span className="text-xs font-semibold text-[var(--primary)] bg-purple-50 px-2 py-0.5 rounded-full">
                     {s.level}
                   </span>
                 </div>

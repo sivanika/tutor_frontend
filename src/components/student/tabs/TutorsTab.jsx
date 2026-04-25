@@ -82,8 +82,8 @@ export default function TutorsTab() {
         <div
           className="mb-6 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border-2"
           style={{
-            background: "linear-gradient(135deg, #6A11CB10, #FF4E9B08)",
-            borderColor: "#6A11CB25",
+            background: "linear-gradient(135deg, var(--primary)10, var(--accent)08)",
+            borderColor: "var(--primary)25",
           }}
         >
           <div className="flex items-start gap-3">
@@ -92,13 +92,13 @@ export default function TutorsTab() {
               <p className="font-bold text-gray-800 text-sm mb-1">{currentUser.subscriptionPlan.name} (Limited Access)</p>
               <div className="flex flex-wrap gap-4 text-xs font-medium text-gray-600">
                 <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-lg border border-gray-150 shadow-sm">
-                  <FiBook className="text-[#6A11CB]" /> 
+                  <FiBook className="text-[var(--primary)]" /> 
                   <span className={currentUser.currentPlanSessionsBooked >= currentUser.subscriptionPlan.maxSessions ? 'text-red-500 font-bold' : ''}>
                     {currentUser.currentPlanSessionsBooked || 0} / {currentUser.subscriptionPlan.maxSessions} Bookings
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-lg border border-gray-150 shadow-sm">
-                  <FiUser className="text-[#2575FC]" /> 
+                  <FiUser className="text-[var(--primary)]" /> 
                   <span className={currentUser.viewedProfessors?.length >= currentUser.subscriptionPlan.maxProfileViews ? 'text-red-500 font-bold' : ''}>
                     {currentUser.viewedProfessors?.length || 0} / {currentUser.subscriptionPlan.maxProfileViews} Profile Views
                   </span>
@@ -109,7 +109,7 @@ export default function TutorsTab() {
           <button
             onClick={() => navigate("/payment?plan=premium&returnTo=student")}
             className="flex-shrink-0 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-105 shadow-md hover:shadow-lg"
-            style={{ background: "linear-gradient(135deg, #FF4E9B, #6A11CB)" }}
+            style={{ background: "linear-gradient(135deg, var(--accent), var(--primary))" }}
           >
             Upgrade to Premium →
           </button>
@@ -119,12 +119,12 @@ export default function TutorsTab() {
       {/* FILTERS */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
         <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <FiSearch className="text-[#6A11CB]" />
+          <FiSearch className="text-[var(--primary)]" />
           Search Filters
         </h3>
         <div className="grid md:grid-cols-3 gap-4">
           <select
-            className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#6A11CB]/40 focus:outline-none transition"
+            className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[var(--primary)]/40 focus:outline-none transition"
             value={filters.subject}
             onChange={(e) => setFilters({ ...filters, subject: e.target.value })}
           >
@@ -135,7 +135,7 @@ export default function TutorsTab() {
             <option value="physics">Physics</option>
           </select>
           <select
-            className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#6A11CB]/40 focus:outline-none transition"
+            className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[var(--primary)]/40 focus:outline-none transition"
             value={filters.level}
             onChange={(e) => setFilters({ ...filters, level: e.target.value })}
           >
@@ -145,7 +145,7 @@ export default function TutorsTab() {
             <option value="Advanced">Advanced</option>
           </select>
           <select
-            className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#6A11CB]/40 focus:outline-none transition"
+            className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[var(--primary)]/40 focus:outline-none transition"
             value={filters.time}
             onChange={(e) => setFilters({ ...filters, time: e.target.value })}
           >
@@ -159,7 +159,7 @@ export default function TutorsTab() {
       {/* LOADING */}
       {loading && (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin w-10 h-10 rounded-full border-4 border-[#6A11CB] border-t-transparent" />
+          <div className="animate-spin w-10 h-10 rounded-full border-4 border-[var(--primary)] border-t-transparent" />
         </div>
       )}
 
@@ -194,7 +194,7 @@ export default function TutorsTab() {
             >
               {/* Header */}
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#6A11CB] to-[#2575FC] text-white flex items-center justify-center mr-3 font-bold text-sm shadow">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] text-white flex items-center justify-center mr-3 font-bold text-sm shadow">
                   {s.professor?.name?.[0]?.toUpperCase() || "P"}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -202,7 +202,7 @@ export default function TutorsTab() {
                   <p className="text-sm text-gray-400 truncate">{s.title} · {s.level}</p>
                   {/* Hourly Rate */}
                   {s.professor?.hourlyRate ? (
-                    <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[11px] font-bold text-white bg-gradient-to-r from-[#6A11CB] to-[#2575FC]">
+                    <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[11px] font-bold text-white bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]">
                       💰 ₹{s.professor.hourlyRate}/hr
                     </span>
                   ) : null}
@@ -212,11 +212,11 @@ export default function TutorsTab() {
               {/* Details */}
               <div className="text-sm text-gray-500 mb-3 space-y-1">
                 <p className="flex items-center gap-2">
-                  <FiBook size={14} className="text-[#6A11CB]" />
+                  <FiBook size={14} className="text-[var(--primary)]" />
                   {s.title}
                 </p>
                 <p className="flex items-center gap-2">
-                  <FiClock size={14} className="text-[#6A11CB]" />
+                  <FiClock size={14} className="text-[var(--primary)]" />
                   {s.date} {s.time}
                 </p>
               </div>
@@ -233,7 +233,7 @@ export default function TutorsTab() {
                 {professorId && (
                   <button
                     onClick={() => navigate(`/tutor/${professorId}`)}
-                    className="w-full py-2 rounded-xl font-semibold text-sm border-2 border-[#6A11CB] text-[#6A11CB] hover:bg-[#6A11CB] hover:text-white transition-all duration-200 flex items-center justify-center gap-2"
+                    className="w-full py-2 rounded-xl font-semibold text-sm border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white transition-all duration-200 flex items-center justify-center gap-2"
                   >
                     <FiUser size={14} />
                     View Profile
@@ -252,7 +252,7 @@ export default function TutorsTab() {
                 ) : isPremium || canBook ? (
                   <button
                     onClick={() => handleEnroll(s._id)}
-                    className="w-full py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#6A11CB] to-[#2575FC] hover:from-[#5A0EAD] hover:to-[#1D63D8] hover:shadow-lg hover:scale-105 transition-all duration-300"
+                    className="w-full py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] hover:from-[#5A0EAD] hover:to-[#1D63D8] hover:shadow-lg hover:scale-105 transition-all duration-300"
                   >
                     Book Session
                   </button>
@@ -260,7 +260,7 @@ export default function TutorsTab() {
                   <button
                     onClick={() => navigate("/payment?plan=premium&returnTo=student")}
                     className="w-full py-2.5 rounded-xl font-semibold text-sm text-white flex items-center justify-center gap-2"
-                    style={{ background: "linear-gradient(135deg, #FF4E9B, #6A11CB)" }}
+                    style={{ background: "linear-gradient(135deg, var(--accent), var(--primary))" }}
                   >
                     <FiLock size={13} />
                     {upgradeReason || "Upgrade to Book"}

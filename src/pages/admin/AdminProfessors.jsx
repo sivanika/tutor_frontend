@@ -82,7 +82,7 @@ function ProfessorModal({ professor: init, onClose, onRefresh }) {
       <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
 
         {/* Header */}
-        <div className="flex items-center gap-4 p-6 bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white shrink-0">
+        <div className="flex items-center gap-4 p-6 bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white shrink-0">
           <div className="w-14 h-14 rounded-2xl bg-white/20 border-2 border-white/30 flex items-center justify-center font-bold text-xl shrink-0">
             {initials}
           </div>
@@ -169,7 +169,7 @@ function ProfessorModal({ professor: init, onClose, onRefresh }) {
                   { key: professor.videoIntroduction, label: "Video Introduction" },
                 ].filter(d => d.key).map(d => (
                   <a key={d.label} href={`http://localhost:5000/${d.key}`} target="_blank" rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-blue-50 text-[#2575FC] border border-blue-100 hover:bg-blue-100 transition">
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-blue-50 text-[var(--primary)] border border-blue-100 hover:bg-blue-100 transition">
                     <FiExternalLink size={12} /> {d.label}
                   </a>
                 ))}
@@ -189,7 +189,7 @@ function ProfessorModal({ professor: init, onClose, onRefresh }) {
             {!professor.isVerified && (
               <>
                 <ActionBtn onClick={approve} loading={saving === "approve"} icon={FiCheck} label="Approve"
-                  cls="bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white hover:shadow-md" />
+                  cls="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white hover:shadow-md" />
                 <ActionBtn onClick={reject} loading={saving === "reject"} icon={FiSlash} label="Reject"
                   cls="bg-red-50 text-red-600 border border-red-100 hover:bg-red-100" />
               </>
@@ -206,7 +206,7 @@ function ProfessorModal({ professor: init, onClose, onRefresh }) {
               cls="bg-red-50 text-red-600 border border-red-100 hover:bg-red-100" />
           </div>
           <button onClick={onClose}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white hover:shadow-md hover:-translate-y-0.5 transition-all">
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white hover:shadow-md hover:-translate-y-0.5 transition-all">
             <FiX size={14} /> Close
           </button>
         </div>
@@ -252,7 +252,7 @@ export default function AdminProfessors() {
           <h2 className="text-2xl font-bold text-gray-800">Professor Management</h2>
           <p className="text-sm text-gray-400 mt-0.5">Full profile, credentials, and account control for all professors</p>
         </div>
-        <button onClick={fetchProfessors} className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-[#6A11CB] transition">
+        <button onClick={fetchProfessors} className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-[var(--primary)] transition">
           <FiRefreshCw size={13} /> Refresh
         </button>
       </div>
@@ -260,10 +260,10 @@ export default function AdminProfessors() {
       {/* Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "All Professors",  value: professors.length, grad: "from-[#6A11CB] to-[#2575FC]" },
+          { label: "All Professors",  value: professors.length, grad: "from-[var(--primary)] to-[var(--primary)]" },
           { label: "Verified",        value: totalVerified,     grad: "from-emerald-400 to-teal-400" },
           { label: "Pending Review",  value: totalPending,      grad: "from-amber-400 to-yellow-400" },
-          { label: "Featured",        value: totalFeatured,     grad: "from-[#FF4E9B] to-orange-400" },
+          { label: "Featured",        value: totalFeatured,     grad: "from-[var(--accent)] to-orange-400" },
         ].map(({ label, value, grad }) => (
           <div key={label} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all">
             <div className="text-2xl font-bold text-gray-800 mb-0.5">{loading ? "—" : value}</div>
@@ -281,13 +281,13 @@ export default function AdminProfessors() {
             placeholder="Search name, email, subjects..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all"
+            className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] focus:bg-white transition-all"
           />
         </div>
         <div className="flex items-center gap-2">
           <FiFilter size={13} className="text-gray-400" />
           <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
-            className="px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] transition-all">
+            className="px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] transition-all">
             <option value="">All Professors</option>
             <option value="verified">Verified Only</option>
             <option value="pending">Pending Only</option>
@@ -332,7 +332,7 @@ export default function AdminProfessors() {
                       className="hover:bg-purple-50/30 transition-colors cursor-pointer">
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] flex items-center justify-center text-white text-xs font-bold shrink-0">
                             {getInitials(p.name, p.email)}
                           </div>
                           <div className="min-w-0">
@@ -347,7 +347,7 @@ export default function AdminProfessors() {
                       <td className="px-5 py-4 text-xs text-gray-600 max-w-[130px] truncate">{p.subjects || <span className="text-gray-300">—</span>}</td>
                       <td className="px-5 py-4 font-semibold text-sm text-gray-800">{p.hourlyRate ? `₹${p.hourlyRate}` : <span className="text-gray-300">—</span>}</td>
                       <td className="px-5 py-4">
-                        <span className="text-xs bg-purple-50 text-[#6A11CB] px-2 py-1 rounded-full font-semibold border border-purple-100">
+                        <span className="text-xs bg-purple-50 text-[var(--primary)] px-2 py-1 rounded-full font-semibold border border-purple-100">
                           {p.commissionRate || 18}%
                         </span>
                       </td>
@@ -391,7 +391,7 @@ function Section({ title, icon: Icon, children }) {
   return (
     <div>
       <div className="flex items-center gap-2 mb-3">
-        {Icon && <Icon size={13} className="text-[#6A11CB]" />}
+        {Icon && <Icon size={13} className="text-[var(--primary)]" />}
         <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{title}</h3>
       </div>
       {children}
@@ -421,7 +421,7 @@ function TextBlock({ label, value }) {
 function StatChip({ label, value, icon: Icon }) {
   return (
     <div className="bg-gray-50 rounded-xl p-3 text-center border border-gray-100">
-      {Icon && <Icon size={14} className="text-[#6A11CB] mx-auto mb-1" />}
+      {Icon && <Icon size={14} className="text-[var(--primary)] mx-auto mb-1" />}
       <p className="text-base font-bold text-gray-800">{value}</p>
       <p className="text-xs text-gray-400 mt-0.5">{label}</p>
     </div>

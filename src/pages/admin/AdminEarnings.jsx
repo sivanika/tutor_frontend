@@ -28,7 +28,7 @@ function ProfRow({ prof }) {
         {/* Professor */}
         <td className="px-5 py-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center text-white text-xs font-bold shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] flex items-center justify-center text-white text-xs font-bold shrink-0">
               {getInitials(prof.name, prof.email)}
             </div>
             <div className="min-w-0">
@@ -43,7 +43,7 @@ function ProfRow({ prof }) {
 
         {/* Sessions */}
         <td className="px-5 py-4 text-center">
-          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#2575FC]">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[var(--primary)]">
             {prof.totalSessions}
           </span>
         </td>
@@ -57,7 +57,7 @@ function ProfRow({ prof }) {
         {/* Commission */}
         <td className="px-5 py-4 text-right">
           <div>
-            <p className="text-sm font-semibold text-[#FF4E9B]">{fmt(prof.commission)}</p>
+            <p className="text-sm font-semibold text-[var(--accent)]">{fmt(prof.commission)}</p>
             <p className="text-xs text-gray-400">{prof.commissionRate}%</p>
           </div>
         </td>
@@ -150,8 +150,8 @@ export default function AdminEarnings() {
             label: "Platform Revenue",
             value: fmt(summary.totalCommission),
             icon: FiDollarSign,
-            bg: "bg-purple-50", color: "text-[#6A11CB]",
-            grad: "from-[#6A11CB] to-[#2575FC]",
+            bg: "bg-purple-50", color: "text-[var(--primary)]",
+            grad: "from-[var(--primary)] to-[var(--primary)]",
             highlight: true,
           },
           {
@@ -165,8 +165,8 @@ export default function AdminEarnings() {
             label: "Total Sessions",
             value: summary.totalSessions || 0,
             icon: FiBook,
-            bg: "bg-blue-50", color: "text-[#2575FC]",
-            grad: "from-[#2575FC] to-[#FF4E9B]",
+            bg: "bg-blue-50", color: "text-[var(--primary)]",
+            grad: "from-[var(--primary)] to-[var(--accent)]",
           },
           {
             label: "Active Professors",
@@ -179,11 +179,11 @@ export default function AdminEarnings() {
             label: "Total Students",
             value: summary.totalStudents || 0,
             icon: FiUsers,
-            bg: "bg-pink-50", color: "text-[#FF4E9B]",
-            grad: "from-[#FF4E9B] to-orange-400",
+            bg: "bg-pink-50", color: "text-[var(--accent)]",
+            grad: "from-[var(--accent)] to-orange-400",
           },
         ].map(({ label, value, icon: Icon, bg, color, grad, highlight }) => (
-          <div key={label} className={`rounded-2xl p-5 shadow-sm border transition-all hover:shadow-md hover:-translate-y-0.5 ${highlight ? "bg-gradient-to-br from-[#6A11CB] to-[#2575FC] text-white border-transparent" : "bg-white border-gray-100"}`}>
+          <div key={label} className={`rounded-2xl p-5 shadow-sm border transition-all hover:shadow-md hover:-translate-y-0.5 ${highlight ? "bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] text-white border-transparent" : "bg-white border-gray-100"}`}>
             <div className={`${highlight ? "bg-white/20" : bg} w-10 h-10 rounded-xl flex items-center justify-center mb-3`}>
               <Icon size={18} className={highlight ? "text-white" : color} />
             </div>
@@ -195,8 +195,8 @@ export default function AdminEarnings() {
       </div>
 
       {/* Commission Insight Banner */}
-      <div className="bg-gradient-to-r from-[#FF4E9B]/5 to-[#6A11CB]/5 border border-[#6A11CB]/10 rounded-2xl p-4 flex items-center gap-4">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF4E9B] to-[#6A11CB] flex items-center justify-center shrink-0">
+      <div className="bg-gradient-to-r from-[var(--accent)]/5 to-[var(--primary)]/5 border border-[var(--primary)]/10 rounded-2xl p-4 flex items-center gap-4">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--accent)] to-[var(--primary)] flex items-center justify-center shrink-0">
           <FiPercent size={18} className="text-white" />
         </div>
         <div>
@@ -206,7 +206,7 @@ export default function AdminEarnings() {
           </p>
         </div>
         <div className="ml-auto text-right shrink-0">
-          <p className="text-2xl font-bold text-[#6A11CB]">{fmt(summary.totalCommission)}</p>
+          <p className="text-2xl font-bold text-[var(--primary)]">{fmt(summary.totalCommission)}</p>
           <p className="text-xs text-gray-400">total commission earned</p>
         </div>
       </div>
@@ -225,7 +225,7 @@ export default function AdminEarnings() {
             onClick={() => setSortBy(key)}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
               sortBy === key
-                ? "bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white shadow-sm"
+                ? "bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white shadow-sm"
                 : "bg-white border border-gray-200 text-gray-500 hover:bg-gray-50"
             }`}
           >
@@ -264,12 +264,12 @@ export default function AdminEarnings() {
             {/* Grand Total Row */}
             {professors.length > 0 && (
               <tfoot>
-                <tr className="bg-gradient-to-r from-[#6A11CB]/5 to-[#2575FC]/5 border-t-2 border-[#6A11CB]/20">
+                <tr className="bg-gradient-to-r from-[var(--primary)]/5 to-[var(--primary)]/5 border-t-2 border-[var(--primary)]/20">
                   <td className="px-5 py-4 font-bold text-gray-800" colSpan="4">
                     Platform Total ({professors.length} professors)
                   </td>
                   <td className="px-5 py-4 text-right font-bold text-gray-800">{fmt(summary.totalGross)}</td>
-                  <td className="px-5 py-4 text-right font-bold text-[#FF4E9B]">{fmt(summary.totalCommission)}</td>
+                  <td className="px-5 py-4 text-right font-bold text-[var(--accent)]">{fmt(summary.totalCommission)}</td>
                   <td className="px-5 py-4 text-right font-bold text-emerald-600">{fmt(summary.totalGross - summary.totalCommission)}</td>
                   <td></td>
                 </tr>

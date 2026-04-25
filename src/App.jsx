@@ -42,14 +42,42 @@ import InstitutionAgreement from "./pages/legal/InstitutionAgreement";
 import StudentProfilePage from "./pages/professor/StudentProfilePage";
 import ProfessorApply from "./pages/professor/ProfessorApply";
 import ProfessorPaymentPage from "./pages/payment/ProfessorPaymentPage";
+import AboutUs from "./pages/AboutUs";
+import Blog from "./pages/Blog";
+import FAQ from "./pages/FAQ";
+import Features from "./pages/Features";
+import Pricing from "./pages/Pricing";
+import Contact from "./pages/Contact";
+import HomeLayout from "./components/home/HomeLayout";
+
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Toaster position="top-right" />
         <Routes>
-          {/* Public */}
-          <Route path="/" element={<Home />} />
+          {/* Public with HomeLayout */}
+          <Route element={<HomeLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/contact" element={<Contact />} />
+            
+            {/* Legal */}
+            <Route path="/legal" element={<LegalHub />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/tutor-agreement" element={<TutorAgreementPage />} />
+            <Route path="/institution-agreement" element={<InstitutionAgreement />} />
+          </Route>
+
+          {/* Auth & Other Public */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/register/student" element={<RegisterStudent />} />
@@ -58,21 +86,13 @@ function App() {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/verification-pending" element={<VerificationPending />} />
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/careers" element={<Careers />} />
+          
           <Route path="/payment" element={<PaymentPage />} />
+
           <Route path="/tutor/:id" element={<TutorProfilePage />} />
           <Route path="/student/:id" element={<StudentProfilePage />} />
           <Route path="/professor/onboarding" element={<ProfessorOnboarding />} />
           <Route path="/student/onboarding" element={<StudentOnboarding />} />
-
-          {/* Legal */}
-          <Route path="/legal" element={<LegalHub />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/refund-policy" element={<RefundPolicy />} />
-          <Route path="/cookie-policy" element={<CookiePolicy />} />
-          <Route path="/tutor-agreement" element={<TutorAgreementPage />} />
-          <Route path="/institution-agreement" element={<InstitutionAgreement />} />
 
           {/* Student */}
           <Route

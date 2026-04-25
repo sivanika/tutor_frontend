@@ -112,14 +112,14 @@ export default function ProfessorDashboard() {
       <aside className={`
         fixed lg:static inset-y-0 left-0 z-30
         w-64 flex flex-col
-        bg-gradient-to-b from-[#6A11CB] to-[#2575FC]
+        bg-gradient-to-b from-[var(--primary)] to-[var(--primary)]
         text-white shadow-2xl
         transform transition-transform duration-300 ease-in-out
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}>
         {/* Logo / Brand */}
         <div className="flex items-center gap-3 px-6 py-6 border-b border-white/15">
-          <div className="w-9 h-9 rounded-xl bg-[#FF4E9B] flex items-center justify-center font-bold text-lg shadow-lg">
+          <div className="w-9 h-9 rounded-xl bg-[var(--accent)] flex items-center justify-center font-bold text-lg shadow-lg">
             T
           </div>
           <div>
@@ -152,13 +152,13 @@ export default function ProfessorDashboard() {
                 `}
               >
                 {active && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-[#FF4E9B]" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-[var(--accent)]" />
                 )}
                 <Icon size={18} className={active ? "text-white" : "text-white/50 group-hover:text-white/80"} />
                 <span>{label}</span>
-                {active && <FiChevronRight size={14} className="ml-auto text-[#FF4E9B]" />}
+                {active && <FiChevronRight size={14} className="ml-auto text-[var(--accent)]" />}
                 {showBadge && (
-                  <span className="ml-auto bg-[#FF4E9B] text-white text-[10px] font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 animate-pulse">
+                  <span className="ml-auto bg-[var(--accent)] text-white text-[10px] font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 animate-pulse">
                     {chatUnread > 9 ? "9+" : chatUnread}
                   </span>
                 )}
@@ -170,7 +170,7 @@ export default function ProfessorDashboard() {
         {/* User + Logout */}
         <div className="px-4 py-5 border-t border-white/15">
           <div className="flex items-center gap-3 mb-4 px-2">
-            <div className="w-9 h-9 rounded-full bg-[#FF4E9B] flex items-center justify-center font-bold text-sm shadow">
+            <div className="w-9 h-9 rounded-full bg-[var(--accent)] flex items-center justify-center font-bold text-sm shadow">
               {user?.email?.[0]?.toUpperCase() || "P"}
             </div>
             <div className="min-w-0">
@@ -209,7 +209,7 @@ export default function ProfessorDashboard() {
 
           <div className="ml-auto flex items-center gap-3">
             <NotificationBell />
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center font-bold text-sm text-white shadow">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] flex items-center justify-center font-bold text-sm text-white shadow">
               {user?.email?.[0]?.toUpperCase() || "P"}
             </div>
           </div>

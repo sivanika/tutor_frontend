@@ -108,7 +108,7 @@ export default function CreateSessionTab() {
       {lastSession && (
         <div className="mb-6 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#6A11CB] to-[#2575FC] px-6 py-4 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-2 text-white">
               <FiCheckCircle size={18} />
               <span className="font-semibold text-sm">Session Created</span>
@@ -135,7 +135,7 @@ export default function CreateSessionTab() {
                     type="date"
                     value={newDate}
                     onChange={e => setNewDate(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 bg-gray-50"
+                    className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50"
                   />
                 </div>
                 <div className="relative">
@@ -144,7 +144,7 @@ export default function CreateSessionTab() {
                     type="time"
                     value={newTime}
                     onChange={e => setNewTime(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 bg-gray-50"
+                    className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50"
                   />
                 </div>
               </div>
@@ -152,7 +152,7 @@ export default function CreateSessionTab() {
                 <button
                   type="submit"
                   disabled={actionLoading}
-                  className="flex-1 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-[#6A11CB] to-[#2575FC] hover:opacity-90 disabled:opacity-60 transition"
+                  className="flex-1 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] hover:opacity-90 disabled:opacity-60 transition"
                 >
                   {actionLoading ? "Saving…" : "Confirm Reschedule"}
                 </button>
@@ -173,7 +173,7 @@ export default function CreateSessionTab() {
             <button
               onClick={handleContinue}
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white
-                bg-gradient-to-r from-[#6A11CB] to-[#2575FC] hover:opacity-90 transition"
+                bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] hover:opacity-90 transition"
             >
               <FiPlusCircle size={15} />
               Continue (Create Another)
@@ -185,7 +185,7 @@ export default function CreateSessionTab() {
                 onClick={() => setRescheduleMode(r => !r)}
                 disabled={actionLoading}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold
-                  text-[#2575FC] border border-[#2575FC]/40 hover:bg-blue-50 disabled:opacity-60 transition"
+                  text-[var(--primary)] border border-[var(--primary)]/40 hover:bg-blue-50 disabled:opacity-60 transition"
               >
                 <FiRefreshCw size={15} />
                 Reschedule
@@ -212,7 +212,7 @@ export default function CreateSessionTab() {
       {!lastSession && (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           {/* Card header */}
-          <div className="bg-gradient-to-r from-[#6A11CB] to-[#2575FC] px-6 py-5">
+          <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] px-6 py-5">
             <h3 className="text-white font-semibold flex items-center gap-2">
               <FiBookOpen size={18} className="text-white/80" />
               Session Details
@@ -236,7 +236,7 @@ export default function CreateSessionTab() {
                   value={form.title}
                   onChange={handleChange}
                   required
-                  className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 bg-gray-50 focus:bg-white transition"
+                  className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50 focus:bg-white transition"
                 />
               </div>
             </div>
@@ -253,7 +253,7 @@ export default function CreateSessionTab() {
                   value={form.level}
                   onChange={handleChange}
                   required
-                  className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 bg-gray-50 focus:bg-white transition appearance-none"
+                  className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50 focus:bg-white transition appearance-none"
                 >
                   <option value="">Select a level…</option>
                   {LEVEL_OPTIONS.map(l => <option key={l} value={l}>{l}</option>)}
@@ -273,7 +273,7 @@ export default function CreateSessionTab() {
                     value={form.date}
                     onChange={handleChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 bg-gray-50 focus:bg-white transition"
+                    className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50 focus:bg-white transition"
                   />
                 </div>
               </div>
@@ -287,7 +287,7 @@ export default function CreateSessionTab() {
                     value={form.time}
                     onChange={handleChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 bg-gray-50 focus:bg-white transition"
+                    className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50 focus:bg-white transition"
                   />
                 </div>
               </div>
@@ -307,7 +307,7 @@ export default function CreateSessionTab() {
                   value={form.meetLink}
                   onChange={handleChange}
                   required
-                  className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 bg-gray-50 focus:bg-white transition"
+                  className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50 focus:bg-white transition"
                 />
               </div>
             </div>
@@ -317,7 +317,7 @@ export default function CreateSessionTab() {
               type="submit"
               disabled={submitting}
               className="w-full py-3.5 rounded-xl font-semibold text-white text-sm
-                bg-gradient-to-r from-[#6A11CB] to-[#2575FC]
+                bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]
                 hover:from-[#5A0EAD] hover:to-[#1D63D8]
                 shadow-md hover:shadow-lg hover:-translate-y-0.5
                 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"

@@ -72,18 +72,18 @@ export default function DashboardTab() {
       label: "Enrolled",
       value: sessions.length,
       icon: FiBook,
-      color: "from-[#6A11CB] to-[#2575FC]",
+      color: "from-[var(--primary)] to-[var(--primary)]",
       bg: "bg-purple-50",
-      textColor: "text-[#6A11CB]",
+      textColor: "text-[var(--primary)]",
       sub: "Total sessions",
     },
     {
       label: "Upcoming",
       value: upcoming.length,
       icon: FiClock,
-      color: "from-[#2575FC] to-[#6A11CB]",
+      color: "from-[var(--primary)] to-[var(--primary)]",
       bg: "bg-blue-50",
-      textColor: "text-[#2575FC]",
+      textColor: "text-[var(--primary)]",
       sub: "Scheduled ahead",
     },
     {
@@ -99,9 +99,9 @@ export default function DashboardTab() {
       label: "Completed",
       value: completed.length,
       icon: FiCheckCircle,
-      color: "from-[#FF4E9B] to-[#FF6B6B]",
+      color: "from-[var(--accent)] to-[#FF6B6B]",
       bg: "bg-pink-50",
-      textColor: "text-[#FF4E9B]",
+      textColor: "text-[var(--accent)]",
       sub: "Finished sessions",
     },
   ]
@@ -112,11 +112,11 @@ export default function DashboardTab() {
       {
         label: "Learning Progress",
         data: [10, 25, 40, 55, 65 + completed.length * 2, 70 + completed.length * 3],
-        borderColor: "#6A11CB",
+        borderColor: "var(--primary)",
         backgroundColor: "rgba(106,17,203,0.1)",
         tension: 0.4,
         fill: true,
-        pointBackgroundColor: "#6A11CB",
+        pointBackgroundColor: "var(--primary)",
         pointRadius: 4,
       },
     ],
@@ -125,7 +125,7 @@ export default function DashboardTab() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin w-10 h-10 rounded-full border-4 border-[#6A11CB] border-t-transparent" />
+        <div className="animate-spin w-10 h-10 rounded-full border-4 border-[var(--primary)] border-t-transparent" />
       </div>
     )
   }
@@ -134,7 +134,7 @@ export default function DashboardTab() {
     <div className="space-y-6 max-w-5xl animate-fadeIn">
 
       {/* ── Greeting Banner ── */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#6A11CB] to-[#2575FC] rounded-2xl p-6 text-white shadow-lg">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] rounded-2xl p-6 text-white shadow-lg">
         <div className="relative z-10">
           <p className="text-white/70 text-sm font-medium mb-1">{getGreeting()},</p>
           <h2 className="text-2xl font-bold mb-1">
@@ -151,7 +151,7 @@ export default function DashboardTab() {
         </div>
         <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10" />
         <div className="absolute -right-4 -bottom-10 w-28 h-28 rounded-full bg-white/10" />
-        <div className="absolute right-24 -top-4 w-16 h-16 rounded-full bg-[#FF4E9B]/30" />
+        <div className="absolute right-24 -top-4 w-16 h-16 rounded-full bg-[var(--accent)]/30" />
       </div>
 
       {/* ── Subscription Usage Banner ── */}
@@ -160,7 +160,7 @@ export default function DashboardTab() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
-                <FiZap size={15} className="text-[#6A11CB]" />
+                <FiZap size={15} className="text-[var(--primary)]" />
               </div>
               <div>
                 <p className="font-semibold text-gray-800 text-sm">{subscription.subscriptionPlan.name} Plan</p>
@@ -169,7 +169,7 @@ export default function DashboardTab() {
             </div>
             <button
               onClick={() => navigate("/payment")}
-              className="text-xs font-semibold text-white px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#6A11CB] to-[#2575FC] hover:shadow-md transition"
+              className="text-xs font-semibold text-white px-3 py-1.5 rounded-lg bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] hover:shadow-md transition"
             >
               Upgrade ↗
             </button>
@@ -184,7 +184,7 @@ export default function DashboardTab() {
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full">
                   <div
-                    className="h-2 rounded-full bg-gradient-to-r from-[#6A11CB] to-[#2575FC] transition-all"
+                    className="h-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] transition-all"
                     style={{ width: `${Math.min(100, (subscription.currentPlanSessionsBooked / subscription.subscriptionPlan.maxSessions) * 100)}%` }}
                   />
                 </div>
@@ -199,7 +199,7 @@ export default function DashboardTab() {
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full">
                   <div
-                    className="h-2 rounded-full bg-gradient-to-r from-[#FF4E9B] to-[#6A11CB] transition-all"
+                    className="h-2 rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--primary)] transition-all"
                     style={{ width: `${Math.min(100, (subscription.viewedProfessorsCount / subscription.subscriptionPlan.maxProfileViews) * 100)}%` }}
                   />
                 </div>
@@ -237,7 +237,7 @@ export default function DashboardTab() {
             <h3 className="font-semibold text-gray-800">Learning Progress</h3>
             <p className="text-xs text-gray-400 mt-0.5">Your performance over time</p>
           </div>
-          <span className="text-xs bg-purple-50 text-[#6A11CB] px-3 py-1 rounded-full font-medium">
+          <span className="text-xs bg-purple-50 text-[var(--primary)] px-3 py-1 rounded-full font-medium">
             {Math.min(100, 60 + completed.length * 3)}% overall
           </span>
         </div>
@@ -272,10 +272,10 @@ export default function DashboardTab() {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-5">
             <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-              <FiCalendar size={16} className="text-[#2575FC]" />
+              <FiCalendar size={16} className="text-[var(--primary)]" />
               Upcoming Sessions
             </h3>
-            <span className="text-xs bg-blue-50 text-[#2575FC] px-2.5 py-1 rounded-full font-medium">
+            <span className="text-xs bg-blue-50 text-[var(--primary)] px-2.5 py-1 rounded-full font-medium">
               {upcoming.length} scheduled
             </span>
           </div>
@@ -298,10 +298,10 @@ export default function DashboardTab() {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-5">
             <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-              <FiCheckCircle size={16} className="text-[#FF4E9B]" />
+              <FiCheckCircle size={16} className="text-[var(--accent)]" />
               Completed Sessions
             </h3>
-            <span className="text-xs bg-pink-50 text-[#FF4E9B] px-2.5 py-1 rounded-full font-medium">
+            <span className="text-xs bg-pink-50 text-[var(--accent)] px-2.5 py-1 rounded-full font-medium">
               {completed.length} done
             </span>
           </div>
@@ -327,7 +327,7 @@ export default function DashboardTab() {
           <div className="text-5xl mb-4">📚</div>
           <h3 className="text-gray-700 font-semibold text-lg">No sessions enrolled yet</h3>
           <p className="text-gray-400 text-sm mt-2 mb-5">Browse available tutors and enroll in your first session!</p>
-          <button className="inline-flex items-center gap-2 bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all">
+          <button className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all">
             <FiSearch size={15} />
             Browse Tutors
           </button>
@@ -345,8 +345,8 @@ function SessionRow({ session, status }) {
       <div className={`w-9 h-9 md:w-10 md:h-10 rounded-xl flex items-center justify-center shrink-0 ${isUpcoming ? "bg-blue-50" : "bg-pink-50"
         }`}>
         {isUpcoming
-          ? <FiVideo size={14} className="text-[#2575FC] md:size-[16px]" />
-          : <FiCheckCircle size={14} className="text-[#FF4E9B] md:size-[16px]" />
+          ? <FiVideo size={14} className="text-[var(--primary)] md:size-[16px]" />
+          : <FiCheckCircle size={14} className="text-[var(--accent)] md:size-[16px]" />
         }
       </div>
       <div className="flex-1 min-w-0">
@@ -358,8 +358,8 @@ function SessionRow({ session, status }) {
       </div>
       <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
         <span className={`text-[10px] md:text-xs font-semibold px-2 md:px-2.5 py-0.5 md:py-1 rounded-full ${isUpcoming
-          ? "bg-blue-50 text-[#2575FC]"
-          : "bg-pink-50 text-[#FF4E9B]"
+          ? "bg-blue-50 text-[var(--primary)]"
+          : "bg-pink-50 text-[var(--accent)]"
           }`}>
           {status}
         </span>
@@ -368,7 +368,7 @@ function SessionRow({ session, status }) {
             href={session.meetLink}
             target="_blank"
             rel="noreferrer"
-            className="p-1 px-1.5 rounded-lg bg-gray-100 hover:bg-purple-100 text-gray-400 hover:text-[#6A11CB] transition"
+            className="p-1 px-1.5 rounded-lg bg-gray-100 hover:bg-purple-100 text-gray-400 hover:text-[var(--primary)] transition"
           >
             <FiExternalLink size={12} />
           </a>

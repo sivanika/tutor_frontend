@@ -17,7 +17,7 @@ const PLANS = [
     badge: null,
     badgeColor: null,
     gradient: null,
-    color: "#6b7280",
+    color: "var(--text-muted)",
     features: [
       "Basic dashboard access",
       "Limited student visibility",
@@ -62,8 +62,8 @@ const PLANS = [
     profileLimit: "Up to 45 student profiles",
     badge: null,
     badgeColor: null,
-    gradient: "linear-gradient(135deg, #FF4E9B, #6A11CB)",
-    color: "#FF4E9B",
+    gradient: "linear-gradient(135deg, var(--accent), var(--primary))",
+    color: "var(--accent)",
     features: [
       "Full dashboard access",
       "Maximum student reach",
@@ -141,7 +141,7 @@ export default function ProfessorUpgradeModal({ onClose }) {
 
           {/* Header */}
           <div className="px-6 pt-8 pb-6 text-center border-b border-white/10">
-            <p className="text-sm font-bold text-[#FF4E9B] uppercase tracking-widest mb-1">
+            <p className="text-sm font-bold text-[var(--accent)] uppercase tracking-widest mb-1">
               🎓 TutorHours — Professor Plans
             </p>
             <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
@@ -149,7 +149,7 @@ export default function ProfessorUpgradeModal({ onClose }) {
             </h2>
             {/* Toggle row (visual-only, monthly active) */}
             <div className="inline-flex items-center gap-1 bg-white/5 border border-white/10 rounded-full p-1 text-sm mt-2">
-              <span className="px-4 py-1.5 rounded-full font-bold text-white bg-[#FF4E9B]">
+              <span className="px-4 py-1.5 rounded-full font-bold text-white bg-[var(--accent)]">
                 Monthly
               </span>
               <span className="px-4 py-1.5 text-white/50 font-medium">
@@ -269,7 +269,7 @@ export default function ProfessorUpgradeModal({ onClose }) {
                         <FiCheck
                           size={13}
                           className="mt-0.5 flex-shrink-0"
-                          style={{ color: plan.color || "#6b7280" }}
+                          style={{ color: plan.color || "var(--text-muted)" }}
                         />
                         {f}
                       </div>

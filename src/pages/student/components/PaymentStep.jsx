@@ -14,9 +14,9 @@ export default function PaymentStep() {
                     const isPremium = p.price > 10000 || p.name.toLowerCase().includes("premium");
                     const isFree = p.price === 0;
 
-                    const color = isPremium ? "#FF4E9B" : (isFree ? "#6A11CB" : "#2575FC");
-                    const gradient = isPremium ? "linear-gradient(135deg, #FF4E9B, #6A11CB)" : 
-                                    (isFree ? "linear-gradient(135deg, #6A11CB, #2575FC)" : "linear-gradient(135deg, #2575FC, #6A11CB)");
+                    const color = isPremium ? "var(--accent)" : (isFree ? "var(--primary)" : "var(--primary)");
+                    const gradient = isPremium ? "linear-gradient(135deg, var(--accent), var(--primary))" : 
+                                    (isFree ? "linear-gradient(135deg, var(--primary), var(--primary))" : "linear-gradient(135deg, var(--primary), var(--primary))");
                     const shadow = isPremium ? "rgba(255,78,155,0.3)" : (isFree ? "rgba(106,17,203,0.25)" : "rgba(37,117,252,0.25)");
                     
                     return {
@@ -52,13 +52,13 @@ export default function PaymentStep() {
 
             {/* Header */}
             <div className="text-center">
-                <p className="text-xs font-semibold uppercase tracking-widest text-[#FF4E9B] mb-2">
+                <p className="text-xs font-semibold uppercase tracking-widest text-[var(--accent)] mb-2">
                     Final Step
                 </p>
-                <h2 className="text-3xl font-black text-[#1a0e33] mb-2">
+                <h2 className="text-3xl font-black text-[var(--text-primary)] mb-2">
                     Choose Your{" "}
                     <span style={{
-                        background: "linear-gradient(135deg, #6A11CB, #FF4E9B)",
+                        background: "linear-gradient(135deg, var(--primary), var(--accent))",
                         WebkitBackgroundClip: "text",
                         WebkitTextFillColor: "transparent",
                     }}>
@@ -115,7 +115,7 @@ export default function PaymentStep() {
 
                                 {/* Price */}
                                 <div className="mb-5">
-                                    <span className="text-4xl font-black text-[#1a0e33]">{plan.displayPrice}</span>
+                                    <span className="text-4xl font-black text-[var(--text-primary)]">{plan.displayPrice}</span>
                                     <span className="text-sm text-slate-400 ml-1">{plan.displayPeriod}</span>
                                 </div>
 

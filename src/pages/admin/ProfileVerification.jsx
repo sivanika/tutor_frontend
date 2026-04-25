@@ -89,8 +89,8 @@ export default function ProfileVerification() {
   const STAT_ITEMS = [
     { label: "Pending", value: pending.length, icon: FiClock, bg: "bg-amber-50", color: "text-amber-500", grad: "from-amber-400 to-yellow-500" },
     { label: "Verified", value: verified.length, icon: FiCheckCircle, bg: "bg-emerald-50", color: "text-emerald-500", grad: "from-emerald-400 to-teal-500" },
-    { label: "Featured", value: featuredProfs.length, icon: FiStar, bg: "bg-purple-50", color: "text-[#6A11CB]", grad: "from-[#6A11CB] to-[#2575FC]" },
-    { label: "Total", value: pending.length + verified.length, icon: FiUsers, bg: "bg-blue-50", color: "text-[#2575FC]", grad: "from-[#2575FC] to-[#FF4E9B]" },
+    { label: "Featured", value: featuredProfs.length, icon: FiStar, bg: "bg-purple-50", color: "text-[var(--primary)]", grad: "from-[var(--primary)] to-[var(--primary)]" },
+    { label: "Total", value: pending.length + verified.length, icon: FiUsers, bg: "bg-blue-50", color: "text-[var(--primary)]", grad: "from-[var(--primary)] to-[var(--accent)]" },
   ]
 
   return (
@@ -108,7 +108,7 @@ export default function ProfileVerification() {
           <input
             type="text"
             placeholder="Search name or email…"
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] focus:bg-white transition-all"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -139,7 +139,7 @@ export default function ProfileVerification() {
             <h3 className="font-semibold text-gray-800">Featured on Home Page</h3>
             <p className="text-xs text-gray-400">Lower order number = appears first in the carousel</p>
           </div>
-          <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#6A11CB] to-[#2575FC]">
+          <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]">
             {featuredProfs.length} / 6
           </span>
         </div>
@@ -211,13 +211,13 @@ export default function ProfileVerification() {
                       <p className="font-semibold text-gray-800 truncate">{prof.name || "No name"}</p>
                       <p className="text-xs text-gray-500 truncate">{prof.email}</p>
                       {prof.subjects && (
-                        <p className="text-xs text-[#6A11CB] mt-0.5 truncate">{prof.subjects}</p>
+                        <p className="text-xs text-[var(--primary)] mt-0.5 truncate">{prof.subjects}</p>
                       )}
                     </div>
                     <div className="flex gap-2 shrink-0">
                       <button
                         onClick={() => approveProfessor(prof._id)}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white hover:shadow-md hover:-translate-y-0.5 transition-all"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white hover:shadow-md hover:-translate-y-0.5 transition-all"
                       >
                         <FiCheck size={14} /> Approve
                       </button>
@@ -251,7 +251,7 @@ export default function ProfileVerification() {
         <div className="p-4">
           {nonFeaturedProfs.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8 gap-2 text-gray-400">
-              <FiStar size={22} className="text-[#6A11CB]/40" />
+              <FiStar size={22} className="text-[var(--primary)]/40" />
               <p className="text-sm">All verified professors are featured!</p>
             </div>
           ) : (
@@ -310,7 +310,7 @@ function FeaturedRow({ prof, edit, saving, onToggle, onOrderChange, onSave, isFe
         <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-xs shrink-0 ${
           isFeaturedSection
             ? "bg-gradient-to-br from-amber-400 to-orange-400"
-            : "bg-gradient-to-br from-[#6A11CB] to-[#2575FC]"
+            : "bg-gradient-to-br from-[var(--primary)] to-[var(--primary)]"
         }`}>
           {initials}
         </div>
@@ -318,7 +318,7 @@ function FeaturedRow({ prof, edit, saving, onToggle, onOrderChange, onSave, isFe
           <p className="font-semibold text-gray-800 text-sm truncate">{prof.name || "No name"}</p>
           <p className="text-xs text-gray-400 truncate">{prof.email}</p>
           {prof.subjects && (
-            <p className="text-xs text-[#6A11CB] mt-0.5 truncate">{prof.subjects}</p>
+            <p className="text-xs text-[var(--primary)] mt-0.5 truncate">{prof.subjects}</p>
           )}
         </div>
       </div>
@@ -332,7 +332,7 @@ function FeaturedRow({ prof, edit, saving, onToggle, onOrderChange, onSave, isFe
           max={99}
           value={edit.featuredOrder ?? 0}
           onChange={(e) => onOrderChange(e.target.value)}
-          className="w-14 px-2 py-1.5 rounded-lg text-sm text-center border border-gray-200 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] transition"
+          className="w-14 px-2 py-1.5 rounded-lg text-sm text-center border border-gray-200 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] transition"
         />
       </div>
 
@@ -342,7 +342,7 @@ function FeaturedRow({ prof, edit, saving, onToggle, onOrderChange, onSave, isFe
         disabled={saving || !hasChanges}
         className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-semibold transition-all shrink-0 ${
           hasChanges && !saving
-            ? "bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white hover:shadow-md hover:-translate-y-0.5"
+            ? "bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white hover:shadow-md hover:-translate-y-0.5"
             : "bg-gray-100 text-gray-400 cursor-not-allowed"
         }`}
       >

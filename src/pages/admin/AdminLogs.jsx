@@ -8,7 +8,7 @@ const ACTION_COLORS = {
   ban: "bg-red-50 text-red-700",
   disable: "bg-amber-50 text-amber-600",
   activate: "bg-blue-50 text-blue-600",
-  feature: "bg-purple-50 text-[#6A11CB]",
+  feature: "bg-purple-50 text-[var(--primary)]",
   update: "bg-gray-100 text-gray-600",
 }
 
@@ -35,7 +35,7 @@ export default function AdminLogs() {
           <h2 className="text-2xl font-bold text-gray-800">Activity Logs</h2>
           <p className="text-sm text-gray-400 mt-0.5">Audit trail of all admin actions</p>
         </div>
-        <div className="flex items-center gap-2 bg-purple-50 text-[#6A11CB] px-3 py-1.5 rounded-full text-xs font-semibold border border-purple-100">
+        <div className="flex items-center gap-2 bg-purple-50 text-[var(--primary)] px-3 py-1.5 rounded-full text-xs font-semibold border border-purple-100">
           <FiActivity size={12} />
           {logs.length} entries
         </div>
@@ -76,7 +76,7 @@ export default function AdminLogs() {
                       {/* Admin */}
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] flex items-center justify-center text-white text-xs font-bold shrink-0">
                             {initials}
                           </div>
                           <div className="min-w-0">

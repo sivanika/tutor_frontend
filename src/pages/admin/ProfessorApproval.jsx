@@ -86,7 +86,7 @@ export default function ProfessorApproval() {
               >
                 <div className="flex flex-wrap items-center gap-4">
                   {/* Avatar */}
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center text-white font-bold text-sm shadow shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] flex items-center justify-center text-white font-bold text-sm shadow shrink-0">
                     {initials}
                   </div>
 
@@ -96,12 +96,12 @@ export default function ProfessorApproval() {
                     <p className="text-sm text-gray-400">{p.email}</p>
                     <div className="flex flex-wrap gap-3 mt-2">
                       {p.highestDegree && (
-                        <span className="text-xs bg-purple-50 text-[#6A11CB] px-2.5 py-1 rounded-full font-medium border border-purple-100">
+                        <span className="text-xs bg-purple-50 text-[var(--primary)] px-2.5 py-1 rounded-full font-medium border border-purple-100">
                           {p.highestDegree}
                         </span>
                       )}
                       {p.subjects && (
-                        <span className="text-xs bg-blue-50 text-[#2575FC] px-2.5 py-1 rounded-full font-medium border border-blue-100">
+                        <span className="text-xs bg-blue-50 text-[var(--primary)] px-2.5 py-1 rounded-full font-medium border border-blue-100">
                           {p.subjects}
                         </span>
                       )}
@@ -118,7 +118,7 @@ export default function ProfessorApproval() {
                     </button>
                     <button
                       onClick={() => approveProfessor(p._id)}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white hover:shadow-md hover:-translate-y-0.5 transition-all"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white hover:shadow-md hover:-translate-y-0.5 transition-all"
                     >
                       <FiCheck size={14} /> Approve
                     </button>

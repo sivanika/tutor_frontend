@@ -4,60 +4,60 @@ export default function Features() {
       icon: "🎓",
       title: "Verified Professors",
       desc: "Learn from certified educators with proven teaching skills and academic credentials.",
-      color: "#6A11CB",
+      color: "var(--primary)",
     },
     {
       icon: "💻",
       title: "Virtual Classroom",
       desc: "Live video, screen share, collaborative whiteboard & session recordings.",
-      color: "#FF4E9B",
+      color: "var(--accent)",
     },
     {
       icon: "📈",
       title: "Progress Tracking",
       desc: "Monitor performance, view analytics, and measure your improvement over time.",
-      color: "#2575FC",
+      color: "var(--primary)",
     },
     {
       icon: "🗓️",
       title: "Flexible Scheduling",
       desc: "Book sessions at times that fit your schedule — morning, evening, or weekend.",
-      color: "#6A11CB",
+      color: "var(--primary)",
     },
     {
       icon: "🔐",
       title: "Secure Payments",
       desc: "Fully encrypted transactions for worry-free, hassle-free payments.",
-      color: "#FF4E9B",
+      color: "var(--accent)",
     },
     {
       icon: "🌍",
       title: "Learn Anywhere",
       desc: "Access live and recorded classes from mobile, tablet, or desktop worldwide.",
-      color: "#2575FC",
+      color: "var(--primary)",
     },
   ];
 
   return (
     <section
       id="features"
-      className="relative py-28 bg-white dark:bg-[#0f0720] overflow-hidden transition-colors duration-500"
+      className="relative py-28 bg-white dark:bg-[var(--surface)] overflow-hidden transition-colors duration-500"
     >
       {/* Background blobs */}
-      <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-[#6A11CB]/06 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-[#FF4E9B]/06 blur-3xl pointer-events-none" />
+      <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-[var(--primary)]/06 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-[var(--accent)]/06 blur-3xl pointer-events-none" />
 
       <div className="relative z-10">
         {/* Heading */}
         <div className="text-center mb-16 px-6">
-          <p className="text-sm font-semibold uppercase tracking-widest text-[#FF4E9B] mb-3">
+          <p className="text-sm font-semibold uppercase tracking-widest text-[var(--accent)] mb-3">
             Why TutorHours?
           </p>
-          <h2 className="text-4xl md:text-5xl font-black text-[#1a0e33] dark:text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-black text-[var(--text-primary)] dark:text-white mb-4">
             Everything You Need to{" "}
             <span className="grad-text">Succeed</span>
           </h2>
-          <p className="text-[#6b7280] dark:text-[#a78bfa] max-w-2xl mx-auto text-lg">
+          <p className="text-[var(--text-muted)] dark:text-[var(--accent)] max-w-2xl mx-auto text-lg">
             A complete learning ecosystem — secure, interactive, and built for modern education.
           </p>
         </div>
@@ -69,10 +69,10 @@ export default function Features() {
               key={i}
               className="
                 group relative p-8 rounded-2xl overflow-hidden
-                bg-[#f5f3ff] dark:bg-[#160d2e]
-                border border-[#6A11CB]/10 dark:border-[#6A11CB]/20
-                shadow-sm dark:shadow-[#6A11CB]/05
-                hover:-translate-y-2 hover:shadow-xl hover:shadow-[#6A11CB]/10
+                bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)]
+                border border-[var(--primary)]/10 dark:border-[var(--primary)]/20
+                shadow-sm dark:shadow-[var(--primary)]/05
+                hover:-translate-y-2 hover:shadow-xl hover:shadow-[var(--primary)]/10
                 transition-all duration-300
               "
             >
@@ -90,17 +90,17 @@ export default function Features() {
                 {f.icon}
               </div>
 
-              <h3 className="text-lg font-bold mb-2 text-[#1a0e33] dark:text-white relative">
+              <h3 className="text-lg font-bold mb-2 text-[var(--text-primary)] dark:text-white relative">
                 {f.title}
               </h3>
-              <p className="text-[#6b7280] dark:text-[#a78bfa] text-sm leading-relaxed relative">
+              <p className="text-[var(--text-muted)] dark:text-[var(--accent)] text-sm leading-relaxed relative">
                 {f.desc}
               </p>
 
               {/* Bottom accent */}
               <div
                 className="absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-500 rounded-full"
-                style={{ background: `linear-gradient(90deg, ${f.color}, #2575FC)` }}
+                style={{ background: `linear-gradient(90deg, ${f.color}, var(--primary))` }}
               />
             </div>
           ))}

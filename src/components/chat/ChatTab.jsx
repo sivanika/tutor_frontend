@@ -69,7 +69,7 @@ function Bubble({ msg, isMe }) {
           {isMe && (
             <svg width="14" height="10" viewBox="0 0 16 12" fill="none">
               {read
-                ? <><path d="M1 6l4 4L13 1" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M5 6l4 4" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></>
+                ? <><path d="M1 6l4 4L13 1" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M5 6l4 4" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></>
                 : <path d="M1 6l4 4L13 1" stroke={isOpt ? "#d1d5db" : "#9ca3af"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               }
             </svg>

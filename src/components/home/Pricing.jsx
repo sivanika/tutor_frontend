@@ -18,7 +18,7 @@ export default function Pricing() {
           const isFree = p.price === 0;
 
           // Assign gradient and color statically for UI matching
-          const color = isPremium ? "#FF4E9B" : (isFree ? "#6A11CB" : "#2575FC");
+          const color = isPremium ? "var(--accent)" : (isFree ? "var(--primary)" : "var(--primary)");
           
           return {
             ...p,
@@ -55,20 +55,20 @@ export default function Pricing() {
   return (
     <section
       id="pricing"
-      className="relative py-28 bg-white dark:bg-[#0f0720] overflow-hidden transition-colors duration-500"
+      className="relative py-28 bg-white dark:bg-[var(--surface)] overflow-hidden transition-colors duration-500"
     >
       {/* Blobs */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[#6A11CB]/05 blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[var(--primary)]/05 blur-3xl pointer-events-none" />
 
       <div className="relative z-10">
         {/* Heading */}
         <div className="text-center mb-16 px-6">
-          <p className="text-sm font-semibold uppercase tracking-widest text-[#FF4E9B] mb-3">Pricing</p>
-          <h2 className="text-4xl md:text-5xl font-black text-[#1a0e33] dark:text-white mb-4">
+          <p className="text-sm font-semibold uppercase tracking-widest text-[var(--accent)] mb-3">Pricing</p>
+          <h2 className="text-4xl md:text-5xl font-black text-[var(--text-primary)] dark:text-white mb-4">
             Simple &amp;{" "}
             <span className="grad-text">Transparent</span>
           </h2>
-          <p className="text-[#6b7280] dark:text-[#a78bfa] max-w-xl mx-auto">
+          <p className="text-[var(--text-muted)] dark:text-[var(--accent)] max-w-xl mx-auto">
             Choose the perfect plan that matches your learning style and budget.
           </p>
         </div>
@@ -83,22 +83,22 @@ export default function Pricing() {
                 border transition-all duration-300
                 hover:-translate-y-2
                 ${plan.highlight
-                  ? "bg-[#f5f3ff] dark:bg-[#160d2e] border-[#6A11CB]/30 dark:border-[#6A11CB]/40 shadow-2xl shadow-[#6A11CB]/20 md:scale-105"
-                  : "bg-white dark:bg-[#160d2e] border-[#6A11CB]/10 dark:border-[#6A11CB]/20 shadow-md hover:shadow-xl hover:shadow-[#6A11CB]/10"
+                  ? "bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)] border-[var(--primary)]/30 dark:border-[var(--primary)]/40 shadow-2xl shadow-[var(--primary)]/20 md:scale-105"
+                  : "bg-white dark:bg-[var(--surface-alt)] border-[var(--primary)]/10 dark:border-[var(--primary)]/20 shadow-md hover:shadow-xl hover:shadow-[var(--primary)]/10"
                 }
               `}
             >
               {/* Top gradient strip */}
               <div
                 className="absolute top-0 left-0 w-full h-1.5 rounded-t-3xl"
-                style={{ background: `linear-gradient(135deg, ${plan.color}, #2575FC)` }}
+                style={{ background: `linear-gradient(135deg, ${plan.color}, var(--primary))` }}
               />
 
               {/* Popular badge */}
               {plan.highlight && (
                 <div
                   className="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest text-white shadow-lg"
-                  style={{ background: "linear-gradient(135deg, #FF4E9B, #6A11CB)" }}
+                  style={{ background: "linear-gradient(135deg, var(--accent), var(--primary))" }}
                 >
                   Most Popular
                 </div>
@@ -111,14 +111,14 @@ export default function Pricing() {
 
               {/* Price */}
               <div className="mb-6">
-                <span className="text-5xl font-black text-[#1a0e33] dark:text-white">{plan.displayPrice}</span>
-                <span className="text-sm text-[#6b7280] dark:text-[#a78bfa] ml-1">{plan.displayPeriod}</span>
+                <span className="text-5xl font-black text-[var(--text-primary)] dark:text-white">{plan.displayPrice}</span>
+                <span className="text-sm text-[var(--text-muted)] dark:text-[var(--accent)] ml-1">{plan.displayPeriod}</span>
               </div>
 
               {/* Features */}
               <ul className="space-y-3 flex-1 mb-8">
                 {plan.features.map((f, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-sm text-[#1a0e33] dark:text-[#d4caff]">
+                  <li key={idx} className="flex items-start gap-2.5 text-sm text-[var(--text-primary)] dark:text-[#d4caff]">
                     <span
                       className="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] text-white font-bold"
                       style={{ background: plan.color }}
@@ -140,8 +140,8 @@ export default function Pricing() {
                 `}
                 style={{
                   background: plan.highlight
-                    ? "linear-gradient(135deg, #FF4E9B, #6A11CB)"
-                    : `linear-gradient(135deg, ${plan.color}, #2575FC)`,
+                    ? "linear-gradient(135deg, var(--accent), var(--primary))"
+                    : `linear-gradient(135deg, ${plan.color}, var(--primary))`,
                   boxShadow: plan.highlight ? "0 8px 24px rgba(255,78,155,0.35)" : `0 4px 16px ${plan.color}30`,
                 }}
               >

@@ -10,9 +10,9 @@ const items = [
     desc: "Approve or reject professor applications",
     path: "verify",
     icon: FiShield,
-    color: "from-[#6A11CB] to-[#2575FC]",
+    color: "from-[var(--primary)] to-[var(--primary)]",
     bg: "bg-purple-50",
-    iconColor: "text-[#6A11CB]",
+    iconColor: "text-[var(--primary)]",
     badge: "Verification",
   },
   {
@@ -20,9 +20,9 @@ const items = [
     desc: "View all students, subscriptions & details",
     path: "students",
     icon: FiUsers,
-    color: "from-[#2575FC] to-[#FF4E9B]",
+    color: "from-[var(--primary)] to-[var(--accent)]",
     bg: "bg-blue-50",
-    iconColor: "text-[#2575FC]",
+    iconColor: "text-[var(--primary)]",
     badge: "Students",
   },
   {
@@ -30,7 +30,7 @@ const items = [
     desc: "Manage all professors, credentials & status",
     path: "professors",
     icon: FiUserCheck,
-    color: "from-[#6A11CB] to-[#FF4E9B]",
+    color: "from-[var(--primary)] to-[var(--accent)]",
     bg: "bg-indigo-50",
     iconColor: "text-indigo-600",
     badge: "Professors",
@@ -50,9 +50,9 @@ const items = [
     desc: "Manage all users: status, roles, access",
     path: "users",
     icon: FiBarChart2,
-    color: "from-[#FF4E9B] to-orange-400",
+    color: "from-[var(--accent)] to-orange-400",
     bg: "bg-pink-50",
-    iconColor: "text-[#FF4E9B]",
+    iconColor: "text-[var(--accent)]",
     badge: "Users",
   },
   {
@@ -92,7 +92,7 @@ export default function AdminDashboard() {
     <div className="space-y-8 animate-fadeIn">
 
       {/* ─── Hero Banner ─── */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#6A11CB] to-[#2575FC] rounded-2xl p-6 text-white shadow-lg">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] rounded-2xl p-6 text-white shadow-lg">
         <div className="relative z-10">
           <p className="text-white/70 text-sm font-medium mb-1">Welcome back, Admin</p>
           <h2 className="text-2xl font-bold mb-1">Admin Dashboard</h2>
@@ -102,7 +102,7 @@ export default function AdminDashboard() {
         </div>
         <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10" />
         <div className="absolute -right-4 -bottom-10 w-28 h-28 rounded-full bg-white/10" />
-        <div className="absolute right-36 -top-4 w-16 h-16 rounded-full bg-[#FF4E9B]/30" />
+        <div className="absolute right-36 -top-4 w-16 h-16 rounded-full bg-[var(--accent)]/30" />
       </div>
 
       {/* ─── Quick Actions Grid ─── */}
@@ -128,7 +128,7 @@ export default function AdminDashboard() {
                 <h3 className="font-semibold text-gray-800 mb-1 text-sm">{item.title}</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">{item.desc}</p>
                 <div className={`mt-4 h-0.5 rounded-full bg-gradient-to-r ${item.color}`} />
-                <div className="flex items-center gap-1 mt-3 text-xs font-medium text-gray-400 group-hover:text-[#6A11CB] transition-colors">
+                <div className="flex items-center gap-1 mt-3 text-xs font-medium text-gray-400 group-hover:text-[var(--primary)] transition-colors">
                   Open <FiArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </Link>

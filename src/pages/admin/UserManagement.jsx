@@ -3,9 +3,9 @@ import API from "../../services/api"
 import { FiSearch, FiChevronLeft, FiChevronRight, FiUserCheck, FiUserX, FiSlash } from "react-icons/fi"
 
 const ROLE_BADGE = {
-  student: "bg-blue-50 text-[#2575FC]",
-  professor: "bg-purple-50 text-[#6A11CB]",
-  admin: "bg-pink-50 text-[#FF4E9B]",
+  student: "bg-blue-50 text-[var(--primary)]",
+  professor: "bg-purple-50 text-[var(--primary)]",
+  admin: "bg-pink-50 text-[var(--accent)]",
 }
 
 const STATUS_BADGE = {
@@ -59,14 +59,14 @@ export default function UserManagement() {
             placeholder="Search by name or email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all"
+            className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] focus:bg-white transition-all"
           />
         </div>
 
         <select
           value={role}
           onChange={(e) => setRole(e.target.value)}
-          className="px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all min-w-[140px]"
+          className="px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] focus:bg-white transition-all min-w-[140px]"
         >
           <option value="">All Roles</option>
           <option value="student">Student</option>
@@ -114,7 +114,7 @@ export default function UserManagement() {
                       {/* User */}
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] flex items-center justify-center text-white text-xs font-bold shrink-0">
                             {initials}
                           </div>
                           <div className="min-w-0">
@@ -190,7 +190,7 @@ export default function UserManagement() {
                   onClick={() => setPage(i + 1)}
                   className={`w-8 h-8 rounded-lg text-sm font-medium transition ${
                     page === i + 1
-                      ? "bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white shadow-sm"
+                      ? "bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white shadow-sm"
                       : "border border-gray-200 text-gray-600 hover:bg-gray-50"
                   }`}
                 >

@@ -28,7 +28,7 @@ export default function ProfessorApply() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0720] text-white flex flex-col items-center justify-center p-6 font-[Inter,sans-serif]">
+    <div className="min-h-screen bg-[var(--surface)] text-white flex flex-col items-center justify-center p-6 font-[Inter,sans-serif]">
       {/* Navbar Minimal */}
       <nav className="absolute top-0 left-0 w-full p-6 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2 text-white font-bold text-lg">

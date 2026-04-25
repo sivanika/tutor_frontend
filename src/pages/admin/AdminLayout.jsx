@@ -51,12 +51,12 @@ export default function AdminLayout() {
       {/* ══════════ SIDEBAR ══════════ */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 transform ${
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } md:relative md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col bg-gradient-to-b from-[#6A11CB] to-[#2575FC] text-white shadow-2xl shrink-0`}>
+      } md:relative md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col bg-gradient-to-b from-[var(--primary)] to-[var(--primary)] text-white shadow-2xl shrink-0`}>
 
         {/* Brand */}
         <div className="flex items-center justify-between px-6 py-6 border-b border-white/15">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#FF4E9B] flex items-center justify-center font-bold text-lg shadow-lg">
+            <div className="w-9 h-9 rounded-xl bg-[var(--accent)] flex items-center justify-center font-bold text-lg shadow-lg">
               A
             </div>
             <div>
@@ -90,14 +90,14 @@ export default function AdminLayout() {
               {({ isActive }) => (
                 <>
                   {isActive && (
-                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-[#FF4E9B]" />
+                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-[var(--accent)]" />
                   )}
                   <Icon
                     size={16}
                     className={isActive ? "text-white" : "text-white/50 group-hover:text-white/80"}
                   />
                   <span>{label}</span>
-                  {isActive && <FiChevronRight size={13} className="ml-auto text-[#FF4E9B]" />}
+                  {isActive && <FiChevronRight size={13} className="ml-auto text-[var(--accent)]" />}
                 </>
               )}
             </NavLink>
@@ -135,7 +135,7 @@ export default function AdminLayout() {
           </div>
           <div className="ml-auto flex items-center gap-3 shrink-0">
             <NotificationBell />
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center font-bold text-sm text-white shadow">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] flex items-center justify-center font-bold text-sm text-white shadow">
               A
             </div>
           </div>

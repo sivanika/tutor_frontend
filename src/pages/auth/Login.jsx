@@ -59,7 +59,7 @@ function Login() {
     <div
       className="
         min-h-screen flex items-center justify-center p-6
-        bg-gradient-to-br from-[#6A11CB] via-[#4B34C9] to-[#2575FC]
+        bg-gradient-to-br from-[var(--primary)] via-[#4B34C9] to-[var(--primary)]
         dark:from-[#0f0720] dark:via-[#130a2e] dark:to-[#0a0418]
         transition-colors duration-500
       "
@@ -69,10 +69,10 @@ function Login() {
         onSubmit={submit}
         className="
           w-full max-w-md p-6 md:p-8 rounded-2xl
-          bg-white/95 dark:bg-[#1a1035]/95
+          bg-white/95 dark:bg-[var(--surface)]/95
           backdrop-blur-2xl
 
-          border border-white/50 dark:border-[#6A11CB]/20
+          border border-white/50 dark:border-[var(--primary)]/20
           shadow-2xl shadow-black/20
 
           animate-[fadeIn_.5s_ease]
@@ -84,7 +84,7 @@ function Login() {
         <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-800 dark:text-white">
           Welcome Back
         </h2>
-        <p className="text-center text-sm text-gray-500 dark:text-[#a78bfa] -mt-3">Log in to TutorHours</p>
+        <p className="text-center text-sm text-gray-500 dark:text-[var(--accent)] -mt-3">Log in to TutorHours</p>
 
         {/* Error message */}
         {error && (
@@ -99,11 +99,11 @@ function Login() {
           placeholder="Email address"
           className="
             w-full p-3 rounded-lg
-            bg-gray-50 dark:bg-[#0f0720]
-            border border-gray-200 dark:border-[#6A11CB]/20
+            bg-gray-50 dark:bg-[var(--surface)]
+            border border-gray-200 dark:border-[var(--primary)]/20
             text-gray-800 dark:text-white
-            placeholder:text-gray-400 dark:placeholder:text-[#a78bfa]/50
-            focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40
+            placeholder:text-gray-400 dark:placeholder:text-[var(--accent)]/50
+            focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40
             transition
           "
           value={email}
@@ -118,11 +118,11 @@ function Login() {
             placeholder="Password"
             className="
               w-full p-3 rounded-lg pr-12
-              bg-gray-50 dark:bg-[#0f0720]
-              border border-gray-200 dark:border-[#6A11CB]/20
+              bg-gray-50 dark:bg-[var(--surface)]
+              border border-gray-200 dark:border-[var(--primary)]/20
               text-gray-800 dark:text-white
-              placeholder:text-gray-400 dark:placeholder:text-[#a78bfa]/50
-              focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40
+              placeholder:text-gray-400 dark:placeholder:text-[var(--accent)]/50
+              focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40
               transition
             "
             value={password}
@@ -146,7 +146,7 @@ function Login() {
         <div className="text-right">
           <Link
             to="/forgot-password"
-            className="text-sm text-[#6A11CB] hover:underline"
+            className="text-sm text-[var(--primary)] hover:underline"
           >
             Forgot password?
           </Link>
@@ -157,9 +157,9 @@ function Login() {
           disabled={loading}
           className="
             w-full py-3 rounded-lg font-semibold
-            bg-gradient-to-r from-[#6A11CB] to-[#2575FC]
+            bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]
             text-white
-            hover:shadow-lg hover:shadow-[#6A11CB]/30
+            hover:shadow-lg hover:shadow-[var(--primary)]/30
             transition-all duration-200
             active:scale-95
             disabled:opacity-60
@@ -169,13 +169,13 @@ function Login() {
         </button>
 
         {/* Register */}
-        <p className="text-sm text-center text-gray-500 dark:text-[#a78bfa]/70">
+        <p className="text-sm text-center text-gray-500 dark:text-[var(--accent)]/70">
           Don't have an account?{" "}
-          <Link to="/register" className="font-medium text-[#6A11CB] dark:text-[#a78bfa] hover:underline">
+          <Link to="/register" className="font-medium text-[var(--primary)] dark:text-[var(--accent)] hover:underline">
             Register
           </Link>
         </p>
-        <Link to="/" className="block text-sm text-center text-gray-500 dark:text-[#a78bfa]/60 hover:text-[#6A11CB] dark:hover:text-white hover:underline">
+        <Link to="/" className="block text-sm text-center text-gray-500 dark:text-[var(--accent)]/60 hover:text-[var(--primary)] dark:hover:text-white hover:underline">
           Back to Home
         </Link>
       </form>

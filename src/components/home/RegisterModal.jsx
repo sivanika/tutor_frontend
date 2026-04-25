@@ -17,8 +17,8 @@ export default function RegisterModal({ onClose, onSwitchToLogin }) {
                 onClick={(e) => e.stopPropagation()}
                 className="
           relative w-full max-w-md p-10 rounded-2xl text-center
-          bg-white/95 dark:bg-[#1a1035]/95 backdrop-blur-2xl
-          border border-white/50 dark:border-[#6A11CB]/20
+          bg-white/95 dark:bg-[var(--surface)]/95 backdrop-blur-2xl
+          border border-white/50 dark:border-[var(--primary)]/20
           shadow-2xl shadow-black/20
           animate-[modalIn_.3s_ease]
         "
@@ -27,14 +27,14 @@ export default function RegisterModal({ onClose, onSwitchToLogin }) {
                 <button
                     type="button"
                     onClick={onClose}
-                    className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 dark:bg-[#0f0720] hover:bg-gray-200 dark:hover:bg-[#6A11CB]/20 flex items-center justify-center text-gray-500 dark:text-[#a78bfa] hover:text-gray-800 dark:hover:text-white transition"
+                    className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 dark:bg-[var(--surface)] hover:bg-gray-200 dark:hover:bg-[var(--primary)]/20 flex items-center justify-center text-gray-500 dark:text-[var(--accent)] hover:text-gray-800 dark:hover:text-white transition"
                 >
                     ✕
                 </button>
 
                 {/* Title */}
                 <h2 className="text-3xl font-bold mb-2 text-gray-800 dark:text-white">Register As</h2>
-                <p className="text-sm text-gray-500 dark:text-[#a78bfa] mb-8">Choose your role to get started</p>
+                <p className="text-sm text-gray-500 dark:text-[var(--accent)] mb-8">Choose your role to get started</p>
 
                 {/* Options */}
                 <div className="flex flex-col gap-5">
@@ -44,9 +44,9 @@ export default function RegisterModal({ onClose, onSwitchToLogin }) {
                         className="
               group flex items-center justify-center gap-3
               py-4 rounded-xl font-semibold
-              bg-gradient-to-r from-[#6A11CB] to-[#2575FC]
+              bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]
               text-white
-              shadow-lg shadow-[#6A11CB]/25
+              shadow-lg shadow-[var(--primary)]/25
               hover:shadow-xl hover:-translate-y-1
               transition-all duration-300
             "
@@ -61,8 +61,8 @@ export default function RegisterModal({ onClose, onSwitchToLogin }) {
                         className="
               group flex items-center justify-center gap-3
               py-4 rounded-xl font-semibold
-              bg-[#FF4E9B] text-white
-              shadow-lg shadow-[#FF4E9B]/25
+              bg-[var(--accent)] text-white
+              shadow-lg shadow-[var(--accent)]/25
               hover:shadow-xl hover:-translate-y-1
               transition-all duration-300
             "
@@ -73,11 +73,11 @@ export default function RegisterModal({ onClose, onSwitchToLogin }) {
                 </div>
 
                 {/* Switch to login */}
-                <p className="mt-8 text-sm text-gray-500 dark:text-[#a78bfa]/70">
+                <p className="mt-8 text-sm text-gray-500 dark:text-[var(--accent)]/70">
                     Already have an account?{" "}
                     <button
                         onClick={onSwitchToLogin}
-                        className="font-medium text-[#6A11CB] dark:text-[#a78bfa] hover:underline"
+                        className="font-medium text-[var(--primary)] dark:text-[var(--accent)] hover:underline"
                     >
                         Login
                     </button>

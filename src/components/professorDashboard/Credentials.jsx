@@ -67,7 +67,7 @@ export default function Credentials() {
     <div className="space-y-5 max-w-5xl animate-fadeIn">
 
       {/* ─── Page Header ─── */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#6A11CB] to-[#2575FC] rounded-2xl p-6 text-white shadow-lg">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] rounded-2xl p-6 text-white shadow-lg">
         <div className="relative z-10">
           <p className="text-white/70 text-sm font-medium mb-1">Professor Dashboard</p>
           <h2 className="text-2xl font-bold mb-1">Academic Credentials</h2>
@@ -77,7 +77,7 @@ export default function Credentials() {
         </div>
         <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10" />
         <div className="absolute -right-4 -bottom-10 w-28 h-28 rounded-full bg-white/10" />
-        <div className="absolute right-36 -top-4 w-16 h-16 rounded-full bg-[#FF4E9B]/30" />
+        <div className="absolute right-36 -top-4 w-16 h-16 rounded-full bg-[var(--accent)]/30" />
       </div>
 
       {/* ─── Status Message ─── */}
@@ -96,7 +96,7 @@ export default function Credentials() {
       )}
 
       {/* ─── Education ─── */}
-      <Section icon={FiBook} iconBg="bg-purple-50" iconColor="text-[#6A11CB]" title="Education" subtitle="Your highest academic qualification">
+      <Section icon={FiBook} iconBg="bg-purple-50" iconColor="text-[var(--primary)]" title="Education" subtitle="Your highest academic qualification">
         <div className="grid md:grid-cols-2 gap-4">
           <Input
             label="Highest Degree"
@@ -130,7 +130,7 @@ export default function Credentials() {
       </Section>
 
       {/* ─── Professional Experience ─── */}
-      <Section icon={FiBriefcase} iconBg="bg-blue-50" iconColor="text-[#2575FC]" title="Professional Experience" subtitle="Your current role and teaching history">
+      <Section icon={FiBriefcase} iconBg="bg-blue-50" iconColor="text-[var(--primary)]" title="Professional Experience" subtitle="Your current role and teaching history">
         <div className="grid md:grid-cols-2 gap-4">
           <Input
             label="Years of Teaching Experience"
@@ -159,7 +159,7 @@ export default function Credentials() {
       </Section>
 
       {/* ─── Subjects & Specializations ─── */}
-      <Section icon={FiGrid} iconBg="bg-pink-50" iconColor="text-[#FF4E9B]" title="Subjects & Specializations" subtitle="Topics you cover in your sessions">
+      <Section icon={FiGrid} iconBg="bg-pink-50" iconColor="text-[var(--accent)]" title="Subjects & Specializations" subtitle="Topics you cover in your sessions">
         <div className="space-y-4">
           <Textarea
             label="Subjects You Teach"
@@ -203,7 +203,7 @@ export default function Credentials() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white px-7 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
+          className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white px-7 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
         >
           {saving ? (
             <><FiLoader size={15} className="animate-spin" /> Saving...</>
@@ -218,7 +218,7 @@ export default function Credentials() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gray-50/60">
           <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-            <FiEye size={15} className="text-[#2575FC]" />
+            <FiEye size={15} className="text-[var(--primary)]" />
           </div>
           <div>
             <h3 className="font-semibold text-gray-800">Student View Preview</h3>
@@ -285,7 +285,7 @@ function Input({ label, placeholder, ...props }) {
       <input
         {...props}
         placeholder={placeholder}
-        className="w-full border border-gray-200 bg-gray-50 px-3.5 py-2.5 rounded-xl text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all duration-200"
+        className="w-full border border-gray-200 bg-gray-50 px-3.5 py-2.5 rounded-xl text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] focus:bg-white transition-all duration-200"
       />
     </div>
   );
@@ -301,7 +301,7 @@ function Textarea({ label, placeholder, ...props }) {
         {...props}
         rows="3"
         placeholder={placeholder}
-        className="w-full border border-gray-200 bg-gray-50 px-3.5 py-2.5 rounded-xl text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all duration-200 resize-none"
+        className="w-full border border-gray-200 bg-gray-50 px-3.5 py-2.5 rounded-xl text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] focus:bg-white transition-all duration-200 resize-none"
       />
     </div>
   );

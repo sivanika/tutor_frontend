@@ -66,7 +66,7 @@ function ApplicationModal({ position, onClose }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
-                <div className="bg-gradient-to-r from-[#6A11CB] to-[#2575FC] px-7 py-5 flex items-center justify-between">
+                <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] px-7 py-5 flex items-center justify-between">
                     <div>
                         <p className="text-white/70 text-xs font-medium">Apply for</p>
                         <h3 className="text-white font-bold text-lg">{position.title}</h3>
@@ -79,7 +79,7 @@ function ApplicationModal({ position, onClose }) {
                         <div className="text-5xl mb-4">🎉</div>
                         <h4 className="text-xl font-bold text-gray-800 mb-2">Application Received!</h4>
                         <p className="text-gray-500 text-sm mb-6">We'll review your application and reach out within 5–7 business days.</p>
-                        <button onClick={onClose} className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white font-semibold text-sm">Close</button>
+                        <button onClick={onClose} className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white font-semibold text-sm">Close</button>
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="px-7 py-6 space-y-4">
@@ -90,7 +90,7 @@ function ApplicationModal({ position, onClose }) {
                                 value={form.name}
                                 onChange={e => setForm({ ...form, name: e.target.value })}
                                 placeholder="Jane Smith"
-                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 bg-gray-50"
+                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50"
                             />
                         </div>
                         <div>
@@ -101,7 +101,7 @@ function ApplicationModal({ position, onClose }) {
                                 value={form.email}
                                 onChange={e => setForm({ ...form, email: e.target.value })}
                                 placeholder="jane@example.com"
-                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 bg-gray-50"
+                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50"
                             />
                         </div>
                         <div>
@@ -112,12 +112,12 @@ function ApplicationModal({ position, onClose }) {
                                 value={form.cover}
                                 onChange={e => setForm({ ...form, cover: e.target.value })}
                                 placeholder="Tell us why you'd be a great fit..."
-                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 bg-gray-50 resize-none"
+                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50 resize-none"
                             />
                         </div>
                         <button
                             type="submit"
-                            className="w-full py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#6A11CB] to-[#2575FC] hover:opacity-90 transition"
+                            className="w-full py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] hover:opacity-90 transition"
                         >
                             Submit Application →
                         </button>
@@ -142,32 +142,30 @@ export default function Careers() {
     const visible = filter === "All" ? POSITIONS : POSITIONS.filter(p => p.dept === filter);
 
     return (
-        <div className="min-h-screen bg-gray-50 font-[Inter,sans-serif]">
-
-            {/* ── Navbar strip ── */}
-            <header className="bg-white border-b border-gray-100 px-6 py-4 flex items-center gap-4">
-                <Link to="/" className="flex items-center gap-2 text-[#6A11CB] font-bold text-lg">
-                    <span className="w-8 h-8 rounded-xl bg-[#FF4E9B] flex items-center justify-center text-white text-sm">T</span>
-                    TutorHours
-                </Link>
-                <span className="ml-auto text-sm text-gray-400">Careers</span>
-            </header>
+        <div className="bg-white dark:bg-[var(--surface)] font-[Inter,sans-serif]">
 
             {/* ── Hero ── */}
-            <section className="relative overflow-hidden bg-gradient-to-br from-[#6A11CB] via-[#4423B8] to-[#2575FC] text-white px-6 py-20 text-center">
-                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 30% 50%, #FF4E9B 0%, transparent 50%), radial-gradient(circle at 80% 20%, #06B6D4 0%, transparent 40%)" }} />
+            <section className="relative overflow-hidden text-slate-900 dark:text-white px-6 pt-32 pb-20 text-center">
+                <div className="absolute inset-0 z-0">
+                  <img 
+                    src="/academic_hero_banner.png" 
+                    alt="Banner" 
+                    className="w-full h-full object-cover opacity-20 dark:opacity-40 brightness-[0.9] dark:brightness-[0.7]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-[var(--surface)]/20 via-[var(--surface)]/80 to-[var(--surface)]" />
+                </div>
                 <div className="relative max-w-3xl mx-auto">
-                    <span className="inline-block bg-white/20 text-white/90 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 backdrop-blur-sm">
+                    <span className="inline-block bg-[var(--primary)]/10 dark:bg-white/20 text-[var(--primary)] dark:text-white/90 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 backdrop-blur-sm">
                         We're hiring! Join the team 🚀
                     </span>
-                    <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-                        Build the Future of<br />
-                        <span className="text-[#FF4E9B]">Education Together</span>
+                    <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
+                        Build the Future of <br />
+                        <span className="grad-text">Education Together</span>
                     </h1>
-                    <p className="text-white/70 text-lg max-w-lg mx-auto mb-8">
+                    <p className="text-lg text-slate-600 dark:text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
                         Join TutorHours and help thousands of students connect with world-class professors. We're looking for passionate people to grow our Technical Support team.
                     </p>
-                    <a href="#openings" className="inline-block bg-white text-[#6A11CB] font-bold px-8 py-3.5 rounded-2xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+                    <a href="#openings" className="inline-block bg-white text-[var(--primary)] font-bold px-8 py-3.5 rounded-2xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
                         View Open Roles
                     </a>
                 </div>
@@ -200,7 +198,7 @@ export default function Careers() {
                             key={dept}
                             onClick={() => setFilter(dept)}
                             className={`px-4 py-2 rounded-full text-sm font-semibold transition
-                ${filter === dept ? "bg-[#6A11CB] text-white shadow" : "bg-white text-gray-600 border border-gray-200 hover:border-[#6A11CB] hover:text-[#6A11CB]"}`}
+                ${filter === dept ? "bg-[var(--primary)] text-white shadow" : "bg-white text-gray-600 border border-gray-200 hover:border-[var(--primary)] hover:text-[var(--primary)]"}`}
                         >
                             {dept}
                         </button>
@@ -225,7 +223,7 @@ export default function Careers() {
                                     <p className="text-sm text-gray-500 mb-3">{pos.description}</p>
                                     <div className="flex flex-wrap gap-2">
                                         {pos.skills.map(skill => (
-                                            <span key={skill} className="text-xs bg-purple-50 text-[#6A11CB] px-2.5 py-1 rounded-full font-medium">
+                                            <span key={skill} className="text-xs bg-purple-50 text-[var(--primary)] px-2.5 py-1 rounded-full font-medium">
                                                 {skill}
                                             </span>
                                         ))}
@@ -234,7 +232,7 @@ export default function Careers() {
                                 <button
                                     onClick={() => setSelected(pos)}
                                     className="shrink-0 px-5 py-2.5 rounded-xl font-semibold text-sm text-white
-                    bg-gradient-to-r from-[#6A11CB] to-[#2575FC] hover:opacity-90
+                    bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] hover:opacity-90
                     hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
                                 >
                                     Apply Now

@@ -12,7 +12,7 @@ export default function ProfessorDetailsModal({ professor, onClose }) {
       <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
 
         {/* Header */}
-        <div className="flex items-center gap-4 p-6 bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white shrink-0">
+        <div className="flex items-center gap-4 p-6 bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white shrink-0">
           <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center font-bold text-xl">
             {initials}
           </div>
@@ -98,7 +98,7 @@ export default function ProfessorDetailsModal({ professor, onClose }) {
         <div className="flex justify-end px-6 py-4 border-t border-gray-100 bg-gray-50/60 shrink-0">
           <button
             onClick={onClose}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white hover:shadow-md hover:-translate-y-0.5 transition-all"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white hover:shadow-md hover:-translate-y-0.5 transition-all"
           >
             <FiX size={14} /> Close
           </button>
@@ -113,7 +113,7 @@ function Section({ title, icon: Icon, children }) {
   return (
     <div>
       <div className="flex items-center gap-2 mb-3">
-        {Icon && <Icon size={14} className="text-[#6A11CB]" />}
+        {Icon && <Icon size={14} className="text-[var(--primary)]" />}
         <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">{title}</h3>
       </div>
       <div className="space-y-2">{children}</div>
@@ -139,7 +139,7 @@ function DocLink({ href, label }) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-blue-50 text-[#2575FC] border border-blue-100 hover:bg-blue-100 transition"
+      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-blue-50 text-[var(--primary)] border border-blue-100 hover:bg-blue-100 transition"
     >
       <FiExternalLink size={12} /> {label}
     </a>

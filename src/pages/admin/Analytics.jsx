@@ -7,7 +7,7 @@ import {
 } from "recharts"
 import { FiUsers, FiTrendingUp, FiPieChart, FiBarChart2 } from "react-icons/fi"
 
-const BRAND_COLORS = ["#6A11CB", "#2575FC", "#FF4E9B", "#F59E0B"]
+const BRAND_COLORS = ["var(--primary)", "var(--primary)", "var(--accent)", "#F59E0B"]
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -53,9 +53,9 @@ export default function Analytics() {
   const totalUsers = (data.roleChart[0]?.value || 0) + (data.roleChart[1]?.value || 0)
 
   const STAT_ITEMS = [
-    { label: "Total Users", value: totalUsers, icon: FiUsers, bg: "bg-purple-50", color: "text-[#6A11CB]", grad: "from-[#6A11CB] to-[#2575FC]" },
-    { label: "Students", value: data.roleChart[0]?.value || 0, icon: FiBarChart2, bg: "bg-blue-50", color: "text-[#2575FC]", grad: "from-[#2575FC] to-[#FF4E9B]" },
-    { label: "Professors", value: data.roleChart[1]?.value || 0, icon: FiTrendingUp, bg: "bg-pink-50", color: "text-[#FF4E9B]", grad: "from-[#FF4E9B] to-orange-400" },
+    { label: "Total Users", value: totalUsers, icon: FiUsers, bg: "bg-purple-50", color: "text-[var(--primary)]", grad: "from-[var(--primary)] to-[var(--primary)]" },
+    { label: "Students", value: data.roleChart[0]?.value || 0, icon: FiBarChart2, bg: "bg-blue-50", color: "text-[var(--primary)]", grad: "from-[var(--primary)] to-[var(--accent)]" },
+    { label: "Professors", value: data.roleChart[1]?.value || 0, icon: FiTrendingUp, bg: "bg-pink-50", color: "text-[var(--accent)]", grad: "from-[var(--accent)] to-orange-400" },
     { label: "Verified Profs", value: data.verificationChart[0]?.value || 0, icon: FiPieChart, bg: "bg-amber-50", color: "text-amber-500", grad: "from-amber-400 to-yellow-500" },
   ]
 
@@ -89,7 +89,7 @@ export default function Analytics() {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-5">
             <div className="w-7 h-7 rounded-lg bg-purple-50 flex items-center justify-center">
-              <FiBarChart2 size={14} className="text-[#6A11CB]" />
+              <FiBarChart2 size={14} className="text-[var(--primary)]" />
             </div>
             <div>
               <h3 className="font-semibold text-gray-800 text-sm">Students vs Professors</h3>
@@ -115,7 +115,7 @@ export default function Analytics() {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-5">
             <div className="w-7 h-7 rounded-lg bg-pink-50 flex items-center justify-center">
-              <FiPieChart size={14} className="text-[#FF4E9B]" />
+              <FiPieChart size={14} className="text-[var(--accent)]" />
             </div>
             <div>
               <h3 className="font-semibold text-gray-800 text-sm">Professor Verification</h3>
@@ -140,7 +140,7 @@ export default function Analytics() {
               <Legend
                 iconType="circle"
                 iconSize={8}
-                formatter={(v) => <span style={{ color: "#6b7280", fontSize: 12 }}>{v}</span>}
+                formatter={(v) => <span style={{ color: "var(--text-muted)", fontSize: 12 }}>{v}</span>}
               />
             </PieChart>
           </ResponsiveContainer>
@@ -150,7 +150,7 @@ export default function Analytics() {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2">
           <div className="flex items-center gap-2 mb-5">
             <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center">
-              <FiTrendingUp size={14} className="text-[#2575FC]" />
+              <FiTrendingUp size={14} className="text-[var(--primary)]" />
             </div>
             <div>
               <h3 className="font-semibold text-gray-800 text-sm">User Growth</h3>
@@ -167,9 +167,9 @@ export default function Analytics() {
                 type="monotone"
                 dataKey="users"
                 name="Users"
-                stroke="#6A11CB"
+                stroke="var(--primary)"
                 strokeWidth={3}
-                dot={{ r: 5, fill: "#6A11CB", strokeWidth: 2, stroke: "#fff" }}
+                dot={{ r: 5, fill: "var(--primary)", strokeWidth: 2, stroke: "#fff" }}
                 activeDot={{ r: 7 }}
               />
             </LineChart>

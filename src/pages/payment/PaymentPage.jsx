@@ -108,12 +108,12 @@ function enrichPlan(found) {
         planId: found._id,
         displayPrice: isFree ? "₹0" : `₹${found.price / 100}`,
         period: found.period === "monthly" ? "/month" : `/${found.period}`,
-        color: isPro ? "#FF4E9B" : isPremium ? "#2575FC" : "#6A11CB",
+        color: isPro ? "var(--accent)" : isPremium ? "var(--primary)" : "var(--primary)",
         gradient: isPro
-            ? "linear-gradient(135deg, #FF4E9B, #6A11CB)"
+            ? "linear-gradient(135deg, var(--accent), var(--primary))"
             : isPremium
-            ? "linear-gradient(135deg, #2575FC, #6A11CB)"
-            : "linear-gradient(135deg, #6A11CB, #2575FC)",
+            ? "linear-gradient(135deg, var(--primary), var(--primary))"
+            : "linear-gradient(135deg, var(--primary), var(--primary))",
         tagline: found.description || found.name,
         requiresPayment: !isFree,
         badge: isPro ? "Professional" : isPremium ? "Most Popular" : "Starter",
@@ -338,7 +338,7 @@ export default function PaymentPage() {
     /* ─────────── LOADING SKELETON ─────────── */
     if (plansLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0720] via-[#1a0e33] to-[#0d1b4b]">
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0720] via-[var(--text-primary)] to-[#0d1b4b]">
                 <div className="animate-spin w-10 h-10 rounded-full border-4 border-white/30 border-t-white" />
             </div>
         );
@@ -347,7 +347,7 @@ export default function PaymentPage() {
     /* ─────────── SUCCESS SCREEN ─────────── */
     if (success && selectedPlan) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0720] via-[#1a0e33] to-[#0d1b4b] p-6">
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0720] via-[var(--text-primary)] to-[#0d1b4b] p-6">
                 <div className="text-center space-y-6 max-w-md mx-auto">
                     <div className="relative mx-auto w-28 h-28">
                         <div
@@ -369,11 +369,11 @@ export default function PaymentPage() {
                         <h1 className="text-3xl font-black text-white mb-2">
                             Payment Successful!
                         </h1>
-                        <p className="text-[#a78bfa] text-lg">
+                        <p className="text-[var(--accent)] text-lg">
                             {selectedPlan.name} plan is now active 🎉
                         </p>
                         {paymentId && (
-                            <p className="text-[#6b7280] text-xs mt-2 font-mono">
+                            <p className="text-[var(--text-muted)] text-xs mt-2 font-mono">
                                 Payment ID: {paymentId}
                             </p>
                         )}
@@ -394,7 +394,7 @@ export default function PaymentPage() {
                             </div>
                         ))}
                     </div>
-                    <p className="text-[#6b7280] text-sm animate-pulse">
+                    <p className="text-[var(--text-muted)] text-sm animate-pulse">
                         Redirecting to your dashboard...
                     </p>
                 </div>
@@ -412,20 +412,20 @@ export default function PaymentPage() {
     /* ─────────── PLAN SELECTION STEP ─────────── */
     if (step === "select") {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-[#0f0720] via-[#1a0e33] to-[#0d1b4b] flex flex-col">
+            <div className="min-h-screen bg-gradient-to-br from-[#0f0720] via-[var(--text-primary)] to-[#0d1b4b] flex flex-col">
 
                 {/* NAV */}
                 <nav className="flex items-center justify-between px-6 py-4 border-b border-white/10">
                     <button
                         onClick={() => navigate(-1)}
-                        className="flex items-center gap-2 text-[#a78bfa] hover:text-white transition-colors text-sm"
+                        className="flex items-center gap-2 text-[var(--accent)] hover:text-white transition-colors text-sm"
                     >
                         ← Back
                     </button>
                     <span className="text-white font-bold tracking-wider text-sm">
                         🎓 TutorHours
                     </span>
-                    <div className="flex items-center gap-2 text-[#a78bfa] text-xs">
+                    <div className="flex items-center gap-2 text-[var(--accent)] text-xs">
                         <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                         Secure Checkout
                     </div>
@@ -438,7 +438,7 @@ export default function PaymentPage() {
                         <h1 className="text-3xl md:text-4xl font-black text-white mb-3">
                             Choose Your Plan
                         </h1>
-                        <p className="text-[#a78bfa] text-sm">
+                        <p className="text-[var(--accent)] text-sm">
                             Select the plan that fits you best. You can upgrade anytime.
                         </p>
                     </div>
@@ -484,7 +484,7 @@ export default function PaymentPage() {
                                     >
                                         {plan.name}
                                     </p>
-                                    <p className="text-[#a78bfa] text-xs mb-4 leading-relaxed">
+                                    <p className="text-[var(--accent)] text-xs mb-4 leading-relaxed">
                                         {plan.tagline}
                                     </p>
 
@@ -493,7 +493,7 @@ export default function PaymentPage() {
                                         <span className="text-4xl font-black text-white">
                                             {plan.displayPrice}
                                         </span>
-                                        <span className="text-[#a78bfa] text-sm">{plan.period}</span>
+                                        <span className="text-[var(--accent)] text-sm">{plan.period}</span>
                                     </div>
 
                                     {/* Features */}
@@ -513,7 +513,7 @@ export default function PaymentPage() {
 
                                     {/* Select indicator */}
                                     <div className="mt-5 pt-4 border-t border-white/10 flex items-center justify-between">
-                                        <span className="text-[#6b7280] text-xs">
+                                        <span className="text-[var(--text-muted)] text-xs">
                                             {plan.requiresPayment ? "Billed monthly" : "Free forever"}
                                         </span>
                                         <div
@@ -546,8 +546,8 @@ export default function PaymentPage() {
                             >
                                 Continue with {selectedPlan.name} →
                             </button>
-                            <p className="text-center text-[#6b7280] text-xs">
-                                Selected: <span className="text-[#a78bfa] font-semibold">{selectedPlan.name}</span>
+                            <p className="text-center text-[var(--text-muted)] text-xs">
+                                Selected: <span className="text-[var(--accent)] font-semibold">{selectedPlan.name}</span>
                                 {selectedPlan.requiresPayment
                                     ? ` — ${selectedPlan.displayPrice}${selectedPlan.period}`
                                     : " — Free"}
@@ -568,20 +568,20 @@ export default function PaymentPage() {
 
     /* ─────────── CHECKOUT STEP ─────────── */
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#0f0720] via-[#1a0e33] to-[#0d1b4b] flex flex-col">
+        <div className="min-h-screen bg-gradient-to-br from-[#0f0720] via-[var(--text-primary)] to-[#0d1b4b] flex flex-col">
 
             {/* NAV */}
             <nav className="flex items-center justify-between px-6 py-4 border-b border-white/10">
                 <button
                     onClick={() => { setStep("select"); setError(""); }}
-                    className="flex items-center gap-2 text-[#a78bfa] hover:text-white transition-colors text-sm"
+                    className="flex items-center gap-2 text-[var(--accent)] hover:text-white transition-colors text-sm"
                 >
                     ← Change Plan
                 </button>
                 <span className="text-white font-bold tracking-wider text-sm">
                     🎓 TutorHours
                 </span>
-                <div className="flex items-center gap-2 text-[#a78bfa] text-xs">
+                <div className="flex items-center gap-2 text-[var(--accent)] text-xs">
                     <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                     Secure Checkout
                 </div>
@@ -612,11 +612,11 @@ export default function PaymentPage() {
                         <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: selectedPlan.color }}>
                             {selectedPlan.name}
                         </p>
-                        <p className="text-[#a78bfa] text-sm mb-4">{selectedPlan.tagline}</p>
+                        <p className="text-[var(--accent)] text-sm mb-4">{selectedPlan.tagline}</p>
 
                         <div className="flex items-baseline gap-2 mb-6">
                             <span className="text-5xl font-black text-white">{selectedPlan.displayPrice}</span>
-                            <span className="text-[#a78bfa] text-sm">{selectedPlan.period}</span>
+                            <span className="text-[var(--accent)] text-sm">{selectedPlan.period}</span>
                         </div>
 
                         <div className="space-y-3">
@@ -634,7 +634,7 @@ export default function PaymentPage() {
                         </div>
 
                         <div className="mt-6 pt-5 border-t border-white/10 flex justify-between items-center text-sm">
-                            <span className="text-[#6b7280]">
+                            <span className="text-[var(--text-muted)]">
                                 {selectedPlan.requiresPayment ? "Billed monthly · Cancel anytime" : "No payment required"}
                             </span>
                             <span className="text-white font-bold">
@@ -656,12 +656,12 @@ export default function PaymentPage() {
                                 style={{ background: "rgba(255,255,255,0.03)" }}
                             >
                                 <span className="text-xl">{b.icon}</span>
-                                <span className="text-[10px] text-[#a78bfa] font-semibold">{b.label}</span>
+                                <span className="text-[10px] text-[var(--accent)] font-semibold">{b.label}</span>
                             </div>
                         ))}
                     </div>
 
-                    <div className="flex items-center justify-center gap-3 text-[#6b7280] text-xs">
+                    <div className="flex items-center justify-center gap-3 text-[var(--text-muted)] text-xs">
                         <span>Payments secured by</span>
                         <span className="font-black text-[#3395FF] text-sm tracking-tight">razorpay</span>
                     </div>
@@ -673,7 +673,7 @@ export default function PaymentPage() {
                         <h1 className="text-2xl font-black text-white mb-1">
                             {selectedPlan.requiresPayment ? "Choose Payment Method" : "Activate Your Plan"}
                         </h1>
-                        <p className="text-[#a78bfa] text-sm">
+                        <p className="text-[var(--accent)] text-sm">
                             {selectedPlan.requiresPayment
                                 ? "Razorpay will show all available methods after you click Pay"
                                 : "Your plan is free — click below to activate instantly"}
@@ -703,11 +703,11 @@ export default function PaymentPage() {
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="text-white text-sm font-semibold">{method.label}</p>
-                                        <p className="text-[#6b7280] text-xs truncate">{method.description}</p>
+                                        <p className="text-[var(--text-muted)] text-xs truncate">{method.description}</p>
                                     </div>
                                     <div
                                         className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-bold text-white"
-                                        style={{ background: "linear-gradient(135deg, #6A11CB, #2575FC)" }}
+                                        style={{ background: "linear-gradient(135deg, var(--primary), var(--primary))" }}
                                     >
                                         ✓
                                     </div>
@@ -724,7 +724,7 @@ export default function PaymentPage() {
                         >
                             <div className="text-4xl">🆓</div>
                             <p className="text-white font-bold">No Credit Card Required</p>
-                            <p className="text-[#a78bfa] text-sm">
+                            <p className="text-[var(--accent)] text-sm">
                                 Activate now for free. Upgrade to access more features anytime.
                             </p>
                         </div>
@@ -744,15 +744,15 @@ export default function PaymentPage() {
                             style={{ background: "rgba(255,255,255,0.04)" }}
                         >
                             <div className="flex justify-between items-center text-sm mb-2">
-                                <span className="text-[#a78bfa]">{selectedPlan.name} Plan</span>
+                                <span className="text-[var(--accent)]">{selectedPlan.name} Plan</span>
                                 <span className="text-white font-semibold">{selectedPlan.displayPrice}</span>
                             </div>
                             <div className="flex justify-between items-center text-sm mb-2">
-                                <span className="text-[#a78bfa]">Platform fee</span>
+                                <span className="text-[var(--accent)]">Platform fee</span>
                                 <span className="text-green-400 font-semibold">₹0</span>
                             </div>
                             <div className="flex justify-between items-center text-sm mb-2">
-                                <span className="text-[#a78bfa]">GST (18%)</span>
+                                <span className="text-[var(--accent)]">GST (18%)</span>
                                 <span className="text-white font-semibold">Included</span>
                             </div>
                             <div className="flex justify-between items-center pt-3 border-t border-white/10">
@@ -797,9 +797,9 @@ export default function PaymentPage() {
                     </button>
 
                     {selectedPlan.requiresPayment && (
-                        <p className="text-center text-[#6b7280] text-xs leading-relaxed">
+                        <p className="text-center text-[var(--text-muted)] text-xs leading-relaxed">
                             Clicking the button opens Razorpay's secure checkout where you can pay via{" "}
-                            <span className="text-[#a78bfa]">UPI, Card, Net Banking or Wallet</span>.
+                            <span className="text-[var(--accent)]">UPI, Card, Net Banking or Wallet</span>.
                             <br />Money is transferred directly to TutorHours' verified account.
                         </p>
                     )}
@@ -807,7 +807,7 @@ export default function PaymentPage() {
                     <div className="text-center">
                         <button
                             onClick={() => navigate(-1)}
-                            className="text-[#6b7280] text-xs hover:text-[#a78bfa] transition-colors"
+                            className="text-[var(--text-muted)] text-xs hover:text-[var(--accent)] transition-colors"
                         >
                             Cancel and go back
                         </button>

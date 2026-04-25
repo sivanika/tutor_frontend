@@ -4,29 +4,52 @@
 
 /* ============================================
    BRAND COLOR SYSTEM
-   Primary  : #6A11CB (deep violet)
-   Secondary: #2575FC (electric blue)
-   Accent   : #FF4E9B (hot pink)
+   Light: Blue (#2563EB) | Accent: Dark (#0f0720)
+   Dark: Sky Blue (#38BDF8) | Accent: Purple (#A78BFA)
    ============================================ */
 :root {
-  --brand-purple: #6A11CB;
-  --brand-blue: #2575FC;
-  --brand-pink: #FF4E9B;
-  --brand-grad: linear-gradient(135deg, #6A11CB, #2575FC);
-  /* light-mode surface */
-  --surface: #ffffff;
-  --surface-alt: #f5f3ff;
-  --text-primary: #1a0e33;
-  --text-muted: #6b7280;
-  --border: rgba(106, 17, 203, 0.15);
+  --primary: #2563EB;
+  --secondary: #F8FAFC;
+  --accent: #1E293B;
+  
+  --surface: #FFFFFF;
+  --surface-alt: #F8FAFC;
+  --text-primary: #1E293B;
+  --text-muted: #64748B;
+  --border: rgba(37, 99, 235, 0.15);
+  --brand-grad: linear-gradient(135deg, #2563EB, #38BDF8);
+  --hero-bg: linear-gradient(135deg, #F8FAFC, #EFF6FF); /* Light theme hero background */
+  
+  /* Legacy aliases for compatibility */
+  --brand-purple: #2563EB;
+  --brand-blue: #38BDF8;
+  --brand-pink: #1E293B;
 }
 
 .dark {
-  --surface: #0f0720;
-  --surface-alt: #160d2e;
-  --text-primary: #f3f0ff;
-  --text-muted: #a78bfa;
-  --border: rgba(106, 17, 203, 0.30);
+  --primary: #38BDF8;
+  --secondary: #0F172A;
+  --accent: #A78BFA;
+  
+  --surface: #0F172A;
+  --surface-alt: #1E293B;
+  --text-primary: #E2E8F0;
+  --text-muted: #94A3B8;
+  --border: rgba(56, 189, 248, 0.30);
+  --brand-grad: linear-gradient(135deg, #38BDF8, #A78BFA);
+  --hero-bg: linear-gradient(135deg, #0F172A, #1E293B); /* Dark theme hero background */
+
+  /* Legacy aliases for compatibility */
+  --brand-purple: #38BDF8;
+  --brand-blue: #A78BFA;
+  --brand-pink: #A78BFA;
+}
+
+body {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  min-height: 100vh;
 }
 
 /* Gradient text utility */
@@ -37,9 +60,14 @@
   background-clip: text;
 }
 
-/* Gradient background */
+/* Brand Gradient background (for buttons, logos, etc) */
 .grad-bg {
   background: var(--brand-grad);
+}
+
+/* Soft Background (for large sections) */
+.soft-bg {
+  background: var(--hero-bg);
 }
 
 /* Glass card */
@@ -51,8 +79,8 @@
 }
 
 .dark .glass {
-  background: rgba(106, 17, 203, 0.10);
-  border: 1px solid rgba(106, 17, 203, 0.25);
+  background: rgba(56, 189, 248, 0.05);
+  border: 1px solid rgba(56, 189, 248, 0.15);
 }
 
 /* ============ Animations ============ */

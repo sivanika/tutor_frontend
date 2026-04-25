@@ -32,7 +32,7 @@ export default function RegisterStudent() {
     <div
       className="
         min-h-screen flex items-center justify-center p-6
-        bg-gradient-to-br from-[#6A11CB] via-[#4B34C9] to-[#2575FC]
+        bg-gradient-to-br from-[var(--primary)] via-[#4B34C9] to-[var(--primary)]
         dark:from-[#0f0720] dark:via-[#130a2e] dark:to-[#0a0418]
       "
     >
@@ -40,9 +40,9 @@ export default function RegisterStudent() {
         onSubmit={submit}
         className="
           w-full max-w-md p-6 md:p-8 rounded-2xl space-y-5
-          bg-white/95 dark:bg-[#1a1035]/95
+          bg-white/95 dark:bg-[var(--surface)]/95
           backdrop-blur-2xl
-          border border-white/50 dark:border-[#6A11CB]/20
+          border border-white/50 dark:border-[var(--primary)]/20
           shadow-2xl shadow-black/20
           animate-[popup_.5s_ease]
         "
@@ -52,11 +52,11 @@ export default function RegisterStudent() {
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
             Student Registration
           </h2>
-          <p className="text-sm text-gray-500 dark:text-[#a78bfa] mt-1">Create your student account</p>
+          <p className="text-sm text-gray-500 dark:text-[var(--accent)] mt-1">Create your student account</p>
 
           {/* Show selected plan badge */}
           {plan && (
-            <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6A11CB]/10 text-[#6A11CB] text-[10px] sm:text-xs font-semibold">
+            <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-[10px] sm:text-xs font-semibold">
               <span>🎯</span>
               {plan === "premium" ? "Premium Plan selected"
                 : plan === "free_trial" ? "Free Trial selected"
@@ -71,11 +71,11 @@ export default function RegisterStudent() {
           placeholder="Email address"
           className="
             w-full p-3 rounded-lg
-            bg-gray-50 dark:bg-[#0f0720]
-            border border-gray-200 dark:border-[#6A11CB]/20
+            bg-gray-50 dark:bg-[var(--surface)]
+            border border-gray-200 dark:border-[var(--primary)]/20
             text-gray-800 dark:text-white
-            placeholder:text-gray-400 dark:placeholder:text-[#a78bfa]/50
-            focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40
+            placeholder:text-gray-400 dark:placeholder:text-[var(--accent)]/50
+            focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40
             transition
           "
           value={email}
@@ -90,11 +90,11 @@ export default function RegisterStudent() {
             placeholder="Password"
             className="
               w-full p-3 rounded-lg pr-12
-              bg-gray-50 dark:bg-[#0f0720]
-              border border-gray-200 dark:border-[#6A11CB]/20
+              bg-gray-50 dark:bg-[var(--surface)]
+              border border-gray-200 dark:border-[var(--primary)]/20
               text-gray-800 dark:text-white
-              placeholder:text-gray-400 dark:placeholder:text-[#a78bfa]/50
-              focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40
+              placeholder:text-gray-400 dark:placeholder:text-[var(--accent)]/50
+              focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40
               transition
             "
             value={password}
@@ -115,18 +115,18 @@ export default function RegisterStudent() {
         <label className="flex items-start gap-2.5 cursor-pointer select-none">
           <input
             type="checkbox"
-            className="mt-0.5 h-4 w-4 rounded border-gray-300 text-[#6A11CB] focus:ring-[#6A11CB] cursor-pointer flex-shrink-0"
+            className="mt-0.5 h-4 w-4 rounded border-gray-300 text-[var(--primary)] focus:ring-[var(--primary)] cursor-pointer flex-shrink-0"
             checked={agreed}
             onChange={(e) => setAgreed(e.target.checked)}
             required
           />
-          <span className="text-xs text-gray-600 dark:text-[#a78bfa]/70 leading-relaxed">
+          <span className="text-xs text-gray-600 dark:text-[var(--accent)]/70 leading-relaxed">
             I agree to the{" "}
-            <Link to="/terms" target="_blank" className="text-[#6A11CB] underline hover:text-[#2575FC]">
+            <Link to="/terms" target="_blank" className="text-[var(--primary)] underline hover:text-[var(--primary)]">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link to="/privacy" target="_blank" className="text-[#6A11CB] underline hover:text-[#2575FC]">
+            <Link to="/privacy" target="_blank" className="text-[var(--primary)] underline hover:text-[var(--primary)]">
               Privacy Policy
             </Link>
           </span>
@@ -137,9 +137,9 @@ export default function RegisterStudent() {
           disabled={loading || !agreed}
           className="
             w-full py-3 rounded-lg font-semibold
-            bg-gradient-to-r from-[#6A11CB] to-[#2575FC]
+            bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]
             text-white
-            hover:shadow-lg hover:shadow-[#6A11CB]/30
+            hover:shadow-lg hover:shadow-[var(--primary)]/30
             transition-all duration-200
             active:scale-95
             disabled:opacity-60 disabled:cursor-not-allowed
@@ -160,10 +160,10 @@ export default function RegisterStudent() {
         </button>
 
         {/* Divider */}
-        <div className="flex items-center gap-3 text-gray-400 dark:text-[#a78bfa]/40 text-sm">
-          <div className="flex-1 h-px bg-gray-200 dark:bg-[#6A11CB]/20" />
+        <div className="flex items-center gap-3 text-gray-400 dark:text-[var(--accent)]/40 text-sm">
+          <div className="flex-1 h-px bg-gray-200 dark:bg-[var(--primary)]/20" />
           OR
-          <div className="flex-1 h-px bg-gray-200 dark:bg-[#6A11CB]/20" />
+          <div className="flex-1 h-px bg-gray-200 dark:bg-[var(--primary)]/20" />
         </div>
 
         {/* Google Button (UI only) */}
@@ -171,8 +171,8 @@ export default function RegisterStudent() {
           type="button"
           className="
             w-full py-3 rounded-lg font-medium
-            bg-white dark:bg-[#0f0720] text-gray-700 dark:text-white
-            border border-gray-200 dark:border-[#6A11CB]/20
+            bg-white dark:bg-[var(--surface)] text-gray-700 dark:text-white
+            border border-gray-200 dark:border-[var(--primary)]/20
             hover:bg-gray-50 dark:hover:bg-[#1a1035]
             transition
           "
@@ -181,11 +181,11 @@ export default function RegisterStudent() {
         </button>
 
         {/* Login redirect */}
-        <p className="text-center text-sm text-gray-500 dark:text-[#a78bfa]/70">
+        <p className="text-center text-sm text-gray-500 dark:text-[var(--accent)]/70">
           Already have an account?{" "}
           <span
             onClick={() => navigate("/login")}
-            className="cursor-pointer font-semibold text-[#6A11CB] dark:text-[#a78bfa] hover:underline"
+            className="cursor-pointer font-semibold text-[var(--primary)] dark:text-[var(--accent)] hover:underline"
           >
             Login
           </span>

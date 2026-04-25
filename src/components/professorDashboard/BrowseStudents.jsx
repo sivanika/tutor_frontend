@@ -105,9 +105,9 @@ export default function BrowseStudents() {
 
       {/* Usage Banner */}
       {!loading && quota && (
-        <div className={`rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border ${isLimitReached ? 'bg-red-50 border-red-200' : 'bg-[#FF4E9B]/5 border-[#FF4E9B]/20'}`}>
+        <div className={`rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border ${isLimitReached ? 'bg-red-50 border-red-200' : 'bg-[var(--accent)]/5 border-[var(--accent)]/20'}`}>
           <div>
-            <p className={`font-bold text-sm ${isLimitReached ? 'text-red-700' : 'text-[#1a0e33] dark:text-white'}`}>
+            <p className={`font-bold text-sm ${isLimitReached ? 'text-red-700' : 'text-[var(--text-primary)] dark:text-white'}`}>
               Student Profile Views: {viewedCount} / {limit}
             </p>
             <p className={`text-xs mt-1 ${isLimitReached ? 'text-red-600' : 'text-gray-600 dark:text-gray-400'}`}>
@@ -117,7 +117,7 @@ export default function BrowseStudents() {
           {isLimitReached && (
             <button
               onClick={() => setShowUpgradeModal(true)}
-              className="px-4 py-2 bg-[#FF4E9B] text-white text-sm font-bold rounded-lg hover:bg-[#e63e88] transition-colors"
+              className="px-4 py-2 bg-[var(--accent)] text-white text-sm font-bold rounded-lg hover:bg-[#e63e88] transition-colors"
             >
               Upgrade Plan ✨
             </button>
@@ -128,7 +128,7 @@ export default function BrowseStudents() {
       {/* Filters Bar */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
         <h3 className="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
-          <FiSearch className="text-[#FF4E9B]" />
+          <FiSearch className="text-[var(--accent)]" />
           Search & Filters
         </h3>
         <div className="grid md:grid-cols-3 gap-4">
@@ -136,12 +136,12 @@ export default function BrowseStudents() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name..."
-            className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4E9B]/40 bg-gray-50 focus:bg-white transition-all shadow-sm"
+            className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40 bg-gray-50 focus:bg-white transition-all shadow-sm"
           />
           {!isSubjSearchMode ? (
             <div className="relative group/subj">
               <select
-                className="w-full border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#FF4E9B]/40 focus:outline-none transition shadow-sm appearance-none pr-10"
+                className="w-full border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[var(--accent)]/40 focus:outline-none transition shadow-sm appearance-none pr-10"
                 value={filters.subject}
                 onChange={(e) => {
                   if (e.target.value === "__OTHER__") {
@@ -160,7 +160,7 @@ export default function BrowseStudents() {
                 <option value="history">History</option>
                 <option value="__OTHER__">🔍 Other / Specific Subject...</option>
               </select>
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 group-hover/subj:text-[#FF4E9B] transition-colors">
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 group-hover/subj:text-[var(--accent)] transition-colors">
                 <FiZap size={14} />
               </div>
             </div>
@@ -171,7 +171,7 @@ export default function BrowseStudents() {
                 value={filters.subject}
                 onChange={(e) => setFilters({ ...filters, subject: e.target.value })}
                 placeholder="Type specific subject..."
-                className="w-full px-4 py-2.5 text-sm rounded-xl border border-[#FF4E9B]/40 focus:outline-none focus:ring-2 focus:ring-[#FF4E9B]/40 bg-white transition-all shadow-sm pr-10"
+                className="w-full px-4 py-2.5 text-sm rounded-xl border border-[var(--accent)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/40 bg-white transition-all shadow-sm pr-10"
               />
               <button
                 onClick={() => {
@@ -186,7 +186,7 @@ export default function BrowseStudents() {
             </div>
           )}
           <select
-            className="w-full border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[#FF4E9B]/40 focus:outline-none transition shadow-sm"
+            className="w-full border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[var(--accent)]/40 focus:outline-none transition shadow-sm"
             value={filters.level}
             onChange={(e) => setFilters({ ...filters, level: e.target.value })}
           >
@@ -200,7 +200,7 @@ export default function BrowseStudents() {
       {/* Loading State */}
       {loading && (
         <div className="flex items-center justify-center p-12">
-          <div className="animate-spin w-10 h-10 rounded-full border-4 border-[#FF4E9B] border-t-transparent" />
+          <div className="animate-spin w-10 h-10 rounded-full border-4 border-[var(--accent)] border-t-transparent" />
         </div>
       )}
 
@@ -232,7 +232,7 @@ export default function BrowseStudents() {
                 <div className="min-w-0 flex-1">
                   <h4 className="font-bold text-gray-800 text-lg truncate">{s.name}</h4>
                   <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-1">
-                    <FiMapPin size={12} className="text-[#FF4E9B]" /> 
+                    <FiMapPin size={12} className="text-[var(--accent)]" /> 
                     <span className="truncate">{s.school || "No school listed"}</span>
                   </div>
                 </div>
@@ -243,7 +243,7 @@ export default function BrowseStudents() {
                 <div>
                   <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Level</span>
                   <div className="mt-1">
-                    <span className="inline-block px-2.5 py-1 bg-purple-50 text-[#6A11CB] text-xs font-bold rounded-lg border border-purple-100">
+                    <span className="inline-block px-2.5 py-1 bg-purple-50 text-[var(--primary)] text-xs font-bold rounded-lg border border-purple-100">
                       {s.gradeLevel || "Not specified"}
                     </span>
                   </div>
@@ -280,18 +280,18 @@ export default function BrowseStudents() {
                 {/* 🎯 Real-time Subject Requests (Live) */}
                 {s.subjectRequests && s.subjectRequests.length > 0 && (
                   <div className="pt-3 border-t border-gray-100">
-                    <span className="text-[10px] uppercase font-bold text-[#FF4E9B] tracking-wider flex items-center gap-1.5 mb-2">
-                       <FiZap size={10} className="fill-[#FF4E9B] animate-pulse" /> Live Requests
+                    <span className="text-[10px] uppercase font-bold text-[var(--accent)] tracking-wider flex items-center gap-1.5 mb-2">
+                       <FiZap size={10} className="fill-[var(--accent)] animate-pulse" /> Live Requests
                     </span>
                     <div className="space-y-2">
                       {s.subjectRequests.map((subReq) => (
-                        <div key={subReq._id} className="bg-[#FF4E9B]/5 rounded-xl p-3 border border-[#FF4E9B]/10 group/req hover:bg-[#FF4E9B]/10 transition-all">
+                        <div key={subReq._id} className="bg-[var(--accent)]/5 rounded-xl p-3 border border-[var(--accent)]/10 group/req hover:bg-[var(--accent)]/10 transition-all">
                           <div className="flex items-center justify-between gap-2 mb-1">
                             <div className="flex items-center gap-2">
                               <span className="text-lg">{subReq.icon || "📚"}</span>
                               <span className="text-sm font-bold text-gray-800">{subReq.name}</span>
                             </div>
-                            <span className="text-[10px] px-1.5 py-0.5 bg-white text-[#FF4E9B] font-bold rounded border border-[#FF4E9B]/20">
+                            <span className="text-[10px] px-1.5 py-0.5 bg-white text-[var(--accent)] font-bold rounded border border-[var(--accent)]/20">
                               {subReq.status}
                             </span>
                           </div>
@@ -317,7 +317,7 @@ export default function BrowseStudents() {
                             <button
                               onClick={() => handleApply(subReq._id, s.name, subReq.name)}
                               className="w-full py-1.5 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all
-                                bg-white text-[#FF4E9B] border border-[#FF4E9B]/30 hover:bg-[#FF4E9B] hover:text-white shadow-sm hover:shadow"
+                                bg-white text-[var(--accent)] border border-[var(--accent)]/30 hover:bg-[var(--accent)] hover:text-white shadow-sm hover:shadow"
                             >
                               <FiZap size={10} />
                               Approach Student
@@ -350,7 +350,7 @@ export default function BrowseStudents() {
                   <button
                     onClick={() => navigate(`/student/${s._id}`)}
                     className="w-full py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300
-                      bg-gray-50 text-[#FF4E9B] hover:bg-[#FF4E9B] hover:text-white group-hover:shadow-md border border-[#FF4E9B]/20 hover:border-transparent"
+                      bg-gray-50 text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white group-hover:shadow-md border border-[var(--accent)]/20 hover:border-transparent"
                   >
                     <FiUser size={16} />
                     {hasViewed ? "View Profile Again" : "View Profile"}

@@ -56,8 +56,8 @@ export default function LoginModal({ onClose, onSwitchToRegister }) {
                 onClick={(e) => e.stopPropagation()}
                 className="
           relative w-full max-w-md p-8 rounded-2xl
-          bg-white/95 dark:bg-[#1a1035]/95 backdrop-blur-2xl
-          border border-white/50 dark:border-[#6A11CB]/20
+          bg-white/95 dark:bg-[var(--surface)]/95 backdrop-blur-2xl
+          border border-white/50 dark:border-[var(--primary)]/20
           shadow-2xl shadow-black/20
           animate-[modalIn_.3s_ease] space-y-5
         "
@@ -66,14 +66,14 @@ export default function LoginModal({ onClose, onSwitchToRegister }) {
                 <button
                     type="button"
                     onClick={onClose}
-                    className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 dark:bg-[#0f0720] hover:bg-gray-200 dark:hover:bg-[#6A11CB]/20 flex items-center justify-center text-gray-500 dark:text-[#a78bfa] hover:text-gray-800 dark:hover:text-white transition"
+                    className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 dark:bg-[var(--surface)] hover:bg-gray-200 dark:hover:bg-[var(--primary)]/20 flex items-center justify-center text-gray-500 dark:text-[var(--accent)] hover:text-gray-800 dark:hover:text-white transition"
                 >
                     ✕
                 </button>
 
                 {/* Title */}
                 <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white">Welcome Back</h2>
-                <p className="text-center text-sm text-gray-500 dark:text-[#a78bfa] -mt-3">Log in to TutorHours</p>
+                <p className="text-center text-sm text-gray-500 dark:text-[var(--accent)] -mt-3">Log in to TutorHours</p>
 
                 {/* Error */}
                 {error && (
@@ -86,7 +86,7 @@ export default function LoginModal({ onClose, onSwitchToRegister }) {
                 <input
                     type="email"
                     placeholder="Email address"
-                    className="w-full p-3 rounded-lg bg-gray-50 dark:bg-[#0f0720] border border-gray-200 dark:border-[#6A11CB]/20 text-gray-800 dark:text-white placeholder:text-gray-400 dark:placeholder:text-[#a78bfa]/50 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 transition"
+                    className="w-full p-3 rounded-lg bg-gray-50 dark:bg-[var(--surface)] border border-gray-200 dark:border-[var(--primary)]/20 text-gray-800 dark:text-white placeholder:text-gray-400 dark:placeholder:text-[var(--accent)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 transition"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -97,7 +97,7 @@ export default function LoginModal({ onClose, onSwitchToRegister }) {
                     <input
                         type={showPassword ? "text" : "password"}
                         placeholder="Password"
-                        className="w-full p-3 rounded-lg pr-12 bg-gray-50 dark:bg-[#0f0720] border border-gray-200 dark:border-[#6A11CB]/20 text-gray-800 dark:text-white placeholder:text-gray-400 dark:placeholder:text-[#a78bfa]/50 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/40 transition"
+                        className="w-full p-3 rounded-lg pr-12 bg-gray-50 dark:bg-[var(--surface)] border border-gray-200 dark:border-[var(--primary)]/20 text-gray-800 dark:text-white placeholder:text-gray-400 dark:placeholder:text-[var(--accent)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 transition"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -116,7 +116,7 @@ export default function LoginModal({ onClose, onSwitchToRegister }) {
                     <Link
                         to="/forgot-password"
                         onClick={onClose}
-                        className="text-sm text-[#6A11CB] hover:underline"
+                        className="text-sm text-[var(--primary)] hover:underline"
                     >
                         Forgot password?
                     </Link>
@@ -127,9 +127,9 @@ export default function LoginModal({ onClose, onSwitchToRegister }) {
                     disabled={loading}
                     className="
             w-full py-3 rounded-lg font-semibold
-            bg-gradient-to-r from-[#6A11CB] to-[#2575FC]
+            bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]
             text-white
-            hover:shadow-lg hover:shadow-[#6A11CB]/30
+            hover:shadow-lg hover:shadow-[var(--primary)]/30
             transition-all duration-200 active:scale-95
             disabled:opacity-60
           "
@@ -138,12 +138,12 @@ export default function LoginModal({ onClose, onSwitchToRegister }) {
                 </button>
 
                 {/* Switch to register */}
-                <p className="text-sm text-center text-gray-500 dark:text-[#a78bfa]/70">
+                <p className="text-sm text-center text-gray-500 dark:text-[var(--accent)]/70">
                     Don't have an account?{" "}
                     <button
                         type="button"
                         onClick={onSwitchToRegister}
-                        className="font-medium text-[#6A11CB] dark:text-[#a78bfa] hover:underline"
+                        className="font-medium text-[var(--primary)] dark:text-[var(--accent)] hover:underline"
                     >
                         Register
                     </button>

@@ -4,12 +4,12 @@ import API from "../../services/api";
 
 
 const GRADIENTS = [
-  { from: "#6A11CB", to: "#2575FC" },
-  { from: "#FF4E9B", to: "#FF8C42" },
-  { from: "#2575FC", to: "#00C9FF" },
-  { from: "#11998e", to: "#38ef7d" },
-  { from: "#f7971e", to: "#ffd200" },
-  { from: "#8E2DE2", to: "#4A00E0" },
+  { from: "var(--primary)", to: "var(--primary)" },
+  { from: "var(--accent)", to: "var(--primary)" },
+  { from: "var(--primary)", to: "var(--accent)" },
+  { from: "#38BDF8", to: "#2563EB" }, // Sky to Blue
+  { from: "#A78BFA", to: "#6366F1" }, // Purple to Indigo
+  { from: "#60A5FA", to: "#3B82F6" }, // Blue variants
 ];
 
 const BACKEND_URL =
@@ -54,18 +54,18 @@ export default function TutorCards() {
   };
 
   return (
-    <section className="py-20 bg-[#f5f3ff] dark:bg-[#0f0720] transition-colors duration-500 overflow-hidden relative">
+    <section className="py-20 bg-[var(--surface-alt)] dark:bg-[var(--surface)] transition-colors duration-500 overflow-hidden relative">
       {/* Ambient blobs */}
-      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#6A11CB]/06 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-[#FF4E9B]/05 blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[var(--primary)]/06 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-[var(--accent)]/05 blur-3xl pointer-events-none" />
 
       <div className="relative z-10">
         {/* Heading */}
         <div className="text-center mb-12 px-6">
-          <p className="text-sm font-semibold uppercase tracking-widest text-[#6A11CB] dark:text-[#a78bfa] mb-2">
+          <p className="text-sm font-semibold uppercase tracking-widest text-[var(--primary)] dark:text-[var(--accent)] mb-2">
             Our educators
           </p>
-          <h2 className="text-3xl md:text-4xl font-black text-[#1a0e33] dark:text-white">
+          <h2 className="text-3xl md:text-4xl font-black text-[var(--text-primary)] dark:text-white">
             Recommended <span className="grad-text">Tutors</span>
           </h2>
         </div>
@@ -73,13 +73,13 @@ export default function TutorCards() {
         {/* Loading */}
         {loading && (
           <div className="flex justify-center items-center py-16">
-            <div className="w-10 h-10 border-4 border-[#6A11CB]/30 border-t-[#6A11CB] rounded-full animate-spin" />
+            <div className="w-10 h-10 border-4 border-[var(--primary)]/30 border-t-[var(--primary)] rounded-full animate-spin" />
           </div>
         )}
 
         {/* Empty */}
         {!loading && tutors.length === 0 && (
-          <div className="text-center py-16 text-[#6b7280] dark:text-[#a78bfa]">
+          <div className="text-center py-16 text-[var(--text-muted)] dark:text-[var(--accent)]">
             <p className="text-2xl mb-2">🎓</p>
             <p className="text-lg font-semibold">No tutors available yet</p>
             <p className="text-sm mt-1">Check back soon — we're growing!</p>
@@ -96,10 +96,10 @@ export default function TutorCards() {
                 aria-label="Scroll left"
                 className="
                   hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20
-                  w-10 h-10 rounded-full bg-white dark:bg-[#1a0e33]
-                  border border-[#6A11CB]/20 shadow-lg
+                  w-10 h-10 rounded-full bg-white dark:bg-[var(--text-primary)]
+                  border border-[var(--primary)]/20 shadow-lg
                   items-center justify-center
-                  text-[#6A11CB] dark:text-[#a78bfa]
+                  text-[var(--primary)] dark:text-[var(--accent)]
                   hover:scale-110 transition-transform duration-200
                 "
               >
@@ -113,10 +113,10 @@ export default function TutorCards() {
                 aria-label="Scroll right"
                 className="
                   hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20
-                  w-10 h-10 rounded-full bg-white dark:bg-[#1a0e33]
-                  border border-[#6A11CB]/20 shadow-lg
+                  w-10 h-10 rounded-full bg-white dark:bg-[var(--text-primary)]
+                  border border-[var(--primary)]/20 shadow-lg
                   items-center justify-center
-                  text-[#6A11CB] dark:text-[#a78bfa]
+                  text-[var(--primary)] dark:text-[var(--accent)]
                   hover:scale-110 transition-transform duration-200
                 "
               >
@@ -161,10 +161,10 @@ export default function TutorCards() {
                     className="
                       group relative p-6 md:p-7 rounded-2xl overflow-hidden flex-shrink-0
                       w-[82vw] sm:w-72 md:w-80
-                      bg-white dark:bg-[#160d2e]
-                      border border-[#6A11CB]/10 dark:border-[#6A11CB]/20
-                      shadow-md dark:shadow-[#6A11CB]/05
-                      hover:-translate-y-2 hover:shadow-xl hover:shadow-[#6A11CB]/15
+                      bg-white dark:bg-[var(--surface-alt)]
+                      border border-[var(--primary)]/10 dark:border-[var(--primary)]/20
+                      shadow-md dark:shadow-[var(--primary)]/05
+                      hover:-translate-y-2 hover:shadow-xl hover:shadow-[var(--primary)]/15
                       transition-all duration-300
                       will-change-transform
                     "
@@ -205,10 +205,10 @@ export default function TutorCards() {
                       {initials}
                     </div>
 
-                    <h3 className="text-lg font-bold text-[#1a0e33] dark:text-white truncate">
+                    <h3 className="text-lg font-bold text-[var(--text-primary)] dark:text-white truncate">
                       {displayName}
                     </h3>
-                    <p className="text-[#6b7280] dark:text-[#a78bfa] text-sm mt-1 truncate">
+                    <p className="text-[var(--text-muted)] dark:text-[var(--accent)] text-sm mt-1 truncate">
                       {t.subjects || "General Tutoring"}
                     </p>
 
@@ -222,7 +222,7 @@ export default function TutorCards() {
                           💰 ₹{t.hourlyRate}/hr
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-[#6b7280] dark:text-[#a78bfa] bg-gray-100 dark:bg-[#1a0e33]">
+                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-[var(--text-muted)] dark:text-[var(--accent)] bg-gray-100 dark:bg-[var(--text-primary)]">
                           Contact for price
                         </span>
                       )}
@@ -235,7 +235,7 @@ export default function TutorCards() {
                       >
                         ★ {ratingLabel}
                       </span>
-                      <span className="text-xs text-[#6b7280] dark:text-[#a78bfa]">
+                      <span className="text-xs text-[var(--text-muted)] dark:text-[var(--accent)]">
                         {sessionLabel}
                       </span>
                     </div>
@@ -272,11 +272,11 @@ export default function TutorCards() {
                     });
                   }}
                   className="rounded-full transition-all duration-300"
-                  style={{
+                    style={{
                     width: i === activeIndex ? "24px" : "8px",
                     height: "8px",
                     background:
-                      i === activeIndex ? "#6A11CB" : "rgba(106,17,203,0.25)",
+                      i === activeIndex ? "var(--primary)" : "var(--primary)/25",
                   }}
                 />
               ))}

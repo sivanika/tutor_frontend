@@ -21,11 +21,11 @@ const STYLES = `
 .ms-card:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(106,17,203,.12) }
 .ms-card { transition: transform .25s ease, box-shadow .25s ease }
 
-.ms-toggle-on  { background: linear-gradient(135deg,#6A11CB,#2575FC) }
+.ms-toggle-on  { background: linear-gradient(135deg,var(--primary),var(--primary)) }
 .ms-toggle-off { background: #e5e7eb }
 
-.ms-pill-active { background:linear-gradient(135deg,#6A11CB,#2575FC); color:#fff; border-color:transparent }
-.ms-pill:hover  { border-color:#6A11CB; color:#6A11CB }
+.ms-pill-active { background:linear-gradient(135deg,var(--primary),var(--primary)); color:#fff; border-color:transparent }
+.ms-pill:hover  { border-color:var(--primary); color:var(--primary) }
 
 .ms-overlay { backdrop-filter:blur(4px); background:rgba(0,0,0,.45) }
 `
@@ -82,7 +82,7 @@ function Stars({ rating }) {
   return (
     <span style={{ color:"#f59e0b", fontSize:12, letterSpacing:1 }}>
       {"★".repeat(Math.round(rating || 0))}{"☆".repeat(5 - Math.round(rating || 0))}
-      <span style={{ color:"#6b7280", fontWeight:600, marginLeft:4 }}>{(rating || 0).toFixed(1)}</span>
+      <span style={{ color:"var(--text-muted)", fontWeight:600, marginLeft:4 }}>{(rating || 0).toFixed(1)}</span>
     </span>
   )
 }
@@ -262,7 +262,7 @@ export default function MySubjectsTab() {
   if (loading) {
     return (
       <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"60vh" }}>
-        <div className="animate-spin w-10 h-10 rounded-full border-4 border-[#6A11CB] border-t-transparent" />
+        <div className="animate-spin w-10 h-10 rounded-full border-4 border-[var(--primary)] border-t-transparent" />
       </div>
     )
   }
@@ -274,7 +274,7 @@ export default function MySubjectsTab() {
       <div style={{ position:"fixed", top:20, right:24, zIndex:9999, display:"flex", flexDirection:"column", gap:10 }}>
         {toasts.map(t => (
           <div key={t.id} className="ms-toast" style={{
-            background: t.type === "success" ? "linear-gradient(135deg,#6A11CB,#2575FC)"
+            background: t.type === "success" ? "linear-gradient(135deg,var(--primary),var(--primary))"
                       : t.type === "warning" ? "linear-gradient(135deg,#f59e0b,#ef4444)"
                       : "linear-gradient(135deg,#ef4444,#dc2626)",
             color:"#fff", padding:"12px 20px", borderRadius:14,
@@ -290,7 +290,7 @@ export default function MySubjectsTab() {
       {/* ── STATS ROW ── */}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:14, marginBottom:24 }}>
         {[
-          { label:"Total Subjects", value:stats.total,   color:"from-[#6A11CB] to-[#2575FC]", bg:"#f5f3ff", tc:"#6A11CB", icon:"📚" },
+          { label:"Total Subjects", value:stats.total,   color:"from-[var(--primary)] to-[var(--primary)]", bg:"var(--surface-alt)", tc:"var(--primary)", icon:"📚" },
           { label:"Open",           value:stats.open,    color:"from-green-400 to-emerald-500", bg:"#dcfce7", tc:"#16a34a", icon:"🟢" },
           { label:"Pending",        value:stats.pending, color:"from-amber-400 to-orange-500",  bg:"#fef3c7", tc:"#d97706", icon:"🟡" },
           { label:"Engaged",        value:stats.engaged, color:"from-red-400 to-rose-500",      bg:"#fee2e2", tc:"#dc2626", icon:"🔴" },
@@ -318,7 +318,7 @@ export default function MySubjectsTab() {
                 padding:"7px 18px", borderRadius:999, fontSize:12, fontWeight:700, border:"2px solid",
                 cursor:"pointer", transition:"all .2s",
                 ...(filter === f
-                  ? { background:"linear-gradient(135deg,#6A11CB,#2575FC)", color:"#fff", borderColor:"transparent" }
+                  ? { background:"linear-gradient(135deg,var(--primary),var(--primary))", color:"#fff", borderColor:"transparent" }
                   : { background:"#fff", color:"#64748b", borderColor:"#e2e8f0" }
                 )
               }}
@@ -330,7 +330,7 @@ export default function MySubjectsTab() {
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          style={{ display:"flex", alignItems:"center", gap:7, padding:"9px 20px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(135deg,#6A11CB,#2575FC)", color:"#fff", fontWeight:700, fontSize:13, boxShadow:"0 4px 14px rgba(106,17,203,.3)", transition:"all .2s" }}
+          style={{ display:"flex", alignItems:"center", gap:7, padding:"9px 20px", borderRadius:12, border:"none", cursor:"pointer", background:"linear-gradient(135deg,var(--primary),var(--primary))", color:"#fff", fontWeight:700, fontSize:13, boxShadow:"0 4px 14px rgba(106,17,203,.3)", transition:"all .2s" }}
           onMouseEnter={e => e.currentTarget.style.transform="scale(1.04)"}
           onMouseLeave={e => e.currentTarget.style.transform="scale(1)"}
         >
@@ -411,7 +411,7 @@ export default function MySubjectsTab() {
                           onClick={() => addSubject(s)}
                           className="ms-pill"
                           style={{ display:"flex", alignItems:"center", gap:7, padding:"8px 16px", borderRadius:999, border:"1.5px solid #e2e8f0", background:"#f8fafc", cursor:"pointer", fontSize:13, fontWeight:600, color:"#374151", transition:"all .18s" }}
-                          onMouseEnter={e => { e.currentTarget.style.borderColor="#6A11CB"; e.currentTarget.style.color="#6A11CB"; e.currentTarget.style.background="#f5f3ff" }}
+                          onMouseEnter={e => { e.currentTarget.style.borderColor="var(--primary)"; e.currentTarget.style.color="var(--primary)"; e.currentTarget.style.background="var(--surface-alt)" }}
                           onMouseLeave={e => { e.currentTarget.style.borderColor="#e2e8f0"; e.currentTarget.style.color="#374151"; e.currentTarget.style.background="#f8fafc" }}
                         >
                           <span style={{ fontSize:16 }}>{s.icon}</span> {s.name}
@@ -420,7 +420,7 @@ export default function MySubjectsTab() {
                       {/* Explicit "Other" button */}
                       <button
                         onClick={() => setIsCustomMode(true)}
-                        style={{ display:"flex", alignItems:"center", gap:7, padding:"8px 16px", borderRadius:999, border:"1.5px solid #6A11CB", background:"#fff", color:"#6A11CB", cursor:"pointer", fontSize:13, fontWeight:700 }}
+                        style={{ display:"flex", alignItems:"center", gap:7, padding:"8px 16px", borderRadius:999, border:"1.5px solid var(--primary)", background:"#fff", color:"var(--primary)", cursor:"pointer", fontSize:13, fontWeight:700 }}
                       >
                         <FiPlus size={14}/> Other / Custom
                       </button>
@@ -538,7 +538,7 @@ export default function MySubjectsTab() {
             <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
               {getProfessors(reqModal2Show).map(req => (
                 <div key={req._id} style={{ display:"flex", alignItems:"center", gap:12, padding:"14px 16px", borderRadius:16, border:"1.5px solid #f1f5f9", background:"#fafafa" }}>
-                  <div style={{ width:42, height:42, borderRadius:"50%", background:"linear-gradient(135deg,#6A11CB,#2575FC)", color:"#fff", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, fontSize:16, flexShrink:0 }}>
+                  <div style={{ width:42, height:42, borderRadius:"50%", background:"linear-gradient(135deg,var(--primary),var(--primary))", color:"#fff", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, fontSize:16, flexShrink:0 }}>
                     {req.professor?.name?.[0]?.toUpperCase() || "P"}
                   </div>
                   <div style={{ flex:1, minWidth:0 }}>
@@ -556,7 +556,7 @@ export default function MySubjectsTab() {
                       </button>
                       <button
                         onClick={() => acceptProfessor(reqModal2Show, req._id)}
-                        style={{ padding:"6px 14px", borderRadius:10, border:"none", background:"linear-gradient(135deg,#6A11CB,#2575FC)", color:"#fff", fontSize:12, fontWeight:700, cursor:"pointer" }}
+                        style={{ padding:"6px 14px", borderRadius:10, border:"none", background:"linear-gradient(135deg,var(--primary),var(--primary))", color:"#fff", fontSize:12, fontWeight:700, cursor:"pointer" }}
                       >
                         Accept
                       </button>
@@ -594,7 +594,7 @@ function SubjectCard({ sub, delay, onDelete, onToggle, onCreateReq, onEditReq, o
       {/* Header row */}
       <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:10 }}>
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-          <div style={{ width:44, height:44, borderRadius:14, background:"linear-gradient(135deg,#f5f3ff,#ede9fe)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}>
+          <div style={{ width:44, height:44, borderRadius:14, background:"linear-gradient(135deg,var(--surface-alt),#ede9fe)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}>
             {sub.icon}
           </div>
           <div>
@@ -627,12 +627,12 @@ function SubjectCard({ sub, delay, onDelete, onToggle, onCreateReq, onEditReq, o
             <p style={{ fontSize:13, fontWeight:700, color:"#374151", margin:"0 0 4px" }}>{req.topic}</p>
             <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginTop:6 }}>
               {req.time && (
-                <span style={{ display:"flex", alignItems:"center", gap:4, fontSize:11, color:"#2575FC", fontWeight:600 }}>
+                <span style={{ display:"flex", alignItems:"center", gap:4, fontSize:11, color:"var(--primary)", fontWeight:600 }}>
                   <FiClock size={10}/> {req.time}
                 </span>
               )}
               {req.budget && (
-                <span style={{ display:"flex", alignItems:"center", gap:4, fontSize:11, color:"#6A11CB", fontWeight:600 }}>
+                <span style={{ display:"flex", alignItems:"center", gap:4, fontSize:11, color:"var(--primary)", fontWeight:600 }}>
                   ₹{req.budget}/hr
                 </span>
               )}
@@ -650,16 +650,16 @@ function SubjectCard({ sub, delay, onDelete, onToggle, onCreateReq, onEditReq, o
       <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
         {sub.status !== "Engaged" && (
           req && req.topic ? (
-            <button onClick={onEditReq} style={{ ...smallBtn, borderColor:"#6A11CB", color:"#6A11CB", flex:1 }}
-              onMouseEnter={e => { e.currentTarget.style.background="#6A11CB"; e.currentTarget.style.color="#fff" }}
-              onMouseLeave={e => { e.currentTarget.style.background="#f5f3ff"; e.currentTarget.style.color="#6A11CB" }}
+            <button onClick={onEditReq} style={{ ...smallBtn, borderColor:"var(--primary)", color:"var(--primary)", flex:1 }}
+              onMouseEnter={e => { e.currentTarget.style.background="var(--primary)"; e.currentTarget.style.color="#fff" }}
+              onMouseLeave={e => { e.currentTarget.style.background="var(--surface-alt)"; e.currentTarget.style.color="var(--primary)" }}
             >
               <FiEdit2 size={12}/> Edit Req.
             </button>
           ) : (
-            <button onClick={onCreateReq} style={{ ...smallBtn, borderColor:"#2575FC", color:"#2575FC", background:"#eff6ff", flex:1 }}
-              onMouseEnter={e => { e.currentTarget.style.background="#2575FC"; e.currentTarget.style.color="#fff" }}
-              onMouseLeave={e => { e.currentTarget.style.background="#eff6ff"; e.currentTarget.style.color="#2575FC" }}
+            <button onClick={onCreateReq} style={{ ...smallBtn, borderColor:"var(--primary)", color:"var(--primary)", background:"#eff6ff", flex:1 }}
+              onMouseEnter={e => { e.currentTarget.style.background="var(--primary)"; e.currentTarget.style.color="#fff" }}
+              onMouseLeave={e => { e.currentTarget.style.background="#eff6ff"; e.currentTarget.style.color="var(--primary)" }}
             >
               <FiPlus size={12}/> Create Req.
             </button>
@@ -739,7 +739,7 @@ const inputStyle = {
 const btnPrimary = {
   display:"flex", alignItems:"center", justifyContent:"center", gap:7,
   padding:"11px 20px", borderRadius:12, border:"none", cursor:"pointer",
-  background:"linear-gradient(135deg,#6A11CB,#2575FC)", color:"#fff",
+  background:"linear-gradient(135deg,var(--primary),var(--primary))", color:"#fff",
   fontWeight:700, fontSize:13, fontFamily:"inherit",
 }
 
@@ -754,5 +754,5 @@ const smallBtn = {
   display:"flex", alignItems:"center", justifyContent:"center", gap:5,
   padding:"7px 14px", borderRadius:10, border:"1.5px solid",
   cursor:"pointer", fontSize:12, fontWeight:700, fontFamily:"inherit",
-  background:"#f5f3ff", transition:"all .18s",
+  background:"var(--surface-alt)", transition:"all .18s",
 }

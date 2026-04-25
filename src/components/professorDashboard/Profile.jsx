@@ -70,11 +70,11 @@ export default function Profile() {
   return (
     <div className="space-y-6 max-w-5xl animate-fadeIn">
       {/* ─── Hero Card (Profile Preview) ─── */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#6A11CB] to-[#2575FC] rounded-2xl shadow-lg">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] rounded-2xl shadow-lg">
         {/* Decorative circles */}
         <div className="absolute -right-10 -top-10 w-48 h-48 rounded-full bg-white/10" />
         <div className="absolute -right-2 -bottom-12 w-32 h-32 rounded-full bg-white/10" />
-        <div className="absolute right-40 -top-6 w-20 h-20 rounded-full bg-[#FF4E9B]/30" />
+        <div className="absolute right-40 -top-6 w-20 h-20 rounded-full bg-[var(--accent)]/30" />
 
         <div className="relative z-10 p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
@@ -135,7 +135,7 @@ export default function Profile() {
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
-              <FiBook size={15} className="text-[#6A11CB]" />
+              <FiBook size={15} className="text-[var(--primary)]" />
             </div>
             <h4 className="font-semibold text-gray-800">Public Information</h4>
           </div>
@@ -165,7 +165,7 @@ export default function Profile() {
         {/* Card Header */}
         <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gray-50/50">
           <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
-            <FiEdit3 size={15} className="text-[#6A11CB]" />
+            <FiEdit3 size={15} className="text-[var(--primary)]" />
           </div>
           <div>
             <h3 className="font-semibold text-gray-800">Edit Profile Information</h3>
@@ -245,7 +245,7 @@ export default function Profile() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
             >
               {saving ? (
                 <><FiLoader size={15} className="animate-spin" /> Saving...</>
@@ -299,7 +299,7 @@ function Input({ label, placeholder, ...props }) {
       <input
         {...props}
         placeholder={placeholder}
-        className="w-full border border-gray-200 bg-gray-50 px-3.5 py-2.5 rounded-xl text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all duration-200"
+        className="w-full border border-gray-200 bg-gray-50 px-3.5 py-2.5 rounded-xl text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] focus:bg-white transition-all duration-200"
       />
     </div>
   );
@@ -315,7 +315,7 @@ function Textarea({ label, placeholder, ...props }) {
         {...props}
         rows="3"
         placeholder={placeholder}
-        className="w-full border border-gray-200 bg-gray-50 px-3.5 py-2.5 rounded-xl text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6A11CB]/30 focus:border-[#6A11CB] focus:bg-white transition-all duration-200 resize-none"
+        className="w-full border border-gray-200 bg-gray-50 px-3.5 py-2.5 rounded-xl text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)] focus:bg-white transition-all duration-200 resize-none"
       />
     </div>
   );

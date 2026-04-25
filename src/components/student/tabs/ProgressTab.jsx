@@ -141,9 +141,9 @@ export default function ProgressTab() {
 
   // -------- Learning Goals --------
   const goals = [
-    { title: "Complete Linear Algebra", progress: Math.min(completionPercent, 100), color: "from-[#6A11CB] to-[#2575FC]" },
-    { title: "Master Python Programming", progress: Math.min(40 + completed.length * 5, 100), color: "from-[#2575FC] to-[#FF4E9B]" },
-    { title: "Improve Algorithms", progress: Math.min(50 + completed.length * 3, 100), color: "from-[#FF4E9B] to-orange-400" },
+    { title: "Complete Linear Algebra", progress: Math.min(completionPercent, 100), color: "from-[var(--primary)] to-[var(--primary)]" },
+    { title: "Master Python Programming", progress: Math.min(40 + completed.length * 5, 100), color: "from-[var(--primary)] to-[var(--accent)]" },
+    { title: "Improve Algorithms", progress: Math.min(50 + completed.length * 3, 100), color: "from-[var(--accent)] to-orange-400" },
   ]
 
   const STAT_CARDS = [
@@ -151,18 +151,18 @@ export default function ProgressTab() {
       label: "Course Completion",
       value: `${completionPercent}%`,
       icon: FiTrendingUp,
-      color: "from-[#6A11CB] to-[#2575FC]",
+      color: "from-[var(--primary)] to-[var(--primary)]",
       bg: "bg-purple-50",
-      iconColor: "text-[#6A11CB]",
+      iconColor: "text-[var(--primary)]",
       sub: "Overall progress",
     },
     {
       label: "Average Score",
       value: `${avgScore}%`,
       icon: FiStar,
-      color: "from-[#FF4E9B] to-orange-400",
+      color: "from-[var(--accent)] to-orange-400",
       bg: "bg-pink-50",
-      iconColor: "text-[#FF4E9B]",
+      iconColor: "text-[var(--accent)]",
       sub: "Performance metric",
     },
     {
@@ -189,7 +189,7 @@ export default function ProgressTab() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-64 gap-4">
-        <div className="animate-spin w-12 h-12 rounded-full border-4 border-[#6A11CB] border-t-transparent" />
+        <div className="animate-spin w-12 h-12 rounded-full border-4 border-[var(--primary)] border-t-transparent" />
         <p className="text-sm text-gray-400">Loading your progress...</p>
       </div>
     )
@@ -199,7 +199,7 @@ export default function ProgressTab() {
   if (sessions.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-72 text-center gap-4 animate-fadeIn">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#6A11CB] to-[#2575FC] flex items-center justify-center shadow-lg">
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] flex items-center justify-center shadow-lg">
           <FiTrendingUp size={36} className="text-white" />
         </div>
         <h3 className="text-xl font-bold text-gray-700">No Progress Yet</h3>
@@ -214,14 +214,14 @@ export default function ProgressTab() {
     <div className="space-y-6 max-w-5xl animate-fadeIn">
 
       {/* ──────── Hero Banner ──────── */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#6A11CB] to-[#2575FC] rounded-2xl p-6 text-white shadow-lg">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] rounded-2xl p-6 text-white shadow-lg">
         <div className="relative z-10">
           <p className="text-white/70 text-sm font-medium mb-1">Your Learning Journey</p>
           <h2 className="text-2xl font-bold mb-1">My Progress Overview</h2>
           <p className="text-white/60 text-sm">
             You've completed{" "}
             <span className="text-white font-semibold">{completed.length} sessions</span> and earned{" "}
-            <span className="text-[#FF4E9B] font-semibold">
+            <span className="text-[var(--accent)] font-semibold">
               {achievements.filter(a => a.unlocked).length} achievements
             </span>.
           </p>
@@ -232,7 +232,7 @@ export default function ProgressTab() {
                 <circle cx="40" cy="40" r="30" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="8" />
                 <circle
                   cx="40" cy="40" r="30" fill="none"
-                  stroke="#FF4E9B" strokeWidth="8"
+                  stroke="var(--accent)" strokeWidth="8"
                   strokeDasharray={`${2 * Math.PI * 30}`}
                   strokeDashoffset={`${2 * Math.PI * 30 * (1 - completionPercent / 100)}`}
                   strokeLinecap="round"
@@ -248,7 +248,7 @@ export default function ProgressTab() {
         </div>
         <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10" />
         <div className="absolute -right-4 -bottom-10 w-28 h-28 rounded-full bg-white/10" />
-        <div className="absolute right-36 -top-4 w-16 h-16 rounded-full bg-[#FF4E9B]/30" />
+        <div className="absolute right-36 -top-4 w-16 h-16 rounded-full bg-[var(--accent)]/30" />
       </div>
 
       {/* ──────── Stat Cards ──────── */}
@@ -278,7 +278,7 @@ export default function ProgressTab() {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-5">
             <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
-              <FiTarget size={16} className="text-[#6A11CB]" />
+              <FiTarget size={16} className="text-[var(--primary)]" />
             </div>
             <div>
               <h3 className="font-semibold text-gray-800">Subject Performance</h3>
@@ -294,7 +294,7 @@ export default function ProgressTab() {
                 plugins: {
                   legend: { display: false },
                   tooltip: {
-                    backgroundColor: "#1a0e33",
+                    backgroundColor: "var(--text-primary)",
                     padding: 10,
                     cornerRadius: 8,
                   },
@@ -307,7 +307,7 @@ export default function ProgressTab() {
                   },
                   x: {
                     grid: { display: false },
-                    ticks: { color: "#6b7280", font: { size: 11 } },
+                    ticks: { color: "var(--text-muted)", font: { size: 11 } },
                   },
                 },
               }}
@@ -371,7 +371,7 @@ export default function ProgressTab() {
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center gap-2 mb-6">
           <div className="w-8 h-8 rounded-lg bg-pink-50 flex items-center justify-center">
-            <FiTarget size={16} className="text-[#FF4E9B]" />
+            <FiTarget size={16} className="text-[var(--accent)]" />
           </div>
           <div>
             <h3 className="font-semibold text-gray-800">Learning Goals</h3>
