@@ -96,7 +96,7 @@ export default function TutorCards() {
                 aria-label="Scroll left"
                 className="
                   hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20
-                  w-10 h-10 rounded-full bg-white dark:bg-[var(--text-primary)]
+                  w-10 h-10 rounded-full bg-white dark:bg-[var(--surface-alt)]
                   border border-[var(--primary)]/20 shadow-lg
                   items-center justify-center
                   text-[var(--primary)] dark:text-[var(--accent)]
@@ -113,7 +113,7 @@ export default function TutorCards() {
                 aria-label="Scroll right"
                 className="
                   hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20
-                  w-10 h-10 rounded-full bg-white dark:bg-[var(--text-primary)]
+                  w-10 h-10 rounded-full bg-white dark:bg-[var(--surface-alt)]
                   border border-[var(--primary)]/20 shadow-lg
                   items-center justify-center
                   text-[var(--primary)] dark:text-[var(--accent)]

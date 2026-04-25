@@ -65,7 +65,7 @@ function ApplicationModal({ position, onClose }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
+            <div className="bg-white dark:bg-[var(--surface-alt)] rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-white/10">
                 <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] px-7 py-5 flex items-center justify-between">
                     <div>
                         <p className="text-white/70 text-xs font-medium">Apply for</p>
@@ -77,42 +77,42 @@ function ApplicationModal({ position, onClose }) {
                 {sent ? (
                     <div className="px-7 py-12 text-center">
                         <div className="text-5xl mb-4">🎉</div>
-                        <h4 className="text-xl font-bold text-gray-800 mb-2">Application Received!</h4>
-                        <p className="text-gray-500 text-sm mb-6">We'll review your application and reach out within 5–7 business days.</p>
+                        <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Application Received!</h4>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">We'll review your application and reach out within 5–7 business days.</p>
                         <button onClick={onClose} className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white font-semibold text-sm">Close</button>
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="px-7 py-6 space-y-4">
                         <div>
-                            <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Full Name</label>
+                            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">Full Name</label>
                             <input
                                 required
                                 value={form.name}
                                 onChange={e => setForm({ ...form, name: e.target.value })}
                                 placeholder="Jane Smith"
-                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50"
+                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-slate-50 dark:bg-white/5 dark:text-white"
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Email Address</label>
+                            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">Email Address</label>
                             <input
                                 required
                                 type="email"
                                 value={form.email}
                                 onChange={e => setForm({ ...form, email: e.target.value })}
                                 placeholder="jane@example.com"
-                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50"
+                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-slate-50 dark:bg-white/5 dark:text-white"
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Cover Letter</label>
+                            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">Cover Letter</label>
                             <textarea
                                 required
                                 rows={4}
                                 value={form.cover}
                                 onChange={e => setForm({ ...form, cover: e.target.value })}
                                 placeholder="Tell us why you'd be a great fit..."
-                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-gray-50 resize-none"
+                                className="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 bg-slate-50 dark:bg-white/5 dark:text-white resize-none"
                             />
                         </div>
                         <button
@@ -173,14 +173,14 @@ export default function Careers() {
 
             {/* ── Benefits ── */}
             <section className="max-w-5xl mx-auto px-6 py-16">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">Why TutorHours?</h2>
-                <p className="text-gray-400 text-sm text-center mb-10">We invest in our people so they can invest in our mission</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 text-center">Why TutorHours?</h2>
+                <p className="text-slate-500 dark:text-slate-400 text-sm text-center mb-10">We invest in our people so they can invest in our mission</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     {BENEFITS.map(({ icon, title, desc }) => (
-                        <div key={title} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                        <div key={title} className="bg-white dark:bg-[var(--surface-alt)] rounded-2xl p-5 shadow-sm border border-slate-100 dark:border-white/10 hover:shadow-md transition-all">
                             <div className="text-3xl mb-3">{icon}</div>
-                            <h3 className="font-semibold text-gray-800 mb-1">{title}</h3>
-                            <p className="text-sm text-gray-500">{desc}</p>
+                            <h3 className="font-semibold text-slate-900 dark:text-white mb-1">{title}</h3>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">{desc}</p>
                         </div>
                     ))}
                 </div>
@@ -198,7 +198,9 @@ export default function Careers() {
                             key={dept}
                             onClick={() => setFilter(dept)}
                             className={`px-4 py-2 rounded-full text-sm font-semibold transition
-                ${filter === dept ? "bg-[var(--primary)] text-white shadow" : "bg-white text-gray-600 border border-gray-200 hover:border-[var(--primary)] hover:text-[var(--primary)]"}`}
+                ${filter === dept 
+                    ? "bg-[var(--primary)] text-white shadow" 
+                    : "bg-white dark:bg-white/5 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/10 hover:border-[var(--primary)] hover:text-[var(--primary)]"}`}
                         >
                             {dept}
                         </button>
@@ -208,22 +210,22 @@ export default function Careers() {
                 {/* Position cards */}
                 <div className="space-y-4">
                     {visible.map(pos => (
-                        <div key={pos.id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                        <div key={pos.id} className="bg-white dark:bg-[var(--surface-alt)] rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-white/10 hover:shadow-md transition-all">
                             <div className="flex flex-wrap items-start justify-between gap-4">
                                 <div className="flex-1 min-w-0">
                                     <div className="flex flex-wrap items-center gap-2 mb-2">
-                                        <h3 className="font-bold text-gray-800 text-lg">{pos.title}</h3>
+                                        <h3 className="font-bold text-slate-900 dark:text-white text-lg">{pos.title}</h3>
                                         <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${TYPE_COLORS[pos.type]}`}>
                                             {pos.type}
                                         </span>
-                                        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-500">
+                                        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400">
                                             {pos.location}
                                         </span>
                                     </div>
-                                    <p className="text-sm text-gray-500 mb-3">{pos.description}</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">{pos.description}</p>
                                     <div className="flex flex-wrap gap-2">
                                         {pos.skills.map(skill => (
-                                            <span key={skill} className="text-xs bg-purple-50 text-[var(--primary)] px-2.5 py-1 rounded-full font-medium">
+                                            <span key={skill} className="text-xs bg-purple-50 dark:bg-purple-900/30 text-[var(--primary)] dark:text-purple-300 px-2.5 py-1 rounded-full font-medium">
                                                 {skill}
                                             </span>
                                         ))}

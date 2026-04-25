@@ -107,7 +107,7 @@ export default function ContactUs() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white dark:bg-[var(--text-primary)] rounded-3xl p-8 shadow-2xl shadow-[var(--primary)]/5 border border-slate-100 dark:border-white/10 relative">
+          <div className="bg-white dark:bg-[var(--surface-alt)] rounded-3xl p-8 shadow-2xl shadow-[var(--primary)]/5 border border-slate-100 dark:border-white/10 relative">
             <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] blur-2xl opacity-50 -z-10" />
             
             <form onSubmit={handleSubmit} className="space-y-5">

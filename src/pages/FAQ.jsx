@@ -51,7 +51,7 @@ function Accordion({ q, a }) {
     const [open, setOpen] = useState(false);
 
     return (
-        <div className={`group rounded-3xl border transition-all duration-300 mb-4 ${open ? "bg-[var(--primary)]/05 border-[var(--primary)]/20" : "bg-white dark:bg-white/05 border-slate-100 dark:border-white/10 hover:border-[var(--primary)]/30 shadow-sm"}`}>
+        <div className={`group rounded-3xl border transition-all duration-300 mb-4 ${open ? "bg-[var(--primary)]/05 border-[var(--primary)]/20" : "bg-white dark:bg-[var(--surface-alt)] border-slate-100 dark:border-white/10 hover:border-[var(--primary)]/30 shadow-sm"}`}>
             <button
                 onClick={() => setOpen(!open)}
                 className="w-full px-8 py-6 flex items-center justify-between text-left"

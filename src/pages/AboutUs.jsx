@@ -62,7 +62,7 @@ export default function AboutUs() {
             </section>
 
             {/* Story Section */}
-            <section className="py-24 bg-slate-50 dark:bg-[#0a0418]/50">
+            <section className="py-24 bg-slate-50 dark:bg-[var(--surface-alt)]">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="flex flex-col md:flex-row gap-16 items-center">
                         <div className="flex-1">

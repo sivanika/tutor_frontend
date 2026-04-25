@@ -1,10 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [dark, setDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -79,20 +80,22 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-6">
-            {links.map((item) => (
-              item.isHash ? (
+            {links.map((item) => {
+              const isActive = location.pathname === item.path;
+              return item.isHash ? (
                 <a
                   key={item.label}
                   href={item.path}
-                  className="
-                    text-sm font-medium text-slate-600 dark:text-slate-100
-                    hover:text-[var(--primary)] dark:hover:text-[var(--accent)]
-                    transition-colors duration-200 relative
-                    after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5
+                  className={`
+                    text-sm font-medium transition-colors duration-200 relative
+                    ${isActive 
+                      ? "text-[var(--primary)] dark:text-[var(--accent)]" 
+                      : "text-slate-600 dark:text-slate-100 hover:text-[var(--primary)] dark:hover:text-[var(--accent)]"}
+                    after:absolute after:-bottom-1 after:left-0 after:h-0.5
                     after:bg-[var(--primary)] dark:after:bg-[var(--accent)]
                     after:transition-all after:duration-300
-                    hover:after:w-full
-                  "
+                    ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}
+                  `}
                 >
                   {item.label}
                 </a>
@@ -100,20 +103,21 @@ export default function Header() {
                 <Link
                   key={item.label}
                   to={item.path}
-                  className="
-                    text-sm font-medium text-slate-600 dark:text-slate-100
-                    hover:text-[var(--primary)] dark:hover:text-[var(--accent)]
-                    transition-colors duration-200 relative
-                    after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5
+                  className={`
+                    text-sm font-medium transition-colors duration-200 relative
+                    ${isActive 
+                      ? "text-[var(--primary)] dark:text-[var(--accent)]" 
+                      : "text-slate-600 dark:text-slate-100 hover:text-[var(--primary)] dark:hover:text-[var(--accent)]"}
+                    after:absolute after:-bottom-1 after:left-0 after:h-0.5
                     after:bg-[var(--primary)] dark:after:bg-[var(--accent)]
                     after:transition-all after:duration-300
-                    hover:after:w-full
-                  "
+                    ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}
+                  `}
                 >
                   {item.label}
                 </Link>
-              )
-            ))}
+              );
+            })}
           </nav>
 
           {/* Right Side */}
@@ -182,13 +186,19 @@ export default function Header() {
         {/* Mobile Menu */}
         {menuOpen && (
           <div className="lg:hidden px-6 pb-5 pt-2 bg-white dark:bg-[var(--surface)] border-t border-[var(--primary)]/10 animate-slideUp">
-            {links.map((item) => (
-              item.isHash ? (
+            {links.map((item) => {
+              const isActive = location.pathname === item.path;
+              return item.isHash ? (
                 <a
                   key={item.label}
                   href={item.path}
                   onClick={() => setMenuOpen(false)}
-                  className="block py-3 text-slate-700 dark:text-slate-100 hover:text-[var(--primary)] font-medium border-b border-[var(--primary)]/08 dark:border-[var(--primary)]/10"
+                  className={`
+                    block py-3 font-medium border-b border-[var(--primary)]/08 dark:border-[var(--primary)]/10
+                    ${isActive 
+                      ? "text-[var(--primary)] dark:text-[var(--accent)]" 
+                      : "text-slate-700 dark:text-slate-100 hover:text-[var(--primary)]"}
+                  `}
                 >
                   {item.label}
                 </a>
@@ -197,12 +207,17 @@ export default function Header() {
                   key={item.label}
                   to={item.path}
                   onClick={() => setMenuOpen(false)}
-                  className="block py-3 text-slate-700 dark:text-slate-100 hover:text-[var(--primary)] font-medium border-b border-[var(--primary)]/08 dark:border-[var(--primary)]/10"
+                  className={`
+                    block py-3 font-medium border-b border-[var(--primary)]/08 dark:border-[var(--primary)]/10
+                    ${isActive 
+                      ? "text-[var(--primary)] dark:text-[var(--accent)]" 
+                      : "text-slate-700 dark:text-slate-100 hover:text-[var(--primary)]"}
+                  `}
                 >
                   {item.label}
                 </Link>
-              )
-            ))}
+              );
+            })}
             <div className="flex gap-3 mt-4">
               <button onClick={() => { setShowLogin(true); setMenuOpen(false); }} className="flex-1 py-2.5 rounded-xl border-2 border-[var(--primary)]/30 text-[var(--primary)] font-semibold text-sm">Login</button>
               <button onClick={() => { setShowRegister(true); setMenuOpen(false); }} className="flex-1 py-2.5 rounded-xl grad-bg text-white font-semibold text-sm shadow-lg shadow-[var(--primary)]/30">Sign Up</button>

@@ -74,7 +74,7 @@ export default function Blog() {
                 <div className="max-w-7xl mx-auto px-6 py-10">
 
                 {/* Filters */}
-                <div className="flex flex-col md:flex-row gap-6 items-center justify-between mb-12 bg-slate-50 dark:bg-white/05 p-6 rounded-3xl border border-slate-100 dark:border-white/10">
+                <div className="flex flex-col md:flex-row gap-6 items-center justify-between mb-12 bg-white dark:bg-[var(--surface-alt)] p-6 rounded-3xl border border-slate-100 dark:border-white/10 shadow-sm">
                     <div className="flex flex-wrap gap-2">
                         {categories.map(cat => (
                             <button
@@ -106,7 +106,7 @@ export default function Blog() {
                 {filtered.length > 0 ? (
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {filtered.map(post => (
-                            <article key={post.id} className="group flex flex-col bg-white dark:bg-white/05 rounded-[2.5rem] border border-slate-100 dark:border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-[var(--primary)]/10 transition-all duration-500 hover:-translate-y-2">
+                            <article key={post.id} className="group flex flex-col bg-white dark:bg-[var(--surface-alt)] rounded-[2.5rem] border border-slate-100 dark:border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-[var(--primary)]/10 transition-all duration-500 hover:-translate-y-2">
                                 <div className="relative h-48 overflow-hidden">
                                     <img src={post.img} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                     <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 dark:bg-[var(--surface)]/80 backdrop-blur-md text-[var(--primary)] text-[10px] font-bold uppercase tracking-wider">
