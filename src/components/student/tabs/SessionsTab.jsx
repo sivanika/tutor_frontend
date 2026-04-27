@@ -204,8 +204,9 @@ export default function SessionsTab() {
                           title={s.myStatus === "completed" ? `${s.title} (Completed)` : `Join: ${s.title}`}
                           className={`${statusColor} text-[10px] rounded px-1.5 py-0.5 mb-0.5 shadow-sm transition-all duration-200 truncate`}
                         >
-                          {s.myStatus === "completed" ? "✓" : "⏰"}{" "}
+                          {s.myStatus === "completed" ? <FiCheckCircle className="inline" /> : <FiClock className="inline" />}{" "}
                           {s.time ? new Date(`2000-01-01 ${s.time}`).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : s.title}
+
                         </div>
                       )
                     })}
@@ -387,7 +388,8 @@ export default function SessionsTab() {
                     </p>
                   </div>
                   <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-50 text-green-600">
-                    Completed ✓
+                    Completed
+
                   </span>
                 </div>
               ))}

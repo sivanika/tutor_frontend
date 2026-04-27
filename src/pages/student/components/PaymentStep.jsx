@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../../services/api";
+import { FiCheck, FiZap, FiHome, FiLock } from "react-icons/fi";
+
 
 export default function PaymentStep() {
     const navigate = useNavigate();
@@ -127,7 +129,8 @@ export default function PaymentStep() {
                                                 className="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 text-[8px] font-black text-white"
                                                 style={{ background: plan.color }}
                                             >
-                                                ✓
+                                                <FiCheck />
+
                                             </span>
                                             {f}
                                         </li>
@@ -156,14 +159,15 @@ export default function PaymentStep() {
                 <p className="text-xs text-slate-400 font-medium">Accepted payment methods</p>
                 <div className="flex items-center gap-2 flex-wrap justify-center">
                     {[
-                        { label: "UPI", color: "#5F259F", icon: "⚡" },
-                        { label: "GPay", color: "#4285F4", icon: "G" },
-                        { label: "PhonePe", color: "#5F259F", icon: "P" },
-                        { label: "Paytm", color: "#00BAF2", icon: "T" },
-                        { label: "VISA", color: "#1A1F71", icon: "V" },
-                        { label: "MC", color: "#EB001B", icon: "M" },
-                        { label: "RuPay", color: "#1B4E9B", icon: "R" },
-                        { label: "NetBanking", color: "#22409A", icon: "🏦" },
+                        { label: "UPI", color: "#5F259F", icon: <FiZap /> },
+                        { label: "GPay", color: "#4285F4", icon: "GPAY" },
+                        { label: "PhonePe", color: "#5F259F", icon: "PPE" },
+                        { label: "Paytm", color: "#00BAF2", icon: "PTM" },
+                        { label: "VISA", color: "#1A1F71", icon: "VISA" },
+                        { label: "MC", color: "#EB001B", icon: "MC" },
+                        { label: "RuPay", color: "#1B4E9B", icon: "RUPAY" },
+                        { label: "NetBanking", color: "#22409A", icon: <FiHome /> },
+
                     ].map((m) => (
                         <div
                             key={m.label}
@@ -176,7 +180,8 @@ export default function PaymentStep() {
                     ))}
                 </div>
                 <p className="text-[10px] text-slate-400">
-                    🔒 256-bit SSL encrypted · Powered by{" "}
+                    <FiLock className="inline-block mr-1" /> 256-bit SSL encrypted · Powered by{" "}
+
                     <span className="font-black text-[#3395FF]">Razorpay</span>
                 </p>
             </div>

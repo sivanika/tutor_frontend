@@ -1,4 +1,7 @@
+import { FiAward } from "react-icons/fi";
+
 export default function Achievements({ sessions }) {
+
   const completed = sessions.filter(
     s => new Date(`${s.date} ${s.time}`) <= new Date()
   ).length
@@ -6,7 +9,8 @@ export default function Achievements({ sessions }) {
   return (
     <div className="bg-white p-6 rounded-xl shadow">
       <h3 className="text-xl font-bold text-[var(--primary)] mb-4">
-        🏆 Achievements
+        <FiAward className="inline-block mr-2" /> Achievements
+
       </h3>
 
       <Achievement
@@ -35,11 +39,12 @@ function Achievement({ title, desc, unlocked }) {
         <h4 className="font-semibold">{title}</h4>
         <p className="text-sm text-gray-500">{desc}</p>
       </div>
-      <i
-        className={`fas fa-award text-2xl ${
+      <FiAward
+        className={`text-2xl ${
           unlocked ? "text-yellow-400" : "text-gray-300"
         }`}
-      ></i>
+      />
+
     </div>
   )
 }

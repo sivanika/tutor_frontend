@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+
 
 function Login() {
   const navigate = useNavigate();
@@ -138,7 +140,8 @@ function Login() {
               text-gray-400 hover:text-gray-700 dark:hover:text-white
             "
           >
-            {showPassword ? "🙈" : "👁️"}
+            {showPassword ? <FiEyeOff /> : <FiEye />}
+
           </button>
         </div>
 

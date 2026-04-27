@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
-import { FiSearch, FiMapPin, FiUser, FiLock, FiZap, FiCheckCircle, FiX } from "react-icons/fi";
+import { FiSearch, FiMapPin, FiUser, FiLock, FiZap, FiCheckCircle, FiX, FiBook } from "react-icons/fi";
+
 import ProfessorUpgradeModal from "./ProfessorUpgradeModal";
 import { toast } from "react-hot-toast";
 
@@ -119,8 +120,9 @@ export default function BrowseStudents() {
               onClick={() => setShowUpgradeModal(true)}
               className="px-4 py-2 bg-[var(--accent)] text-white text-sm font-bold rounded-lg hover:bg-[#e63e88] transition-colors"
             >
-              Upgrade Plan ✨
+              Upgrade Plan
             </button>
+
           )}
         </div>
       )}
@@ -207,7 +209,8 @@ export default function BrowseStudents() {
       {/* Empty State */}
       {!loading && filtered.length === 0 && (
         <div className="text-center py-16 bg-white rounded-2xl border border-gray-100 shadow-sm">
-          <div className="text-5xl mb-4">🔍</div>
+          <div className="text-5xl mb-4 text-gray-200"><FiSearch className="mx-auto" /></div>
+
           <h3 className="text-gray-800 font-bold text-lg">No students found</h3>
           <p className="text-sm text-gray-500 mt-2">Try adjusting your filters or search terms.</p>
         </div>
@@ -288,7 +291,7 @@ export default function BrowseStudents() {
                         <div key={subReq._id} className="bg-[var(--accent)]/5 rounded-xl p-3 border border-[var(--accent)]/10 group/req hover:bg-[var(--accent)]/10 transition-all">
                           <div className="flex items-center justify-between gap-2 mb-1">
                             <div className="flex items-center gap-2">
-                              <span className="text-lg">{subReq.icon || "📚"}</span>
+                              <span className="text-lg text-[var(--accent)]"><FiBook /></span>
                               <span className="text-sm font-bold text-gray-800">{subReq.name}</span>
                             </div>
                             <span className="text-[10px] px-1.5 py-0.5 bg-white text-[var(--accent)] font-bold rounded border border-[var(--accent)]/20">

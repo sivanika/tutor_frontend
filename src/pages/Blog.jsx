@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { FiSearch, FiFrown } from "react-icons/fi";
+
 
 const POSTS = [
     {
@@ -98,7 +100,8 @@ export default function Blog() {
                             onChange={(e) => setSearch(e.target.value)}
                             className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 focus:ring-2 focus:ring-[var(--primary)]/50 focus:outline-none dark:text-white"
                         />
-                        <span className="absolute left-3.5 top-3 text-slate-400">🔍</span>
+                        <span className="absolute left-3.5 top-3 text-slate-400"><FiSearch /></span>
+
                     </div>
                 </div>
 
@@ -132,7 +135,8 @@ export default function Blog() {
                     </div>
                 ) : (
                     <div className="text-center py-20 bg-slate-50 dark:bg-white/05 rounded-[3rem] border border-dashed border-slate-200 dark:border-white/10">
-                        <div className="text-5xl mb-4">🏜️</div>
+                        <div className="text-5xl mb-4 text-slate-300"><FiFrown className="inline-block" /></div>
+
                         <h3 className="text-xl font-bold dark:text-white">No articles found</h3>
                         <p className="text-slate-500 dark:text-slate-400 mt-2">Try adjusting your search or category filters.</p>
                     </div>

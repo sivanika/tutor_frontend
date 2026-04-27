@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { FiUser, FiUserCheck, FiX } from "react-icons/fi";
+
 
 export default function RegisterModal({ onClose, onSwitchToLogin }) {
     const navigate = useNavigate();
@@ -29,7 +31,8 @@ export default function RegisterModal({ onClose, onSwitchToLogin }) {
                     onClick={onClose}
                     className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 dark:bg-[var(--surface)] hover:bg-gray-200 dark:hover:bg-[var(--primary)]/20 flex items-center justify-center text-gray-500 dark:text-[var(--accent)] hover:text-gray-800 dark:hover:text-white transition"
                 >
-                    ✕
+                    <FiX />
+
                 </button>
 
                 {/* Title */}
@@ -51,7 +54,8 @@ export default function RegisterModal({ onClose, onSwitchToLogin }) {
               transition-all duration-300
             "
                     >
-                        <span className="text-xl group-hover:scale-110 transition">🎓</span>
+                        <span className="text-xl group-hover:scale-110 transition"><FiUser /></span>
+
                         Student
                     </button>
 
@@ -67,7 +71,8 @@ export default function RegisterModal({ onClose, onSwitchToLogin }) {
               transition-all duration-300
             "
                     >
-                        <span className="text-xl group-hover:scale-110 transition">🧑‍🏫</span>
+                        <span className="text-xl group-hover:scale-110 transition"><FiUserCheck /></span>
+
                         Professor
                     </button>
                 </div>

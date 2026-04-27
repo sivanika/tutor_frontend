@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { FiRocket, FiStar, FiBook, FiChevronRight, FiLayout, FiActivity, FiCpu } from "react-icons/fi";
+
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -32,7 +34,8 @@ export default function Hero() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--primary)]/10 dark:bg-white/15 border border-[var(--primary)]/20 dark:border-white/25 backdrop-blur-sm text-sm text-[var(--primary)] dark:text-white font-medium">
             <span className="w-2 h-2 rounded-full bg-[var(--primary)] dark:bg-[var(--accent)] animate-pulse" />
-            🚀 Next-Generation Learning Platform
+            <FiRocket /> Next-Generation Learning Platform
+
           </div>
 
           {/* Heading */}
@@ -85,7 +88,8 @@ export default function Hero() {
                 transition-all duration-300
               "
             >
-              Login →
+              Login <FiChevronRight />
+
             </button>
           </div>
 
@@ -113,15 +117,17 @@ export default function Hero() {
           {/* Main card */}
           <div className="relative glass rounded-3xl p-8 space-y-6 shadow-2xl">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">📚 Upcoming Sessions</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2"><FiBook /> Upcoming Sessions</h3>
+
               <span className="text-xs text-[var(--primary)] dark:text-white/50 bg-[var(--primary)]/10 dark:bg-white/10 px-3 py-1 rounded-full">Live</span>
             </div>
 
             <div className="space-y-4">
               {[
-                { subject: "Mathematics", time: "Today • 6:00 PM", icon: "📐", color: "var(--primary)" },
-                { subject: "Physics", time: "Tomorrow • 4:00 PM", icon: "⚛️", color: "var(--primary)" },
-                { subject: "Programming", time: "Friday • 5:30 PM", icon: "💻", color: "var(--accent)" },
+                { subject: "Mathematics", time: "Today • 6:00 PM", icon: <FiLayout />, color: "var(--primary)" },
+                { subject: "Physics", time: "Tomorrow • 4:00 PM", icon: <FiActivity />, color: "var(--primary)" },
+                { subject: "Programming", time: "Friday • 5:30 PM", icon: <FiCpu />, color: "var(--accent)" },
+
               ].map((s) => (
                 <div
                   key={s.subject}
@@ -147,14 +153,16 @@ export default function Hero() {
               onClick={() => navigate("/register")}
               className="w-full py-3 rounded-xl grad-bg text-white font-semibold text-sm shadow-lg shadow-[var(--primary)]/30 hover:opacity-90 transition"
             >
-              Join a Session →
+              Join a Session <FiChevronRight className="inline-block" />
+
             </button>
           </div>
 
           {/* Floating badge */}
-          <div className="absolute -bottom-5 -left-6 bg-[var(--primary)] dark:bg-[var(--accent)] text-white px-5 py-2.5 rounded-full shadow-xl shadow-[var(--primary)]/40 dark:shadow-[var(--accent)]/40 text-sm font-semibold whitespace-nowrap">
-            ⭐ Trusted by 10,000+ learners
+          <div className="absolute -bottom-5 -left-6 bg-[var(--primary)] dark:bg-[var(--accent)] text-white px-5 py-2.5 rounded-full shadow-xl shadow-[var(--primary)]/40 dark:shadow-[var(--accent)]/40 text-sm font-semibold whitespace-nowrap flex items-center gap-2">
+            <FiStar /> Trusted by 10,000+ learners
           </div>
+
         </div>
       </div>
     </section>

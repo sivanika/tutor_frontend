@@ -1,21 +1,24 @@
 import { Link } from "react-router-dom";
+import { FiTarget, FiAward, FiTrendingUp, FiZap } from "react-icons/fi";
+
 
 const PHILOSOPHY = [
     {
         title: "Student-First Approach",
         desc: "Every feature we build starts with one question: 'How does this help the student learn better?'",
-        icon: "🎯"
+        icon: <FiTarget />
     },
     {
         title: "Quality Over Quantity",
         desc: "We manually verify every professor to ensure the highest standard of academic guidance.",
-        icon: "💎"
+        icon: <FiAward />
     },
     {
         title: "Empowering Educators",
         desc: "We provide professors with modern tools to manage their schedules and grow their impact.",
-        icon: "🚀"
+        icon: <FiTrendingUp />
     }
+
 ];
 
 export default function AboutUs() {
@@ -87,7 +90,8 @@ export default function AboutUs() {
                         <div className="flex-1 w-full aspect-video rounded-3xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] shadow-2xl relative overflow-hidden group">
                             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay opacity-60 group-hover:scale-110 transition-transform duration-700" />
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-3xl animate-pulse">✨</div>
+                                <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-3xl animate-pulse"><FiZap /></div>
+
                             </div>
                         </div>
                     </div>

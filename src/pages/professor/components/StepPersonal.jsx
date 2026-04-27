@@ -2,6 +2,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { personalSchema } from "../validation/schemas";
 import { useState } from "react";
+import { COUNTRIES } from "../../../constants/countries";
+import { FiUser, FiImage } from "react-icons/fi";
+
+
 
 const inputCls = `
   w-full px-4 py-3 rounded-xl text-sm text-slate-800
@@ -47,9 +51,10 @@ export default function StepPersonal({ formData, setFormData, next }) {
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* Section header */}
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-lg shadow-lg shadow-indigo-200">
-          👤
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-200">
+          <FiUser />
         </div>
+
         <div>
           <h2 className="text-xl font-bold text-slate-800 leading-tight">Personal Information</h2>
           <p className="text-xs text-slate-400 mt-0.5">Your basic details and contact information</p>
@@ -79,11 +84,10 @@ export default function StepPersonal({ formData, setFormData, next }) {
           <Field label="Country" error={errors.country?.message}>
             <select className={inputCls} {...register("country")}>
               <option value="">Select country…</option>
-              <option>India</option>
-              <option>USA</option>
-              <option>UK</option>
+              {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </Field>
+
           <Field label="Timezone" error={errors.timezone?.message}>
             <select className={inputCls} {...register("timezone")}>
               <option value="">Select timezone…</option>
@@ -108,9 +112,10 @@ export default function StepPersonal({ formData, setFormData, next }) {
         <Field label="Profile Photo" error={errors.profilePhoto?.message}>
           <label className="flex items-center justify-between px-4 py-3 rounded-xl border-2 border-dashed border-slate-200 cursor-pointer bg-slate-50 hover:border-indigo-400 hover:bg-indigo-50 transition-all duration-200 group">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-white shadow flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                🖼️
+              <div className="w-9 h-9 rounded-lg bg-white shadow flex items-center justify-center text-xl text-indigo-600 group-hover:scale-110 transition-transform">
+                <FiImage />
               </div>
+
               <div>
                 <p className="text-sm font-semibold text-slate-600 group-hover:text-indigo-600 transition-colors">
                   {photoName || "Choose profile photo"}

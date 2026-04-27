@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import API from "../../services/api";
+import { FiCheck } from "react-icons/fi";
+
 
 export default function Pricing() {
   const navigate = useNavigate();
@@ -123,7 +125,8 @@ export default function Pricing() {
                       className="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] text-white font-bold"
                       style={{ background: plan.color }}
                     >
-                      ✓
+                      <FiCheck />
+
                     </span>
                     {f}
                   </li>

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { FiEye, FiEyeOff, FiX } from "react-icons/fi";
+
 
 export default function LoginModal({ onClose, onSwitchToRegister }) {
     const navigate = useNavigate();
@@ -68,8 +70,9 @@ export default function LoginModal({ onClose, onSwitchToRegister }) {
                     onClick={onClose}
                     className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 dark:bg-[var(--surface)] hover:bg-gray-200 dark:hover:bg-[var(--primary)]/20 flex items-center justify-center text-gray-500 dark:text-[var(--accent)] hover:text-gray-800 dark:hover:text-white transition"
                 >
-                    ✕
+                    <FiX />
                 </button>
+
 
                 {/* Title */}
                 <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white">Welcome Back</h2>
@@ -107,7 +110,8 @@ export default function LoginModal({ onClose, onSwitchToRegister }) {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-3 text-gray-400 hover:text-gray-700 dark:hover:text-white"
                     >
-                        {showPassword ? "🙈" : "👁️"}
+                        {showPassword ? <FiEyeOff /> : <FiEye />}
+
                     </button>
                 </div>
 

@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { FiBookOpen, FiCheck, FiExternalLink } from "react-icons/fi";
+
+
 
 export default function TutorAgreementModal({ onAccept }) {
     const [agreed, setAgreed] = useState(false);
@@ -10,7 +13,8 @@ export default function TutorAgreementModal({ onAccept }) {
                 {/* Header */}
                 <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] px-8 py-6 flex-shrink-0">
                     <div className="flex items-center gap-3">
-                        <span className="text-3xl">🎓</span>
+                        <span className="text-3xl text-white"><FiBookOpen /></span>
+
                         <div>
                             <h2 className="text-xl font-extrabold text-white">Tutor Agreement</h2>
                             <p className="text-indigo-100 text-sm mt-0.5">
@@ -57,7 +61,8 @@ export default function TutorAgreementModal({ onAccept }) {
                             target="_blank"
                             className="text-indigo-600 underline hover:text-indigo-800"
                         >
-                            full Tutor Agreement ↗
+                            full Tutor Agreement <FiExternalLink className="inline-block" />
+
                         </Link>
                     </p>
                 </div>
@@ -97,7 +102,8 @@ export default function TutorAgreementModal({ onAccept }) {
               disabled:opacity-40 disabled:cursor-not-allowed
             "
                     >
-                        ✓ Accept &amp; Continue to Activation
+                        <FiCheck className="inline-block mr-1" /> Accept &amp; Continue to Activation
+
                     </button>
                 </div>
             </div>

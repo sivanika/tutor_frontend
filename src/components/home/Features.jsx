@@ -1,42 +1,45 @@
+import { FiBookOpen, FiMonitor, FiTrendingUp, FiCalendar, FiLock, FiGlobe } from "react-icons/fi";
+
 export default function Features() {
   const features = [
     {
-      icon: "🎓",
+      icon: <FiBookOpen />,
       title: "Verified Professors",
       desc: "Learn from certified educators with proven teaching skills and academic credentials.",
       color: "var(--primary)",
     },
     {
-      icon: "💻",
+      icon: <FiMonitor />,
       title: "Virtual Classroom",
       desc: "Live video, screen share, collaborative whiteboard & session recordings.",
       color: "var(--accent)",
     },
     {
-      icon: "📈",
+      icon: <FiTrendingUp />,
       title: "Progress Tracking",
       desc: "Monitor performance, view analytics, and measure your improvement over time.",
       color: "var(--primary)",
     },
     {
-      icon: "🗓️",
+      icon: <FiCalendar />,
       title: "Flexible Scheduling",
       desc: "Book sessions at times that fit your schedule — morning, evening, or weekend.",
       color: "var(--primary)",
     },
     {
-      icon: "🔐",
+      icon: <FiLock />,
       title: "Secure Payments",
       desc: "Fully encrypted transactions for worry-free, hassle-free payments.",
       color: "var(--accent)",
     },
     {
-      icon: "🌍",
+      icon: <FiGlobe />,
       title: "Learn Anywhere",
       desc: "Access live and recorded classes from mobile, tablet, or desktop worldwide.",
       color: "var(--primary)",
     },
   ];
+
 
   return (
     <section
@@ -87,7 +90,8 @@ export default function Features() {
                 className="relative w-14 h-14 flex items-center justify-center text-2xl rounded-xl mb-5 transition-transform duration-300 group-hover:scale-110"
                 style={{ background: `${f.color}18`, border: `1px solid ${f.color}30` }}
               >
-                {f.icon}
+                <span style={{ color: f.color }}>{f.icon}</span>
+
               </div>
 
               <h3 className="text-lg font-bold mb-2 text-[var(--text-primary)] dark:text-white relative">

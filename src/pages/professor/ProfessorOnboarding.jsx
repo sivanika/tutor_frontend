@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
 import toast from "react-hot-toast";
+import { FiUser, FiBookOpen, FiBriefcase, FiShield, FiEye, FiStar } from "react-icons/fi";
+
 
 import StepPersonal from "./components/StepPersonal";
 import StepAcademic from "./components/StepAcademic";
@@ -12,13 +14,14 @@ import ProfessorPaymentStep from "./components/ProfessorPaymentStep";
 import TutorAgreementModal from "./components/TutorAgreementModal";
 
 const STEPS = [
-  { label: "Personal", icon: "👤" },
-  { label: "Academic", icon: "🎓" },
-  { label: "Experience", icon: "💼" },
-  { label: "Verify", icon: "🔐" },
-  { label: "Preview", icon: "👁️" },
-  { label: "Plan", icon: "⭐" },
+  { label: "Personal", icon: <FiUser /> },
+  { label: "Academic", icon: <FiBookOpen /> },
+  { label: "Experience", icon: <FiBriefcase /> },
+  { label: "Verify", icon: <FiShield /> },
+  { label: "Preview", icon: <FiEye /> },
+  { label: "Plan", icon: <FiStar /> },
 ];
+
 
 function ProfStepProgress({ currentStep }) {
   const progressPercent = ((currentStep - 1) / (STEPS.length - 1)) * 100;
@@ -114,7 +117,7 @@ export default function ProfessorOnboarding() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
-            <span className="font-bold text-slate-800 text-sm">ProfessorOn</span>
+            <span className="font-bold text-slate-800 text-sm">Tutor Hours</span>
           </div>
           <div className="text-xs text-slate-400 font-medium">
             Step <span className="text-indigo-600 font-bold">{step}</span> of {STEPS.length}
@@ -146,7 +149,8 @@ export default function ProfessorOnboarding() {
         </div>
 
         <p className="text-center text-xs text-slate-400 mt-8">
-          🔒 Your information is encrypted and never shared without consent.
+          <span className="inline-block mr-1"><FiLock /></span> Your information is encrypted and never shared without consent.
+
         </p>
       </div>
 

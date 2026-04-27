@@ -1,8 +1,12 @@
+import { FiSearch } from "react-icons/fi";
+
 export default function TutorFilters({ filters, setFilters, onApply }) {
+
   return (
     <div className="bg-white p-6 rounded-xl shadow mb-6">
       <h3 className="text-lg font-bold text-[var(--primary)] mb-4">
-        🔍 Search Filters
+        <FiSearch className="inline-block mr-2" /> Search Filters
+
       </h3>
 
       <div className="grid md:grid-cols-3 gap-4 mb-4">

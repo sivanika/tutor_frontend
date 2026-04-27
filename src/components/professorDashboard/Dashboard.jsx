@@ -7,7 +7,9 @@ import {
   FiUsers, FiBookOpen, FiDollarSign, FiStar,
   FiArrowUpRight, FiClock, FiZap, FiTrendingUp,
   FiXCircle, FiRefreshCw, FiCalendar,
+  FiEdit, FiUserPlus, FiBookOpen as FiBookIcon
 } from "react-icons/fi";
+
 import { Line, Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS, CategoryScale, LinearScale, PointElement,
@@ -212,7 +214,8 @@ export default function Dashboard() {
       <div className="relative overflow-hidden bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] rounded-2xl p-6 text-white shadow-lg">
         <div className="relative z-10">
           <p className="text-white/70 text-sm font-medium mb-1">{getGreeting()},</p>
-          <h2 className="text-2xl font-bold mb-1">{user?.email?.split("@")[0] || "Professor"} 👋</h2>
+          <h2 className="text-2xl font-bold mb-1">{user?.email?.split("@")[0] || "Professor"}</h2>
+
           <p className="text-white/60 text-sm">
             You have <span className="text-white font-semibold">{activeSessions} session{activeSessions !== 1 ? "s" : ""}</span> created
             and <span className="text-white font-semibold">{totalStudents} student{totalStudents !== 1 ? "s" : ""}</span> enrolled.
@@ -381,7 +384,8 @@ export default function Dashboard() {
               Recent Feedback
             </h3>
             <span className="text-xs bg-pink-50 text-[var(--accent)] px-2.5 py-1 rounded-full font-medium">
-              {avgRating.toFixed(1)} ⭐ avg
+              {avgRating.toFixed(1)} <FiStar className="inline" /> avg
+
             </span>
           </div>
           <div className="space-y-4">
@@ -394,8 +398,9 @@ export default function Dashboard() {
                   <p className="font-medium text-gray-700 text-sm">{f.student?.name || "Student"}</p>
                   <div className="flex gap-0.5 text-[var(--accent)] text-xs">
                     {[1, 2, 3, 4, 5].map(star => (
-                      <span key={star}>{star <= f.rating ? "★" : "☆"}</span>
+                      <FiStar key={star} fill={star <= f.rating ? "currentColor" : "none"} className={star <= f.rating ? "text-[var(--accent)]" : "text-gray-300"} />
                     ))}
+
                   </div>
                 </div>
                 <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">"{f.message}"</p>
@@ -413,10 +418,10 @@ export default function Dashboard() {
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: "Create Session", icon: "📚", color: "from-[var(--primary)] to-[var(--primary)]" },
-            { label: "View Students", icon: "👥", color: "from-[var(--primary)] to-[var(--primary)]" },
-            { label: "Update Profile", icon: "✏️", color: "from-[var(--accent)] to-[#FF6B6B]" },
-            { label: "Add Credentials", icon: "🎓", color: "from-[var(--primary)] to-[var(--accent)]" },
+            { label: "Create Session", icon: <FiBookIcon />, color: "from-[var(--primary)] to-[var(--primary)]" },
+            { label: "View Students", icon: <FiUsers />, color: "from-[var(--primary)] to-[var(--primary)]" },
+            { label: "Update Profile", icon: <FiEdit />, color: "from-[var(--accent)] to-[#FF6B6B]" },
+            { label: "Add Credentials", icon: <FiAward />, color: "from-[var(--primary)] to-[var(--accent)]" },
           ].map(({ label, icon, color }) => (
             <button
               key={label}
@@ -427,6 +432,7 @@ export default function Dashboard() {
               <span className="text-xs">{label}</span>
             </button>
           ))}
+
         </div>
       </div>
     </div>

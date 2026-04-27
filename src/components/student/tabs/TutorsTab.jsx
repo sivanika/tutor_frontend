@@ -52,7 +52,8 @@ export default function TutorsTab() {
   const handleEnroll = async (id) => {
     try {
       const res = await API.post(`/sessions/${id}/enroll`)
-      alert(res.data.message || "Enrolled successfully 🎉")
+      alert(res.data.message || "Enrolled successfully")
+
       socket.emit("dashboard:update")
     } catch (err) {
       console.error(err)
@@ -87,7 +88,8 @@ export default function TutorsTab() {
           }}
         >
           <div className="flex items-start gap-3">
-            <span className="text-2xl mt-1">🔒</span>
+            <span className="text-2xl mt-1 text-[var(--primary)]"><FiLock /></span>
+
             <div>
               <p className="font-bold text-gray-800 text-sm mb-1">{currentUser.subscriptionPlan.name} (Limited Access)</p>
               <div className="flex flex-wrap gap-4 text-xs font-medium text-gray-600">
@@ -203,7 +205,8 @@ export default function TutorsTab() {
                   {/* Hourly Rate */}
                   {s.professor?.hourlyRate ? (
                     <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[11px] font-bold text-white bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]">
-                      💰 ₹{s.professor.hourlyRate}/hr
+                      <FiDollarSign className="inline-block" /> ₹{s.professor.hourlyRate}/hr
+
                     </span>
                   ) : null}
                 </div>

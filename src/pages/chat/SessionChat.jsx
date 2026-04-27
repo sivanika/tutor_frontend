@@ -2,8 +2,13 @@ import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 import socket from "../../services/socket"
+import { FiSend, FiMessageCircle, FiArrowLeft } from "react-icons/fi"
+import { useNavigate } from "react-router-dom"
+
 
 export default function SessionChat() {
+  const navigate = useNavigate()
+
   const { sessionId } = useParams()
   const { user } = useAuth()
   const me = String(user?.id || user?._id || "")
@@ -42,15 +47,21 @@ export default function SessionChat() {
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       {/* Header */}
-      <div className="bg-blue-600 text-white p-4 font-semibold text-lg">
-        Session Chat
+      <div className="bg-white border-b p-4 flex items-center gap-4">
+        <button onClick={() => navigate(-1)} className="p-2 hover:bg-gray-100 rounded-full transition">
+          <FiArrowLeft />
+        </button>
+        <h2 className="font-bold text-gray-800">Session Chat</h2>
       </div>
+
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
-        {messages.length === 0 && (
-          <p className="text-center text-gray-400 mt-10">No messages yet 👋</p>
-        )}
+          <div className="flex flex-col items-center justify-center mt-20 text-gray-400">
+            <FiMessageCircle size={48} className="mb-2 opacity-20" />
+            <p>No messages yet</p>
+          </div>
+
 
         {messages.map((m, i) => {
           const isMe = String(m.sender?._id || m.sender) === me   // ✅ fixed: compares real IDs
@@ -65,9 +76,10 @@ export default function SessionChat() {
               <div
                 className={`max-w-[70%] px-4 py-2 rounded-2xl text-sm shadow
                   ${isMe
-                    ? "bg-blue-600 text-white rounded-br-none"
+                    ? "bg-[var(--primary)] text-white rounded-br-none"
                     : "bg-white text-gray-800 rounded-bl-none"
                   }`}
+
               >
                 <p>{m.text}</p>
                 <p className="text-[10px] opacity-70 text-right mt-1">
@@ -88,15 +100,17 @@ export default function SessionChat() {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Type a message..."
-          className="flex-1 border rounded-full px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 border rounded-full px-4 py-2 outline-none focus:ring-2 focus:ring-[var(--primary)]"
+
           onKeyDown={(e) => e.key === "Enter" && send()}
         />
         <button
           onClick={send}
-          className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition"
+          className="bg-[var(--primary)] text-white p-3 rounded-full hover:shadow-lg transition-all active:scale-95"
         >
-          Send
+          <FiSend />
         </button>
+
       </div>
     </div>
   )

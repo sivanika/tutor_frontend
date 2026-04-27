@@ -1,49 +1,51 @@
 import { Link } from "react-router-dom";
+import { FiFileText, FiShield, FiPocket, FiInfo, FiBookOpen, FiHome } from "react-icons/fi";
 
 const docs = [
     {
         title: "Terms of Service",
         description: "Your rights and responsibilities when using TutorHours.",
-        icon: "📜",
+        icon: <FiFileText />,
         path: "/terms",
         updated: "March 2025",
     },
     {
         title: "Privacy Policy",
         description: "How we collect, use, and protect your personal data under the DPDP Act 2023.",
-        icon: "🔒",
+        icon: <FiShield />,
         path: "/privacy",
         updated: "March 2025",
     },
     {
         title: "Refund Policy",
         description: "Our cancellation and refund process for sessions and subscriptions.",
-        icon: "💸",
+        icon: <FiPocket />,
         path: "/refund-policy",
         updated: "March 2025",
     },
     {
         title: "Cookie Policy",
         description: "What cookies we use and how you can manage your preferences.",
-        icon: "🍪",
+        icon: <FiInfo />,
         path: "/cookie-policy",
         updated: "March 2025",
     },
     {
         title: "Tutor Agreement",
         description: "Terms governing tutors who list their services on TutorHours.",
-        icon: "🎓",
+        icon: <FiBookOpen />,
         path: "/tutor-agreement",
         updated: "March 2025",
     },
     {
         title: "Institution Agreement",
         description: "Terms for schools, colleges, and institutions using TutorHours services.",
-        icon: "🏫",
+        icon: <FiHome />,
         path: "/institution-agreement",
         updated: "March 2025",
     },
 ];
+
 
 export default function LegalHub() {
     return (
@@ -81,7 +83,8 @@ export default function LegalHub() {
                             to={doc.path}
                             className="group bg-white dark:bg-[var(--surface)] rounded-2xl border border-gray-100 dark:border-[var(--primary)]/20 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 p-7 flex flex-col gap-3"
                         >
-                            <span className="text-4xl">{doc.icon}</span>
+                            <span className="text-4xl text-[var(--primary)]">{doc.icon}</span>
+
                             <div>
                                 <h2 className="text-lg font-bold text-gray-800 dark:text-white group-hover:text-indigo-700 dark:group-hover:text-[var(--accent)] transition-colors">
                                     {doc.title}

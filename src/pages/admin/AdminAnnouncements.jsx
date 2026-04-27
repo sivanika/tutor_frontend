@@ -1,9 +1,30 @@
 import { useEffect, useState } from "react"
 import API from "../../services/api"
-import { FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiAlertCircle, FiCheck, FiX } from "react-icons/fi"
-import toast from "react-hot-toast"
+import { FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiAlertCircle, FiCheck, FiX, FiBell, FiInbox } from "react-icons/fi"
 
-const ICONS = ["📢", "⚠️", "🚀", "🏆", "📌", "🎉", "💡", "🔔", "📅", "✅"]
+import toast from "react-hot-toast"
+import { FiAlertTriangle, FiRocket, FiAward, FiInfo, FiCalendar, FiCheckCircle, FiStar, FiZap, FiTarget, FiHelpCircle } from "react-icons/fi"
+
+const ICON_MAP = {
+  "📢": <FiBell />,
+  "⚠️": <FiAlertTriangle />,
+  "🚀": <FiRocket />,
+  "🏆": <FiAward />,
+  "📌": <FiTarget />,
+  "🎉": <FiZap />,
+  "💡": <FiInfo />,
+  "🔔": <FiBell />,
+  "📅": <FiCalendar />,
+  "✅": <FiCheckCircle />,
+  "⭐": <FiStar />
+};
+
+const ICONS = ["📢", "⚠️", "🚀", "🏆", "📌", "🎉", "💡", "🔔", "📅", "✅", "⭐"]
+
+function getIcon(icon) {
+  return ICON_MAP[icon] || <FiBell />;
+}
+
 
 const empty = { title: "", text: "", icon: "📢", priority: false, active: true }
 
@@ -69,7 +90,8 @@ export default function AdminAnnouncements() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">📢 Announcements</h1>
+          <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2"><FiBell className="text-[var(--primary)]" /> Announcements</h1>
+
           <p className="text-sm text-gray-400 mt-0.5">Manage public announcements shown on the homepage</p>
         </div>
         <button onClick={openNew}
@@ -102,7 +124,8 @@ export default function AdminAnnouncements() {
           </div>
         ) : items.length === 0 ? (
           <div className="py-16 text-center text-gray-400">
-            <div className="text-4xl mb-3">📭</div>
+            <div className="text-4xl mb-3 text-gray-300 flex justify-center"><FiInbox /></div>
+
             <p className="font-medium">No announcements yet</p>
             <p className="text-sm mt-1">Click "New Announcement" to create one</p>
           </div>
@@ -122,7 +145,8 @@ export default function AdminAnnouncements() {
             <tbody className="divide-y divide-gray-50">
               {items.map(item => (
                 <tr key={item._id} className="hover:bg-gray-50 transition">
-                  <td className="px-5 py-3.5 text-2xl">{item.icon}</td>
+                  <td className="px-5 py-3.5 text-2xl text-[var(--primary)]">{getIcon(item.icon)}</td>
+
                   <td className="px-5 py-3.5">
                     <span className="font-semibold text-gray-800">{item.title}</span>
                     <p className="text-xs text-gray-400 mt-0.5">{new Date(item.createdAt).toLocaleDateString()}</p>
@@ -182,10 +206,11 @@ export default function AdminAnnouncements() {
                 <label className="block text-xs font-semibold text-gray-500 mb-2">Icon</label>
                 <div className="flex flex-wrap gap-2">
                   {ICONS.map(ic => (
-                    <button key={ic} onClick={() => setForm(f => ({ ...f, icon: ic }))}
-                      className={`w-9 h-9 rounded-xl text-lg transition ${form.icon === ic ? "bg-violet-100 ring-2 ring-violet-500" : "bg-gray-100 hover:bg-gray-200"}`}>
-                      {ic}
-                    </button>
+                      <button key={ic} onClick={() => setForm(f => ({ ...f, icon: ic }))}
+                        className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg transition ${form.icon === ic ? "bg-violet-100 ring-2 ring-violet-500 text-violet-600" : "bg-gray-100 hover:bg-gray-200 text-gray-500"}`}>
+                        {getIcon(ic)}
+                      </button>
+
                   ))}
                 </div>
               </div>

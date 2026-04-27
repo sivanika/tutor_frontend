@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { academicSchema } from "../validation/schemas";
 import { useState } from "react";
+import { FiBookOpen, FiFileText } from "react-icons/fi";
+
 
 const inputCls = `
   w-full px-4 py-3 rounded-xl text-sm text-slate-800
@@ -44,9 +46,10 @@ export default function StepAcademic({ formData, setFormData, next, prev }) {
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* Section header */}
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-lg shadow-lg shadow-blue-200">
-          🎓
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xl shadow-lg shadow-blue-200">
+          <FiBookOpen />
         </div>
+
         <div>
           <h2 className="text-xl font-bold text-slate-800 leading-tight">Academic Details</h2>
           <p className="text-xs text-slate-400 mt-0.5">Your educational background and qualifications</p>
@@ -89,7 +92,10 @@ export default function StepAcademic({ formData, setFormData, next, prev }) {
         <Field label="Degree Certificate" error={errors.degreeCertificate?.message}>
           <label className="flex items-center justify-between px-4 py-3 rounded-xl border-2 border-dashed border-slate-200 cursor-pointer bg-slate-50 hover:border-indigo-400 hover:bg-indigo-50 transition-all duration-200 group">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-white shadow flex items-center justify-center text-lg group-hover:scale-110 transition-transform">📜</div>
+              <div className="w-9 h-9 rounded-lg bg-white shadow flex items-center justify-center text-xl text-blue-600 group-hover:scale-110 transition-transform">
+                <FiFileText />
+              </div>
+
               <div>
                 <p className="text-sm font-semibold text-slate-600 group-hover:text-indigo-600 transition-colors">
                   {certName || "Upload degree certificate"}

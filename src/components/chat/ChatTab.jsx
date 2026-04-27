@@ -7,7 +7,8 @@ import { useEffect, useRef, useState, useCallback } from "react"
 import { useAuth } from "../../context/AuthContext"
 import API from "../../services/api"
 import socket from "../../services/socket"
-import { FiPhone, FiSearch, FiSend, FiChevronLeft } from "react-icons/fi"
+import { FiPhone, FiSearch, FiSend, FiChevronLeft, FiMessageSquare, FiSmile } from "react-icons/fi"
+
 
 /* ─── helpers ──────────────────────────────────────────────── */
 const uid = (user) => String(user?.id || user?._id || "")
@@ -113,7 +114,8 @@ function Row({ conv, myId, active, online, onClick }) {
         </div>
         <div className="flex justify-between items-center">
           <span className={`text-xs truncate ${conv.unreadCount > 0 ? 'font-semibold text-gray-800' : 'text-gray-500'}`}>
-            {conv.lastMessage?.text || "Say hello 👋"}
+            {conv.lastMessage?.text || "Say hello"}
+
           </span>
           {conv.unreadCount > 0 && (
             <span className="flex-shrink-0 ml-2 bg-purple-600 text-white text-[10px] font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1">
@@ -379,7 +381,8 @@ export default function ChatTab({ preOpenUserId = null }) {
         <div className="mob-chat flex-col flex-1 min-w-0 bg-white" style={{ display: mobileV === "list" ? "none" : "flex" }}>
           {!active
             ? <div className="flex-1 flex flex-col items-center justify-center gap-3 text-gray-400 text-center p-6 bg-gray-50/50">
-                <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-3xl">💬</div>
+                <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-2xl text-[var(--primary)]"><FiMessageSquare /></div>
+
                 <div>
                   <p className="font-bold text-lg text-gray-700 m-0">Select a conversation</p>
                   <p className="text-sm text-gray-500 mt-1">Choose someone from the left to start chatting.</p>
@@ -410,7 +413,8 @@ export default function ChatTab({ preOpenUserId = null }) {
                   {loadMsgs
                     ? <div className="flex justify-center pt-10"><div className="w-6 h-6 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" /></div>
                     : msgs.length === 0
-                      ? <div className="text-center pt-16 text-gray-400"><div className="text-4xl mb-3">👋</div><p className="font-medium text-sm">Start the conversation!</p></div>
+                      ? <div className="text-center pt-16 text-gray-400"><div className="text-4xl mb-3 text-[var(--primary)]"><FiSmile className="mx-auto" /></div><p className="font-medium text-sm">Start the conversation!</p></div>
+
                       : grouped.map(item =>
                           item.sep
                             ? <div key={item.key} className="flex items-center gap-3 my-6">

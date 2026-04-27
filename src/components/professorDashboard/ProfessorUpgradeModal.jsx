@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { FiX, FiCheck, FiLock, FiZap, FiStar, FiUsers } from "react-icons/fi";
+import { FiX, FiCheck, FiLock, FiZap, FiStar, FiUsers, FiClock, FiDollarSign, FiChevronRight } from "react-icons/fi";
+
 
 /* ─── USD → INR conversion (1 USD ≈ 84 INR) ─────────────────────────────── */
 const USD_TO_INR = 84;
@@ -8,7 +9,8 @@ const PLANS = [
   {
     id: "free",
     tier: "FREE",
-    icon: "🕐",
+    icon: <FiClock />,
+
     name: "Free",
     priceINR: 0,
     priceUSD: 0,
@@ -30,7 +32,8 @@ const PLANS = [
   {
     id: "standard",
     tier: "STANDARD",
-    icon: "⭐",
+    icon: <FiStar />,
+
     name: "Standard",
     priceINR: Math.round(4.99 * USD_TO_INR), // ₹419
     priceUSD: 4.99,
@@ -47,14 +50,16 @@ const PLANS = [
       "Enrollment analytics",
     ],
     disabledFeatures: ["Priority listing"],
-    cta: "Upgrade Now →",
+    cta: "Upgrade Now",
+
     ctaDisabled: false,
     planParam: "professor_standard",
   },
   {
     id: "ultimate",
     tier: "ULTIMATE",
-    icon: "⚡",
+    icon: <FiZap />,
+
     name: "Ultimate",
     priceINR: Math.round(12.99 * USD_TO_INR), // ₹1091
     priceUSD: 12.99,
@@ -72,14 +77,16 @@ const PLANS = [
       "Featured profile badge",
     ],
     disabledFeatures: [],
-    cta: "Go Ultimate →",
+    cta: "Go Ultimate",
+
     ctaDisabled: false,
     planParam: "professor_ultimate",
   },
   {
     id: "commission",
     tier: "COMMISSION-BASED",
-    icon: "💲",
+    icon: <FiDollarSign />,
+
     name: "Commission",
     priceINR: null,
     priceUSD: null,
@@ -97,7 +104,8 @@ const PLANS = [
       "Dedicated onboarding support",
     ],
     disabledFeatures: [],
-    cta: "Apply Now →",
+    cta: "Apply Now",
+
     ctaDisabled: false,
     planParam: "pay_per_session",
     noUpfront: true,
@@ -286,7 +294,7 @@ export default function ProfessorUpgradeModal({ onClose }) {
                   <button
                     onClick={() => handleCTA(plan)}
                     disabled={plan.ctaDisabled}
-                    className="mt-5 w-full py-3 rounded-xl font-bold text-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-xl disabled:cursor-default disabled:hover:scale-100"
+                    className="mt-5 w-full py-3 rounded-xl font-bold text-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-xl disabled:cursor-default disabled:hover:scale-100 flex items-center justify-center gap-2"
                     style={
                       plan.ctaDisabled
                         ? {
@@ -304,8 +312,9 @@ export default function ProfessorUpgradeModal({ onClose }) {
                           }
                     }
                   >
-                    {plan.cta}
+                    {plan.cta} {!plan.ctaDisabled && <FiChevronRight />}
                   </button>
+
                 </div>
               </div>
             ))}

@@ -1,10 +1,13 @@
 import API from "../../../services/api"
+import { FiUser, FiBook, FiClock } from "react-icons/fi"
+
 
 export default function TutorCard({ session, onEnroll }) {
   const handleEnroll = async () => {
     try {
       await API.post(`/sessions/${session._id}/enroll`)
-      alert("Successfully Enrolled 🎉")
+      alert("Successfully Enrolled")
+
       onEnroll()
     } catch (err) {
       alert(err.response?.data?.message || "Enroll failed")
@@ -16,7 +19,8 @@ export default function TutorCard({ session, onEnroll }) {
       {/* Header */}
       <div className="flex items-center mb-3">
         <div className="w-12 h-12 rounded-full bg-[var(--primary)] text-white flex items-center justify-center mr-3">
-          <i className="fas fa-user-graduate"></i>
+          <FiUser />
+
         </div>
         <div>
           <h4 className="font-bold text-[var(--primary)]">
@@ -31,12 +35,14 @@ export default function TutorCard({ session, onEnroll }) {
       {/* Details */}
       <div className="text-sm text-gray-600 mb-2">
         <p>
-          <i className="fas fa-book mr-2 text-[var(--accent)]"></i>
+          <FiBook className="inline-block mr-2 text-[var(--accent)]" />
           {session.title}
+
         </p>
         <p>
-          <i className="fas fa-clock mr-2 text-[var(--accent)]"></i>
+          <FiClock className="inline-block mr-2 text-[var(--accent)]" />
           {session.date} {session.time}
+
         </p>
       </div>
 

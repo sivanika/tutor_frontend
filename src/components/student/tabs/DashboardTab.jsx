@@ -138,7 +138,8 @@ export default function DashboardTab() {
         <div className="relative z-10">
           <p className="text-white/70 text-sm font-medium mb-1">{getGreeting()},</p>
           <h2 className="text-2xl font-bold mb-1">
-            {user?.email?.split("@")[0] || "Student"} 👋
+            {user?.email?.split("@")[0] || "Student"}
+
           </h2>
           <p className="text-white/60 text-sm">
             You have{" "}
@@ -324,7 +325,8 @@ export default function DashboardTab() {
       {/* No sessions enrolled state */}
       {sessions.length === 0 && (
         <div className="bg-white rounded-2xl p-10 shadow-sm border border-gray-100 text-center">
-          <div className="text-5xl mb-4">📚</div>
+          <div className="text-5xl mb-4 flex justify-center text-[var(--primary)]"><FiBookOpen /></div>
+
           <h3 className="text-gray-700 font-semibold text-lg">No sessions enrolled yet</h3>
           <p className="text-gray-400 text-sm mt-2 mb-5">Browse available tutors and enroll in your first session!</p>
           <button className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all">

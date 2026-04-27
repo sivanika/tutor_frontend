@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { FiInfo, FiEye, FiEyeOff } from "react-icons/fi";
+
 
 export default function RegisterProfessor() {
   const { register } = useAuth();
@@ -56,7 +58,8 @@ export default function RegisterProfessor() {
 
           {/* Plan badge */}
           <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-semibold">
-            <span>💡</span>
+            <FiInfo className="w-3 h-3" />
+
             List free · Earn with 18% commission model
           </div>
         </div>
@@ -103,7 +106,8 @@ export default function RegisterProfessor() {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-3 text-gray-400 hover:text-gray-700 dark:hover:text-white"
           >
-            {showPassword ? "🙈" : "👁️"}
+            {showPassword ? <FiEyeOff /> : <FiEye />}
+
           </button>
         </div>
 

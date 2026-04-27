@@ -4,6 +4,9 @@ import API from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 import socket from "../../services/socket";
 import { toast } from "react-hot-toast";
+import { FiCheckCircle, FiCheck, FiLock, FiShield, FiAlertCircle, FiBookOpen, FiZap, FiAward, FiBriefcase } from "react-icons/fi";
+
+
 
 /* ─────────────────────────────────────────────────────────────
    PAYMENT METHOD ICONS
@@ -181,7 +184,8 @@ export default function PaymentPage() {
                 setPaymentId(data.paymentId);
                 setSuccess(true);
                 setLoading(false);
-                toast.success("Payment confirmed in realtime! 🎉");
+                toast.success("Payment confirmed! Welcome aboard professor.");
+
                 setTimeout(() => redirectAfterPayment(), 3000);
             }
         };
@@ -358,7 +362,8 @@ export default function PaymentPage() {
                                 animation: "successPop 0.6s ease",
                             }}
                         >
-                            ✅
+                            <FiCheckCircle />
+
                         </div>
                         <div
                             className="absolute inset-0 rounded-full animate-ping opacity-25"
@@ -370,7 +375,8 @@ export default function PaymentPage() {
                             Payment Successful!
                         </h1>
                         <p className="text-[var(--accent)] text-lg">
-                            {selectedPlan.name} plan is now active 🎉
+                            {selectedPlan.name} plan is now active
+
                         </p>
                         {paymentId && (
                             <p className="text-[var(--text-muted)] text-xs mt-2 font-mono">
@@ -388,7 +394,8 @@ export default function PaymentPage() {
                                     className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0"
                                     style={{ background: selectedPlan.gradient }}
                                 >
-                                    ✓
+                                    <FiCheck />
+
                                 </span>
                                 {f}
                             </div>
@@ -423,7 +430,8 @@ export default function PaymentPage() {
                         ← Back
                     </button>
                     <span className="text-white font-bold tracking-wider text-sm">
-                        🎓 TutorHours
+                        <FiBookOpen className="inline-block mr-2" /> TutorHours
+
                     </span>
                     <div className="flex items-center gap-2 text-[var(--accent)] text-xs">
                         <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -504,7 +512,8 @@ export default function PaymentPage() {
                                                     className="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5"
                                                     style={{ background: plan.gradient }}
                                                 >
-                                                    ✓
+                                                    <FiCheck />
+
                                                 </span>
                                                 {f}
                                             </div>
@@ -524,7 +533,8 @@ export default function PaymentPage() {
                                             }}
                                         >
                                             {isSelected && (
-                                                <span className="text-white text-[10px] font-black">✓</span>
+                                                <FiCheck className="text-white text-[10px] font-black" />
+
                                             )}
                                         </div>
                                     </div>
@@ -579,7 +589,8 @@ export default function PaymentPage() {
                     ← Change Plan
                 </button>
                 <span className="text-white font-bold tracking-wider text-sm">
-                    🎓 TutorHours
+                    <FiBookOpen className="inline-block mr-2" /> TutorHours
+
                 </span>
                 <div className="flex items-center gap-2 text-[var(--accent)] text-xs">
                     <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -626,7 +637,8 @@ export default function PaymentPage() {
                                         className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0"
                                         style={{ background: selectedPlan.gradient }}
                                     >
-                                        ✓
+                                        <FiCheck />
+
                                     </span>
                                     {f}
                                 </div>
@@ -646,9 +658,10 @@ export default function PaymentPage() {
                     {/* Security badges */}
                     <div className="grid grid-cols-3 gap-3">
                         {[
-                            { icon: "🔒", label: "256-bit SSL" },
-                            { icon: "🛡️", label: "PCI-DSS Secure" },
-                            { icon: "✅", label: "RBI Compliant" },
+                            { icon: <FiLock />, label: "256-bit SSL" },
+                            { icon: <FiShield />, label: "PCI-DSS Secure" },
+                            { icon: <FiAward />, label: "RBI Compliant" },
+
                         ].map((b) => (
                             <div
                                 key={b.label}
@@ -709,7 +722,8 @@ export default function PaymentPage() {
                                         className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-bold text-white"
                                         style={{ background: "linear-gradient(135deg, var(--primary), var(--primary))" }}
                                     >
-                                        ✓
+                                        <FiCheck />
+
                                     </div>
                                 </div>
                             ))}
@@ -722,7 +736,8 @@ export default function PaymentPage() {
                             className="p-6 rounded-2xl border border-white/10 text-center space-y-3"
                             style={{ background: "rgba(255,255,255,0.04)" }}
                         >
-                            <div className="text-4xl">🆓</div>
+                            <div className="text-6xl animate-bounce text-[var(--accent)]"><FiAward /></div>
+
                             <p className="text-white font-bold">No Credit Card Required</p>
                             <p className="text-[var(--accent)] text-sm">
                                 Activate now for free. Upgrade to access more features anytime.
@@ -733,7 +748,8 @@ export default function PaymentPage() {
                     {/* Error */}
                     {error && (
                         <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
-                            ⚠️ {error}
+                            <FiAlertCircle className="inline-block mr-2" /> {error}
+
                         </div>
                     )}
 
@@ -790,9 +806,11 @@ export default function PaymentPage() {
                                 {selectedPlan.requiresPayment ? "Opening Razorpay..." : "Activating..."}
                             </span>
                         ) : selectedPlan.requiresPayment ? (
-                            <span>🔒 Pay {selectedPlan.displayPrice} Securely →</span>
+                            <span><FiLock className="inline-block mr-2" /> Pay {selectedPlan.displayPrice} Securely →</span>
+
                         ) : (
-                            <span>✅ Activate {selectedPlan.name} — Free →</span>
+                            <span><FiCheckCircle className="inline-block mr-2" /> Activate {selectedPlan.name} — Free →</span>
+
                         )}
                     </button>
 

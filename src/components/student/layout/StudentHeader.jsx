@@ -1,4 +1,7 @@
+import { FiUser } from "react-icons/fi";
+
 export default function StudentHeader({ onLogout }) {
+
   return (
     <header className="
       sticky top-0 z-50
@@ -19,7 +22,8 @@ export default function StudentHeader({ onLogout }) {
             group-hover:shadow-[0_0_20px_rgba(255,255,255,0.6)]
             transition
           ">
-            <i className="fas fa-user-graduate text-white text-xl"></i>
+            <FiUser className="text-white text-xl" />
+
           </div>
           <span className="
             bg-clip-text text-transparent

@@ -1,10 +1,13 @@
+import { FiUserCheck, FiBook, FiTarget, FiStar } from "react-icons/fi";
+
 export default function Stats() {
   const stats = [
-    { value: "5,000+", label: "Verified Professors", icon: "🎓", color: "var(--primary)" },
-    { value: "120+", label: "Subjects Available", icon: "📚", color: "var(--accent)" },
-    { value: "50,000+", label: "Sessions Completed", icon: "🎯", color: "var(--primary)" },
-    { value: "98%", label: "Satisfaction Rate", icon: "⭐", color: "var(--accent)" },
+    { value: "5,000+", label: "Verified Professors", icon: <FiUserCheck />, color: "var(--primary)" },
+    { value: "120+", label: "Subjects Available", icon: <FiBook />, color: "var(--accent)" },
+    { value: "50,000+", label: "Sessions Completed", icon: <FiTarget />, color: "var(--primary)" },
+    { value: "98%", label: "Satisfaction Rate", icon: <FiStar />, color: "var(--accent)" },
   ];
+
 
   return (
     <section className="relative py-20 bg-[var(--surface-alt)] dark:bg-[var(--surface)] overflow-hidden transition-colors duration-500">
@@ -39,7 +42,8 @@ export default function Stats() {
                 style={{ background: `linear-gradient(135deg, ${s.color}, var(--primary))` }}
               />
 
-              <div className="text-3xl mb-3">{s.icon}</div>
+              <div className="text-3xl mb-3 flex justify-center text-[var(--primary)]">{s.icon}</div>
+
               <h2 className="text-3xl md:text-4xl font-black text-[var(--text-primary)] dark:text-white mb-1">
                 {s.value}
               </h2>

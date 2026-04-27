@@ -4,6 +4,9 @@ import { useAuth } from "../../context/AuthContext";
 import socket from "../../services/socket";
 import API from "../../services/api";
 import toast from "react-hot-toast";
+import { FiCheckCircle, FiAlertTriangle, FiXCircle } from "react-icons/fi";
+
+
 
 export default function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
@@ -27,8 +30,9 @@ export default function NotificationBell() {
     const onNewNotification = (notif) => {
       setNotifications(prev => [notif, ...prev]);
       toast(notif.message, {
-        icon: notif.type === "success" ? "✅" : notif.type === "warning" ? "⚠️" : notif.type === "error" ? "❌" : "🔔",
+        icon: notif.type === "success" ? <FiCheckCircle className="text-emerald-500" /> : notif.type === "warning" ? <FiAlertTriangle className="text-amber-500" /> : notif.type === "error" ? <FiXCircle className="text-red-500" /> : <FiBell className="text-[var(--primary)]" />,
       });
+
     };
 
     socket.on("newNotification", onNewNotification);

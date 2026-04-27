@@ -1,4 +1,6 @@
 import { useFormContext } from "react-hook-form";
+import { FiUser } from "react-icons/fi";
+
 
 /** Reusable floating-label field wrapper */
 function Field({ label, error, children }) {
@@ -38,9 +40,10 @@ export default function StudentInfo() {
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-lg shadow-lg shadow-indigo-200">
-          👤
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-200">
+          <FiUser />
         </div>
+
         <div>
           <h2 className="text-xl font-bold text-slate-800 leading-tight">Student Information</h2>
           <p className="text-xs text-slate-400 mt-0.5">Tell us about yourself so we can find your perfect tutor</p>

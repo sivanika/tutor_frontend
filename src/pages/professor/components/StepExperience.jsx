@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { experienceSchema } from "../validation/schemas";
 import { useState } from "react";
+import { FiBriefcase, FiCalendar, FiSun, FiSunrise, FiSunset, FiMoon } from "react-icons/fi";
+
 
 const SUBJECTS = [
   "Mathematics","Physics","Chemistry","Biology","Computer Science",
@@ -13,12 +15,13 @@ const SUBJECTS = [
 ];
 
 const AVAIL_OPTIONS = [
-  { key: "weekdays",  label: "Weekdays",  emoji: "📋", desc: "Mon – Fri" },
-  { key: "weekends",  label: "Weekends",  emoji: "🏖️", desc: "Sat & Sun" },
-  { key: "mornings",  label: "Morning",   emoji: "🌅", desc: "6 AM – 12 PM" },
-  { key: "afternoons",label: "Afternoon", emoji: "☀️", desc: "12 PM – 5 PM" },
-  { key: "evenings",  label: "Evening",   emoji: "🌙", desc: "5 PM – 10 PM" },
+  { key: "weekdays",  label: "Weekdays",  icon: <FiCalendar />, desc: "Mon – Fri" },
+  { key: "weekends",  label: "Weekends",  icon: <FiSun />,      desc: "Sat & Sun" },
+  { key: "mornings",  label: "Morning",   icon: <FiSunrise />,  desc: "6 AM – 12 PM" },
+  { key: "afternoons",label: "Afternoon", icon: <FiSun />,      desc: "12 PM – 5 PM" },
+  { key: "evenings",  label: "Evening",   icon: <FiMoon />,     desc: "5 PM – 10 PM" },
 ];
+
 
 const inputCls = `
   w-full px-4 py-3 rounded-xl text-sm text-slate-800
@@ -168,9 +171,10 @@ export default function StepExperience({ formData, setFormData, next, prev }) {
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* Section header */}
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white text-lg shadow-lg shadow-amber-200">
-          💼
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white text-xl shadow-lg shadow-amber-200">
+          <FiBriefcase />
         </div>
+
         <div>
           <h2 className="text-xl font-bold text-slate-800 leading-tight">Teaching Experience</h2>
           <p className="text-xs text-slate-400 mt-0.5">Your expertise, subjects, and availability</p>
@@ -242,7 +246,7 @@ export default function StepExperience({ formData, setFormData, next, prev }) {
                       : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"
                     }`}
                 >
-                  <span className="text-xl">{emoji}</span>
+                  <span className="text-2xl">{icon}</span>
                   <span className="font-semibold text-sm leading-tight">{label}</span>
                   <span className={`text-xs leading-tight ${active ? "text-indigo-200" : "text-slate-400"}`}>{desc}</span>
                 </button>

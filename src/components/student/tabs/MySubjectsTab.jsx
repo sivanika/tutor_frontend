@@ -32,19 +32,20 @@ const STYLES = `
 
 /* ─── Static data ────────────────────────────────────────────── */
 const SUBJECT_POOL = [
-  { id: "math",      name: "Mathematics",        icon: "📐", emoji: FiBook    },
-  { id: "python",    name: "Python",             icon: "🐍", emoji: FiCode    },
-  { id: "physics",   name: "Physics",            icon: "⚛️", emoji: FiZap     },
-  { id: "ds",        name: "Data Structures",    icon: "🌳", emoji: FiCpu     },
-  { id: "web",       name: "Web Development",    icon: "🌐", emoji: FiGlobe   },
-  { id: "ml",        name: "Machine Learning",   icon: "🤖", emoji: FiAward   },
-  { id: "dsa",       name: "Algorithms",         icon: "🔬", emoji: FiBookOpen},
-  { id: "dbms",      name: "DBMS",               icon: "🗄️", emoji: FiBook    },
-  { id: "os",        name: "Operating Systems",  icon: "💻", emoji: FiCpu     },
-  { id: "english",   name: "English",            icon: "📖", emoji: FiBookOpen},
-  { id: "chemistry", name: "Chemistry",          icon: "🧪", emoji: FiZap     },
-  { id: "economics", name: "Economics",          icon: "📈", emoji: FiGlobe   },
+  { id: "math",      name: "Mathematics",        icon: <FiBook />,     emoji: FiBook    },
+  { id: "python",    name: "Python",             icon: <FiCode />,     emoji: FiCode    },
+  { id: "physics",   name: "Physics",            icon: <FiZap />,      emoji: FiZap     },
+  { id: "ds",        name: "Data Structures",    icon: <FiCpu />,      emoji: FiCpu     },
+  { id: "web",       name: "Web Development",    icon: <FiGlobe />,    emoji: FiGlobe   },
+  { id: "ml",        name: "Machine Learning",   icon: <FiAward />,    emoji: FiAward   },
+  { id: "dsa",       name: "Algorithms",         icon: <FiBookOpen />, emoji: FiBookOpen},
+  { id: "dbms",      name: "DBMS",               icon: <FiBook />,     emoji: FiBook    },
+  { id: "os",        name: "Operating Systems",  icon: <FiCpu />,      emoji: FiCpu     },
+  { id: "english",   name: "English",            icon: <FiBookOpen />, emoji: FiBookOpen},
+  { id: "chemistry", name: "Chemistry",          icon: <FiZap />,      emoji: FiZap     },
+  { id: "economics", name: "Economics",          icon: <FiGlobe />,    emoji: FiGlobe   },
 ]
+
 
 /* ─── Status badge ───────────────────────────────────────────── */
 const STATUS_MAP = {
@@ -80,10 +81,13 @@ function Toggle({ on, onChange }) {
 /* ─── Star rating ────────────────────────────────────────────── */
 function Stars({ rating }) {
   return (
-    <span style={{ color:"#f59e0b", fontSize:12, letterSpacing:1 }}>
-      {"★".repeat(Math.round(rating || 0))}{"☆".repeat(5 - Math.round(rating || 0))}
+    <span style={{ color:"#f59e0b", fontSize:12, letterSpacing:1, display: "flex", alignItems: "center", gap: 2 }}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <FiStar key={i} fill={i < Math.round(rating || 0) ? "currentColor" : "none"} />
+      ))}
       <span style={{ color:"var(--text-muted)", fontWeight:600, marginLeft:4 }}>{(rating || 0).toFixed(1)}</span>
     </span>
+
   )
 }
 
@@ -198,7 +202,8 @@ export default function MySubjectsTab() {
     const sub = {
       id: "custom-" + name.toLowerCase().trim().replace(/\s+/g, '-'),
       name: name.trim(),
-      icon: "📚" // Default icon for custom subjects
+      icon: <FiBookOpen /> // Default icon for custom subjects
+
     }
     await addSubject(sub)
   }
@@ -290,10 +295,11 @@ export default function MySubjectsTab() {
       {/* ── STATS ROW ── */}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:14, marginBottom:24 }}>
         {[
-          { label:"Total Subjects", value:stats.total,   color:"from-[var(--primary)] to-[var(--primary)]", bg:"var(--surface-alt)", tc:"var(--primary)", icon:"📚" },
-          { label:"Open",           value:stats.open,    color:"from-green-400 to-emerald-500", bg:"#dcfce7", tc:"#16a34a", icon:"🟢" },
-          { label:"Pending",        value:stats.pending, color:"from-amber-400 to-orange-500",  bg:"#fef3c7", tc:"#d97706", icon:"🟡" },
-          { label:"Engaged",        value:stats.engaged, color:"from-red-400 to-rose-500",      bg:"#fee2e2", tc:"#dc2626", icon:"🔴" },
+          { label:"Total Subjects", value:stats.total,   color:"from-[var(--primary)] to-[var(--primary)]", bg:"var(--surface-alt)", tc:"var(--primary)", icon: <FiBook /> },
+          { label:"Open",           value:stats.open,    color:"from-green-400 to-emerald-500", bg:"#dcfce7", tc:"#16a34a", icon: <FiCheckCircle /> },
+          { label:"Pending",        value:stats.pending, color:"from-amber-400 to-orange-500",  bg:"#fef3c7", tc:"#d97706", icon: <FiClock /> },
+          { label:"Engaged",        value:stats.engaged, color:"from-red-400 to-rose-500",      bg:"#fee2e2", tc:"#dc2626", icon: <FiAlertCircle /> },
+
         ].map(s => (
           <div key={s.label} className="ms-fade" style={{ background:"#fff", borderRadius:18, padding:"18px 20px", boxShadow:"0 2px 12px rgba(0,0,0,.06)", border:"1px solid #f1f5f9" }}>
             <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
@@ -341,7 +347,8 @@ export default function MySubjectsTab() {
       {/* ── SUBJECT CARDS GRID ── */}
       {filtered.length === 0 ? (
         <div style={{ textAlign:"center", padding:"60px 20px", background:"#fff", borderRadius:20, border:"2px dashed #e2e8f0" }}>
-          <div style={{ fontSize:48, marginBottom:12 }}>📭</div>
+          <div style={{ fontSize:48, marginBottom:12, display: "flex", justifyContent: "center", color: "#9ca3af" }}><FiBookOpen /></div>
+
           <p style={{ fontWeight:700, color:"#374151", fontSize:16 }}>No subjects found</p>
           <p style={{ color:"#9ca3af", fontSize:13, marginTop:4 }}>Try a different filter or add a new subject.</p>
         </div>
@@ -414,7 +421,8 @@ export default function MySubjectsTab() {
                           onMouseEnter={e => { e.currentTarget.style.borderColor="var(--primary)"; e.currentTarget.style.color="var(--primary)"; e.currentTarget.style.background="var(--surface-alt)" }}
                           onMouseLeave={e => { e.currentTarget.style.borderColor="#e2e8f0"; e.currentTarget.style.color="#374151"; e.currentTarget.style.background="#f8fafc" }}
                         >
-                          <span style={{ fontSize:16 }}>{s.icon}</span> {s.name}
+                          <span style={{ fontSize:16, color: "var(--primary)" }}>{s.icon}</span> {s.name}
+
                         </button>
                       ))}
                       {/* Explicit "Other" button */}
@@ -595,7 +603,8 @@ function SubjectCard({ sub, delay, onDelete, onToggle, onCreateReq, onEditReq, o
       <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:10 }}>
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
           <div style={{ width:44, height:44, borderRadius:14, background:"linear-gradient(135deg,var(--surface-alt),#ede9fe)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}>
-            {sub.icon}
+            <span style={{ color: "var(--primary)" }}>{sub.icon}</span>
+
           </div>
           <div>
             <p style={{ fontWeight:800, color:"#1e293b", fontSize:15, margin:0 }}>{sub.name}</p>

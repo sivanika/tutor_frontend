@@ -1,5 +1,25 @@
 import { useEffect, useState } from "react"
 import API from "../../services/api"
+import { FiBell, FiAlertTriangle, FiRocket, FiAward, FiInfo, FiCalendar, FiCheckCircle, FiStar, FiZap, FiTarget } from "react-icons/fi"
+
+const ICON_MAP = {
+  "📢": <FiBell />,
+  "⚠️": <FiAlertTriangle />,
+  "🚀": <FiRocket />,
+  "🏆": <FiAward />,
+  "📌": <FiTarget />,
+  "🎉": <FiZap />,
+  "💡": <FiInfo />,
+  "🔔": <FiBell />,
+  "📅": <FiCalendar />,
+  "✅": <FiCheckCircle />,
+  "⭐": <FiStar />
+};
+
+function getIcon(icon) {
+  return ICON_MAP[icon] || <FiBell />;
+}
+
 
 export default function NoticeBoard() {
   const [notices, setNotices] = useState([])
@@ -25,7 +45,8 @@ export default function NoticeBoard() {
         {/* Header row */}
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-xl grad-bg flex items-center justify-center text-white text-xl shadow-lg shadow-[var(--primary)]/30">
-            📢
+            <FiBell />
+
           </div>
           <h2 className="text-xl font-bold text-[var(--text-primary)] dark:text-white tracking-tight">
             Announcements
@@ -67,7 +88,8 @@ export default function NoticeBoard() {
                   <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--accent)]/10 rounded-full blur-2xl pointer-events-none" />
                 )}
 
-                <div className="text-2xl mb-3">{n.icon || "📢"}</div>
+                <div className="text-2xl mb-3 text-[var(--primary)] dark:text-[var(--accent)]">{getIcon(n.icon)}</div>
+
                 <h3 className={`font-bold mb-1.5 text-sm ${n.priority ? "text-[var(--accent)]" : "text-[var(--text-primary)] dark:text-white"}`}>
                   {n.title}
                 </h3>

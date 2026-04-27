@@ -48,7 +48,8 @@ export default function ProfileVerification() {
   const approveProfessor = async (id) => {
     try {
       await API.put(`/admin/approve-professor/${id}`);
-      toast.success("Professor approved ✓");
+      toast.success("Professor approved");
+
       loadData();
     } catch { toast.error("Approval failed"); }
   };
@@ -69,7 +70,8 @@ export default function ProfileVerification() {
         isFeatured: !!edit.isFeatured,
         featuredOrder: Number(edit.featuredOrder) || 0,
       });
-      toast.success(edit.isFeatured ? "Marked as Featured ⭐" : "Removed from Featured");
+      toast.success(edit.isFeatured ? "Marked as Featured" : "Removed from Featured");
+
       loadData();
     } catch {
       toast.error("Failed to save featured status");
@@ -129,7 +131,8 @@ export default function ProfileVerification() {
         ))}
       </div>
 
-      {/* ═══════════ ⭐ FEATURED TUTORS ═══════════ */}
+      {/* ═══════════ Featured Tutors ═══════════ */}
+
       <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-amber-50/50">
           <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
@@ -151,7 +154,8 @@ export default function ProfileVerification() {
                 <FiStar size={22} className="text-amber-300" />
               </div>
               <p className="font-medium text-sm">No featured tutors yet</p>
-              <p className="text-xs text-center max-w-xs">Toggle ⭐ on a verified professor below to feature them on the homepage.</p>
+              <p className="text-xs text-center max-w-xs">Toggle the star on a verified professor below to feature them on the homepage.</p>
+
             </div>
           ) : (
             <div className="space-y-2">
@@ -302,7 +306,8 @@ function FeaturedRow({ prof, edit, saving, onToggle, onOrderChange, onSave, isFe
           edit.isFeatured ? "text-amber-400 drop-shadow-sm" : "text-gray-300 hover:text-amber-300"
         }`}
       >
-        ⭐
+        {edit.isFeatured ? <FiStar fill="currentColor" /> : <FiStar />}
+
       </button>
 
       {/* Avatar + Info */}

@@ -1,12 +1,15 @@
+import { FiUser, FiUsers, FiHome, FiCalendar, FiPaperclip, FiStar } from "react-icons/fi";
+
 export default function StepProgress({ currentStep }) {
   const steps = [
-    { label: "Student", icon: "👤" },
-    { label: "Parent", icon: "👨‍👩‍👧" },
-    { label: "School", icon: "🏫" },
-    { label: "Schedule", icon: "📅" },
-    { label: "Uploads", icon: "📎" },
-    { label: "Plan", icon: "⭐" },
+    { label: "Student", icon: <FiUser /> },
+    { label: "Parent", icon: <FiUsers /> },
+    { label: "School", icon: <FiHome /> },
+    { label: "Schedule", icon: <FiCalendar /> },
+    { label: "Uploads", icon: <FiPaperclip /> },
+    { label: "Plan", icon: <FiStar /> },
   ];
+
 
   const progressPercent = ((currentStep - 1) / (steps.length - 1)) * 100;
 
@@ -52,6 +55,7 @@ export default function StepProgress({ currentStep }) {
                     </svg>
                   ) : (
                     <span>{isActive ? icon : stepNumber}</span>
+
                   )}
                 </div>
 

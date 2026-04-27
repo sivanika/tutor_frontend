@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { FiBook, FiUser } from "react-icons/fi";
+
 
 export default function RegisterRole() {
   const navigate = useNavigate();
@@ -13,14 +15,20 @@ export default function RegisterRole() {
             onClick={() => navigate("/register/student")}
             className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all hover:-translate-y-0.5"
           >
-            🎓 Student
+            <span className="flex items-center justify-center gap-2">
+              <FiBook /> Student
+            </span>
+
           </button>
 
           <button
             onClick={() => navigate("/register/professor")}
             className="bg-[var(--accent)] text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all hover:-translate-y-0.5"
           >
-            🧑‍🏫 Professor
+            <span className="flex items-center justify-center gap-2">
+              <FiUser /> Professor
+            </span>
+
           </button>
         </div>
       </div>

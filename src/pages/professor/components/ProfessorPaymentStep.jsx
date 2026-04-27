@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { FiCheck, FiPocket, FiCalendar, FiBookOpen, FiBarChart2, FiLock, FiChevronRight } from "react-icons/fi";
+
+
 
 export default function ProfessorPaymentStep() {
     const navigate = useNavigate();
@@ -65,18 +68,19 @@ export default function ProfessorPaymentStep() {
                     {/* Features */}
                     <ul className="space-y-3">
                         {[
-                            { icon: "🆓", text: "No monthly fee or upfront cost" },
-                            { icon: "💸", text: "You keep 82% of every session fee" },
-                            { icon: "📅", text: "Set your own schedule & hourly rate" },
-                            { icon: "🎓", text: "Access to all student requests" },
-                            { icon: "📊", text: "Earnings dashboard & analytics" },
-                            { icon: "🔒", text: "Secure payouts via Razorpay" },
+                            { icon: <FiCheck />, text: "No monthly fee or upfront cost" },
+                            { icon: <FiPocket />, text: "You keep 82% of every session fee" },
+                            { icon: <FiCalendar />, text: "Set your own schedule & hourly rate" },
+                            { icon: <FiBookOpen />, text: "Access to all student requests" },
+                            { icon: <FiBarChart2 />, text: "Earnings dashboard & analytics" },
+                            { icon: <FiLock />, text: "Secure payouts via Razorpay" },
                         ].map((item, idx) => (
                             <li key={idx} className="flex items-center gap-3 text-sm text-slate-700">
-                                <span className="text-lg">{item.icon}</span>
+                                <span className="text-lg text-[var(--primary)]">{item.icon}</span>
                                 {item.text}
                             </li>
                         ))}
+
                     </ul>
 
                     {/* Commission breakdown */}
@@ -120,19 +124,21 @@ export default function ProfessorPaymentStep() {
             <div className="flex justify-center">
                 <button
                     onClick={handleActivate}
-                    className="px-10 py-3.5 rounded-2xl font-bold text-white text-sm transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                    className="px-10 py-3.5 rounded-2xl font-bold text-white text-sm transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center gap-2"
                     style={{
                         background: "linear-gradient(135deg, var(--primary), var(--primary))",
                         boxShadow: "0 8px 24px rgba(106,17,203,0.35)",
                     }}
                 >
-                    Review &amp; Activate My Listing →
+                    Review &amp; Activate My Listing <FiChevronRight />
                 </button>
+
             </div>
 
             <p className="text-center text-xs text-slate-400">
-                🔒 This listing is free. Payments for sessions processed by{" "}
+                <span className="inline-block mr-1"><FiLock /></span> This listing is free. Payments for sessions processed by{" "}
                 <span className="font-semibold text-slate-500">Razorpay</span>
+
             </p>
         </div>
     );

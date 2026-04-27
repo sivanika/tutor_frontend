@@ -1,4 +1,6 @@
 import { useFormContext } from "react-hook-form";
+import { FiCheck } from "react-icons/fi";
+
 
 export default function Subscription() {
   const { register, watch } = useFormContext();
@@ -88,7 +90,8 @@ export default function Subscription() {
               <ul className="space-y-2 text-sm">
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex items-center gap-2">
-                    <span className="text-lg">✔</span>
+                    <FiCheck className="text-green-500" />
+
                     {feature}
                   </li>
                 ))}

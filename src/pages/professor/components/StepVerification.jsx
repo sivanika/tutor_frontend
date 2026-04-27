@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { verificationSchema } from "../validation/schemas";
+import { FiShield, FiFileText, FiVideo } from "react-icons/fi";
+
 
 function UploadRow({ icon, label, fileName, onChange, error }) {
   return (
@@ -68,9 +70,10 @@ export default function StepVerification({ formData, setFormData, next, prev }) 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-white text-lg shadow-lg shadow-slate-200">
-          🔐
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-white text-xl shadow-lg shadow-slate-200">
+          <FiShield />
         </div>
+
         <div>
           <h2 className="text-xl font-bold text-slate-800 leading-tight">Verification</h2>
           <p className="text-xs text-slate-400 mt-0.5">Verify your identity to build trust with students</p>
@@ -79,14 +82,16 @@ export default function StepVerification({ formData, setFormData, next, prev }) 
 
       <div className="space-y-4">
         <UploadRow
-          icon="🪪"
+          icon={<FiFileText />}
+
           label="Government-issued ID"
           fileName={governmentId?.name}
           onChange={(e) => setValue("governmentId", e.target.files[0])}
           error={errors.governmentId?.message}
         />
         <UploadRow
-          icon="🎥"
+          icon={<FiVideo />}
+
           label="Introduction Video (optional)"
           fileName={videoIntroduction?.name}
           onChange={(e) => setValue("videoIntroduction", e.target.files[0])}

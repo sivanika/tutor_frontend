@@ -1,5 +1,6 @@
-import { useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { FiHome, FiCamera, FiFileText } from "react-icons/fi";
+
 
 function Field({ label, error, children }) {
   return (
@@ -54,9 +55,10 @@ export default function SchoolInfo() {
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white text-lg shadow-lg shadow-emerald-200">
-          🏫
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white text-xl shadow-lg shadow-emerald-200">
+          <FiHome />
         </div>
+
         <div>
           <h2 className="text-xl font-bold text-slate-800 leading-tight">School Verification</h2>
           <p className="text-xs text-slate-400 mt-0.5">Verify your enrollment so tutors can trust your profile</p>
@@ -94,7 +96,8 @@ export default function SchoolInfo() {
         <div className="grid md:grid-cols-2 gap-4 mt-2">
           <UploadZone
             label="Upload Student Photo"
-            icon="📷"
+            icon={<FiCamera />}
+
             fileName={photoName}
             onChange={(e) => {
               const file = e.target.files[0];
@@ -106,7 +109,8 @@ export default function SchoolInfo() {
           />
           <UploadZone
             label="Supporting Document"
-            icon="📄"
+            icon={<FiFileText />}
+
             fileName={docName}
             onChange={(e) => {
               const file = e.target.files[0];

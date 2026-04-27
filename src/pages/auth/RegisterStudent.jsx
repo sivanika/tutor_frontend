@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { FiTarget, FiEye, FiEyeOff } from "react-icons/fi";
+
 
 export default function RegisterStudent() {
   const { register } = useAuth();
@@ -57,7 +59,8 @@ export default function RegisterStudent() {
           {/* Show selected plan badge */}
           {plan && (
             <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-[10px] sm:text-xs font-semibold">
-              <span>🎯</span>
+              <FiTarget className="w-3 h-3" />
+
               {plan === "premium" ? "Premium Plan selected"
                 : plan === "free_trial" ? "Free Trial selected"
                   : "Pay Per Session selected"}
@@ -107,7 +110,8 @@ export default function RegisterStudent() {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-3 text-gray-400 hover:text-gray-700 dark:hover:text-white"
           >
-            {showPassword ? "🙈" : "👁️"}
+            {showPassword ? <FiEyeOff /> : <FiEye />}
+
           </button>
         </div>
 

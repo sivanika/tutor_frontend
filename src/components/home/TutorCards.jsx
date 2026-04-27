@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
+import { FiBookOpen, FiDollarSign, FiStar, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
 
 
 const GRADIENTS = [
@@ -80,7 +82,8 @@ export default function TutorCards() {
         {/* Empty */}
         {!loading && tutors.length === 0 && (
           <div className="text-center py-16 text-[var(--text-muted)] dark:text-[var(--accent)]">
-            <p className="text-2xl mb-2">🎓</p>
+            <p className="text-2xl mb-2 flex justify-center text-[var(--primary)]"><FiBookOpen /></p>
+
             <p className="text-lg font-semibold">No tutors available yet</p>
             <p className="text-sm mt-1">Check back soon — we're growing!</p>
           </div>
@@ -103,7 +106,8 @@ export default function TutorCards() {
                   hover:scale-110 transition-transform duration-200
                 "
               >
-                ‹
+                <FiChevronLeft />
+
               </button>
             )}
             {/* Next button */}
@@ -120,7 +124,8 @@ export default function TutorCards() {
                   hover:scale-110 transition-transform duration-200
                 "
               >
-                ›
+                <FiChevronRight />
+
               </button>
             )}
 
@@ -219,7 +224,8 @@ export default function TutorCards() {
                           className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-white"
                           style={{ background: gradientStyle }}
                         >
-                          💰 ₹{t.hourlyRate}/hr
+                          <FiDollarSign className="inline-block" /> ₹{t.hourlyRate}/hr
+
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-[var(--text-muted)] dark:text-[var(--accent)] bg-gray-100 dark:bg-[var(--text-primary)]">
@@ -233,7 +239,8 @@ export default function TutorCards() {
                         className="text-sm font-semibold"
                         style={{ color: grad.from }}
                       >
-                        ★ {ratingLabel}
+                        <FiStar className="inline-block" /> {ratingLabel}
+
                       </span>
                       <span className="text-xs text-[var(--text-muted)] dark:text-[var(--accent)]">
                         {sessionLabel}

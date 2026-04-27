@@ -1,9 +1,13 @@
+import { FiHome, FiSearch, FiCalendar, FiAward } from "react-icons/fi";
+
 export default function StudentTabs({ activeTab, setActiveTab }) {
+
   const tabs = [
-    { id: "dashboard", label: "Dashboard", icon: "fa-chart-line" },
-    { id: "tutors", label: "Find Tutors", icon: "fa-search" },
-    { id: "sessions", label: "My Sessions", icon: "fa-calendar-check" },
-    { id: "progress", label: "My Progress", icon: "fa-trophy" },
+    { id: "dashboard", label: "Dashboard", icon: <FiHome /> },
+    { id: "tutors", label: "Find Tutors", icon: <FiSearch /> },
+    { id: "sessions", label: "My Sessions", icon: <FiCalendar /> },
+    { id: "progress", label: "My Progress", icon: <FiAward /> },
+
   ]
 
   return (
@@ -36,7 +40,8 @@ export default function StudentTabs({ activeTab, setActiveTab }) {
               }
             `}
           >
-            <i className={`fas ${tab.icon} text-sm`}></i>
+            <span className="text-sm">{tab.icon}</span>
+
             <span className="hidden sm:inline">{tab.label}</span>
 
             {/* Glow ring */}

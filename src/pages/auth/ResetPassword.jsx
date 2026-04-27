@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import API from "../../services/api"
+import { FiCheckCircle, FiEye, FiEyeOff, FiInfo } from "react-icons/fi"
+
 
 function getPasswordStrength(password) {
   let score = 0
@@ -84,7 +86,8 @@ function ResetPassword() {
         {/* ── Success State ── */}
         {success && (
           <div className="text-center py-4">
-            <div className="text-4xl mb-3">🎉</div>
+            <div className="text-4xl mb-3 text-green-500 flex justify-center"><FiCheckCircle /></div>
+
             <p className="text-green-600 dark:text-green-400 font-semibold text-lg">
               Password reset successfully!
             </p>
@@ -125,7 +128,8 @@ function ResetPassword() {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-10 top-3 text-slate-500"
           >
-            {showPassword ? "🙈" : "👁️"}
+            {showPassword ? <FiEyeOff /> : <FiEye />}
+
           </button>
 
           <span
@@ -133,7 +137,8 @@ function ResetPassword() {
             onMouseEnter={() => setShowRules(true)}
             onMouseLeave={() => setShowRules(false)}
           >
-            ℹ️
+            <FiInfo className="text-slate-500" />
+
           </span>
         </div>
 

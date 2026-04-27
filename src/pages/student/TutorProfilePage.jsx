@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
+import { FiBookOpen, FiArrowLeft, FiStar, FiCalendar, FiBook, FiLock, FiRocket, FiSmile, FiMail, FiCheckCircle, FiMessageSquare, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
+
 
 const BACKEND_URL =
     import.meta.env.VITE_API_URL?.replace("/api", "") ||
@@ -83,7 +86,8 @@ export default function TutorProfilePage() {
     if (error || !tutor) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[var(--surface-alt)] dark:bg-[var(--surface)] p-6 text-center">
-                <span className="text-5xl">{isLimitError ? "🚀" : "😕"}</span>
+                <span className="text-5xl text-[var(--primary)]">{isLimitError ? <FiRocket /> : <FiSmile />}</span>
+
                 <p className="text-lg font-bold text-[var(--text-primary)] dark:text-white max-w-md">
                     {error || "Tutor not found"}
                 </p>
@@ -92,7 +96,8 @@ export default function TutorProfilePage() {
                       onClick={() => navigate(-1)}
                       className="px-6 py-2.5 rounded-xl text-sm justify-center font-bold text-[var(--primary)] bg-white border-2 border-[var(--primary)] hover:bg-[var(--surface-alt)]"
                   >
-                      ← Go Back
+                      <FiChevronLeft className="inline-block mr-1" /> Go Back
+
                   </button>
                   {isLimitError && (
                     <button
@@ -100,7 +105,8 @@ export default function TutorProfilePage() {
                         className="px-6 py-2.5 rounded-xl text-sm font-bold text-white shadow-md hover:scale-105 transition-all"
                         style={{ background: "linear-gradient(135deg, var(--accent), var(--primary))" }}
                     >
-                        Upgrade Plan →
+                        Upgrade Plan <FiChevronRight className="inline-block ml-1" />
+
                     </button>
                   )}
                 </div>
@@ -136,10 +142,12 @@ export default function TutorProfilePage() {
                     onClick={() => navigate(-1)}
                     className="flex items-center gap-2 text-sm font-semibold text-[var(--primary)] dark:text-[var(--accent)] hover:opacity-75 transition-opacity"
                 >
-                    ← Back
+                    <FiChevronLeft /> Back
                 </button>
+
                 <span className="font-black text-[var(--text-primary)] dark:text-white tracking-tight">
-                    🎓 TutorHours
+                    <FiBookOpen className="inline-block mr-2" /> TutorHours
+
                 </span>
                 {!user && (
                     <button
@@ -156,12 +164,13 @@ export default function TutorProfilePage() {
                         className="text-xs font-semibold px-4 py-1.5 rounded-lg text-white"
                         style={{ background: "linear-gradient(135deg, var(--accent), var(--primary))" }}
                     >
-                        Upgrade ✨
+                        Upgrade
+
                     </button>
                 )}
                 {user && isPremium && (
                     <span className="text-xs font-bold text-green-500 bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-full">
-                        ✓ Premium
+                        <FiCheckCircle className="inline-block mr-1" /> Premium
                     </span>
                 )}
             </nav>
@@ -180,7 +189,8 @@ export default function TutorProfilePage() {
                         />
                         <div className="relative z-10">
                             <p className="font-black text-[var(--text-primary)] dark:text-white text-sm md:text-base">
-                                🚀 Upgrade to Premium
+                                <FiRocket className="inline-block mr-2" /> Upgrade to Premium
+
                             </p>
                             <p className="text-[var(--text-muted)] dark:text-[var(--accent)] text-xs mt-0.5">
                                 Book sessions, see full availability & contact this tutor directly.
@@ -194,7 +204,8 @@ export default function TutorProfilePage() {
                                 boxShadow: "0 4px 16px var(--primary)30",
                             }}
                         >
-                            Upgrade Now →
+                            Upgrade Now <FiChevronRight className="inline-block ml-1" />
+
                         </button>
                     </div>
                 )}
@@ -245,22 +256,26 @@ export default function TutorProfilePage() {
                             {/* Stats row */}
                             <div className="flex flex-wrap items-center gap-4 mt-3">
                                 <span className="flex items-center gap-1 text-sm font-bold text-amber-500">
-                                    ★ {ratingLabel}
+                                    <FiStar className="inline-block" /> {ratingLabel}
+
                                     <span className="text-[var(--text-muted)] dark:text-[var(--accent)] font-normal text-xs">
                                         ({tutor.reviewCount} reviews)
                                     </span>
                                 </span>
                                 <span className="text-xs text-[var(--text-muted)] dark:text-[var(--accent)]">
-                                    🎓 {tutor.sessionCount} sessions
+                                    <FiBookOpen className="inline-block" /> {tutor.sessionCount} sessions
+
                                 </span>
                                 {tutor.yearsExperience && (
                                     <span className="text-xs text-[var(--text-muted)] dark:text-[var(--accent)]">
-                                        📅 {tutor.yearsExperience} yrs exp
+                                        <FiCalendar className="inline-block" /> {tutor.yearsExperience} yrs exp
+
                                     </span>
                                 )}
                                 {tutor.teachingLevel && (
                                     <span className="text-xs text-[var(--text-muted)] dark:text-[var(--accent)]">
-                                        📚 {tutor.teachingLevel}
+                                        <FiBook className="inline-block" /> {tutor.teachingLevel}
+
                                     </span>
                                 )}
                             </div>
@@ -315,7 +330,8 @@ export default function TutorProfilePage() {
                 <div>
                     <div className="bg-white dark:bg-[var(--surface-alt)] rounded-2xl p-6 border border-[var(--primary)]/10 dark:border-[var(--primary)]/20 shadow-md">
                         <h2 className="text-sm font-bold uppercase tracking-widest text-[var(--primary)] dark:text-[var(--accent)] mb-4">
-                            📅 Availability
+                            <FiCalendar className="inline-block mr-2" /> Availability
+
                         </h2>
                         {availDays.length > 0 ? (
                             <div className="flex flex-wrap gap-2">
@@ -339,7 +355,8 @@ export default function TutorProfilePage() {
                 <div>
                     <div className="bg-white dark:bg-[var(--surface-alt)] rounded-2xl p-6 border border-[var(--primary)]/10 dark:border-[var(--primary)]/20 shadow-md">
                         <h2 className="text-sm font-bold uppercase tracking-widest text-[var(--primary)] dark:text-[var(--accent)] mb-4">
-                            📬 Contact Details
+                            <FiMail className="inline-block mr-2" /> Contact Details
+
                         </h2>
                         {isPremium ? (
                             <div className="space-y-2">
@@ -365,7 +382,8 @@ export default function TutorProfilePage() {
                             </div>
                         ) : (
                             <div className="flex flex-col items-center justify-center py-6 bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)] rounded-xl border border-dashed border-[var(--primary)]/30">
-                                <span className="text-2xl mb-2">🔒</span>
+                                <span className="text-2xl mb-2 text-[var(--primary)]"><FiLock /></span>
+
                                 <p className="text-sm text-center text-[var(--text-muted)] dark:text-[var(--accent)] max-w-xs">
                                     Contact info is premium only. <br/>
                                     <button
@@ -392,7 +410,9 @@ export default function TutorProfilePage() {
                                 boxShadow: "0 8px 32px var(--primary)50",
                             }}
                         >
-                            📅 Go to Dashboard to Book →
+                            <FiCalendar className="inline-block mr-2" /> Go to Dashboard to Book <FiChevronRight className="inline-block ml-1" />
+
+
                         </button>
                     ) : (
                         <div className="relative">
@@ -401,7 +421,8 @@ export default function TutorProfilePage() {
                                 className="w-full py-4 rounded-2xl font-black text-white text-base opacity-50 cursor-not-allowed"
                                 style={{ background: "linear-gradient(135deg, var(--primary), var(--primary))" }}
                             >
-                                🔒 Book a Session (Limit Reached)
+                                <FiLock className="inline-block mr-2" /> Book a Session (Limit Reached)
+
                             </button>
                             <p className="text-center text-xs text-[var(--text-muted)] dark:text-[var(--accent)] mt-2">
                                 <button
@@ -419,7 +440,8 @@ export default function TutorProfilePage() {
                 {/* ── REVIEWS ── */}
                 <div>
                     <h2 className="text-sm font-bold uppercase tracking-widest text-[var(--primary)] dark:text-[var(--accent)] mb-4">
-                        ⭐ Student Reviews
+                        <FiStar className="inline-block mr-2 text-amber-500" /> Student Reviews
+
                     </h2>
 
                     {tutor.reviews?.length > 0 ? (
@@ -447,7 +469,8 @@ export default function TutorProfilePage() {
                                                         className={s < review.rating ? "text-amber-400" : "text-gray-300 dark:text-gray-600"}
                                                         style={{ fontSize: "11px" }}
                                                     >
-                                                        ★
+                                                        <FiStar />
+
                                                     </span>
                                                 ))}
                                             </div>
@@ -462,6 +485,7 @@ export default function TutorProfilePage() {
                     ) : (
                         <div className="bg-white dark:bg-[var(--surface-alt)] rounded-2xl p-6 border border-[var(--primary)]/10 text-center text-[var(--text-muted)] dark:text-[var(--accent)] text-sm">
                             No reviews yet — be the first to leave one!
+
                         </div>
                     )}
                 </div>

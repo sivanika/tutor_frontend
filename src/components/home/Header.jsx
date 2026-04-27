@@ -2,6 +2,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
+import { FiMoon, FiSun } from "react-icons/fi";
+
 
 export default function Header() {
   const navigate = useNavigate();
@@ -136,7 +138,8 @@ export default function Header() {
               flex items-center justify-center text-lg
             "
             >
-              {dark ? "🌙" : "☀️"}
+              {dark ? <FiMoon /> : <FiSun />}
+
             </button>
 
             {/* Login */}

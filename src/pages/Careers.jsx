@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { FiGlobe, FiTrendingUp, FiBook, FiHeart, FiClock, FiUsers, FiCheckCircle, FiSend } from "react-icons/fi";
 
 const POSITIONS = [
     {
@@ -45,13 +46,15 @@ const POSITIONS = [
 ];
 
 const BENEFITS = [
-    { icon: "🌍", title: "Remote-friendly", desc: "Work from anywhere — fully async friendly culture" },
-    { icon: "📈", title: "Growth paths", desc: "Clear career ladders and quarterly promotion reviews" },
-    { icon: "🎓", title: "Learning budget", desc: "₹25,000/year for courses, books, and conferences" },
-    { icon: "🏥", title: "Health cover", desc: "Comprehensive health insurance for you and dependants" },
-    { icon: "⏰", title: "Flexible hours", desc: "Core hours 10am–4pm IST, rest is up to you" },
-    { icon: "🤝", title: "Impact", desc: "Directly improve education for thousands of learners" },
+
+    { icon: <FiGlobe />,      title: "Remote-friendly", desc: "Work from anywhere — fully async friendly culture" },
+    { icon: <FiTrendingUp />, title: "Growth paths",    desc: "Clear career ladders and quarterly promotion reviews" },
+    { icon: <FiBook />,       title: "Learning budget", desc: "₹25,000/year for courses, books, and conferences" },
+    { icon: <FiHeart />,      title: "Health cover",    desc: "Comprehensive health insurance for you and dependants" },
+    { icon: <FiClock />,      title: "Flexible hours",  desc: "Core hours 10am–4pm IST, rest is up to you" },
+    { icon: <FiUsers />,      title: "Impact",          desc: "Directly improve education for thousands of learners" },
 ];
+
 
 function ApplicationModal({ position, onClose }) {
     const [form, setForm] = useState({ name: "", email: "", cover: "" });
@@ -76,7 +79,8 @@ function ApplicationModal({ position, onClose }) {
 
                 {sent ? (
                     <div className="px-7 py-12 text-center">
-                        <div className="text-5xl mb-4">🎉</div>
+                        <div className="text-5xl mb-4 text-green-500 flex justify-center"><FiCheckCircle /></div>
+
                         <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Application Received!</h4>
                         <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">We'll review your application and reach out within 5–7 business days.</p>
                         <button onClick={onClose} className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white font-semibold text-sm">Close</button>
@@ -156,7 +160,8 @@ export default function Careers() {
                 </div>
                 <div className="relative max-w-3xl mx-auto">
                     <span className="inline-block bg-[var(--primary)]/10 dark:bg-white/20 text-[var(--primary)] dark:text-white/90 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 backdrop-blur-sm">
-                        We're hiring! Join the team 🚀
+                        We're hiring! Join the team <FiTrendingUp className="inline-block" />
+
                     </span>
                     <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
                         Build the Future of <br />
@@ -178,7 +183,8 @@ export default function Careers() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     {BENEFITS.map(({ icon, title, desc }) => (
                         <div key={title} className="bg-white dark:bg-[var(--surface-alt)] rounded-2xl p-5 shadow-sm border border-slate-100 dark:border-white/10 hover:shadow-md transition-all">
-                            <div className="text-3xl mb-3">{icon}</div>
+                             <div className="text-3xl mb-3 text-[var(--primary)]">{icon}</div>
+
                             <h3 className="font-semibold text-slate-900 dark:text-white mb-1">{title}</h3>
                             <p className="text-sm text-slate-500 dark:text-slate-400">{desc}</p>
                         </div>

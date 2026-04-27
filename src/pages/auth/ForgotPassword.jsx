@@ -1,6 +1,8 @@
 import { useState } from "react"
 import API from "../../services/api"
 import { Link } from "react-router-dom"
+import { FiCheckCircle } from "react-icons/fi"
+
 
 function ForgotPassword() {
   const [email, setEmail] = useState("")
@@ -61,9 +63,10 @@ function ForgotPassword() {
 
         {sent ? (
           <div className="text-center">
-            <p className="text-green-600 dark:text-green-400 font-medium">
-              ✅ Reset link sent!
+            <p className="text-green-600 dark:text-green-400 font-medium flex items-center justify-center gap-2">
+              <FiCheckCircle /> Reset link sent!
             </p>
+
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               Check your inbox (and spam folder) for the reset email.
             </p>

@@ -47,7 +47,8 @@ function ProfessorModal({ professor: init, onClose, onRefresh }) {
       await API.put(`/admin/approve-professor/${professor._id}`)
       setProfessor(p => ({ ...p, isVerified: true }))
       onRefresh?.()
-      toast.success("Professor approved ✓")
+      toast.success("Professor approved")
+
     } catch { toast.error("Approval failed") }
     finally { setSaving(null) }
   }
@@ -93,7 +94,8 @@ function ProfessorModal({ professor: init, onClose, onRefresh }) {
                 <VerifyIcon size={10} /> {verifyInfo.label}
               </span>
               {professor.isFeatured && (
-                <span className="text-xs bg-amber-400/80 text-white px-2 py-0.5 rounded-full font-medium">⭐ Featured</span>
+                <span className="text-xs bg-amber-400/80 text-white px-2 py-0.5 rounded-full font-medium flex items-center gap-1"><FiStar size={10} /> Featured</span>
+
               )}
             </div>
             <p className="text-white/70 text-sm">{professor.email}</p>

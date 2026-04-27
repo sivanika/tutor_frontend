@@ -1,4 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { FiBookOpen, FiUserCheck } from "react-icons/fi";
+
 
 export default function Register() {
   const navigate = useNavigate();
@@ -49,7 +51,8 @@ export default function Register() {
               transition-all duration-300
             "
           >
-            <span className="text-xl group-hover:scale-110 transition">🎓</span>
+            <span className="text-xl group-hover:scale-110 transition"><FiBookOpen /></span>
+
             Student
           </button>
 
@@ -65,7 +68,8 @@ export default function Register() {
               transition-all duration-300
             "
           >
-            <span className="text-xl group-hover:scale-110 transition">🧑‍🏫</span>
+            <span className="text-xl group-hover:scale-110 transition"><FiUserCheck /></span>
+
             Professor
           </button>
         </div>

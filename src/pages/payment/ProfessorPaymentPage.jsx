@@ -4,6 +4,7 @@ import API from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 import socket from "../../services/socket";
 import { toast } from "react-hot-toast";
+import { FiCheckCircle, FiCheck, FiLock, FiShield, FiAlertCircle, FiBookOpen, FiAward, FiBriefcase } from "react-icons/fi";
 
 /* ─────────────────────────────────────────────────────────────
    PAYMENT METHOD ICONS
@@ -136,7 +137,8 @@ export default function ProfessorPaymentPage() {
                 setPaymentId(data.paymentId);
                 setSuccess(true);
                 setLoading(false);
-                toast.success("Payment confirmed! Welcome aboard professor. 🎉");
+                toast.success("Payment confirmed! Welcome aboard professor.");
+
                 setTimeout(() => navigate("/verification-pending"), 3000);
             }
         };
@@ -228,7 +230,8 @@ export default function ProfessorPaymentPage() {
     if (success) return (
         <div className="min-h-screen flex items-center justify-center bg-slate-950 p-6 text-center">
             <div className="space-y-4 max-w-sm">
-                <div className="text-6xl animate-bounce">🏛️</div>
+                <div className="text-6xl animate-bounce text-[var(--accent)]"><FiAward /></div>
+
                 <h1 className="text-3xl font-bold text-white">Payment Successful</h1>
                 <p className="text-indigo-400">Your professor account is moving forward!</p>
                 <p className="text-slate-500 text-sm">Redirecting to verification status...</p>

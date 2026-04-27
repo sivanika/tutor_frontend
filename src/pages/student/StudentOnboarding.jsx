@@ -5,6 +5,7 @@ import { studentSchema } from "./validation/studentSchema";
 import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { FiLock } from "react-icons/fi";
 
 import StepProgress from "./components/StepProgress";
 import VerificationStatus from "./components/VerificationStatus";
@@ -187,7 +188,8 @@ export default function StudentOnboarding() {
 
           {/* Footer note */}
           <p className="text-center text-xs text-slate-400 mt-10">
-            🔒 Your information is encrypted and never shared without consent.
+            <FiLock className="inline-block mr-1" /> Your information is encrypted and never shared without consent.
+
           </p>
         </div>
       </div>

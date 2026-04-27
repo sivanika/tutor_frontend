@@ -357,7 +357,8 @@ export default function ProgressTab() {
                   </div>
                   {a.unlocked && (
                     <span className="text-xs font-semibold text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-full shrink-0">
-                      Earned ✓
+                      Earned
+
                     </span>
                   )}
                 </div>

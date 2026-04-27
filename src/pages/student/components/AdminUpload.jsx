@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { FiPaperclip, FiCamera, FiFileText, FiAlertTriangle } from "react-icons/fi";
+
 
 function UploadZone({ label, icon, description, fileName, onChange }) {
   return (
@@ -38,9 +40,10 @@ export default function AdminUpload() {
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-lg shadow-lg shadow-violet-200">
-          📎
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-xl shadow-lg shadow-violet-200">
+          <FiPaperclip />
         </div>
+
         <div>
           <h2 className="text-xl font-bold text-slate-800 leading-tight">Verification Documents</h2>
           <p className="text-xs text-slate-400 mt-0.5">Upload your documents for admin review and approval</p>
@@ -50,7 +53,8 @@ export default function AdminUpload() {
       <div className="grid md:grid-cols-2 gap-5">
         <UploadZone
           label="Student Photo"
-          icon="📸"
+          icon={<FiCamera />}
+
           description="Clear, recent headshot (JPG, PNG)"
           fileName={photoName}
           onChange={(e) => {
@@ -60,7 +64,8 @@ export default function AdminUpload() {
         />
         <UploadZone
           label="Supporting Document"
-          icon="📄"
+          icon={<FiFileText />}
+
           description="ID, transcript, or enrollment letter"
           fileName={docName}
           onChange={(e) => {
@@ -72,7 +77,8 @@ export default function AdminUpload() {
 
       {/* Info banner */}
       <div className="mt-6 flex items-start gap-3 p-4 rounded-xl bg-amber-50 border border-amber-100">
-        <span className="text-amber-500 text-lg flex-shrink-0">⚠️</span>
+        <span className="text-amber-500 text-lg flex-shrink-0"><FiAlertTriangle /></span>
+
         <p className="text-xs text-amber-700 leading-relaxed">
           <strong className="font-semibold">Important:</strong> Ensure all documents are clear, unobstructed, and valid.
           Our team will verify your submission within 1–2 business days before activation.

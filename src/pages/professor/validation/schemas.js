@@ -69,9 +69,8 @@ export const verificationSchema = z.object({
     message: "Government ID required",
   }),
 
-  videoIntroduction: z.any().refine((file) => file, {
-    message: "Video introduction required",
-  }),
+  videoIntroduction: z.any().optional(),
+
 
   terms: z.literal(true, {
     errorMap: () => ({ message: "You must accept the terms" }),

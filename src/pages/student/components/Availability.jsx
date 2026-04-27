@@ -1,22 +1,25 @@
 import { useFormContext } from "react-hook-form";
+import { FiCalendar, FiSun, FiSunrise, FiSunset, FiMoon } from "react-icons/fi";
+
 
 const SCHEDULE_GROUPS = [
   {
     label: "Day Type",
     slots: [
-      { id: "weekdays", label: "Weekdays", emoji: "📋", desc: "Mon – Fri" },
-      { id: "weekends", label: "Weekends", emoji: "🏖️", desc: "Sat & Sun" },
+      { id: "weekdays", label: "Weekdays", icon: <FiCalendar />, desc: "Mon – Fri" },
+      { id: "weekends", label: "Weekends", icon: <FiSun />,      desc: "Sat & Sun" },
     ],
   },
   {
     label: "Time of Day",
     slots: [
-      { id: "mornings", label: "Morning", emoji: "🌅", desc: "6 AM – 12 PM" },
-      { id: "afternoons", label: "Afternoon", emoji: "☀️", desc: "12 PM – 5 PM" },
-      { id: "evenings", label: "Evening", emoji: "🌙", desc: "5 PM – 10 PM" },
+      { id: "mornings", label: "Morning",   icon: <FiSunrise />,  desc: "6 AM – 12 PM" },
+      { id: "afternoons", label: "Afternoon", icon: <FiSun />,      desc: "12 PM – 5 PM" },
+      { id: "evenings", label: "Evening",   icon: <FiMoon />,     desc: "5 PM – 10 PM" },
     ],
   },
 ];
+
 
 export default function Availability() {
   const {
@@ -38,9 +41,10 @@ export default function Availability() {
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
       {/* Header */}
       <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-lg shadow-lg shadow-amber-200">
-          📅
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-xl shadow-lg shadow-amber-200">
+          <FiCalendar />
         </div>
+
         <div>
           <h2 className="text-xl font-bold text-slate-800 leading-tight">Your Schedule</h2>
           <p className="text-xs text-slate-400 mt-0.5">Select when you're free — we'll match you with tutors who teach then</p>
@@ -84,7 +88,8 @@ export default function Availability() {
                       }
                     `}
                   >
-                    <span className="text-xl">{emoji}</span>
+                    <span className="text-xl">{icon}</span>
+
                     <span className="font-semibold leading-tight">{slotLabel}</span>
                     <span className={`text-xs leading-tight ${active ? "text-indigo-200" : "text-slate-400"}`}>
                       {desc}

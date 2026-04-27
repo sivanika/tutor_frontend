@@ -1,3 +1,5 @@
+import { FiCheckCircle, FiClock } from "react-icons/fi";
+
 export default function VerificationStatus({ submitted }) {
   const statusStyles = submitted
     ? {
@@ -5,7 +7,8 @@ export default function VerificationStatus({ submitted }) {
           "bg-gradient-to-r from-green-50/80 to-emerald-50/80 border-green-200 dark:from-green-900/20 dark:to-emerald-900/20 dark:border-green-800 text-green-700 dark:text-green-400",
         iconBg:
           "bg-green-500 text-white dark:bg-green-400 dark:text-black",
-        icon: "✓",
+        icon: <FiCheckCircle />,
+
         badge:
           "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
         message:
@@ -16,7 +19,8 @@ export default function VerificationStatus({ submitted }) {
           "bg-gradient-to-r from-yellow-50/80 to-amber-50/80 border-yellow-200 dark:from-yellow-900/20 dark:to-amber-900/20 dark:border-yellow-800 text-yellow-700 dark:text-yellow-400",
         iconBg:
           "bg-yellow-500 text-white dark:bg-yellow-400 dark:text-black",
-        icon: "⏳",
+        icon: <FiClock />,
+
         badge:
           "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300",
         message:

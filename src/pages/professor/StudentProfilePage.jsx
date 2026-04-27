@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
-import { FiArrowLeft, FiBook, FiMapPin, FiUser, FiTarget, FiLock } from "react-icons/fi";
+import { FiArrowLeft, FiBook, FiMapPin, FiUser, FiTarget, FiLock, FiBookOpen, FiRocket, FiSmile, FiCheck } from "react-icons/fi";
+
 
 const BACKEND_URL =
   import.meta.env.VITE_API_URL?.replace("/api", "") ||
@@ -79,7 +80,8 @@ export default function StudentProfilePage() {
   if (error || !student) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[var(--surface-alt)] dark:bg-[var(--surface)] p-6 text-center">
-        <span className="text-5xl">{isLimitError ? "🚀" : "😕"}</span>
+        <span className="text-5xl text-[var(--accent)]">{isLimitError ? <FiRocket /> : <FiSmile />}</span>
+
         <p className="text-lg font-bold text-[var(--text-primary)] dark:text-white max-w-md">
           {error || "Student not found"}
         </p>
@@ -135,7 +137,8 @@ export default function StudentProfilePage() {
           Back
         </button>
         <span className="font-black text-[var(--text-primary)] dark:text-white tracking-tight">
-          🎓 TutorHours
+          <FiBookOpen className="inline-block mr-2" /> TutorHours
+
         </span>
         {user && !isPremium && (
           <button
@@ -148,7 +151,8 @@ export default function StudentProfilePage() {
         )}
         {user && isPremium && (
           <span className="text-xs font-bold text-green-500 bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-full">
-            ✓ Premium
+            <FiCheck className="inline-block mr-1" /> Premium
+
           </span>
         )}
       </nav>
@@ -167,7 +171,8 @@ export default function StudentProfilePage() {
             />
             <div className="relative z-10">
               <p className="font-black text-[var(--text-primary)] dark:text-white text-sm md:text-base">
-                🚀 Upgrade to Premium
+                <FiRocket className="inline-block mr-2" /> Upgrade to Premium
+
               </p>
               <p className="text-[var(--text-muted)] dark:text-[#f9a8d4] text-xs mt-0.5">
                 View unlimited student profiles and see full learning details.

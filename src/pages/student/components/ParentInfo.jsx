@@ -1,4 +1,6 @@
 import { useFormContext } from "react-hook-form";
+import { FiUsers } from "react-icons/fi";
+
 
 function Field({ label, error, children }) {
   return (
@@ -37,9 +39,10 @@ export default function ParentInfo() {
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white text-lg shadow-lg shadow-pink-200">
-          👨‍👩‍👧
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white text-xl shadow-lg shadow-pink-200">
+          <FiUsers />
         </div>
+
         <div>
           <h2 className="text-xl font-bold text-slate-800 leading-tight">Parent / Guardian</h2>
           <p className="text-xs text-slate-400 mt-0.5">We need a guardian's info for students under 18</p>

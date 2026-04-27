@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { FiUser, FiBook, FiMail, FiPhone } from "react-icons/fi";
+
 
 export default function ProfessorApply() {
   const navigate = useNavigate();
@@ -66,7 +68,8 @@ export default function ProfessorApply() {
                 FULL NAME
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">👤</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"><FiUser /></span>
+
                 <input
                   type="text"
                   required
@@ -84,7 +87,8 @@ export default function ProfessorApply() {
                 SUBJECT EXPERTISE
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">📚</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"><FiBook /></span>
+
                 <input
                   type="text"
                   required
@@ -135,7 +139,8 @@ export default function ProfessorApply() {
                 EMAIL ADDRESS
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">✉️</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"><FiMail /></span>
+
                 <input
                   type="email"
                   required
@@ -153,7 +158,8 @@ export default function ProfessorApply() {
                 PHONE / WHATSAPP
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">📞</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"><FiPhone /></span>
+
                 <input
                   type="tel"
                   required
