@@ -88,7 +88,26 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{ user, login, register, logout, googleLogin, setUser }}>
-      {!loading && children}
+      {loading ? (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--surface)] dark:bg-[var(--surface)] transition-colors duration-500">
+          {/* Main Spinner */}
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-[var(--primary)]/20 border-t-[var(--primary)] rounded-full animate-spin"></div>
+            <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-b-[var(--accent)] rounded-full animate-spin-reverse opacity-60"></div>
+          </div>
+          
+          {/* Logo / Text */}
+          <div className="mt-8 text-center animate-pulse">
+            <h1 className="text-2xl font-black tracking-tight dark:text-white mb-1">TutorHours</h1>
+            <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Preparing your experience</p>
+          </div>
+
+          {/* Decorative Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[var(--primary)]/10 blur-[80px] rounded-full pointer-events-none"></div>
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   )
 }
