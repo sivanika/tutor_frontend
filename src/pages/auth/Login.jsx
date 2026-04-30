@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { GoogleLogin } from "@react-oauth/google";
 
 
 function Login() {
@@ -14,43 +15,53 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const handleAuthSuccess = (user) => {
+    if (user.role === "admin") {
+      localStorage.removeItem("userInfo");
+      setError("Admin accounts must use the admin portal to login.");
+      return;
+    }
+
+    if (user.role === "professor") {
+      if (!user.profileCompleted) return navigate("/professor/onboarding");
+      if (!user.isVerified) return navigate("/verification-pending");
+      return navigate("/professor/dashboard");
+    }
+
+    if (user.role === "student") {
+      if (!user.profileCompleted) return navigate("/student/onboarding");
+      return navigate("/student/dashboard");
+    }
+  };
+
   const submit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
       setLoading(true);
-
       const user = await login(email, password);
-
-      // Block admin from regular login — must use /admin/login
-      if (user.role === "admin") {
-        localStorage.removeItem("userInfo");
-        localStorage.removeItem("token");
-        setError("Admin accounts must use the admin portal to login.");
-        return;
-      }
-
-      // ===== FINAL REDIRECT LOGIC =====
-      if (user.role === "professor") {
-        if (!user.profileCompleted) {
-          return navigate("/professor/onboarding");
-        }
-        if (!user.isVerified) {
-          return navigate("/verification-pending");
-        }
-        return navigate("/professor/dashboard");
-      }
-
-      if (user.role === "student") {
-        if (!user.profileCompleted) {
-          return navigate("/student/onboarding");
-        }
-        return navigate("/student/dashboard");
-      }
-
+      handleAuthSuccess(user);
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      setError("");
+      // Note: role is not passed here because user must already exist
+      // or if they are new, they should register first to choose a role.
+      // However, the backend needs a role for NEW users.
+      // In Login, we assume they have an account. If they don't, 
+      // the backend will return 400 "Role is required for new users".
+      const user = await googleLogin(credentialResponse.credential);
+      handleAuthSuccess(user);
+    } catch (err) {
+      setError(err.response?.data?.message || "Google Login failed");
     } finally {
       setLoading(false);
     }
@@ -170,6 +181,24 @@ function Login() {
         >
           {loading ? "Logging in..." : "Login"}
         </button>
+
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex items-center w-full gap-4">
+            <div className="h-px bg-gray-200 dark:bg-[var(--primary)]/20 flex-1" />
+            <span className="text-xs text-gray-400 uppercase">OR</span>
+            <div className="h-px bg-gray-200 dark:bg-[var(--primary)]/20 flex-1" />
+          </div>
+
+          <div className="w-full flex justify-center">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => setError("Google Login failed")}
+              theme="outline"
+              size="large"
+              shape="pill"
+            />
+          </div>
+        </div>
 
         {/* Register */}
         <p className="text-sm text-center text-gray-500 dark:text-[var(--accent)]/70">

@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { FiTarget, FiEye, FiEyeOff } from "react-icons/fi";
+import { GoogleLogin } from "@react-oauth/google";
 
 
 export default function RegisterStudent() {
-  const { register } = useAuth();
+  const { register, googleLogin } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -25,6 +26,19 @@ export default function RegisterStudent() {
       navigate("/student/onboarding");
     } catch (err) {
       alert(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      await googleLogin(credentialResponse.credential, "student");
+      if (plan) sessionStorage.setItem("selectedPlan", plan);
+      navigate("/student/onboarding");
+    } catch (err) {
+      alert(err.response?.data?.message || "Google Registration failed");
     } finally {
       setLoading(false);
     }
@@ -170,19 +184,16 @@ export default function RegisterStudent() {
           <div className="flex-1 h-px bg-gray-200 dark:bg-[var(--primary)]/20" />
         </div>
 
-        {/* Google Button (UI only) */}
-        <button
-          type="button"
-          className="
-            w-full py-3 rounded-lg font-medium
-            bg-white dark:bg-[var(--surface)] text-gray-700 dark:text-white
-            border border-gray-200 dark:border-[var(--primary)]/20
-            hover:bg-gray-50 dark:hover:bg-[#1a1035]
-            transition
-          "
-        >
-          Sign in with Google
-        </button>
+        {/* Google Button */}
+        <div className="w-full flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => alert("Google Registration failed")}
+            theme="outline"
+            size="large"
+            shape="pill"
+          />
+        </div>
 
         {/* Login redirect */}
         <p className="text-center text-sm text-gray-500 dark:text-[var(--accent)]/70">

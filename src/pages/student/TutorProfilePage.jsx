@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
-import { FiBookOpen, FiArrowLeft, FiStar, FiCalendar, FiBook, FiLock, FiRocket, FiSmile, FiMail, FiCheckCircle, FiMessageSquare, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiBookOpen, FiArrowLeft, FiStar, FiCalendar, FiBook, FiLock, FiSmile, FiMail, FiCheckCircle, FiMessageSquare, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { SlRocket } from "react-icons/sl";
 
 
 
@@ -86,7 +87,7 @@ export default function TutorProfilePage() {
     if (error || !tutor) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[var(--surface-alt)] dark:bg-[var(--surface)] p-6 text-center">
-                <span className="text-5xl text-[var(--primary)]">{isLimitError ? <FiRocket /> : <FiSmile />}</span>
+                <span className="text-5xl text-[var(--primary)]">{isLimitError ? <SlRocket /> : <FiSmile />}</span>
 
                 <p className="text-lg font-bold text-[var(--text-primary)] dark:text-white max-w-md">
                     {error || "Tutor not found"}
@@ -189,7 +190,7 @@ export default function TutorProfilePage() {
                         />
                         <div className="relative z-10">
                             <p className="font-black text-[var(--text-primary)] dark:text-white text-sm md:text-base">
-                                <FiRocket className="inline-block mr-2" /> Upgrade to Premium
+                                <SlRocket className="inline-block mr-2" /> Upgrade to Premium
 
                             </p>
                             <p className="text-[var(--text-muted)] dark:text-[var(--accent)] text-xs mt-0.5">

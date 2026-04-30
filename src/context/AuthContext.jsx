@@ -66,6 +66,14 @@ export function AuthProvider({ children }) {
     return userData
   }
 
+  // ── GOOGLE LOGIN ──
+  const googleLogin = async (idToken, role) => {
+    const res = await API.post("/auth/google", { idToken, role })
+    const { user: userData } = res.data
+    updateAuth(userData)
+    return userData
+  }
+
   // ── LOGOUT ──
   const logout = async () => {
     try {
@@ -79,7 +87,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, setUser }}>
+    <AuthContext.Provider value={{ user, login, register, logout, googleLogin, setUser }}>
       {!loading && children}
     </AuthContext.Provider>
   )

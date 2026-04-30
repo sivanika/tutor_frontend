@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
 import API from "../../services/api"
-import { FiBell, FiAlertTriangle, FiRocket, FiAward, FiInfo, FiCalendar, FiCheckCircle, FiStar, FiZap, FiTarget } from "react-icons/fi"
+import { FiBell, FiAlertTriangle, FiAward, FiInfo, FiCalendar, FiCheckCircle, FiStar, FiZap, FiTarget } from "react-icons/fi"
+import { SlRocket } from "react-icons/sl"
 
 const ICON_MAP = {
   "📢": <FiBell />,
   "⚠️": <FiAlertTriangle />,
-  "🚀": <FiRocket />,
+  "🚀": <SlRocket />,
   "🏆": <FiAward />,
   "📌": <FiTarget />,
   "🎉": <FiZap />,

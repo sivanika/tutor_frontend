@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { FiRocket, FiStar, FiBook, FiChevronRight, FiLayout, FiActivity, FiCpu } from "react-icons/fi";
+import { FiStar, FiBook, FiChevronRight, FiLayout, FiActivity, FiCpu } from "react-icons/fi";
+import { SlRocket } from "react-icons/sl";
 
 
 export default function Hero() {
@@ -34,7 +35,7 @@ export default function Hero() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--primary)]/10 dark:bg-white/15 border border-[var(--primary)]/20 dark:border-white/25 backdrop-blur-sm text-sm text-[var(--primary)] dark:text-white font-medium">
             <span className="w-2 h-2 rounded-full bg-[var(--primary)] dark:bg-[var(--accent)] animate-pulse" />
-            <FiRocket /> Next-Generation Learning Platform
+            <SlRocket /> Next-Generation Learning Platform
 
           </div>
 

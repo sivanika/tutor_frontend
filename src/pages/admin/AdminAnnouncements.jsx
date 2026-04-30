@@ -3,12 +3,13 @@ import API from "../../services/api"
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiAlertCircle, FiCheck, FiX, FiBell, FiInbox } from "react-icons/fi"
 
 import toast from "react-hot-toast"
-import { FiAlertTriangle, FiRocket, FiAward, FiInfo, FiCalendar, FiCheckCircle, FiStar, FiZap, FiTarget, FiHelpCircle } from "react-icons/fi"
+import { FiAlertTriangle, FiAward, FiInfo, FiCalendar, FiCheckCircle, FiStar, FiZap, FiTarget, FiHelpCircle } from "react-icons/fi"
+import { SlRocket } from "react-icons/sl"
 
 const ICON_MAP = {
   "📢": <FiBell />,
   "⚠️": <FiAlertTriangle />,
-  "🚀": <FiRocket />,
+  "🚀": <SlRocket />,
   "🏆": <FiAward />,
   "📌": <FiTarget />,
   "🎉": <FiZap />,
