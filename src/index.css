@@ -7,6 +7,10 @@
    Light: Blue (#2563EB) | Accent: Dark (#0f0720)
    Dark: Sky Blue (#38BDF8) | Accent: Purple (#A78BFA)
    ============================================ */
+html {
+    scroll-padding-top: 80px; /* Offset for sticky header */
+}
+
 :root {
   --primary: #2563EB;
   --secondary: #F8FAFC;

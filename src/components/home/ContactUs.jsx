@@ -86,21 +86,21 @@ export default function ContactUs() {
                 <h4 className="font-semibold text-slate-900 dark:text-white text-lg mb-1">Visit Us</h4>
                 <p className="text-slate-500 dark:text-slate-400 mb-2">Come say hello at our HQ.</p>
                 <p className="text-slate-700 dark:text-slate-300 font-medium">
-                  123 Innovation Drive<br />
-                  Tech District, CA 94103
+                 KONARK ORCHID, PUNE INDIA
                 </p>
               </div>
             </div>
 
             <div className="group flex items-start gap-5 p-6 rounded-2xl bg-white/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 hover:border-[var(--primary)]/30 dark:hover:border-[var(--accent)]/30 transition-colors backdrop-blur-sm">
-              <div className="w-12 h-12 rounded-xl bg-pink-100 dark:bg-[var(--accent)]/20 flex items-center justify-center text-[var(--accent)] dark:text-pink-400 shrink-0 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounde
+              d-xl bg-pink-100 dark:bg-[var(--accent)]/20 flex items-center justify-center text-[var(--accent)] dark:text-pink-400 shrink-0 group-hover:scale-110 transition-transform">
                 <FiPhone size={24} />
               </div>
               <div>
                 <h4 className="font-semibold text-slate-900 dark:text-white text-lg mb-1">Call Us</h4>
                 <p className="text-slate-500 dark:text-slate-400 mb-2">Mon-Fri from 8am to 5pm.</p>
-                <a href="tel:+15550000000" className="text-slate-700 dark:text-slate-300 font-medium hover:text-[var(--primary)] dark:hover:text-[var(--accent)] transition-colors">
-                  +1 (555) 000-0000
+                <a href="tel:+917276317328" className="text-slate-700 dark:text-slate-300 font-medium hover:text-[var(--primary)] dark:hover:text-[var(--accent)] transition-colors">
+                  +91 72763 17328
                 </a>
               </div>
             </div>

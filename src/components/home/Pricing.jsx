@@ -76,23 +76,23 @@ export default function Pricing() {
         </div>
 
         {/* Cards */}
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8 items-stretch">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8 items-stretch pt-6">
           {plans.map((plan, i) => (
             <div
               key={i}
               className={`
-                relative flex flex-col p-8 rounded-3xl overflow-hidden
+                relative flex flex-col p-8 rounded-3xl
                 border transition-all duration-300
                 hover:-translate-y-2
                 ${plan.highlight
-                  ? "bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)] border-[var(--primary)]/30 dark:border-[var(--primary)]/40 shadow-2xl shadow-[var(--primary)]/20 md:scale-105"
+                  ? "bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)] border-[var(--primary)]/30 dark:border-[var(--primary)]/40 shadow-2xl shadow-[var(--primary)]/20 md:scale-105 mt-4"
                   : "bg-white dark:bg-[var(--surface-alt)] border-[var(--primary)]/10 dark:border-[var(--primary)]/20 shadow-md hover:shadow-xl hover:shadow-[var(--primary)]/10"
                 }
               `}
             >
               {/* Top gradient strip */}
               <div
-                className="absolute top-0 left-0 w-full h-1.5 rounded-t-3xl"
+                className="absolute top-0 left-0 w-full h-1.5 rounded-t-3xl overflow-hidden"
                 style={{ background: `linear-gradient(135deg, ${plan.color}, var(--primary))` }}
               />
 
