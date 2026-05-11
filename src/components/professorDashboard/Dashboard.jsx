@@ -7,7 +7,7 @@ import {
   FiUsers, FiBookOpen, FiDollarSign, FiStar,
   FiArrowUpRight, FiClock, FiZap, FiTrendingUp,
   FiXCircle, FiRefreshCw, FiCalendar,
-  FiEdit, FiUserPlus, FiBookOpen as FiBookIcon
+  FiEdit, FiUserPlus, FiAward, FiBookOpen as FiBookIcon
 } from "react-icons/fi";
 
 import { Line, Doughnut } from "react-chartjs-2";
