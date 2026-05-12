@@ -3,7 +3,7 @@ import {
   FiPlus, FiTrash2, FiEdit2, FiEye, FiEyeOff,
   FiUsers, FiBook, FiClock, FiDollarSign, FiSearch,
   FiX, FiCheck, FiAlertCircle, FiStar, FiChevronRight,
-  FiBookOpen, FiCode, FiGlobe, FiZap, FiCpu, FiAward,
+  FiBookOpen, FiCode, FiGlobe, FiZap, FiCpu, FiAward, FiCheckCircle
 } from "react-icons/fi"
 import API from "../../../services/api"
 import socket from "../../../services/socket"

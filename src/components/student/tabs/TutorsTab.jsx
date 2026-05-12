@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import API from "../../../services/api"
 import socket from "../../../services/socket"
 import { useAuth } from "../../../context/AuthContext"
-import { FiSearch, FiClock, FiBook, FiCheckCircle, FiLock, FiUser } from "react-icons/fi"
+import { FiSearch, FiClock, FiBook, FiCheckCircle, FiLock, FiUser, FiDollarSign } from "react-icons/fi"
 
 /* Premium check — determines if user has UNLIMITED access */
 function isPremiumStudent(user) {

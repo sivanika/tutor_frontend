@@ -5,7 +5,7 @@ import { useAuth } from "../../../context/AuthContext"
 import {
   FiBook, FiClock, FiCheckCircle, FiArrowUpRight,
   FiCalendar, FiVideo, FiExternalLink, FiSearch, FiAlertCircle,
-  FiZap,
+  FiZap, FiBookOpen,
 } from "react-icons/fi"
 import { useNavigate } from "react-router-dom"
 import { Line } from "react-chartjs-2"

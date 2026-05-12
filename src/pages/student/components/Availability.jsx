@@ -72,7 +72,7 @@ export default function Availability() {
               {label}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {slots.map(({ id, label: slotLabel, emoji, desc }) => {
+              {slots.map(({ id, label: slotLabel, icon, desc }) => {
                 const active = availability.includes(id);
                 return (
                   <button
