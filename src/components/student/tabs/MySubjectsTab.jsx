@@ -46,6 +46,11 @@ const SUBJECT_POOL = [
   { id: "economics", name: "Economics",          icon: <FiGlobe />,    emoji: FiGlobe   },
 ]
 
+function getSubjectIcon(subjectId) {
+  const found = SUBJECT_POOL.find(p => p.id === subjectId)
+  return found ? found.icon : <FiBookOpen />
+}
+
 
 /* ─── Status badge ───────────────────────────────────────────── */
 const STATUS_MAP = {
@@ -185,8 +190,7 @@ export default function MySubjectsTab() {
     try {
       const res = await API.post("/student-subjects", {
         subjectId: sub.id,
-        name: sub.name,
-        icon: sub.icon
+        name: sub.name
       })
       setSubjects(s => [...s, res.data])
       setShowAddModal(false)
@@ -201,9 +205,7 @@ export default function MySubjectsTab() {
     if (!name.trim()) return
     const sub = {
       id: "custom-" + name.toLowerCase().trim().replace(/\s+/g, '-'),
-      name: name.trim(),
-      icon: <FiBookOpen /> // Default icon for custom subjects
-
+      name: name.trim()
     }
     await addSubject(sub)
   }
@@ -603,7 +605,7 @@ function SubjectCard({ sub, delay, onDelete, onToggle, onCreateReq, onEditReq, o
       <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:10 }}>
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
           <div style={{ width:44, height:44, borderRadius:14, background:"linear-gradient(135deg,var(--surface-alt),#ede9fe)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}>
-            <span style={{ color: "var(--primary)" }}>{sub.icon}</span>
+            <span style={{ color: "var(--primary)" }}>{getSubjectIcon(sub.subjectId)}</span>
 
           </div>
           <div>

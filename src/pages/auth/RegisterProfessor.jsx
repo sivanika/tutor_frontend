@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { FiInfo, FiEye, FiEyeOff } from "react-icons/fi";
 import { GoogleLogin } from "@react-oauth/google";
-
-
+import { useAuth } from "../../context/AuthContext";
 export default function RegisterProfessor() {
   const { register, googleLogin } = useAuth();
   const [email, setEmail] = useState("");

@@ -233,7 +233,7 @@ export default function StepExperience({ formData, setFormData, next, prev }) {
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Your Availability</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {AVAIL_OPTIONS.map(({ key, label, emoji, desc }) => {
+            {AVAIL_OPTIONS.map(({ key, label, icon, desc }) => {
               const active = availability?.[key];
               return (
                 <button

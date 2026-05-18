@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
 import toast from "react-hot-toast";
-import { FiUser, FiBookOpen, FiBriefcase, FiShield, FiEye, FiStar } from "react-icons/fi";
+import { FiUser, FiBookOpen, FiBriefcase, FiShield, FiEye, FiStar, FiLock } from "react-icons/fi";
 
 
 import StepPersonal from "./components/StepPersonal";
