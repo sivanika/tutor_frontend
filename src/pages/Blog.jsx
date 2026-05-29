@@ -69,7 +69,7 @@ export default function Blog() {
                             Our Journal
                         </span>
                         <h1 className="text-4xl md:text-5xl font-extrabold mb-4 dark:text-white">Insights & <span className="grad-text">Knowledge</span></h1>
-                        <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto">Latest updates, educational tips, and stories from the TutorHours community.</p>
+                        <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto">Latest updates, educational tips, and stories from the VishidhAcademy community.</p>
                     </div>
                 </section>
 

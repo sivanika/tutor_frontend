@@ -94,13 +94,12 @@ export default function StudentOnboarding() {
         {/* Top header bar */}
         <div className="bg-white border-b border-slate-100 shadow-sm">
           <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center">
-                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              </div>
-              <span className="font-bold text-slate-800 text-sm">Tutor Hours</span>
+            <div className="flex items-center">
+              <img
+                src="/logos/vishidh-logo-768x384.png"
+                alt="Vishidh VishidhAcademy"
+                className="h-14 w-auto object-contain"
+              />
             </div>
             <div className="text-xs text-slate-400 font-medium">
               Step <span className="text-indigo-600 font-bold">{step}</span> of {totalSteps}
@@ -117,7 +116,12 @@ export default function StudentOnboarding() {
           {step === 1 && (
             <div className="mb-8 text-center">
               <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight">
-                Welcome to <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">Tutor Hours</span>
+                Welcome to{" "}
+                <img
+                  src="/logos/vishidh-logo-768x384.png"
+                  alt="Vishidh VishidhAcademy"
+                  className="inline-block h-9 w-auto object-contain align-middle"
+                />
               </h1>
               <p className="mt-2 text-slate-500 text-sm">Complete your profile to get matched with expert tutors</p>
             </div>

@@ -150,7 +150,7 @@ export default function ProfessorUpgradeModal({ onClose }) {
           {/* Header */}
           <div className="px-6 pt-8 pb-6 text-center border-b border-white/10">
             <p className="text-sm font-bold text-[var(--accent)] uppercase tracking-widest mb-1">
-              🎓 TutorHours — Professor Plans
+              🎓 VishidhAcademy — Professor Plans
             </p>
             <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
               Upgrade Your Plan

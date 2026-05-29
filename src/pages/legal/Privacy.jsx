@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const sections = [
     {
         title: "1. Introduction",
-        body: `TutorHours Pvt. Ltd. ("TutorHours", "we", "our") is committed to protecting your privacy. This Privacy Policy describes how we collect, use, store, and share your personal data in compliance with the Digital Personal Data Protection Act, 2023 (DPDP Act), and other applicable Indian laws.`,
+        body: `VishidhAcademy Pvt. Ltd. ("VishidhAcademy", "we", "our") is committed to protecting your privacy. This Privacy Policy describes how we collect, use, store, and share your personal data in compliance with the Digital Personal Data Protection Act, 2023 (DPDP Act), and other applicable Indian laws.`,
     },
     {
         title: "2. Data We Collect",
@@ -47,7 +47,7 @@ const sections = [
     },
     {
         title: "12. Grievance Officer (DPDP Act §13)",
-        body: `For any privacy-related queries or complaints, contact our Grievance Officer: Email: privacy@tutorhours.com | Address: TutorHours Pvt. Ltd., Bengaluru, Karnataka, India. We will respond within 30 days of receipt.`,
+        body: `For any privacy-related queries or complaints, contact our Grievance Officer: Email: privacy@vishidhacademy.com | Address: VishidhAcademy Pvt. Ltd., Bengaluru, Karnataka, India. We will respond within 30 days of receipt.`,
     },
 ];
 
@@ -57,7 +57,7 @@ export default function Privacy() {
             <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] py-14 px-6 text-center">
                 <h1 className="text-4xl font-extrabold text-white mb-2">Privacy Policy</h1>
                 <p className="text-indigo-100 max-w-lg mx-auto text-sm">
-                    How TutorHours collects, uses, and protects your personal data — aligned with the DPDP Act 2023.
+                    How VishidhAcademy collects, uses, and protects your personal data — aligned with the DPDP Act 2023.
                 </p>
                 <p className="text-indigo-200 text-xs mt-3">Last updated: March 2025</p>
                 <div className="flex justify-center gap-4 mt-5 text-sm">
@@ -73,7 +73,7 @@ export default function Privacy() {
                     </div>
                 ))}
                 <p className="text-xs text-gray-400 dark:text-[var(--accent)]/40 border-t dark:border-[var(--primary)]/20 pt-6">
-                    © {new Date().getFullYear()} TutorHours Pvt. Ltd. All rights reserved.
+                    © {new Date().getFullYear()} VishidhAcademy Pvt. Ltd. All rights reserved.
                 </p>
             </div>
         </div>

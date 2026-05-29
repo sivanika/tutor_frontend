@@ -97,7 +97,7 @@ export default function AdminDashboard() {
           <p className="text-white/70 text-sm font-medium mb-1">Welcome back, Admin</p>
           <h2 className="text-2xl font-bold mb-1">Admin Dashboard</h2>
           <p className="text-white/60 text-sm">
-            Manage the TutorHours platform — users, verifications, earnings, and system settings.
+            Manage the VishidhAcademy platform — users, verifications, earnings, and system settings.
           </p>
         </div>
         <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10" />

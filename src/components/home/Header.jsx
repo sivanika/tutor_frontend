@@ -66,18 +66,11 @@ export default function Header() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <span className="
-            w-9 h-9 rounded-xl grad-bg
-            flex items-center justify-center text-white font-bold text-lg
-            shadow-lg shadow-[var(--primary)]/30
-            group-hover:scale-110 transition-transform duration-300
-          ">
-              T
-            </span>
-            <span className="text-xl font-extrabold tracking-tight">
-              <span className="grad-text">Tutor</span>
-              <span className="text-slate-800 dark:text-white">Hours</span>
-            </span>
+            <img
+              src="/logos/vishidh-logo-768x384.png"
+              alt="Vishidh VishidhAcademy"
+              className="h-16 md:h-20 w-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-sm"
+            />
           </Link>
 
           {/* Desktop Nav */}

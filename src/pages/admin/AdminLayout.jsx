@@ -56,11 +56,13 @@ export default function AdminLayout() {
         {/* Brand */}
         <div className="flex items-center justify-between px-6 py-6 border-b border-white/15">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[var(--accent)] flex items-center justify-center font-bold text-lg shadow-lg">
-              A
-            </div>
+            <img
+              src="/logos/vishidh-emblem-192x192.webp"
+              alt="Vishidh"
+              className="w-12 h-12 rounded-xl object-contain shadow-lg"
+            />
             <div>
-              <p className="font-bold text-sm tracking-wide">TutorHours</p>
+              <p className="font-bold text-sm tracking-wide">VishidhAcademy</p>
               <p className="text-xs text-white/60">Admin Panel</p>
             </div>
           </div>

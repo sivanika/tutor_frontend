@@ -3,39 +3,39 @@ import { Link } from "react-router-dom";
 const sections = [
     {
         title: "1. Acceptance of Terms",
-        body: `By creating an account on TutorHours ("Platform"), you ("User") agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you must not use the Platform. These Terms apply to all visitors, students, tutors, and institutions.`,
+        body: `By creating an account on VishidhAcademy ("Platform"), you ("User") agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you must not use the Platform. These Terms apply to all visitors, students, tutors, and institutions.`,
     },
     {
         title: "2. Eligibility",
-        body: `You must be at least 13 years old to use TutorHours. If you are under 18, you must have parental or guardian consent. Tutors must be 18 or older to list services. By using the Platform, you represent that you meet these eligibility requirements.`,
+        body: `You must be at least 13 years old to use VishidhAcademy. If you are under 18, you must have parental or guardian consent. Tutors must be 18 or older to list services. By using the Platform, you represent that you meet these eligibility requirements.`,
     },
     {
         title: "3. Account Registration",
-        body: `You agree to provide accurate, current, and complete information when creating your account. You are responsible for maintaining the confidentiality of your login credentials and for all activities under your account. Notify us immediately at support@tutorhours.com if you suspect unauthorised access.`,
+        body: `You agree to provide accurate, current, and complete information when creating your account. You are responsible for maintaining the confidentiality of your login credentials and for all activities under your account. Notify us immediately at support@vishidhacademy.com if you suspect unauthorised access.`,
     },
     {
         title: "4. Platform Services",
-        body: `TutorHours provides a marketplace connecting students with tutors and educators. We do not directly provide tutoring services. All session content, teaching quality, and scheduling are the responsibility of the respective Tutor. TutorHours acts solely as an intermediary platform.`,
+        body: `VishidhAcademy provides a marketplace connecting students with tutors and educators. We do not directly provide tutoring services. All session content, teaching quality, and scheduling are the responsibility of the respective Tutor. VishidhAcademy acts solely as an intermediary platform.`,
     },
     {
         title: "5. Payments & Fees",
-        body: `All payments are processed through our payment gateway partner (Razorpay). TutorHours charges a service commission on tutor earnings as disclosed during onboarding. Subscription fees for students are non-refundable except as stated in our Refund Policy. All prices are in Indian Rupees (INR) unless stated otherwise.`,
+        body: `All payments are processed through our payment gateway partner (Razorpay). VishidhAcademy charges a service commission on tutor earnings as disclosed during onboarding. Subscription fees for students are non-refundable except as stated in our Refund Policy. All prices are in Indian Rupees (INR) unless stated otherwise.`,
     },
     {
         title: "6. Prohibited Conduct",
-        body: `You agree not to: (a) use the Platform for any unlawful purpose; (b) harass, abuse, or harm other users; (c) post false or misleading information; (d) attempt to reverse-engineer, hack, or disrupt the Platform; (e) share your account with others; (f) solicit off-platform payments to circumvent TutorHours fees.`,
+        body: `You agree not to: (a) use the Platform for any unlawful purpose; (b) harass, abuse, or harm other users; (c) post false or misleading information; (d) attempt to reverse-engineer, hack, or disrupt the Platform; (e) share your account with others; (f) solicit off-platform payments to circumvent VishidhAcademy fees.`,
     },
     {
         title: "7. Intellectual Property",
-        body: `All content, trademarks, logos, and software on TutorHours are owned by or licensed to TutorHours Pvt. Ltd. You may not reproduce, distribute, or create derivative works without prior written consent. Session materials shared by tutors remain the intellectual property of their respective creators.`,
+        body: `All content, trademarks, logos, and software on VishidhAcademy are owned by or licensed to VishidhAcademy Pvt. Ltd. You may not reproduce, distribute, or create derivative works without prior written consent. Session materials shared by tutors remain the intellectual property of their respective creators.`,
     },
     {
         title: "8. Disclaimers",
-        body: `TutorHours is provided "as is" without warranties of any kind, express or implied. We do not guarantee the accuracy, completeness, or suitability of any tutor profile information. We are not liable for the quality of tutoring sessions, disputes between users, or any losses arising from use of the Platform.`,
+        body: `VishidhAcademy is provided "as is" without warranties of any kind, express or implied. We do not guarantee the accuracy, completeness, or suitability of any tutor profile information. We are not liable for the quality of tutoring sessions, disputes between users, or any losses arising from use of the Platform.`,
     },
     {
         title: "9. Limitation of Liability",
-        body: `To the maximum extent permitted by applicable law, TutorHours' total liability in connection with the Platform shall not exceed the amount paid by you in the three months preceding the event giving rise to the claim.`,
+        body: `To the maximum extent permitted by applicable law, VishidhAcademy' total liability in connection with the Platform shall not exceed the amount paid by you in the three months preceding the event giving rise to the claim.`,
     },
     {
         title: "10. Governing Law & Dispute Resolution",
@@ -47,7 +47,7 @@ const sections = [
     },
     {
         title: "12. Contact",
-        body: `For questions regarding these Terms, contact us at legal@tutorhours.com or write to: TutorHours Pvt. Ltd., Bengaluru, Karnataka, India.`,
+        body: `For questions regarding these Terms, contact us at legal@vishidhacademy.com or write to: VishidhAcademy Pvt. Ltd., Bengaluru, Karnataka, India.`,
     },
 ];
 
@@ -57,7 +57,7 @@ export default function Terms() {
             <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] py-14 px-6 text-center">
                 <h1 className="text-4xl font-extrabold text-white mb-2">Terms of Service</h1>
                 <p className="text-indigo-100 max-w-lg mx-auto text-sm">
-                    Please read these terms carefully before using TutorHours.
+                    Please read these terms carefully before using VishidhAcademy.
                 </p>
                 <p className="text-indigo-200 text-xs mt-3">Last updated: March 2025</p>
                 <div className="flex justify-center gap-4 mt-5 text-sm">
@@ -73,7 +73,7 @@ export default function Terms() {
                     </div>
                 ))}
                 <p className="text-xs text-gray-400 dark:text-[var(--accent)]/40 border-t dark:border-[var(--primary)]/20 pt-6">
-                    © {new Date().getFullYear()} TutorHours Pvt. Ltd. All rights reserved.
+                    © {new Date().getFullYear()} VishidhAcademy Pvt. Ltd. All rights reserved.
                 </p>
             </div>
         </div>

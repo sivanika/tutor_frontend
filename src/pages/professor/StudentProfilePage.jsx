@@ -138,7 +138,7 @@ export default function StudentProfilePage() {
           Back
         </button>
         <span className="font-black text-[var(--text-primary)] dark:text-white tracking-tight">
-          <FiBookOpen className="inline-block mr-2" /> TutorHours
+          <FiBookOpen className="inline-block mr-2" /> VishidhAcademy
 
         </span>
         {user && !isPremium && (

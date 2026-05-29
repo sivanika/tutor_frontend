@@ -27,7 +27,7 @@ const sections = [
     },
     {
         title: "7. Contact",
-        body: `For questions about our use of cookies, contact privacy@tutorhours.com.`,
+        body: `For questions about our use of cookies, contact privacy@vishidhacademy.com.`,
     },
 ];
 
@@ -37,7 +37,7 @@ export default function DataCookiesPolicy() {
             <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] py-14 px-6 text-center">
                 <h1 className="text-4xl font-extrabold text-white mb-2">Cookie Policy</h1>
                 <p className="text-indigo-100 max-w-lg mx-auto text-sm">
-                    How TutorHours uses cookies and similar technologies.
+                    How VishidhAcademy uses cookies and similar technologies.
                 </p>
                 <p className="text-indigo-200 text-xs mt-3">Last updated: March 2025</p>
                 <div className="flex justify-center gap-4 mt-5 text-sm">
@@ -53,7 +53,7 @@ export default function DataCookiesPolicy() {
                     </div>
                 ))}
                 <p className="text-xs text-gray-400 dark:text-[var(--accent)]/40 border-t dark:border-[var(--primary)]/20 pt-6">
-                    © {new Date().getFullYear()} TutorHours Pvt. Ltd. All rights reserved.
+                    © {new Date().getFullYear()} VishidhAcademy Pvt. Ltd. All rights reserved.
                 </p>
             </div>
         </div>

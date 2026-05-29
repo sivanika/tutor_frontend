@@ -41,7 +41,7 @@ export default function CTA() {
             </h2>
 
             <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto">
-              Join thousands of students &amp; professors on TutorHours — the smarter way to learn.
+              Join thousands of students &amp; professors on VishidhAcademy — the smarter way to learn.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4">

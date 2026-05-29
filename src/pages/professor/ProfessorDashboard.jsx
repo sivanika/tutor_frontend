@@ -119,11 +119,13 @@ export default function ProfessorDashboard() {
       `}>
         {/* Logo / Brand */}
         <div className="flex items-center gap-3 px-6 py-6 border-b border-white/15">
-          <div className="w-9 h-9 rounded-xl bg-[var(--accent)] flex items-center justify-center font-bold text-lg shadow-lg">
-            T
-          </div>
+          <img
+            src="/logos/vishidh-emblem-192x192.webp"
+            alt="Vishidh"
+            className="w-12 h-12 rounded-xl object-contain shadow-lg"
+          />
           <div>
-            <p className="font-bold text-sm tracking-wide">TutorHours</p>
+            <p className="font-bold text-sm tracking-wide">VishidhAcademy</p>
             <p className="text-xs text-white/70">Professor Panel</p>
           </div>
           <button

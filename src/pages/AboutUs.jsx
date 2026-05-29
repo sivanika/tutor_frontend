@@ -45,7 +45,7 @@ export default function AboutUs() {
                         Education Globally
                     </h1>
                     <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed mb-12">
-                        TutorHours was born from a simple observation: finding high-quality academic help shouldn't be a hurdle. We connect curious minds with verified experts.
+                        VishidhAcademy was born from a simple observation: finding high-quality academic help shouldn't be a hurdle. We connect curious minds with verified experts.
                     </p>
                     
                     {/* Stats placeholder or image */}
@@ -72,11 +72,11 @@ export default function AboutUs() {
                         <div className="flex-1">
                             <h2 className="text-3xl md:text-4xl font-bold mb-6 dark:text-white leading-tight">
                                 The Story Behind <br />
-                                <span className="text-[var(--primary)]">TutorHours</span>
+                                <span className="text-[var(--primary)]">VishidhAcademy</span>
                             </h2>
                             <div className="space-y-6 text-slate-600 dark:text-slate-400 leading-relaxed">
                                 <p>
-                                    Started by a group of former educators and tech enthusiasts, TutorHours set out to solve the fragmentation in the online tutoring space. We saw talented professors struggling to manage students, and students spending hours trying to find reliable help.
+                                    Started by a group of former educators and tech enthusiasts, VishidhAcademy set out to solve the fragmentation in the online tutoring space. We saw talented professors struggling to manage students, and students spending hours trying to find reliable help.
                                 </p>
                                 <p>
                                     We built a platform that handles the scheduling, payments, and virtual classroom logistics, allowing professors to focus on what they do best: teaching.
@@ -131,7 +131,7 @@ export default function AboutUs() {
                         <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--primary)]/10 dark:bg-[var(--primary)]/20 text-[var(--primary)] dark:text-[var(--accent)] text-xs font-bold tracking-wider uppercase mb-6">
                             Leadership
                         </span>
-                        <h2 className="text-4xl md:text-5xl font-black mb-6 dark:text-white">The Minds Behind <span className="grad-text">TutorHours</span></h2>
+                        <h2 className="text-4xl md:text-5xl font-black mb-6 dark:text-white">The Minds Behind <span className="grad-text">VishidhAcademy</span></h2>
                         <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
                             Our leadership team brings together decades of academic excellence and technological innovation to redefine the learning ecosystem.
                         </p>
@@ -158,7 +158,7 @@ export default function AboutUs() {
                                     <div className="mb-6">
                                         <div className="text-[var(--primary)] text-sm font-bold uppercase tracking-tighter mb-2">Position 01 · Top Leadership</div>
                                         <h3 className="text-3xl font-bold dark:text-white">Prof. V M Venkateswara Rao</h3>
-                                        <p className="text-slate-500 dark:text-[var(--accent)] font-medium">Founder, Director & CEO · TutorHours.com</p>
+                                        <p className="text-slate-500 dark:text-[var(--accent)] font-medium">Founder, Director & CEO · VishidhAcademy.com</p>
                                     </div>
                                     
                                     <div className="relative mb-8">
@@ -169,9 +169,9 @@ export default function AboutUs() {
                                     </div>
 
                                     <div className="space-y-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-8">
-                                        <p>V. M. Venkateswara Rao is a visionary academic leader with over 20 years of experience in education, administration, and digital transformation. With a strong foundation in engineering education and institutional leadership, he identified the growing need for a structured, transparent, and technology-driven learning ecosystem — a vision that led to the creation of TutorHours.com.</p>
+                                        <p>V. M. Venkateswara Rao is a visionary academic leader with over 20 years of experience in education, administration, and digital transformation. With a strong foundation in engineering education and institutional leadership, he identified the growing need for a structured, transparent, and technology-driven learning ecosystem — a vision that led to the creation of VishidhAcademy.com.</p>
                                         <p>Throughout his career, he has demonstrated excellence in academic administration as a Head of Department and Chief Examination Officer, introducing efficient, digitized processes that enhanced operational accuracy and institutional trust. His deep involvement in student counselling and career guidance has impacted thousands of learners, empowering them to make informed academic and professional decisions.</p>
-                                        <p>Recognizing the widening gap between traditional education and modern learning demands, he channelled his expertise into building a scalable online platform that prioritizes accessibility, quality, and trust. TutorHours.com is his commitment — a unified platform integrating learning, hiring, and career insights with a relentless focus on user-centric design and full transparency.</p>
+                                        <p>Recognizing the widening gap between traditional education and modern learning demands, he channelled his expertise into building a scalable online platform that prioritizes accessibility, quality, and trust. VishidhAcademy.com is his commitment — a unified platform integrating learning, hiring, and career insights with a relentless focus on user-centric design and full transparency.</p>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-3">
@@ -208,7 +208,7 @@ export default function AboutUs() {
                                     <div className="mb-6">
                                         <div className="text-[var(--accent)] text-sm font-bold uppercase tracking-tighter mb-2">Position 02 · Technology Leadership</div>
                                         <h3 className="text-3xl font-bold dark:text-white">Dr. V. V. Sujatha</h3>
-                                        <p className="text-slate-500 dark:text-[var(--accent)] font-medium">Chief Technology Officer · TutorHours.com</p>
+                                        <p className="text-slate-500 dark:text-[var(--accent)] font-medium">Chief Technology Officer · VishidhAcademy.com</p>
                                     </div>
                                     
                                     <div className="relative mb-8">
@@ -221,7 +221,7 @@ export default function AboutUs() {
                                     <div className="space-y-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-8">
                                         <p>Dr. V. V. Sujatha is a distinguished academician, researcher, and technology leader holding a Ph.D. in Wireless Communications, with extensive experience in engineering education and research innovation. Her transition from academia to digital e-learning reflects a forward-thinking approach to bridging the gap between traditional education and modern, technology-driven learning environments.</p>
                                         <p>With decades of leadership as Principal, Dean Academics, and Head of Department, she has consistently driven academic excellence and institutional growth. She has authored numerous international journal publications, books, and patents, cementing her standing as a credible contributor to the global research community. As a recognized Ph.D. guide, she has mentored scholars and fostered a vibrant culture of innovation.</p>
-                                        <p>At TutorHours, Dr. Sujatha leads the development of scalable, intelligent, and user-centric technology solutions. Her expertise ensures the platform remains robust, secure, and aligned with the evolving needs of learners and educators worldwide.</p>
+                                        <p>At VishidhAcademy, Dr. Sujatha leads the development of scalable, intelligent, and user-centric technology solutions. Her expertise ensures the platform remains robust, secure, and aligned with the evolving needs of learners and educators worldwide.</p>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-3">

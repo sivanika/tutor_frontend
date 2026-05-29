@@ -98,7 +98,7 @@ export function AuthProvider({ children }) {
           
           {/* Logo / Text */}
           <div className="mt-8 text-center animate-pulse">
-            <h1 className="text-2xl font-black tracking-tight dark:text-white mb-1">TutorHours</h1>
+            <h1 className="text-2xl font-black tracking-tight dark:text-white mb-1">VishidhAcademy</h1>
             <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">Preparing your experience</p>
           </div>
 

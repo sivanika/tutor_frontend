@@ -27,7 +27,7 @@ export default function TutorAgreementModal({ onAccept }) {
                 {/* Scrollable Content */}
                 <div className="overflow-y-auto flex-1 px-8 py-6 space-y-5 text-sm text-gray-700 leading-relaxed">
                     <AgreementSection title="1. Independent Contractor">
-                        You are an independent contractor, not an employee of TutorHours. You are responsible for your own taxes, insurance, and compliance with applicable laws.
+                        You are an independent contractor, not an employee of VishidhAcademy. You are responsible for your own taxes, insurance, and compliance with applicable laws.
                     </AgreementSection>
 
                     <AgreementSection title="2. Session Conduct">
@@ -35,19 +35,19 @@ export default function TutorAgreementModal({ onAccept }) {
                     </AgreementSection>
 
                     <AgreementSection title="3. Commission & Payments">
-                        TutorHours charges an 18% service commission on all session payments. Payouts are processed weekly to your registered bank/UPI account. You are responsible for declaring income and paying applicable taxes.
+                        VishidhAcademy charges an 18% service commission on all session payments. Payouts are processed weekly to your registered bank/UPI account. You are responsible for declaring income and paying applicable taxes.
                     </AgreementSection>
 
                     <AgreementSection title="4. Prohibited Activities">
-                        You must not solicit students to transact outside TutorHours, share student contact information, provide false credentials, engage in academic dishonesty, or promote competing platforms during sessions.
+                        You must not solicit students to transact outside VishidhAcademy, share student contact information, provide false credentials, engage in academic dishonesty, or promote competing platforms during sessions.
                     </AgreementSection>
 
                     <AgreementSection title="5. Account Suspension">
-                        TutorHours may suspend or terminate your listing for Agreement violations, consistently poor ratings, frequent cancellations, or false information. Pending payouts for completed sessions are not affected.
+                        VishidhAcademy may suspend or terminate your listing for Agreement violations, consistently poor ratings, frequent cancellations, or false information. Pending payouts for completed sessions are not affected.
                     </AgreementSection>
 
                     <AgreementSection title="6. Intellectual Property">
-                        Materials you upload remain your intellectual property. By uploading, you grant TutorHours a non-exclusive licence to display them on the Platform.
+                        Materials you upload remain your intellectual property. By uploading, you grant VishidhAcademy a non-exclusive licence to display them on the Platform.
                     </AgreementSection>
 
                     <AgreementSection title="7. Governing Law">

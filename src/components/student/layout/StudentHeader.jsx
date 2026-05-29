@@ -1,4 +1,3 @@
-import { FiUser } from "react-icons/fi";
 
 export default function StudentHeader({ onLogout }) {
 
@@ -13,25 +12,19 @@ export default function StudentHeader({ onLogout }) {
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
         {/* Logo */}
-        <div className="flex items-center text-2xl font-extrabold tracking-wide group">
-          <div className="
-            w-11 h-11 rounded-full
-            bg-gradient-to-br from-white/30 to-white/10
-            flex items-center justify-center mr-3
-            shadow-lg
-            group-hover:shadow-[0_0_20px_rgba(255,255,255,0.6)]
-            transition
-          ">
-            <FiUser className="text-white text-xl" />
-
-          </div>
-          <span className="
-            bg-clip-text text-transparent
-            bg-gradient-to-r from-white via-[#FFD9C0] to-white
-            animate-pulse
-          ">
-            Tutorhours
-          </span>
+        <div className="flex items-center group">
+          <Link to="/student/dashboard" className="flex items-center gap-2">
+            <img
+              src="/logos/vishidh-emblem-192x192.webp"
+              alt="Vishidh VishidhAcademy"
+              className="w-12 h-12 sm:hidden object-contain"
+            />
+            <img
+              src="/logos/vishidh-logo-768x384.png"
+              alt="Vishidh VishidhAcademy"
+              className="hidden sm:block h-14 w-auto object-contain brightness-0 invert group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
+            />
+          </Link>
         </div>
 
 

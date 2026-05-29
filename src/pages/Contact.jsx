@@ -37,7 +37,7 @@ export default function Contact() {
           <div className="text-center p-8">
             <div className="w-16 h-16 rounded-2xl bg-[var(--primary)]/10 flex items-center justify-center text-3xl mx-auto mb-6">📧</div>
             <h3 className="font-bold mb-2 dark:text-white">Email Us</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm">support@tutorhours.com<br />info@tutorhours.com</p>
+            <p className="text-slate-600 dark:text-slate-400 text-sm">support@vishidhacademy.com<br />info@vishidhacademy.com</p>
           </div>
           <div className="text-center p-8">
             <div className="w-16 h-16 rounded-2xl bg-[var(--primary)]/10 flex items-center justify-center text-3xl mx-auto mb-6">📞</div>

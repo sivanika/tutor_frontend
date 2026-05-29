@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const sections = [
     {
         title: "1. Introduction",
-        body: `This Institution Agreement ("Agreement") governs access to TutorHours services by schools, colleges, coaching centres, and other educational institutions ("Institution"). By activating an institution account, you agree to these terms on behalf of your organisation.`,
+        body: `This Institution Agreement ("Agreement") governs access to VishidhAcademy services by schools, colleges, coaching centres, and other educational institutions ("Institution"). By activating an institution account, you agree to these terms on behalf of your organisation.`,
     },
     {
         title: "2. Account Setup",
@@ -11,7 +11,7 @@ const sections = [
     },
     {
         title: "3. Permitted Use",
-        body: `Institution accounts may be used to: (a) enrol students in bulk under a single billing arrangement; (b) book sessions with TutorHours tutors for enrolled students; (c) access aggregate usage analytics for institution-administered sessions; (d) manage student rosters and session allocations.`,
+        body: `Institution accounts may be used to: (a) enrol students in bulk under a single billing arrangement; (b) book sessions with VishidhAcademy tutors for enrolled students; (c) access aggregate usage analytics for institution-administered sessions; (d) manage student rosters and session allocations.`,
     },
     {
         title: "4. Pricing & Billing",
@@ -19,7 +19,7 @@ const sections = [
     },
     {
         title: "5. Data Protection",
-        body: `TutorHours will process student data on behalf of the Institution as a Data Processor under the DPDP Act 2023. The Institution is the Data Fiduciary responsible for obtaining student/guardian consent before enrolment. A Data Processing Agreement (DPA) will be executed separately upon request.`,
+        body: `VishidhAcademy will process student data on behalf of the Institution as a Data Processor under the DPDP Act 2023. The Institution is the Data Fiduciary responsible for obtaining student/guardian consent before enrolment. A Data Processing Agreement (DPA) will be executed separately upon request.`,
     },
     {
         title: "6. Confidentiality",
@@ -27,15 +27,15 @@ const sections = [
     },
     {
         title: "7. Service Level Agreement",
-        body: `TutorHours targets 99.5% monthly Platform uptime. Scheduled maintenance will be communicated 48 hours in advance. Downtime credits may be available for institution accounts subject to the specific SLA in the Order Form.`,
+        body: `VishidhAcademy targets 99.5% monthly Platform uptime. Scheduled maintenance will be communicated 48 hours in advance. Downtime credits may be available for institution accounts subject to the specific SLA in the Order Form.`,
     },
     {
         title: "8. Term & Termination",
-        body: `This Agreement begins on the date of institutional account activation and continues for the subscription period. Either party may terminate with 30 days' written notice. Upon termination, TutorHours will provide an export of the Institution's data within 14 days.`,
+        body: `This Agreement begins on the date of institutional account activation and continues for the subscription period. Either party may terminate with 30 days' written notice. Upon termination, VishidhAcademy will provide an export of the Institution's data within 14 days.`,
     },
     {
         title: "9. Limitation of Liability",
-        body: `TutorHours' maximum liability under this Agreement in any 12-month period shall not exceed the total fees paid by the Institution in that period.`,
+        body: `VishidhAcademy' maximum liability under this Agreement in any 12-month period shall not exceed the total fees paid by the Institution in that period.`,
     },
     {
         title: "10. Governing Law",
@@ -43,7 +43,7 @@ const sections = [
     },
     {
         title: "11. Contact",
-        body: `For partnership and institutional enquiries, contact institutions@tutorhours.com.`,
+        body: `For partnership and institutional enquiries, contact institutions@vishidhacademy.com.`,
     },
 ];
 
@@ -53,7 +53,7 @@ export default function InstitutionAgreement() {
             <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] py-14 px-6 text-center">
                 <h1 className="text-4xl font-extrabold text-white mb-2">Institution Agreement</h1>
                 <p className="text-indigo-100 max-w-lg mx-auto text-sm">
-                    Terms governing educational institutions and organisations using TutorHours services.
+                    Terms governing educational institutions and organisations using VishidhAcademy services.
                 </p>
                 <p className="text-indigo-200 text-xs mt-3">Last updated: March 2025</p>
                 <div className="flex justify-center gap-4 mt-5 text-sm">
@@ -69,7 +69,7 @@ export default function InstitutionAgreement() {
                     </div>
                 ))}
                 <p className="text-xs text-gray-400 dark:text-[var(--accent)]/40 border-t dark:border-[var(--primary)]/20 pt-6">
-                    © {new Date().getFullYear()} TutorHours Pvt. Ltd. All rights reserved.
+                    © {new Date().getFullYear()} VishidhAcademy Pvt. Ltd. All rights reserved.
                 </p>
             </div>
         </div>

@@ -202,7 +202,7 @@ export default function AdminEarnings() {
         <div>
           <p className="font-semibold text-gray-800 text-sm">18% Platform Commission Model</p>
           <p className="text-xs text-gray-500 mt-0.5">
-            On the <strong>Pay Per Session</strong> model, TutorHours retains 18% of each session's value as platform revenue. The professor receives 82% as their net payout.
+            On the <strong>Pay Per Session</strong> model, VishidhAcademy retains 18% of each session's value as platform revenue. The professor receives 82% as their net payout.
           </p>
         </div>
         <div className="ml-auto text-right shrink-0">

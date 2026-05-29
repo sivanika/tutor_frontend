@@ -4,7 +4,7 @@ const testimonials = [
   {
     name: "Jessica Lin",
     role: "Engineering Student",
-    text: "TutorHours helped me clear my exams with top grades. The professors are extremely knowledgeable and supportive.",
+    text: "VishidhAcademy helped me clear my exams with top grades. The professors are extremely knowledgeable and supportive.",
     color: "var(--primary)",
   },
   {

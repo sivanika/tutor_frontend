@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 const sections = [
     {
         title: "1. Introduction",
-        body: `This Tutor Agreement ("Agreement") is a binding contract between you ("Tutor") and TutorHours Pvt. Ltd. ("TutorHours"). By completing the onboarding process and activating your profile, you agree to all terms of this Agreement. Please read it carefully.`,
+        body: `This Tutor Agreement ("Agreement") is a binding contract between you ("Tutor") and VishidhAcademy Pvt. Ltd. ("VishidhAcademy"). By completing the onboarding process and activating your profile, you agree to all terms of this Agreement. Please read it carefully.`,
     },
     {
         title: "2. Eligibility & Identity Verification",
-        body: `You must be at least 18 years old to list services on TutorHours. You agree to provide accurate identity documents (government ID) and educational credentials. TutorHours reserves the right to verify all information and reject or deactivate profiles that contain false information.`,
+        body: `You must be at least 18 years old to list services on VishidhAcademy. You agree to provide accurate identity documents (government ID) and educational credentials. VishidhAcademy reserves the right to verify all information and reject or deactivate profiles that contain false information.`,
     },
     {
         title: "3. Independent Contractor Status",
-        body: `You are an independent contractor, not an employee, agent, partner, or franchise of TutorHours. You are solely responsible for your own taxes, insurance, and compliance with applicable laws. Nothing in this Agreement creates an employer-employee relationship.`,
+        body: `You are an independent contractor, not an employee, agent, partner, or franchise of VishidhAcademy. You are solely responsible for your own taxes, insurance, and compliance with applicable laws. Nothing in this Agreement creates an employer-employee relationship.`,
     },
     {
         title: "4. Session Conduct & Quality",
@@ -19,27 +19,27 @@ const sections = [
     },
     {
         title: "5. Commission & Payments",
-        body: `TutorHours charges an 18% service commission on all session payments. Payouts are processed weekly to your registered bank account or UPI ID. You are responsible for declaring income and paying applicable taxes. TutorHours will issue payment receipts but is not responsible for tax filings on your behalf.`,
+        body: `VishidhAcademy charges an 18% service commission on all session payments. Payouts are processed weekly to your registered bank account or UPI ID. You are responsible for declaring income and paying applicable taxes. VishidhAcademy will issue payment receipts but is not responsible for tax filings on your behalf.`,
     },
     {
         title: "6. Prohibited Activities",
-        body: `Tutors must not: (a) solicit students to transact outside TutorHours to bypass commissions; (b) share or sell student contact information; (c) provide false qualifications or credentials; (d) engage in academic dishonesty (e.g., completing assignments for students); (e) promote competing platforms during TutorHours sessions.`,
+        body: `Tutors must not: (a) solicit students to transact outside VishidhAcademy to bypass commissions; (b) share or sell student contact information; (c) provide false qualifications or credentials; (d) engage in academic dishonesty (e.g., completing assignments for students); (e) promote competing platforms during VishidhAcademy sessions.`,
     },
     {
         title: "7. Intellectual Property",
-        body: `Materials you create and share on TutorHours remain your intellectual property. By uploading materials, you grant TutorHours a non-exclusive, royalty-free licence to display them on the Platform. You must not upload content that infringes third-party IP rights.`,
+        body: `Materials you create and share on VishidhAcademy remain your intellectual property. By uploading materials, you grant VishidhAcademy a non-exclusive, royalty-free licence to display them on the Platform. You must not upload content that infringes third-party IP rights.`,
     },
     {
         title: "8. Ratings & Reviews",
-        body: `Students may rate and review your sessions. TutorHours may display these publicly. You agree not to manipulate, fake, or solicit fraudulent reviews. TutorHours may remove reviews that violate our content policy.`,
+        body: `Students may rate and review your sessions. VishidhAcademy may display these publicly. You agree not to manipulate, fake, or solicit fraudulent reviews. VishidhAcademy may remove reviews that violate our content policy.`,
     },
     {
         title: "9. Account Suspension & Termination",
-        body: `TutorHours may suspend or terminate your listing if you violate this Agreement, receive consistently poor ratings, have frequent cancellations, or are found to have provided false information. Termination does not affect pending payouts for completed sessions.`,
+        body: `VishidhAcademy may suspend or terminate your listing if you violate this Agreement, receive consistently poor ratings, have frequent cancellations, or are found to have provided false information. Termination does not affect pending payouts for completed sessions.`,
     },
     {
         title: "10. Indemnification",
-        body: `You agree to indemnify and hold TutorHours harmless from any claims, losses, or damages arising from your breach of this Agreement, your sessions, or your actions or omissions on the Platform.`,
+        body: `You agree to indemnify and hold VishidhAcademy harmless from any claims, losses, or damages arising from your breach of this Agreement, your sessions, or your actions or omissions on the Platform.`,
     },
     {
         title: "11. Governing Law",
@@ -47,11 +47,11 @@ const sections = [
     },
     {
         title: "12. Amendments",
-        body: `TutorHours may amend this Agreement with 14 days' notice via email. Continued use of the Platform after the notice period constitutes acceptance of the revised Agreement.`,
+        body: `VishidhAcademy may amend this Agreement with 14 days' notice via email. Continued use of the Platform after the notice period constitutes acceptance of the revised Agreement.`,
     },
     {
         title: "13. Contact",
-        body: `For questions about this Agreement, contact legal@tutorhours.com.`,
+        body: `For questions about this Agreement, contact legal@vishidhacademy.com.`,
     },
 ];
 
@@ -61,7 +61,7 @@ export default function TutorAgreement() {
             <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] py-14 px-6 text-center">
                 <h1 className="text-4xl font-extrabold text-white mb-2">Tutor Agreement</h1>
                 <p className="text-indigo-100 max-w-lg mx-auto text-sm">
-                    The binding agreement between tutors and TutorHours governing platform listings and conduct.
+                    The binding agreement between tutors and VishidhAcademy governing platform listings and conduct.
                 </p>
                 <p className="text-indigo-200 text-xs mt-3">Last updated: March 2025</p>
                 <div className="flex justify-center gap-4 mt-5 text-sm">
@@ -77,7 +77,7 @@ export default function TutorAgreement() {
                     </div>
                 ))}
                 <p className="text-xs text-gray-400 dark:text-[var(--accent)]/40 border-t dark:border-[var(--primary)]/20 pt-6">
-                    © {new Date().getFullYear()} TutorHours Pvt. Ltd. All rights reserved.
+                    © {new Date().getFullYear()} VishidhAcademy Pvt. Ltd. All rights reserved.
                 </p>
             </div>
         </div>

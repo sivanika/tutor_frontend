@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const sections = [
     {
         title: "1. Overview",
-        body: `This Refund Policy governs refunds and cancellations for sessions and subscriptions on TutorHours. Please read it carefully before making any payment.`,
+        body: `This Refund Policy governs refunds and cancellations for sessions and subscriptions on VishidhAcademy. Please read it carefully before making any payment.`,
     },
     {
         title: "2. Session Cancellation by Student",
@@ -19,19 +19,19 @@ const sections = [
     },
     {
         title: "5. Platform Listing Fees (Tutor)",
-        body: `Tutor listing/activation fees paid to TutorHours are non-refundable once the profile has been reviewed or published. If TutorHours rejects a profile after payment, a full refund is issued within 7 business days.`,
+        body: `Tutor listing/activation fees paid to VishidhAcademy are non-refundable once the profile has been reviewed or published. If VishidhAcademy rejects a profile after payment, a full refund is issued within 7 business days.`,
     },
     {
         title: "6. Technical Disruptions",
-        body: `If a session fails due to a confirmed technical issue on TutorHours' platform (not user's internet), the session credits will be fully refunded upon investigation and approval by our support team (typically within 5 business days).`,
+        body: `If a session fails due to a confirmed technical issue on VishidhAcademy' platform (not user's internet), the session credits will be fully refunded upon investigation and approval by our support team (typically within 5 business days).`,
     },
     {
         title: "7. Refund Processing",
-        body: `Credit card/debit card/UPI refunds are processed within 5–10 business days depending on your bank. Wallet credit refunds are instant. TutorHours bears no responsibility for delays caused by banks or payment processors.`,
+        body: `Credit card/debit card/UPI refunds are processed within 5–10 business days depending on your bank. Wallet credit refunds are instant. VishidhAcademy bears no responsibility for delays caused by banks or payment processors.`,
     },
     {
         title: "8. How to Request a Refund",
-        body: `Email support@tutorhours.com with your Order ID, registered email, and reason for refund. Our team will respond within 48 business hours.`,
+        body: `Email support@vishidhacademy.com with your Order ID, registered email, and reason for refund. Our team will respond within 48 business hours.`,
     },
 ];
 
@@ -57,7 +57,7 @@ export default function RefundPolicy() {
                     </div>
                 ))}
                 <p className="text-xs text-gray-400 dark:text-[var(--accent)]/40 border-t dark:border-[var(--primary)]/20 pt-6">
-                    © {new Date().getFullYear()} TutorHours Pvt. Ltd. All rights reserved.
+                    © {new Date().getFullYear()} VishidhAcademy Pvt. Ltd. All rights reserved.
                 </p>
             </div>
         </div>

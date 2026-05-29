@@ -18,17 +18,13 @@ export default function ProfessorPaymentStep() {
                 <p className="text-xs font-semibold uppercase tracking-widest text-[var(--accent)] mb-2">
                     Final Step — Platform Agreement
                 </p>
-                <h2 className="text-3xl font-black text-[var(--text-primary)] mb-2">
+                <h2 className="text-3xl font-black text-[var(--text-primary)] mb-2 flex items-center justify-center gap-3 flex-wrap">
                     Start Teaching with{" "}
-                    <span
-                        style={{
-                            background: "linear-gradient(135deg, var(--primary), var(--accent))",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                        }}
-                    >
-                        TutorHours
-                    </span>
+                    <img
+                        src="/logos/vishidh-logo-768x384.png"
+                        alt="Vishidh VishidhAcademy"
+                        className="h-12 w-auto object-contain inline-block"
+                    />
                 </h2>
                 <p className="text-slate-500 text-sm max-w-md mx-auto">
                     Join as a professor with our simple commission model — no upfront costs, no monthly fee.
@@ -109,7 +105,7 @@ export default function ProfessorPaymentStep() {
             {/* Terms */}
             <div className="max-w-xl mx-auto">
                 <div className="p-4 rounded-xl bg-white border border-slate-200 text-sm text-slate-600 text-center">
-                    By activating, you agree to TutorHours'{" "}
+                    By activating, you agree to VishidhAcademy'{" "}
                     <span className="text-[var(--primary)] font-semibold cursor-pointer hover:underline">
                         Terms of Service
                     </span>{" "}

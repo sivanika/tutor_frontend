@@ -102,7 +102,7 @@ export default function LoginModal({ onClose, onSwitchToRegister }) {
 
                 {/* Title */}
                 <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white">Welcome Back</h2>
-                <p className="text-center text-sm text-gray-500 dark:text-[var(--accent)] -mt-3">Log in to TutorHours</p>
+                <p className="text-center text-sm text-gray-500 dark:text-[var(--accent)] -mt-3">Log in to VishidhAcademy</p>
 
                 {/* Error */}
                 {error && (

@@ -168,7 +168,7 @@ export default function Careers() {
                         <span className="grad-text">Education Together</span>
                     </h1>
                     <p className="text-lg text-slate-600 dark:text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
-                        Join TutorHours and help thousands of students connect with world-class professors. We're looking for passionate people to grow our Technical Support team.
+                        Join VishidhAcademy and help thousands of students connect with world-class professors. We're looking for passionate people to grow our Technical Support team.
                     </p>
                     <a href="#openings" className="inline-block bg-white text-[var(--primary)] font-bold px-8 py-3.5 rounded-2xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
                         View Open Roles
@@ -178,7 +178,7 @@ export default function Careers() {
 
             {/* ── Benefits ── */}
             <section className="max-w-5xl mx-auto px-6 py-16">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 text-center">Why TutorHours?</h2>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 text-center">Why VishidhAcademy?</h2>
                 <p className="text-slate-500 dark:text-slate-400 text-sm text-center mb-10">We invest in our people so they can invest in our mission</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     {BENEFITS.map(({ icon, title, desc }) => (

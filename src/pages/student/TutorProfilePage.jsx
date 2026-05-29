@@ -146,10 +146,11 @@ export default function TutorProfilePage() {
                     <FiChevronLeft /> Back
                 </button>
 
-                <span className="font-black text-[var(--text-primary)] dark:text-white tracking-tight">
-                    <FiBookOpen className="inline-block mr-2" /> TutorHours
-
-                </span>
+                <img
+                    src="/logos/vishidh-logo-768x384.png"
+                    alt="Vishidh VishidhAcademy"
+                    className="h-12 w-auto object-contain"
+                />
                 {!user && (
                     <button
                         onClick={() => navigate("/login")}

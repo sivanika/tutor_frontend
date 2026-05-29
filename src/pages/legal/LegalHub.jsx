@@ -4,7 +4,7 @@ import { FiFileText, FiShield, FiPocket, FiInfo, FiBookOpen, FiHome } from "reac
 const docs = [
     {
         title: "Terms of Service",
-        description: "Your rights and responsibilities when using TutorHours.",
+        description: "Your rights and responsibilities when using VishidhAcademy.",
         icon: <FiFileText />,
         path: "/terms",
         updated: "March 2025",
@@ -32,14 +32,14 @@ const docs = [
     },
     {
         title: "Tutor Agreement",
-        description: "Terms governing tutors who list their services on TutorHours.",
+        description: "Terms governing tutors who list their services on VishidhAcademy.",
         icon: <FiBookOpen />,
         path: "/tutor-agreement",
         updated: "March 2025",
     },
     {
         title: "Institution Agreement",
-        description: "Terms for schools, colleges, and institutions using TutorHours services.",
+        description: "Terms for schools, colleges, and institutions using VishidhAcademy services.",
         icon: <FiHome />,
         path: "/institution-agreement",
         updated: "March 2025",
@@ -63,7 +63,7 @@ export default function LegalHub() {
                 <div className="relative z-10">
                   <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white mb-3">Legal &amp; Policies</h1>
                   <p className="text-slate-600 dark:text-indigo-100 text-lg max-w-xl mx-auto">
-                      Transparency and trust are core to TutorHours. Read all our policies and agreements in one place.
+                      Transparency and trust are core to VishidhAcademy. Read all our policies and agreements in one place.
                   </p>
                   <Link
                       to="/"
@@ -99,8 +99,8 @@ export default function LegalHub() {
                 {/* Footer note */}
                 <p className="text-center text-sm text-gray-400 dark:text-[var(--accent)]/50 mt-14">
                     Questions?{" "}
-                    <a href="mailto:legal@tutorhours.com" className="text-indigo-600 hover:underline">
-                        legal@tutorhours.com
+                    <a href="mailto:legal@vishidhacademy.com" className="text-indigo-600 hover:underline">
+                        legal@vishidhacademy.com
                     </a>
                 </p>
             </div>

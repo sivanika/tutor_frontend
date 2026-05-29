@@ -6,11 +6,11 @@ const FAQS = [
         category: "Students",
         questions: [
             {
-                q: "What is TutorHours and how does it work?",
-                a: "TutorHours is an online tutoring platform that connects students with qualified educators across all subjects and grade levels. Simply browse tutor profiles, choose one that matches your needs and budget, and book a session directly. Sessions happen via our integrated video platform — no downloads needed."
+                q: "What is VishidhAcademy and how does it work?",
+                a: "VishidhAcademy is an online tutoring platform that connects students with qualified educators across all subjects and grade levels. Simply browse tutor profiles, choose one that matches your needs and budget, and book a session directly. Sessions happen via our integrated video platform — no downloads needed."
             },
             {
-                q: "Is TutorHours free to join as a student?",
+                q: "Is VishidhAcademy free to join as a student?",
                 a: "Yes — completely free. There are no subscription fees, registration charges, or hidden costs for students. You only pay when you book and complete a session with a tutor. The tutor's listed rate is exactly what you pay."
             },
             {
@@ -19,15 +19,15 @@ const FAQS = [
             },
             {
                 q: "Can I try a free trial session before committing?",
-                a: "Many tutors on TutorHours offer a free 15-minute introductory call so you can discuss your goals before booking a paid session. Look for the 'Free Intro' badge on tutor profiles. This helps you ensure the teaching style and subject depth are the right fit."
+                a: "Many tutors on VishidhAcademy offer a free 15-minute introductory call so you can discuss your goals before booking a paid session. Look for the 'Free Intro' badge on tutor profiles. This helps you ensure the teaching style and subject depth are the right fit."
             },
             {
                 q: "How do I reschedule or cancel a session?",
                 a: "You can reschedule or cancel any upcoming session from your dashboard up to 24 hours before the scheduled time at no charge. Cancellations within 24 hours may incur a partial fee depending on the tutor's individual policy, which is displayed on their profile."
             },
             {
-                q: "What subjects and levels does TutorHours cover?",
-                a: "TutorHours covers a wide range including: School subjects (Class 1–12), Competitive exams (JEE, NEET, UPSC, CAT, IELTS), College-level courses (Engineering, Commerce, Arts), and Skill-based learning (Coding, Music, Art). New subjects are added regularly."
+                q: "What subjects and levels does VishidhAcademy cover?",
+                a: "VishidhAcademy covers a wide range including: School subjects (Class 1–12), Competitive exams (JEE, NEET, UPSC, CAT, IELTS), College-level courses (Engineering, Commerce, Arts), and Skill-based learning (Coding, Music, Art). New subjects are added regularly."
             },
             {
                 q: "What payment methods are accepted?",
@@ -39,11 +39,11 @@ const FAQS = [
             },
             {
                 q: "Are my personal details and sessions private?",
-                a: "Yes. TutorHours follows strict data privacy practices. Your personal information is never shared with third parties. Session content is encrypted, and recordings are only accessible by you and your tutor."
+                a: "Yes. VishidhAcademy follows strict data privacy practices. Your personal information is never shared with third parties. Session content is encrypted, and recordings are only accessible by you and your tutor."
             },
             {
                 q: "Can I learn in my own regional language?",
-                a: "Absolutely. TutorHours has tutors who teach in Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Punjabi, and many more regional languages. Use the language filter to find your match."
+                a: "Absolutely. VishidhAcademy has tutors who teach in Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Punjabi, and many more regional languages. Use the language filter to find your match."
             }
         ]
     },
@@ -51,7 +51,7 @@ const FAQS = [
         category: "Tutors / Professors",
         questions: [
             {
-                q: "Who can become a tutor on TutorHours?",
+                q: "Who can become a tutor on VishidhAcademy?",
                 a: "Any qualified educator can apply — school teachers, college professors, subject-matter experts, retired academics, and skilled professionals. You need to demonstrate subject expertise and communication skills."
             },
             {
@@ -64,11 +64,11 @@ const FAQS = [
             },
             {
                 q: "How much do tutors earn and what is the commission structure?",
-                a: "Tutors keep 82% of every session fee. TutorHours retains 18% for platform operations and student acquisition. You set your own hourly rate, giving you full control over your income."
+                a: "Tutors keep 82% of every session fee. VishidhAcademy retains 18% for platform operations and student acquisition. You set your own hourly rate, giving you full control over your income."
             },
             {
                 q: "When and how are payouts processed?",
-                a: "Earnings are credited to your TutorHours wallet within 24 hours of session completion. You can withdraw to your bank account anytime, usually processed within 2-3 business days."
+                a: "Earnings are credited to your VishidhAcademy wallet within 24 hours of session completion. You can withdraw to your bank account anytime, usually processed within 2-3 business days."
             },
             {
                 q: "Is there any subscription fee for tutors?",
@@ -87,8 +87,8 @@ const FAQS = [
                 a: "You need a reliable internet connection, a computer/tablet with a webcam and mic, and a quiet environment. Our platform includes a built-in whiteboard and screen sharing."
             },
             {
-                q: "Can tutors from outside India join TutorHours?",
-                a: "Yes! TutorHours is a global platform. Tutors from any country are welcome. International payouts are processed via wire transfer or PayPal."
+                q: "Can tutors from outside India join VishidhAcademy?",
+                a: "Yes! VishidhAcademy is a global platform. Tutors from any country are welcome. International payouts are processed via wire transfer or PayPal."
             }
         ]
     },
@@ -96,7 +96,7 @@ const FAQS = [
         category: "Parents",
         questions: [
             {
-                q: "How does TutorHours ensure my child's safety?",
+                q: "How does VishidhAcademy ensure my child's safety?",
                 a: "Safety is our top priority. Every tutor undergoes identity verification and background checks. Sessions happen inside our secure platform, and you can enable session monitoring."
             },
             {
@@ -108,7 +108,7 @@ const FAQS = [
                 a: "Absolutely. Link your parent account to your child's profile to access a Parent Dashboard showing session history, duration, attendance, and tutor notes."
             },
             {
-                q: "Is TutorHours affordable?",
+                q: "Is VishidhAcademy affordable?",
                 a: "Yes. We offer a wide range of price points, from budget-friendly tutors starting around ₹150/hour to specialists. Many tutors also offer discounted packages for regular bookings."
             },
             {
@@ -132,7 +132,7 @@ const FAQS = [
                 a: "Yes, parents are welcome to sit alongside their child, especially in the beginning. You can also use silent observation mode via the Parent Dashboard."
             },
             {
-                q: "Does TutorHours support students with special learning needs?",
+                q: "Does VishidhAcademy support students with special learning needs?",
                 a: "Yes. We have tutors trained in special education for students with dyslexia, ADHD, autism, or other differences. Use the 'Special Needs' filter to find specialists."
             }
         ]
@@ -181,7 +181,7 @@ export default function FAQ() {
                             Support Center
                         </span>
                         <h1 className="text-4xl md:text-5xl font-extrabold mb-4 dark:text-white">Frequently Asked <span className="grad-text">Questions</span></h1>
-                        <p className="text-slate-500 dark:text-slate-400">Everything you need to know about TutorHours</p>
+                        <p className="text-slate-500 dark:text-slate-400">Everything you need to know about VishidhAcademy</p>
                     </div>
                 </section>
 

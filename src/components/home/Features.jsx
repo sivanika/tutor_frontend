@@ -54,7 +54,7 @@ export default function Features() {
         {/* Heading */}
         <div className="text-center mb-16 px-6">
           <p className="text-sm font-semibold uppercase tracking-widest text-[var(--accent)] mb-3">
-            Why TutorHours?
+            Why VishidhAcademy?
           </p>
           <h2 className="text-4xl md:text-5xl font-black text-[var(--text-primary)] dark:text-white mb-4">
             Everything You Need to{" "}

@@ -248,7 +248,7 @@ export default function PaymentPage() {
                 key: data.keyId,
                 amount: data.amount,
                 currency: data.currency,
-                name: "TutorHours",
+                name: "VishidhAcademy",
                 description: `${selectedPlan.name} Plan — ${selectedPlan.period}`,
                 order_id: data.orderId,
                 prefill: {
@@ -429,10 +429,11 @@ export default function PaymentPage() {
                     >
                         ← Back
                     </button>
-                    <span className="text-white font-bold tracking-wider text-sm">
-                        <FiBookOpen className="inline-block mr-2" /> TutorHours
-
-                    </span>
+                    <img
+                        src="/logos/vishidh-logo-768x384.png"
+                        alt="Vishidh VishidhAcademy"
+                        className="h-14 w-auto object-contain brightness-0 invert"
+                    />
                     <div className="flex items-center gap-2 text-[var(--accent)] text-xs">
                         <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                         Secure Checkout
@@ -588,10 +589,11 @@ export default function PaymentPage() {
                 >
                     ← Change Plan
                 </button>
-                <span className="text-white font-bold tracking-wider text-sm">
-                    <FiBookOpen className="inline-block mr-2" /> TutorHours
-
-                </span>
+                <img
+                    src="/logos/vishidh-logo-768x384.png"
+                    alt="Vishidh VishidhAcademy"
+                    className="h-14 w-auto object-contain brightness-0 invert"
+                />
                 <div className="flex items-center gap-2 text-[var(--accent)] text-xs">
                     <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                     Secure Checkout
@@ -818,7 +820,7 @@ export default function PaymentPage() {
                         <p className="text-center text-[var(--text-muted)] text-xs leading-relaxed">
                             Clicking the button opens Razorpay's secure checkout where you can pay via{" "}
                             <span className="text-[var(--accent)]">UPI, Card, Net Banking or Wallet</span>.
-                            <br />Money is transferred directly to TutorHours' verified account.
+                            <br />Money is transferred directly to VishidhAcademy' verified account.
                         </p>
                     )}
 

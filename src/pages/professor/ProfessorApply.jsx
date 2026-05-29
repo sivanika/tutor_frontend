@@ -33,11 +33,12 @@ export default function ProfessorApply() {
     <div className="min-h-screen bg-[var(--surface)] text-white flex flex-col items-center justify-center p-6 font-[Inter,sans-serif]">
       {/* Navbar Minimal */}
       <nav className="absolute top-0 left-0 w-full p-6 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2 text-white font-bold text-lg">
-          <span className="w-8 h-8 rounded-xl bg-[#c9a227] flex items-center justify-center text-white text-sm">
-            T
-          </span>
-          TutorHours
+        <Link to="/" className="flex items-center">
+          <img
+            src="/logos/vishidh-logo-768x384.png"
+            alt="Vishidh VishidhAcademy"
+            className="h-14 w-auto object-contain brightness-0 invert"
+          />
         </Link>
         <Link to="/professor/dashboard" className="px-5 py-2 text-sm font-semibold bg-[#c9a227] text-white rounded-lg hover:opacity-90">
           Back to Dashboard
@@ -180,7 +181,7 @@ export default function ProfessorApply() {
             <textarea
               required
               rows={4}
-              placeholder="Tell us about your teaching philosophy, current position, and what motivates you to join TutorHours..."
+              placeholder="Tell us about your teaching philosophy, current position, and what motivates you to join VishidhAcademy..."
               value={form.background}
               onChange={(e) => setForm({ ...form, background: e.target.value })}
               className="w-full px-4 py-3 bg-[#1a0f30] border border-white/10 rounded-xl focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm text-gray-300 placeholder-gray-600 resize-none transition"

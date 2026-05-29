@@ -17,7 +17,7 @@ export default function ContactUs() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          to: "support@tutorhours.com", // You can change this to your desired receiving email
+          to: "support@vishidhacademy.com", // You can change this to your desired receiving email
           subject: formData.subject || "Contact Us Inquiry",
           message: `Name: ${formData.name}<br/>Email: ${formData.email}<br/><br/>Message:<br/>${formData.message}`,
         }),
@@ -72,8 +72,8 @@ export default function ContactUs() {
               <div>
                 <h4 className="font-semibold text-slate-900 dark:text-white text-lg mb-1">Email Us</h4>
                 <p className="text-slate-500 dark:text-slate-400 mb-2">Our friendly team is here to help.</p>
-                <a href="mailto:support@tutorhours.com" className="text-[var(--primary)] dark:text-[var(--accent)] font-medium hover:underline">
-                  support@tutorhours.com
+                <a href="mailto:support@vishidhacademy.com" className="text-[var(--primary)] dark:text-[var(--accent)] font-medium hover:underline">
+                  support@vishidhacademy.com
                 </a>
               </div>
             </div>

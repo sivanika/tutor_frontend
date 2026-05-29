@@ -185,7 +185,7 @@ export default function ProfessorPaymentPage() {
                 key: data.keyId,
                 amount: data.amount,
                 currency: data.currency,
-                name: "TutorHours Business",
+                name: "VishidhAcademy Business",
                 description: `Professor Registration — ${selectedPlan.name}`,
                 order_id: data.orderId,
                 prefill: {

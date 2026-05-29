@@ -44,12 +44,12 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 rounded-xl grad-bg flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-[var(--primary)]/30">
-                T
-              </div>
               <span className="text-xl font-extrabold">
-                <span className="grad-text">Tutor</span>
-                <span className="text-slate-900 dark:text-white">Hours</span>
+                <img
+                  src="/logos/vishidh-logo-768x384.png"
+                  alt="VishidhAcademy"
+                  className="h-16 md:h-20 w-auto object-contain"
+                />
               </span>
             </div>
 
@@ -116,7 +116,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-[var(--primary)]/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-[var(--accent)]/60">
-            © {new Date().getFullYear()} TutorHours. All rights reserved.
+            © {new Date().getFullYear()} VishidhAcademy. All rights reserved.
           </p>
           <div className="flex items-center gap-2 text-sm text-[var(--accent)]/60">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
