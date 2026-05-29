@@ -25,7 +25,7 @@ function getGreeting() {
   return "Good evening";
 }
 
-export default function Dashboard() {
+export default function Dashboard({ onTabChange }) {
   const [sessions, setSessions] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -418,13 +418,14 @@ export default function Dashboard() {
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: "Create Session", icon: <FiBookIcon />, color: "from-[var(--primary)] to-[var(--primary)]" },
-            { label: "View Students", icon: <FiUsers />, color: "from-[var(--primary)] to-[var(--primary)]" },
-            { label: "Update Profile", icon: <FiEdit />, color: "from-[var(--accent)] to-[#FF6B6B]" },
-            { label: "Add Credentials", icon: <FiAward />, color: "from-[var(--primary)] to-[var(--accent)]" },
-          ].map(({ label, icon, color }) => (
+            { label: "Create Session", icon: <FiBookIcon />, color: "from-[var(--primary)] to-[var(--primary)]", tab: "create" },
+            { label: "View Students", icon: <FiUsers />, color: "from-[var(--primary)] to-[var(--primary)]", tab: "students" },
+            { label: "Update Profile", icon: <FiEdit />, color: "from-[var(--accent)] to-[#FF6B6B]", tab: "profile" },
+            { label: "Add Credentials", icon: <FiAward />, color: "from-[var(--primary)] to-[var(--accent)]", tab: "credentials" },
+          ].map(({ label, icon, color, tab }) => (
             <button
               key={label}
+              onClick={() => onTabChange?.(tab)}
               className={`bg-gradient-to-r ${color} text-white rounded-xl px-4 py-4 text-sm font-semibold
                 flex flex-col items-center gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200`}
             >
