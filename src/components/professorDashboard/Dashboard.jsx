@@ -7,7 +7,8 @@ import {
   FiUsers, FiBookOpen, FiDollarSign, FiStar,
   FiArrowUpRight, FiClock, FiZap, FiTrendingUp,
   FiXCircle, FiRefreshCw, FiCalendar,
-  FiEdit, FiUserPlus, FiAward, FiBookOpen as FiBookIcon
+  FiEdit, FiUserPlus, FiAward, FiBookOpen as FiBookIcon,
+  FiMessageSquare
 } from "react-icons/fi";
 
 import { Line, Doughnut } from "react-chartjs-2";
@@ -25,7 +26,7 @@ function getGreeting() {
   return "Good evening";
 }
 
-export default function Dashboard({ onTabChange }) {
+export default function Dashboard({ onTabChange, onChatOpen }) {
   const [sessions, setSessions] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -334,6 +335,18 @@ export default function Dashboard({ onTabChange }) {
                         <span className={`text-[10px] md:text-xs font-semibold px-2 md:px-2.5 py-0.5 md:py-1 rounded-full ${s.students.length > 0 ? "bg-green-50 text-green-600" : "bg-gray-100 text-gray-500"}`}>
                           {s.students.length > 0 ? `${s.students.length} enr.` : "Empty"}
                         </span>
+                        {s.students.length > 0 && (
+                          <button
+                            onClick={() => {
+                              const studentId = s.students[0]?.student?._id || s.students[0]?.student;
+                              if (studentId) onChatOpen?.(studentId);
+                            }}
+                            className="p-1 md:p-1.5 rounded-lg text-indigo-500 hover:bg-indigo-50 transition"
+                            title="Chat with Student"
+                          >
+                            <FiMessageSquare size={12} />
+                          </button>
+                        )}
                         <button
                           onClick={() => { setRescheduleId(rescheduleId === s._id ? null : s._id); setRescDate(""); setRescTime(""); }}
                           className="p-1 md:p-1.5 rounded-lg text-[var(--primary)] hover:bg-blue-50 transition"

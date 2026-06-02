@@ -44,8 +44,14 @@ export default function SessionsTab() {
   const completed = sessions.filter(s => s.myStatus === "completed")
 
   // Split enrolled into upcoming and needs-completion
-  const upcoming = enrolled.filter(s => new Date(`${s.date} ${s.time}`) > new Date())
-  const needsCompletion = enrolled.filter(s => new Date(`${s.date} ${s.time}`) <= new Date())
+  const upcoming = enrolled.filter(s => {
+    if (s.date === "TBD" || s.time === "TBD") return true;
+    return new Date(`${s.date} ${s.time}`) > new Date();
+  })
+  const needsCompletion = enrolled.filter(s => {
+    if (s.date === "TBD" || s.time === "TBD") return false;
+    return new Date(`${s.date} ${s.time}`) <= new Date();
+  })
 
   // ── Join Session ──
   const handleJoinSession = (meetLink) => {

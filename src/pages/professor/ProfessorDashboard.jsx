@@ -220,7 +220,7 @@ export default function ProfessorDashboard() {
         {/* Page content */}
         <main className={`flex-1 overflow-y-auto ${activeTab === "messages" ? "p-4" : "p-4 md:p-6"}`}>
           <div key={activeTab} className={`animate-fadeIn ${activeTab === "messages" ? "h-full" : ""}`}>
-            {activeTab === "dashboard" && <Dashboard onTabChange={handleTabChange} />}
+            {activeTab === "dashboard" && <Dashboard onTabChange={handleTabChange} onChatOpen={handleChatOpen} />}
             {activeTab === "browse" && <BrowseStudents onChatOpen={handleChatOpen} />}
             {activeTab === "students" && <Students onChatOpen={handleChatOpen} />}
             {activeTab === "messages" && <ChatTab preOpenUserId={chatTargetUserId} />}
