@@ -26,6 +26,7 @@ import AdminProfessors from "./pages/admin/AdminProfessors";
 import AdminEarnings from "./pages/admin/AdminEarnings";
 import AdminAnnouncements from "./pages/admin/AdminAnnouncements";
 import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
+import AdminCourses from "./pages/admin/AdminCourses";
 import RegisterStudent from "./pages/auth/RegisterStudent";
 import RegisterProfessor from "./pages/auth/RegisterProfessor";
 import AdminLogin from "./pages/auth/AdminLogin";
@@ -160,6 +161,7 @@ function App() {
             <Route path="earnings" element={<AdminEarnings />} />
             <Route path="subscriptions" element={<AdminSubscriptions />} />
             <Route path="announcements" element={<AdminAnnouncements />} />
+            <Route path="courses" element={<AdminCourses />} />
           </Route>
 
           {/* Admin professor approval */}
