@@ -2,12 +2,13 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
-import { FiMoon, FiSun } from "react-icons/fi";
-
+import { FiMoon, FiSun, FiLogOut, FiLayout } from "react-icons/fi";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuth();
   const [dark, setDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -38,8 +39,16 @@ export default function Header() {
     localStorage.setItem("theme", next ? "dark" : "light");
   };
 
+  const getDashboardPath = () => {
+    if (!user) return "/login";
+    if (user.role === "admin") return "/admin/dashboard";
+    if (user.role === "professor") return "/professor/dashboard";
+    return "/student/dashboard";
+  };
+
   const links = [
     { label: "Home", path: "/" },
+    { label: "Courses", path: "/courses" },
     { label: "About Us", path: "/about" },
     { label: "Features", path: "/features" },
     { label: "Pricing", path: "/pricing" },
@@ -132,40 +141,71 @@ export default function Header() {
             "
             >
               {dark ? <FiMoon /> : <FiSun />}
-
             </button>
 
-            {/* Login */}
-            <button
-              onClick={() => { setShowLogin(true); setMenuOpen(false); }}
-              className="
-              hidden sm:block
-              px-5 py-2 rounded-xl text-sm font-semibold
-              border-2 border-[var(--primary)]/30 dark:border-[var(--primary)]/50
-              text-[var(--primary)] dark:text-[var(--accent)]
-              hover:border-[var(--primary)] hover:bg-[var(--primary)]/5
-              dark:hover:bg-[var(--primary)]/15
-              transition-all duration-200
-            "
-            >
-              Login
-            </button>
+            {user ? (
+              <>
+                {/* Dashboard Button */}
+                <button
+                  onClick={() => navigate(getDashboardPath())}
+                  className="
+                  hidden sm:flex items-center gap-1.5
+                  px-4 py-2 rounded-xl text-sm font-semibold text-white
+                  grad-bg shadow-lg shadow-[var(--primary)]/35
+                  hover:scale-103 transition-all duration-200
+                "
+                >
+                  <FiLayout size={15} /> Dashboard
+                </button>
+                
+                {/* Logout Button */}
+                <button
+                  onClick={logout}
+                  className="
+                  hidden sm:flex items-center gap-1.5
+                  px-4 py-2 rounded-xl text-sm font-semibold
+                  border-2 border-red-500/30 text-red-500
+                  hover:bg-red-50 hover:border-red-500 transition-all duration-200
+                "
+                >
+                  <FiLogOut size={15} /> Logout
+                </button>
+              </>
+            ) : (
+              <>
+                {/* Login */}
+                <button
+                  onClick={() => { setShowLogin(true); setMenuOpen(false); }}
+                  className="
+                  hidden sm:block
+                  px-5 py-2 rounded-xl text-sm font-semibold
+                  border-2 border-[var(--primary)]/30 dark:border-[var(--primary)]/50
+                  text-[var(--primary)] dark:text-[var(--accent)]
+                  hover:border-[var(--primary)] hover:bg-[var(--primary)]/5
+                  dark:hover:bg-[var(--primary)]/15
+                  transition-all duration-200
+                "
+                >
+                  Login
+                </button>
 
-            {/* Sign Up */}
-            <button
-              onClick={() => { setShowRegister(true); setMenuOpen(false); }}
-              className="
-              hidden sm:block
-              px-5 py-2 rounded-xl text-sm font-semibold text-white
-              grad-bg
-              shadow-lg shadow-[var(--primary)]/30
-              hover:shadow-xl hover:shadow-[var(--primary)]/40
-              hover:scale-105
-              transition-all duration-200
-            "
-            >
-              Sign Up Free
-            </button>
+                {/* Sign Up */}
+                <button
+                  onClick={() => { setShowRegister(true); setMenuOpen(false); }}
+                  className="
+                  hidden sm:block
+                  px-5 py-2 rounded-xl text-sm font-semibold text-white
+                  grad-bg
+                  shadow-lg shadow-[var(--primary)]/30
+                  hover:shadow-xl hover:shadow-[var(--primary)]/40
+                  hover:scale-105
+                  transition-all duration-200
+                "
+                >
+                  Sign Up Free
+                </button>
+              </>
+            )}
 
             {/* Mobile hamburger */}
             <button
@@ -214,9 +254,19 @@ export default function Header() {
                 </Link>
               );
             })}
+            
             <div className="flex gap-3 mt-4">
-              <button onClick={() => { setShowLogin(true); setMenuOpen(false); }} className="flex-1 py-2.5 rounded-xl border-2 border-[var(--primary)]/30 text-[var(--primary)] font-semibold text-sm">Login</button>
-              <button onClick={() => { setShowRegister(true); setMenuOpen(false); }} className="flex-1 py-2.5 rounded-xl grad-bg text-white font-semibold text-sm shadow-lg shadow-[var(--primary)]/30">Sign Up</button>
+              {user ? (
+                <>
+                  <button onClick={() => { navigate(getDashboardPath()); setMenuOpen(false); }} className="flex-1 py-2.5 rounded-xl grad-bg text-white font-semibold text-sm shadow-lg">Dashboard</button>
+                  <button onClick={() => { logout(); setMenuOpen(false); }} className="flex-1 py-2.5 rounded-xl border-2 border-red-500/30 text-red-500 font-semibold text-sm">Logout</button>
+                </>
+              ) : (
+                <>
+                  <button onClick={() => { setShowLogin(true); setMenuOpen(false); }} className="flex-1 py-2.5 rounded-xl border-2 border-[var(--primary)]/30 text-[var(--primary)] font-semibold text-sm">Login</button>
+                  <button onClick={() => { setShowRegister(true); setMenuOpen(false); }} className="flex-1 py-2.5 rounded-xl grad-bg text-white font-semibold text-sm shadow-lg shadow-[var(--primary)]/30">Sign Up</button>
+                </>
+              )}
             </div>
           </div>
         )}

@@ -4,9 +4,10 @@ import {
   FiShield, FiUsers, FiBarChart2, FiActivity,
   FiSettings, FiLogOut, FiChevronRight,
   FiBookOpen, FiDollarSign, FiUserCheck, FiBell,
-  FiMenu, FiX, FiVideo
+  FiMenu, FiX, FiVideo, FiLayers
 } from "react-icons/fi"
 import NotificationBell from "../../components/common/NotificationBell"
+import { useAuth } from "../../context/AuthContext"
 
 const NAV_ITEMS = [
   { to: "verify", label: "Profile Verification", icon: FiShield },
@@ -20,16 +21,14 @@ const NAV_ITEMS = [
   { to: "settings", label: "Settings", icon: FiSettings },
   { to: "announcements", label: "Announcements", icon: FiBell },
   { to: "courses", label: "Manage Courses", icon: FiVideo },
+  { to: "lms", label: "LMS Courses", icon: FiLayers },
+  { to: "enrollments", label: "Enrollments", icon: FiBookOpen },
 ]
 
 export default function AdminLayout() {
   const navigate = useNavigate()
+  const { logout } = useAuth()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-
-  const logout = () => {
-    localStorage.clear()
-    navigate("/login")
-  }
 
   // Close sidebar when navigating on mobile
   const handleNavClick = () => {

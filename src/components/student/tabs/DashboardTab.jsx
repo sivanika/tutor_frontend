@@ -155,6 +155,22 @@ export default function DashboardTab() {
         <div className="absolute right-24 -top-4 w-16 h-16 rounded-full bg-[var(--accent)]/30" />
       </div>
 
+      {/* ── Video Courses Shortcut Banner ── */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-sm border border-blue-500/20 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0">
+            <FiVideo className="text-white" size={18} />
+          </div>
+          <div>
+            <p className="font-bold text-white text-sm">Structured Video Courses</p>
+            <p className="text-xs text-blue-100 mt-0.5">Access your enrolled LMS courses and continue learning.</p>
+          </div>
+        </div>
+        <button onClick={() => navigate("/courses")} className="px-4 py-2.5 bg-white text-blue-700 font-bold text-xs rounded-xl shadow hover:bg-gray-50 transition shrink-0 flex items-center justify-center gap-1.5">
+          Browse Catalog <FiArrowUpRight size={14} />
+        </button>
+      </div>
+
       {/* ── Subscription Usage Banner ── */}
       {subscription && subscription.subscriptionPlan && (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">

@@ -20,13 +20,18 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
 export default function ProgressTab() {
   const [sessions, setSessions] = useState([])
+  const [certs, setCerts] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const fetchSessions = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true)
-      const res = await API.get("/sessions/enrolled")
-      setSessions(res.data)
+      const [sessRes, certRes] = await Promise.all([
+        API.get("/sessions/enrolled"),
+        API.get("/lms/certificates/my").catch(() => ({ data: { certificates: [] } }))
+      ])
+      setSessions(sessRes.data)
+      setCerts(certRes.data.certificates || [])
     } catch (err) {
       console.error(err)
     } finally {
@@ -35,11 +40,11 @@ export default function ProgressTab() {
   }
 
   useEffect(() => {
-    fetchSessions()
+    fetchData()
     socket.connect()
-    socket.on("dashboard:update", fetchSessions)
+    socket.on("dashboard:update", fetchData)
     return () => {
-      socket.off("dashboard:update", fetchSessions)
+      socket.off("dashboard:update", fetchData)
       socket.disconnect()
     }
   }, [])
@@ -368,39 +373,117 @@ export default function ProgressTab() {
         </div>
       </div>
 
-      {/* ──────── Learning Goals ──────── */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <div className="flex items-center gap-2 mb-6">
-          <div className="w-8 h-8 rounded-lg bg-pink-50 flex items-center justify-center">
-            <FiTarget size={16} className="text-[var(--accent)]" />
+      {/* ──────── Learning Goals & Certificates ──────── */}
+      <div className="grid md:grid-cols-2 gap-5">
+        {/* Learning Goals */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-pink-50 flex items-center justify-center">
+              <FiTarget size={16} className="text-[var(--accent)]" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-800">Learning Goals</h3>
+              <p className="text-xs text-gray-400">Track your objectives</p>
+            </div>
           </div>
-          <div>
-            <h3 className="font-semibold text-gray-800">Learning Goals</h3>
-            <p className="text-xs text-gray-400">Track your objectives</p>
+
+          <div className="space-y-5">
+            {goals.map((g, i) => (
+              <div key={i}>
+                <div className="flex justify-between items-center mb-2">
+                  <h4 className="font-medium text-gray-700 text-sm">{g.title}</h4>
+                  <span className="text-sm font-bold text-gray-800">{g.progress}%</span>
+                </div>
+                <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full bg-gradient-to-r ${g.color} transition-all duration-700`}
+                    style={{ width: `${g.progress}%` }}
+                  />
+                </div>
+                <div className="flex justify-between mt-1.5">
+                  <span className="text-xs text-gray-400">
+                    {g.progress < 30 ? "Just started" : g.progress < 70 ? "In progress" : "Almost there!"}
+                  </span>
+                  <span className="text-xs text-gray-400">{100 - g.progress}% remaining</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="space-y-5">
-          {goals.map((g, i) => (
-            <div key={i}>
-              <div className="flex justify-between items-center mb-2">
-                <h4 className="font-medium text-gray-700 text-sm">{g.title}</h4>
-                <span className="text-sm font-bold text-gray-800">{g.progress}%</span>
-              </div>
-              <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                <div
-                  className={`h-full rounded-full bg-gradient-to-r ${g.color} transition-all duration-700`}
-                  style={{ width: `${g.progress}%` }}
-                />
-              </div>
-              <div className="flex justify-between mt-1.5">
-                <span className="text-xs text-gray-400">
-                  {g.progress < 30 ? "Just started" : g.progress < 70 ? "In progress" : "Almost there!"}
-                </span>
-                <span className="text-xs text-gray-400">{100 - g.progress}% remaining</span>
-              </div>
+        {/* LMS Certificates */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-2 mb-5">
+            <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+              <FiAward size={16} className="text-blue-500" />
             </div>
-          ))}
+            <div>
+              <h3 className="font-semibold text-gray-800">LMS Certificates</h3>
+              <p className="text-xs text-gray-400">Earned course completions</p>
+            </div>
+          </div>
+
+          {certs.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center text-gray-400">
+              <FiAward size={32} className="text-gray-200 mb-2" />
+              <p className="text-xs font-semibold">No certificates earned yet</p>
+              <p className="text-[10px] mt-0.5">Finish any course to 100% to generate yours.</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {certs.map(c => (
+                <div key={c._id} className="border border-gray-100 rounded-xl p-3.5 flex items-center justify-between hover:shadow-sm transition">
+                  <div>
+                    <h4 className="font-bold text-gray-850 text-xs">{c.courseId?.title}</h4>
+                    <p className="text-[10px] text-gray-450 mt-0.5">Code: <span className="font-mono text-gray-600 bg-gray-50 px-1 py-0.5 rounded border border-gray-100">{c.uniqueCode}</span></p>
+                    <p className="text-[9px] text-gray-400 mt-1">Issued: {new Date(c.issuedDate).toLocaleDateString()}</p>
+                  </div>
+                  <button onClick={() => {
+                    const w = window.open("", "_blank")
+                    w.document.write(`
+                      <html>
+                        <head>
+                          <title>Certificate of Completion - ${c.courseId?.title}</title>
+                          <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+                          <style>
+                            body { margin: 0; display: flex; align-items: center; justify-center: center; min-height: 100vh; background-color: #f3f4f6; font-family: 'Montserrat', sans-serif; }
+                            .cert { width: 800px; height: 560px; background: white; border: 15px solid #1e3a8a; padding: 40px; box-sizing: border-box; text-align: center; position: relative; border-radius: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+                            .logo { font-size: 20px; font-weight: bold; color: #1e3a8a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 25px; }
+                            .title { font-family: 'Cinzel', serif; font-size: 38px; color: #111827; margin: 20px 0 5px 0; }
+                            .sub { font-size: 14px; text-transform: uppercase; letter-spacing: 4px; color: #6b7280; font-weight: 600; }
+                            .name { font-size: 28px; font-weight: 600; color: #1e3a8a; margin: 30px 0 10px 0; border-bottom: 2px solid #e5e7eb; display: inline-block; padding-bottom: 5px; min-width: 300px; }
+                            .text { font-size: 14px; color: #4b5563; max-width: 550px; margin: 15px auto; line-height: 1.6; }
+                            .course { font-weight: 600; color: #111827; }
+                            .footer { display: flex; justify-content: space-between; margin-top: 50px; padding: 0 40px; }
+                            .sign { border-top: 1px solid #9ca3af; width: 180px; padding-top: 5px; font-size: 11px; color: #6b7280; }
+                            .code { font-family: monospace; font-size: 11px; color: #9ca3af; margin-top: 10px; }
+                          </style>
+                        </head>
+                        <body>
+                          <div class="cert">
+                            <div class="logo">VishidhAcademy</div>
+                            <div class="sub">Certificate of Completion</div>
+                            <div class="text">This is proudly presented to</div>
+                            <div class="name">Student Learner</div>
+                            <div class="text">for successfully completing the self-paced professional course <br/> <span class="course">"${c.courseId?.title}"</span></div>
+                            <div class="footer">
+                              <div class="sign">Academic Director<br/><b>VishidhAcademy</b></div>
+                              <div class="sign">Course Instructor<br/><b>${c.courseId?.instructor || "Admin"}</b></div>
+                            </div>
+                            <div class="code">Verification ID: ${c.uniqueCode}</div>
+                          </div>
+                        </body>
+                      </html>
+                    `)
+                    w.document.close()
+                    w.print()
+                  }} className="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-[10px] font-bold transition">
+                    View
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

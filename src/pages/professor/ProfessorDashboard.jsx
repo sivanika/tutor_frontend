@@ -90,9 +90,8 @@ export default function ProfessorDashboard() {
     setChatUnread(0)
     setSidebarOpen(false)
   }
-  const handleLogout = () => {
-    logout()
-    navigate("/login")
+  const handleLogout = async () => {
+    await logout()
   }
 
   const currentTab = NAV_ITEMS.find(t => t.id === activeTab)

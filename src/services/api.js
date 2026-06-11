@@ -21,7 +21,8 @@ API.interceptors.response.use(
         "/register/student",
         "/register/professor",
         "/forgot-password",
-        "/admin/login"
+        "/admin/login",
+        "/courses"
       ].includes(window.location.pathname) || window.location.pathname.startsWith("/reset-password") || window.location.pathname.startsWith("/tutor/");
 
       // Redirect to login (hard reload clears all component state)

@@ -27,6 +27,10 @@ import AdminEarnings from "./pages/admin/AdminEarnings";
 import AdminAnnouncements from "./pages/admin/AdminAnnouncements";
 import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
 import AdminCourses from "./pages/admin/AdminCourses";
+import AdminLMSCourses from "./pages/admin/AdminLMSCourses";
+import AdminEnrollments from "./pages/admin/AdminEnrollments";
+import BrowseCourses from "./pages/student/BrowseCourses";
+import CourseLearn from "./pages/student/CourseLearn";
 import RegisterStudent from "./pages/auth/RegisterStudent";
 import RegisterProfessor from "./pages/auth/RegisterProfessor";
 import AdminLogin from "./pages/auth/AdminLogin";
@@ -76,6 +80,7 @@ function App() {
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/tutor-agreement" element={<TutorAgreementPage />} />
             <Route path="/institution-agreement" element={<InstitutionAgreement />} />
+            <Route path="/courses" element={<BrowseCourses />} />
           </Route>
 
           {/* Auth & Other Public */}
@@ -101,6 +106,14 @@ function App() {
             element={
               <ProtectedRoute role="student">
                 <StudentDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/courses/:id/learn"
+            element={
+              <ProtectedRoute role="student">
+                <CourseLearn />
               </ProtectedRoute>
             }
           />
@@ -162,6 +175,8 @@ function App() {
             <Route path="subscriptions" element={<AdminSubscriptions />} />
             <Route path="announcements" element={<AdminAnnouncements />} />
             <Route path="courses" element={<AdminCourses />} />
+            <Route path="lms" element={<AdminLMSCourses />} />
+            <Route path="enrollments" element={<AdminEnrollments />} />
           </Route>
 
           {/* Admin professor approval */}

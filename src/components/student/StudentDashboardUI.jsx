@@ -22,7 +22,6 @@ const NAV_ITEMS = [
   { id: "tutors", label: "Browse Tutors", icon: FiSearch },
   { id: "sessions", label: "My Sessions", icon: FiBook },
   { id: "subjects", label: "My Subjects", icon: FiBookOpen },
-  { id: "courses", label: "Video Courses", icon: FiVideo },
   { id: "messages", label: "Messages", icon: FiMessageSquare },
   { id: "progress", label: "My Progress", icon: FiTrendingUp },
 ]
@@ -81,9 +80,8 @@ export default function StudentDashboardUI() {
     setSidebarOpen(false)
   }
 
-  const handleLogout = () => {
-    logout()
-    navigate("/login")
+  const handleLogout = async () => {
+    await logout()
   }
 
   const currentTab = NAV_ITEMS.find(t => t.id === activeTab)
@@ -215,7 +213,6 @@ export default function StudentDashboardUI() {
             {activeTab === "tutors" && <TutorsTab />}
             {activeTab === "sessions" && <SessionsTab />}
             {activeTab === "subjects" && <MySubjectsTab />}
-            {activeTab === "courses" && <CoursesTab />}
             {activeTab === "messages" && <ChatTab />}
             {activeTab === "progress" && <ProgressTab />}
           </div>
