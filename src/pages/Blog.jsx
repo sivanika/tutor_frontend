@@ -1,55 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiSearch, FiFrown } from "react-icons/fi";
-
-
-const POSTS = [
-    {
-        id: 1,
-        title: "How to Choose the Right Tutor for Your Engineering Degree",
-        excerpt: "Finding the perfect match for complex subjects like thermodynamics or circuit theory requires a specific checklist...",
-        category: "Education",
-        author: "Dr. Sarah Mitchell",
-        date: "Oct 24, 2023",
-        img: "https://images.unsplash.com/photo-1434030216411-0bb7538aaa5d?auto=format&fit=crop&q=80&w=400"
-    },
-    {
-        id: 2,
-        title: "5 Tips for Effective Online Learning in 2023",
-        excerpt: "Online learning can be challenging. We reached out to our top-performing students to find out how they stay focused and motivated.",
-        category: "Guides",
-        author: "James Wilson",
-        date: "Oct 22, 2023",
-        img: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=400"
-    },
-    {
-        id: 3,
-        title: "The Future of Tutoring: AI vs. Human Mentorship",
-        excerpt: "While AI is making strides in automated grading, the human element of mentorship remains irreplaceable in academic success.",
-        category: "Tech",
-        author: "Prof. Robert Chen",
-        date: "Oct 18, 2023",
-        img: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=400"
-    },
-    {
-        id: 4,
-        title: "Understanding Complex Calculus: A Short Guide",
-        excerpt: "Calculus doesn't have to be intimidating. Here's a breakdown of the core concepts that students often struggle with.",
-        category: "Math",
-        author: "Dr. Elena Rossi",
-        date: "Oct 15, 2023",
-        img: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=400"
-    }
-];
+import API from "../services/api";
 
 export default function Blog() {
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
-    const categories = ["All", "Education", "Guides", "Tech", "Math"];
     const [activeCat, setActiveCat] = useState("All");
 
-    const filtered = POSTS.filter(p => 
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const res = await API.get("/blog");
+                setPosts(res.data || []);
+            } catch {
+                console.error("Failed to load blog posts");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchPosts();
+    }, []);
+
+    // Build category list dynamically from fetched posts
+    const categories = ["All", ...new Set(posts.map(p => p.category))];
+
+    const filtered = posts.filter(p => 
         (activeCat === "All" || p.category === activeCat) &&
         (p.title.toLowerCase().includes(search.toLowerCase()) || p.excerpt.toLowerCase().includes(search.toLowerCase()))
     );
+
+    const formatDate = (dateStr) => {
+        return new Date(dateStr).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+        });
+    };
 
     return (
         <>
@@ -106,19 +93,29 @@ export default function Blog() {
                 </div>
 
                 {/* Blog Grid */}
-                {filtered.length > 0 ? (
+                {loading ? (
+                    <div className="flex justify-center py-20">
+                        <div className="w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin" />
+                    </div>
+                ) : filtered.length > 0 ? (
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {filtered.map(post => (
-                            <article key={post.id} className="group flex flex-col bg-white dark:bg-[var(--surface-alt)] rounded-[2.5rem] border border-slate-100 dark:border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-[var(--primary)]/10 transition-all duration-500 hover:-translate-y-2">
+                            <article key={post._id} className="group flex flex-col bg-white dark:bg-[var(--surface-alt)] rounded-[2.5rem] border border-slate-100 dark:border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-[var(--primary)]/10 transition-all duration-500 hover:-translate-y-2">
                                 <div className="relative h-48 overflow-hidden">
-                                    <img src={post.img} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                    {post.img ? (
+                                        <img src={post.img} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                    ) : (
+                                        <div className="w-full h-full bg-gradient-to-br from-[var(--primary)]/20 to-indigo-500/20 flex items-center justify-center">
+                                            <span className="text-4xl opacity-30">📝</span>
+                                        </div>
+                                    )}
                                     <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 dark:bg-[var(--surface)]/80 backdrop-blur-md text-[var(--primary)] text-[10px] font-bold uppercase tracking-wider">
                                         {post.category}
                                     </div>
                                 </div>
                                 <div className="p-8 flex-1 flex flex-col">
                                     <div className="flex items-center gap-2 text-xs text-slate-400 mb-4">
-                                        <span>{post.date}</span>
+                                        <span>{formatDate(post.createdAt)}</span>
                                         <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
                                         <span>{post.author}</span>
                                     </div>
