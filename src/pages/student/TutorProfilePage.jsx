@@ -7,9 +7,7 @@ import { SlRocket } from "react-icons/sl";
 
 
 
-const BACKEND_URL =
-    import.meta.env.VITE_API_URL?.replace("/api", "") ||
-    "https://tutor-backend-mqz1.onrender.com";
+import { media } from "../../utils/media";
 
 /* ────────────────────────────────────────────────────────────────
    Premium check:
@@ -123,7 +121,7 @@ export default function TutorProfilePage() {
         .substring(0, 2)
         .toUpperCase();
     const photoUrl = tutor.profilePhoto
-        ? `${BACKEND_URL}/${tutor.profilePhoto.replace(/\\/g, "/")}`
+        ? media(tutor.profilePhoto)
         : null;
     const ratingLabel = tutor.avgRating != null ? tutor.avgRating.toFixed(1) : "New";
 

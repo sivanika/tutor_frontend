@@ -9,8 +9,7 @@ import {
 import toast from "react-hot-toast"
 import { useAuth } from "../../context/AuthContext"
 
-const API_BASE = import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000"
-const media = (url) => !url ? "" : url.startsWith("uploads/") ? `${API_BASE}/${url}` : url
+import { media } from "../../utils/media"
 
 const LEVEL_COLORS = {
   "All Levels": "bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-300",

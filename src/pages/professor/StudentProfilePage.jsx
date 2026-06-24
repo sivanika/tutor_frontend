@@ -6,9 +6,7 @@ import { FiArrowLeft, FiBook, FiMapPin, FiUser, FiTarget, FiLock, FiBookOpen, Fi
 import { SlRocket } from "react-icons/sl";
 
 
-const BACKEND_URL =
-  import.meta.env.VITE_API_URL?.replace("/api", "") ||
-  "https://tutor-backend-mqz1.onrender.com";
+import { media } from "../../utils/media";
 
 /* ─────────────────────────────────────────────────────────────────
    Premium check for professors:
@@ -116,7 +114,7 @@ export default function StudentProfilePage() {
     .toUpperCase();
 
   const photoUrl = student.studentPhoto
-    ? `${BACKEND_URL}/${student.studentPhoto.replace(/\\/g, "/")}`
+    ? media(student.studentPhoto)
     : null;
 
   const subjects = Array.isArray(student.specializations)

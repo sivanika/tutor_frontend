@@ -13,8 +13,8 @@ import { FiPhone, FiSearch, FiSend, FiChevronLeft, FiMessageSquare, FiSmile } fr
 /* ─── helpers ──────────────────────────────────────────────── */
 const uid = (user) => String(user?.id || user?._id || "")
 
-const BASE = (import.meta.env.VITE_API_URL || "http://localhost:5000/api").replace(/\/api$/, "")
-const photoURL = (u) => { const p = u?.profilePhoto || u?.studentPhoto; return p ? `${BASE}${p}` : null }
+import { media } from "../../utils/media"
+const photoURL = (u) => { const p = u?.profilePhoto || u?.studentPhoto; return p ? media(p) : null }
 const fmtTime = (d) => d ? new Date(d).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""
 const fmtDay = (d) => {
   if (!d) return ""

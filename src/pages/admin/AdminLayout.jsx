@@ -4,7 +4,7 @@ import {
   FiShield, FiUsers, FiBarChart2, FiActivity,
   FiSettings, FiLogOut, FiChevronRight,
   FiBookOpen, FiDollarSign, FiUserCheck, FiBell,
-  FiMenu, FiX, FiVideo, FiLayers
+  FiMenu, FiX, FiLayers, FiBriefcase
 } from "react-icons/fi"
 import NotificationBell from "../../components/common/NotificationBell"
 import { useAuth } from "../../context/AuthContext"
@@ -20,9 +20,9 @@ const NAV_ITEMS = [
   { to: "logs", label: "Activity Logs", icon: FiActivity },
   { to: "settings", label: "Settings", icon: FiSettings },
   { to: "announcements", label: "Announcements", icon: FiBell },
-  { to: "courses", label: "Manage Courses", icon: FiVideo },
   { to: "lms", label: "LMS Courses", icon: FiLayers },
   { to: "enrollments", label: "Enrollments", icon: FiBookOpen },
+  { to: "careers", label: "Job Applications", icon: FiBriefcase },
 ]
 
 export default function AdminLayout() {

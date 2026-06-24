@@ -29,6 +29,7 @@ import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
 import AdminCourses from "./pages/admin/AdminCourses";
 import AdminLMSCourses from "./pages/admin/AdminLMSCourses";
 import AdminEnrollments from "./pages/admin/AdminEnrollments";
+import AdminCareers from "./pages/admin/AdminCareers";
 import BrowseCourses from "./pages/student/BrowseCourses";
 import CourseLearn from "./pages/student/CourseLearn";
 import RegisterStudent from "./pages/auth/RegisterStudent";
@@ -177,6 +178,7 @@ function App() {
             <Route path="courses" element={<AdminCourses />} />
             <Route path="lms" element={<AdminLMSCourses />} />
             <Route path="enrollments" element={<AdminEnrollments />} />
+            <Route path="careers" element={<AdminCareers />} />
           </Route>
 
           {/* Admin professor approval */}

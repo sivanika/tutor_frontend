@@ -14,9 +14,7 @@ const GRADIENTS = [
   { from: "#60A5FA", to: "#3B82F6" }, // Blue variants
 ];
 
-const BACKEND_URL =
-  import.meta.env.VITE_API_URL?.replace("/api", "") ||
-  "https://tutor-backend-mqz1.onrender.com";
+import { media } from "../../utils/media";
 
 export default function TutorCards() {
   const navigate = useNavigate();
@@ -143,7 +141,7 @@ export default function TutorCards() {
                 const grad = GRADIENTS[i % GRADIENTS.length];
                 const gradientStyle = `linear-gradient(135deg, ${grad.from}, ${grad.to})`;
                 const photoUrl = t.profilePhoto
-                  ? `${BACKEND_URL}/${t.profilePhoto.replace(/\\/g, "/")}`
+                  ? media(t.profilePhoto)
                   : null;
                 const displayName = t.name || "Tutor";
                 const initials = displayName

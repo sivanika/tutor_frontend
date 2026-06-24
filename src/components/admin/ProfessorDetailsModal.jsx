@@ -1,8 +1,6 @@
 import { FiX, FiExternalLink, FiUser, FiMail, FiPhone, FiMapPin, FiBook, FiAward, FiBriefcase, FiDollarSign } from "react-icons/fi";
 
-const BACKEND_URL =
-  import.meta.env.VITE_API_URL?.replace("/api", "") ??
-  "https://tutor-backend-mqz1.onrender.com";
+import { media } from "../../utils/media";
 
 export default function ProfessorDetailsModal({ professor, onClose }) {
   if (!professor) return null;
@@ -20,7 +18,7 @@ export default function ProfessorDetailsModal({ professor, onClose }) {
           <div className="w-14 h-14 rounded-2xl overflow-hidden bg-white/20 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center font-bold text-xl flex-shrink-0">
             {professor.profilePhoto ? (
               <img
-                src={`${BACKEND_URL}/${professor.profilePhoto.replace(/\\/g, "/")}`}
+                src={media(professor.profilePhoto)}
                 alt={professor.name}
                 className="w-full h-full object-cover"
                 onError={(e) => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
@@ -93,13 +91,13 @@ export default function ProfessorDetailsModal({ professor, onClose }) {
             <Section title="Documents & Media" icon={FiAward}>
               <div className="flex flex-wrap gap-2">
                 {professor.governmentId && (
-                  <DocLink href={`${BACKEND_URL}/${professor.governmentId.replace(/\\/g, "/")}`} label="Government ID" />
+                  <DocLink href={media(professor.governmentId)} label="Government ID" />
                 )}
                 {professor.degreeCertificate && (
-                  <DocLink href={`${BACKEND_URL}/${professor.degreeCertificate.replace(/\\/g, "/")}`} label="Degree Certificate" />
+                  <DocLink href={media(professor.degreeCertificate)} label="Degree Certificate" />
                 )}
                 {professor.videoIntroduction && (
-                  <DocLink href={`${BACKEND_URL}/${professor.videoIntroduction.replace(/\\/g, "/")}`} label="Video Introduction" />
+                  <DocLink href={media(professor.videoIntroduction)} label="Video Introduction" />
                 )}
               </div>
             </Section>

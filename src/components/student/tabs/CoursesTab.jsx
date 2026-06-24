@@ -7,8 +7,7 @@ import {
 } from "react-icons/fi"
 import toast from "react-hot-toast"
 
-const API_BASE = import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000"
-const media = (url) => !url ? "" : url.startsWith("uploads/") ? `${API_BASE}/${url}` : url
+import { media } from "../../../utils/media"
 
 const STATUS_CONFIG = {
   applied:   { label: "Pending Approval", color: "text-yellow-600 bg-yellow-50 border-yellow-100", icon: FiLoader },

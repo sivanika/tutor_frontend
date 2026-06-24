@@ -8,8 +8,7 @@ import {
 } from "react-icons/fi"
 import toast from "react-hot-toast"
 
-const API_BASE = import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000"
-const media = (url) => !url ? "" : url.startsWith("uploads/") ? `${API_BASE}/${url}` : url
+import { media } from "../../utils/media"
 
 export default function CourseLearn() {
   const { id } = useParams()

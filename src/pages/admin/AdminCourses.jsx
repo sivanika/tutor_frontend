@@ -6,15 +6,7 @@ import {
 } from "react-icons/fi"
 import toast from "react-hot-toast"
 
-const BACKEND_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000"
-
-const resolveMediaUrl = (url) => {
-  if (!url) return ""
-  if (url.startsWith("uploads/")) {
-    return `${BACKEND_URL}/${url.replace(/\\/g, "/")}`
-  }
-  return url
-}
+import { media as resolveMediaUrl } from "../../utils/media"
 
 const emptyCourse = {
   title: "",
@@ -71,8 +63,8 @@ export default function AdminCourses() {
   }
 
   const openEdit = (course) => {
-    const isLocalThumbnail = course.thumbnailUrl?.startsWith("uploads/")
-    const isLocalVideo = course.videoUrl?.startsWith("uploads/")
+    const isUploadedThumbnail = course.thumbnailUrl?.startsWith("uploads/") || course.thumbnailUrl?.includes("res.cloudinary.com")
+    const isUploadedVideo = course.videoUrl?.startsWith("uploads/") || course.videoUrl?.includes("res.cloudinary.com")
 
     setForm({
       title: course.title,
@@ -85,8 +77,8 @@ export default function AdminCourses() {
       level: course.level || "All Levels",
       isActive: course.isActive
     })
-    setThumbnailSourceType(isLocalThumbnail ? "file" : "url")
-    setVideoSourceType(isLocalVideo ? "file" : "url")
+    setThumbnailSourceType(isUploadedThumbnail ? "file" : "url")
+    setVideoSourceType(isUploadedVideo ? "file" : "url")
     setThumbnailFile(null)
     setVideoFile(null)
     setEditId(course._id)
@@ -487,8 +479,8 @@ export default function AdminCourses() {
                       onChange={e => setThumbnailFile(e.target.files[0])}
                       className="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer w-full border border-dashed border-gray-200 p-2 rounded-xl bg-white"
                     />
-                    {editId && form.thumbnailUrl?.startsWith("uploads/") && !thumbnailFile && (
-                      <span className="text-[10px] text-gray-400">Current file: {form.thumbnailUrl.substring(8)}</span>
+                    {editId && (form.thumbnailUrl?.startsWith("uploads/") || form.thumbnailUrl?.includes("res.cloudinary.com")) && !thumbnailFile && (
+                      <span className="text-[10px] text-gray-400">Current file: {form.thumbnailUrl.split('/').pop()}</span>
                     )}
                   </div>
                 )}
@@ -534,8 +526,8 @@ export default function AdminCourses() {
                       onChange={e => setVideoFile(e.target.files[0])}
                       className="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer w-full border border-dashed border-gray-200 p-2 rounded-xl bg-white"
                     />
-                    {editId && form.videoUrl?.startsWith("uploads/") && !videoFile && (
-                      <span className="text-[10px] text-gray-400">Current file: {form.videoUrl.substring(8)}</span>
+                    {editId && (form.videoUrl?.startsWith("uploads/") || form.videoUrl?.includes("res.cloudinary.com")) && !videoFile && (
+                      <span className="text-[10px] text-gray-400">Current file: {form.videoUrl.split('/').pop()}</span>
                     )}
                   </div>
                 )}
