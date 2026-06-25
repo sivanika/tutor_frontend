@@ -4,12 +4,12 @@ import toast from "react-hot-toast";
 import {
   FiBriefcase, FiSearch, FiInbox, FiCheck, FiX, FiEye,
   FiTrash2, FiCalendar, FiMail, FiFileText, FiPlus, FiEdit2,
-  FiToggleLeft, FiToggleRight,
+  FiToggleLeft, FiToggleRight, FiChevronDown, FiAlertCircle
 } from "react-icons/fi";
 
 const TYPE_OPTS = ["Full-time", "Part-time", "Contract", "Internship"];
 
-const EMPTY_POS = { title: "", type: "Full-time", location: "", dept: "", description: "", skills: "" };
+const EMPTY_POS = { title: "", type: "Full-time", location: "Remote", dept: "", description: "", skills: "" };
 
 /* ── Position Form Modal ── */
 function PositionModal({ initial, onClose, onSave }) {
@@ -24,11 +24,11 @@ function PositionModal({ initial, onClose, onSave }) {
       if (isEdit) {
         const res = await API.put(`/careers/positions/${initial._id}`, form);
         onSave(res.data.position, "edit");
-        toast.success("Position updated");
+        toast.success("Position updated successfully");
       } else {
         const res = await API.post("/careers/positions", form);
         onSave(res.data.position, "add");
-        toast.success("Position created");
+        toast.success("Position posted successfully");
       }
       onClose();
     } catch (err) {
@@ -42,44 +42,44 @@ function PositionModal({ initial, onClose, onSave }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white">
-          <h3 className="font-bold text-lg">{isEdit ? "Edit Position" : "New Open Position"}</h3>
-          <button onClick={onClose} className="text-white/70 hover:text-white text-2xl">×</button>
+      <div className="bg-white dark:bg-[var(--surface-alt)] rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-100 dark:border-white/10">
+        <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-[var(--primary)] to-indigo-700 text-white">
+          <h3 className="font-bold text-lg">{isEdit ? "Edit Open Position" : "Post New Job"}</h3>
+          <button onClick={onClose} className="text-white/70 hover:text-white text-2xl font-semibold">×</button>
         </div>
-        <form onSubmit={handleSave} className="p-6 space-y-4">
-          <div className="grid grid-cols-2 gap-3">
+        <form onSubmit={handleSave} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+          <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Job Title *</label>
-              <input required value={form.title} onChange={f("title")} className="mt-1 w-full px-3 py-2 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Job Title *</label>
+              <input required value={form.title} onChange={f("title")} placeholder="e.g. Senior Technical Support Engineer" className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Type *</label>
-              <select value={form.type} onChange={f("type")} className="mt-1 w-full px-3 py-2 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40">
-                {TYPE_OPTS.map((t) => <option key={t}>{t}</option>)}
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Type *</label>
+              <select value={form.type} onChange={f("type")} className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40">
+                {TYPE_OPTS.map((t) => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Location *</label>
-              <input required value={form.location} onChange={f("location")} placeholder="Remote / Hybrid" className="mt-1 w-full px-3 py-2 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Location/Mode *</label>
+              <input required value={form.location} onChange={f("location")} placeholder="Remote / Hybrid / Onsite" className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
             </div>
             <div className="col-span-2">
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Department *</label>
-              <input required value={form.dept} onChange={f("dept")} placeholder="e.g. Support, Engineering" className="mt-1 w-full px-3 py-2 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Department *</label>
+              <input required value={form.dept} onChange={f("dept")} placeholder="e.g. Support, Engineering, QA" className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
             </div>
             <div className="col-span-2">
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Description *</label>
-              <textarea required rows={3} value={form.description} onChange={f("description")} className="mt-1 w-full px-3 py-2 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 resize-none" />
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Description *</label>
+              <textarea required rows={4} value={form.description} onChange={f("description")} placeholder="Describe roles, responsibilities, and requirements..." className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 resize-none" />
             </div>
             <div className="col-span-2">
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Skills (comma-separated)</label>
-              <input value={form.skills} onChange={f("skills")} placeholder="Node.js, MongoDB, REST APIs" className="mt-1 w-full px-3 py-2 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Skills (comma-separated)</label>
+              <input value={form.skills} onChange={f("skills")} placeholder="React, Node.js, Mongoose, Technical Writing" className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
             </div>
           </div>
-          <div className="flex justify-end gap-3 pt-2 border-t border-gray-100">
-            <button type="button" onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 rounded-xl">Cancel</button>
-            <button type="submit" disabled={saving} className="px-5 py-2 text-sm font-semibold text-white bg-[var(--primary)] rounded-xl hover:opacity-90 disabled:opacity-50">
-              {saving ? "Saving..." : isEdit ? "Update Position" : "Create Position"}
+          <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-white/10">
+            <button type="button" onClick={onClose} className="px-5 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-white/05 rounded-xl transition">Cancel</button>
+            <button type="submit" disabled={saving} className="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-[var(--primary)] to-indigo-700 rounded-xl hover:opacity-95 disabled:opacity-50 transition shadow-lg shadow-[var(--primary)]/20">
+              {saving ? "Saving..." : isEdit ? "Update Position" : "Post Job"}
             </button>
           </div>
         </form>
@@ -88,309 +88,524 @@ function PositionModal({ initial, onClose, onSave }) {
   );
 }
 
-/* ── Main Component ── */
-export default function AdminCareers() {
-  const [tab, setTab] = useState("applications");
-
-  /* Applications state */
-  const [applications, setApplications] = useState([]);
-  const [appsLoading, setAppsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+/* ── Applicants Modal ── */
+function ApplicantsModal({ job, applications, onClose, onUpdateStatus, onDeleteApp, actionId }) {
   const [selectedApp, setSelectedApp] = useState(null);
-  const [actionId, setActionId] = useState(null);
+  const jobApps = applications.filter((app) => app.positionId === job._id);
 
-  /* Positions state */
-  const [positions, setPositions] = useState([]);
-  const [posLoading, setPosLoading] = useState(true);
-  const [posModal, setPosModal] = useState(null); // null | "new" | position-object
-
-  /* Fetch applications */
-  const fetchApplications = async () => {
-    setAppsLoading(true);
-    try {
-      const res = await API.get("/careers/applications");
-      setApplications(res.data || []);
-    } catch { toast.error("Failed to load applications"); }
-    finally { setAppsLoading(false); }
+  const formatDate = (dateStr) => {
+    return new Date(dateStr).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
   };
-
-  /* Fetch positions */
-  const fetchPositions = async () => {
-    setPosLoading(true);
-    try {
-      const res = await API.get("/careers/positions/all");
-      setPositions(res.data || []);
-    } catch { toast.error("Failed to load positions"); }
-    finally { setPosLoading(false); }
-  };
-
-  useEffect(() => { fetchApplications(); fetchPositions(); }, []);
-
-  /* Application handlers */
-  const handleUpdateStatus = async (id, status) => {
-    setActionId(id);
-    try {
-      await API.put(`/careers/applications/${id}`, { status });
-      toast.success(`Marked as ${status}`);
-      setApplications((p) => p.map((a) => a._id === id ? { ...a, status } : a));
-      if (selectedApp?._id === id) setSelectedApp((p) => ({ ...p, status }));
-    } catch { toast.error("Failed to update status"); }
-    finally { setActionId(null); }
-  };
-
-  const handleDeleteApp = async (id) => {
-    if (!window.confirm("Delete this application?")) return;
-    setActionId(id);
-    try {
-      await API.delete(`/careers/applications/${id}`);
-      toast.success("Deleted");
-      setApplications((p) => p.filter((a) => a._id !== id));
-      if (selectedApp?._id === id) setSelectedApp(null);
-    } catch { toast.error("Failed to delete"); }
-    finally { setActionId(null); }
-  };
-
-  /* Position handlers */
-  const handlePosSave = (pos, mode) => {
-    if (mode === "add") setPositions((p) => [pos, ...p]);
-    else setPositions((p) => p.map((x) => x._id === pos._id ? pos : x));
-  };
-
-  const handleToggleOpen = async (pos) => {
-    try {
-      const res = await API.put(`/careers/positions/${pos._id}`, { isOpen: !pos.isOpen });
-      setPositions((p) => p.map((x) => x._id === pos._id ? res.data.position : x));
-      toast.success(res.data.position.isOpen ? "Position reopened" : "Position marked as filled");
-    } catch { toast.error("Failed to toggle status"); }
-  };
-
-  const handleDeletePos = async (id) => {
-    if (!window.confirm("Permanently delete this position?")) return;
-    try {
-      await API.delete(`/careers/positions/${id}`);
-      setPositions((p) => p.filter((x) => x._id !== id));
-      toast.success("Position deleted");
-    } catch { toast.error("Failed to delete position"); }
-  };
-
-  const filteredApps = applications.filter((a) => {
-    const q = searchTerm.toLowerCase();
-    const matchSearch = a.name.toLowerCase().includes(q) || a.email.toLowerCase().includes(q) || a.positionTitle.toLowerCase().includes(q);
-    const matchStatus = statusFilter === "All" || a.status === statusFilter;
-    return matchSearch && matchStatus;
-  });
-
-  const stats = [
-    { label: "Total", value: applications.length, color: "#2563EB" },
-    { label: "Pending", value: applications.filter((a) => a.status === "Pending").length, color: "#eab308" },
-    { label: "Selected", value: applications.filter((a) => a.status === "Selected").length, color: "#22c55e" },
-    { label: "Rejected", value: applications.filter((a) => a.status === "Rejected").length, color: "#ef4444" },
-  ];
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-            <FiBriefcase className="text-[var(--primary)]" /> Careers Management
-          </h2>
-          <p className="text-sm text-gray-500 mt-1">Manage open positions and review applicant submissions</p>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-[var(--surface-alt)] rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden border border-slate-100 dark:border-white/10">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-[var(--primary)] to-indigo-700 text-white shrink-0">
+          <div>
+            <p className="text-white/80 text-xs font-semibold uppercase tracking-wider">Candidate Applications</p>
+            <h3 className="font-bold text-lg">{job.title}</h3>
+          </div>
+          <button onClick={onClose} className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-xl transition">×</button>
         </div>
-        {tab === "positions" && (
-          <button onClick={() => setPosModal("new")} className="flex items-center gap-2 px-4 py-2.5 bg-[var(--primary)] text-white text-sm font-semibold rounded-xl hover:opacity-90 transition">
-            <FiPlus /> Add Position
-          </button>
-        )}
-      </div>
 
-      {/* Tabs */}
-      <div className="flex border-b border-gray-200">
-        {[["applications", "Job Applications"], ["positions", "Open Positions"]].map(([key, label]) => (
-          <button key={key} onClick={() => setTab(key)}
-            className={`px-5 py-2.5 text-sm font-semibold border-b-2 transition ${tab === key ? "border-[var(--primary)] text-[var(--primary)]" : "border-transparent text-gray-500 hover:text-gray-800"}`}>
-            {label}
-          </button>
-        ))}
-      </div>
+        {/* Content */}
+        <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
+          {/* List of Applications */}
+          <div className="flex-1 overflow-y-auto p-6 border-r border-slate-100 dark:border-white/10">
+            <h4 className="font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+              <span>Submitted Profiles</span>
+              <span className="bg-blue-50 dark:bg-blue-900/40 text-[var(--primary)] dark:text-[var(--accent)] text-xs font-bold px-2 py-0.5 rounded-full">{jobApps.length}</span>
+            </h4>
 
-      {/* ─────────── APPLICATIONS TAB ─────────── */}
-      {tab === "applications" && (
-        <>
-          {/* Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {stats.map((s) => (
-              <div key={s.label} className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-lg" style={{ background: s.color + "18", color: s.color }}>{s.value}</div>
-                <p className="text-sm font-semibold text-gray-700">{s.label}</p>
+            {jobApps.length === 0 ? (
+              <div className="py-20 text-center text-slate-400 dark:text-slate-500">
+                <FiInbox size={48} className="mx-auto mb-3 opacity-40" />
+                <p className="font-medium">No candidates have applied yet</p>
               </div>
-            ))}
-          </div>
-
-          {/* Toolbar */}
-          <div className="bg-white p-4 rounded-t-2xl border-t border-x border-gray-100 flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
-            <div className="relative sm:max-w-xs w-full">
-              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-              <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search applicants..." className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30" />
-            </div>
-            <div className="flex bg-gray-50 p-1 rounded-xl border border-gray-100">
-              {["All", "Pending", "Selected", "Rejected"].map((s) => (
-                <button key={s} onClick={() => setStatusFilter(s)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${statusFilter === s ? "bg-white shadow text-gray-800" : "text-gray-500"}`}>
-                  {s}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Table */}
-          <div className="bg-white rounded-b-2xl border border-gray-100 shadow-sm overflow-hidden">
-            {appsLoading ? (
-              <div className="flex justify-center py-14"><div className="w-7 h-7 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin" /></div>
-            ) : filteredApps.length === 0 ? (
-              <div className="py-14 text-center text-gray-400"><FiInbox size={36} className="mx-auto mb-3 text-gray-300" /><p>No applications found</p></div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                  <thead className="bg-gray-50 border-b border-gray-100 text-xs uppercase text-gray-500 font-semibold tracking-wider">
-                    <tr>
-                      <th className="px-5 py-3">Applicant</th>
-                      <th className="px-5 py-3">Role</th>
-                      <th className="px-5 py-3">Date</th>
-                      <th className="px-5 py-3">Status</th>
-                      <th className="px-5 py-3 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-50">
-                    {filteredApps.map((app) => (
-                      <tr key={app._id} className="hover:bg-gray-50/50">
-                        <td className="px-5 py-4">
-                          <p className="font-semibold text-gray-800">{app.name}</p>
-                          <p className="text-xs text-gray-400 flex items-center gap-1"><FiMail size={11} />{app.email}</p>
-                        </td>
-                        <td className="px-5 py-4">
-                          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-50 text-[var(--primary)]">{app.positionTitle}</span>
-                        </td>
-                        <td className="px-5 py-4 text-xs text-gray-500">
-                          <span className="flex items-center gap-1"><FiCalendar size={11} />{new Date(app.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
-                        </td>
-                        <td className="px-5 py-4">
-                          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${app.status === "Selected" ? "bg-green-50 text-green-700" : app.status === "Rejected" ? "bg-red-50 text-red-600" : "bg-yellow-50 text-yellow-700"}`}>
-                            {app.status}
-                          </span>
-                        </td>
-                        <td className="px-5 py-4">
-                          <div className="flex items-center justify-end gap-1.5">
-                            <button onClick={() => setSelectedApp(app)} className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50" title="View"><FiEye size={14} /></button>
-                            {app.status === "Pending" && <>
-                              <button onClick={() => handleUpdateStatus(app._id, "Selected")} disabled={actionId === app._id} className="p-1.5 rounded-lg text-green-600 hover:bg-green-50 disabled:opacity-40" title="Select"><FiCheck size={14} /></button>
-                              <button onClick={() => handleUpdateStatus(app._id, "Rejected")} disabled={actionId === app._id} className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 disabled:opacity-40" title="Reject"><FiX size={14} /></button>
-                            </>}
-                            <button onClick={() => handleDeleteApp(app._id)} disabled={actionId === app._id} className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 disabled:opacity-40" title="Delete"><FiTrash2 size={14} /></button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="space-y-3">
+                {jobApps.map((app) => (
+                  <div
+                    key={app._id}
+                    onClick={() => setSelectedApp(app)}
+                    className={`p-4 rounded-2xl border cursor-pointer transition-all ${
+                      selectedApp?._id === app._id
+                        ? "border-[var(--primary)] bg-[var(--primary)]/05 shadow-sm"
+                        : "border-slate-100 dark:border-white/05 hover:bg-slate-50 dark:hover:bg-white/05 bg-white dark:bg-white/02"
+                    }`}
+                  >
+                    <div className="flex justify-between items-start mb-1">
+                      <p className="font-bold text-slate-800 dark:text-white">{app.name}</p>
+                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
+                        app.status === "Selected"
+                          ? "bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                          : app.status === "Rejected"
+                          ? "bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400"
+                          : "bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                      }`}>
+                        {app.status}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-400 truncate mb-2">{app.email}</p>
+                    <div className="flex items-center justify-between text-[11px] text-slate-400">
+                      <span className="flex items-center gap-1"><FiCalendar size={12} /> {formatDate(app.createdAt)}</span>
+                      <span className="text-[var(--primary)] font-semibold dark:text-[var(--accent)]">Click to review →</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
 
-          {/* Detail Modal */}
-          {selectedApp && (
-            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xl max-h-[90vh] flex flex-col overflow-hidden">
-                <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white shrink-0">
-                  <div><p className="text-white/70 text-xs">Application Details</p><h3 className="font-bold text-lg">{selectedApp.name}</h3></div>
-                  <button onClick={() => setSelectedApp(null)} className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-xl">×</button>
-                </div>
-                <div className="p-6 overflow-y-auto space-y-4 flex-1">
-                  <div className="grid grid-cols-2 gap-4 pb-4 border-b border-gray-100">
-                    <div><p className="text-xs text-gray-400 uppercase font-semibold mb-0.5">Email</p><p className="text-sm font-medium text-gray-800 flex items-center gap-1"><FiMail className="text-gray-400" />{selectedApp.email}</p></div>
-                    <div><p className="text-xs text-gray-400 uppercase font-semibold mb-0.5">Position</p><p className="text-sm font-medium text-[var(--primary)]">{selectedApp.positionTitle}</p></div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 pb-4 border-b border-gray-100">
-                    <div><p className="text-xs text-gray-400 uppercase font-semibold mb-0.5">Date</p><p className="text-sm text-gray-800 flex items-center gap-1"><FiCalendar className="text-gray-400" />{new Date(selectedApp.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}</p></div>
-                    <div><p className="text-xs text-gray-400 uppercase font-semibold mb-0.5">Status</p>
-                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${selectedApp.status === "Selected" ? "bg-green-50 text-green-700" : selectedApp.status === "Rejected" ? "bg-red-50 text-red-600" : "bg-yellow-50 text-yellow-700"}`}>{selectedApp.status}</span>
-                    </div>
-                  </div>
+          {/* Details Column */}
+          <div className="w-full md:w-[450px] bg-slate-50/50 dark:bg-black/10 p-6 overflow-y-auto flex flex-col justify-between">
+            {selectedApp ? (
+              <div className="space-y-5 h-full flex flex-col justify-between">
+                <div className="space-y-4">
                   <div>
-                    <p className="text-xs text-gray-400 uppercase font-semibold mb-2 flex items-center gap-1"><FiFileText />Cover Letter</p>
-                    <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 max-h-52 overflow-y-auto">
-                      <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{selectedApp.coverLetter}</p>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Candidate Details</span>
+                    <h4 className="font-extrabold text-lg text-slate-800 dark:text-white mt-1">{selectedApp.name}</h4>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
+                      <FiMail size={14} className="text-slate-400" />
+                      <span>{selectedApp.email}</span>
+                    </p>
+                  </div>
+
+                  <div className="border-t border-slate-100 dark:border-white/10 pt-4">
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                      <FiFileText size={13} /> Cover Letter / Pitch
+                    </p>
+                    <div className="p-4 bg-white dark:bg-white/05 border border-slate-100 dark:border-white/10 rounded-2xl max-h-80 overflow-y-auto">
+                      <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">{selectedApp.coverLetter}</p>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50">
-                  {selectedApp.status === "Pending" && (
+
+                <div className="border-t border-slate-100 dark:border-white/10 pt-4 mt-6">
+                  <div className="flex items-center justify-between gap-3">
                     <div className="flex gap-2">
-                      <button onClick={() => handleUpdateStatus(selectedApp._id, "Selected")} className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-semibold bg-green-600 text-white hover:bg-green-700"><FiCheck />Select</button>
-                      <button onClick={() => handleUpdateStatus(selectedApp._id, "Rejected")} className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-semibold bg-red-500 text-white hover:bg-red-600"><FiX />Reject</button>
+                      <button
+                        onClick={() => onUpdateStatus(selectedApp._id, "Selected").then((res) => { if (res) setSelectedApp(res); })}
+                        disabled={actionId === selectedApp._id}
+                        className="flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white rounded-xl text-xs font-bold hover:bg-green-700 disabled:opacity-50 transition"
+                      >
+                        <FiCheck /> Shortlist
+                      </button>
+                      <button
+                        onClick={() => onUpdateStatus(selectedApp._id, "Rejected").then((res) => { if (res) setSelectedApp(res); })}
+                        disabled={actionId === selectedApp._id}
+                        className="flex items-center gap-1.5 px-4 py-2 bg-red-500 text-white rounded-xl text-xs font-bold hover:bg-red-600 disabled:opacity-50 transition"
+                      >
+                        <FiX /> Reject
+                      </button>
                     </div>
-                  )}
-                  <button onClick={() => setSelectedApp(null)} className="ml-auto px-4 py-2 rounded-xl text-sm text-gray-500 hover:bg-gray-200">Close</button>
-                </div>
-              </div>
-            </div>
-          )}
-        </>
-      )}
-
-      {/* ─────────── POSITIONS TAB ─────────── */}
-      {tab === "positions" && (
-        <div className="space-y-4">
-          {posLoading ? (
-            <div className="flex justify-center py-14"><div className="w-7 h-7 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin" /></div>
-          ) : positions.length === 0 ? (
-            <div className="py-14 text-center bg-white rounded-2xl border border-gray-100 text-gray-400">
-              <FiInbox size={36} className="mx-auto mb-3 text-gray-300" />
-              <p className="font-medium">No positions yet</p>
-              <p className="text-sm mt-1">Click "Add Position" to create your first listing</p>
-            </div>
-          ) : (
-            positions.map((pos) => (
-              <div key={pos._id} className={`bg-white rounded-2xl p-5 border shadow-sm transition-all ${pos.isOpen ? "border-gray-100 hover:shadow-md" : "border-gray-200 opacity-60"}`}>
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                      <h3 className="font-bold text-gray-800">{pos.title}</h3>
-                      <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${pos.isOpen ? "bg-green-50 text-green-700" : "bg-gray-100 text-gray-500"}`}>
-                        {pos.isOpen ? "Open" : "Filled"}
-                      </span>
-                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-600 font-medium">{pos.type}</span>
-                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-500 font-medium">{pos.location}</span>
-                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-600 font-medium">{pos.dept}</span>
-                    </div>
-                    <p className="text-sm text-gray-500 mb-2 line-clamp-2">{pos.description}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {pos.skills.map((s) => (
-                        <span key={s} className="text-xs bg-purple-50 text-[var(--primary)] px-2 py-0.5 rounded-full font-medium">{s}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <button onClick={() => handleToggleOpen(pos)} className={`p-2 rounded-lg transition ${pos.isOpen ? "text-green-600 hover:bg-green-50" : "text-gray-400 hover:bg-gray-100"}`} title={pos.isOpen ? "Mark as Filled" : "Reopen Position"}>
-                      {pos.isOpen ? <FiToggleRight size={20} /> : <FiToggleLeft size={20} />}
+                    <button
+                      onClick={() => {
+                        onDeleteApp(selectedApp._id);
+                        setSelectedApp(null);
+                      }}
+                      disabled={actionId === selectedApp._id}
+                      className="p-2 bg-slate-100 dark:bg-white/05 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 text-slate-400 rounded-xl transition"
+                      title="Delete Application"
+                    >
+                      <FiTrash2 size={16} />
                     </button>
-                    <button onClick={() => setPosModal(pos)} className="p-2 rounded-lg text-blue-600 hover:bg-blue-50 transition" title="Edit"><FiEdit2 size={16} /></button>
-                    <button onClick={() => handleDeletePos(pos._id)} className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition" title="Delete"><FiTrash2 size={16} /></button>
                   </div>
                 </div>
               </div>
-            ))
-          )}
+            ) : (
+              <div className="h-full flex flex-col items-center justify-center text-center text-slate-400 p-8 my-auto">
+                <FiEye size={40} className="mb-3 opacity-30 text-[var(--primary)]" />
+                <p className="font-semibold">Review Candidate Profile</p>
+                <p className="text-xs text-slate-400 mt-1 max-w-[200px] mx-auto">Select any applicant from the list to review details and set statuses</p>
+              </div>
+            )}
+          </div>
         </div>
-      )}
 
-      {/* Position Form Modal */}
+        {/* Footer */}
+        <div className="px-6 py-4 border-t border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/02 flex justify-end shrink-0">
+          <button onClick={onClose} className="px-5 py-2 rounded-xl text-sm font-semibold text-slate-500 hover:bg-slate-200 dark:hover:bg-white/05 transition">Close</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Main Component ── */
+export default function AdminCareers() {
+  const [positions, setPositions] = useState([]);
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All"); // All, Active, Draft, Closed
+  const [posModal, setPosModal] = useState(null); // null | "new" | position-object
+  const [appsModalJob, setAppsModalJob] = useState(null); // null | position-object
+  const [actionId, setActionId] = useState(null);
+
+  // Fetch initial data
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const [posRes, appRes] = await Promise.all([
+        API.get("/careers/positions/all"),
+        API.get("/careers/applications")
+      ]);
+      setPositions(posRes.data || []);
+      setApplications(appRes.data || []);
+    } catch (err) {
+      toast.error("Failed to load careers information");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Position Save handler
+  const handlePosSave = (pos, mode) => {
+    if (mode === "add") setPositions((p) => [pos, ...p]);
+    else setPositions((p) => p.map((x) => (x._id === pos._id ? pos : x)));
+  };
+
+  // Inline status changer (dropdown)
+  const handleStatusChange = async (pos, newStatus) => {
+    const updatedIsOpen = newStatus === "Active";
+    setActionId(pos._id);
+    try {
+      const res = await API.put(`/careers/positions/${pos._id}`, { isOpen: updatedIsOpen });
+      setPositions((p) => p.map((x) => (x._id === pos._id ? res.data.position : x)));
+      toast.success(`Position status changed to ${newStatus}`);
+    } catch {
+      toast.error("Failed to change position status");
+    } finally {
+      setActionId(null);
+    }
+  };
+
+  // Delete Job Position
+  const handleDeletePos = async (id) => {
+    if (!window.confirm("Are you sure you want to permanently delete this job position? All related application logs will remain, but the position listing will be deleted.")) return;
+    setActionId(id);
+    try {
+      await API.delete(`/careers/positions/${id}`);
+      setPositions((p) => p.filter((x) => x._id !== id));
+      toast.success("Job listing permanently deleted");
+    } catch {
+      toast.error("Failed to delete position");
+    } finally {
+      setActionId(null);
+    }
+  };
+
+  // Update Application Status (Selected, Rejected)
+  const handleUpdateAppStatus = async (appId, status) => {
+    setActionId(appId);
+    try {
+      const res = await API.put(`/careers/applications/${appId}`, { status });
+      toast.success(`Candidate marked as ${status}`);
+      setApplications((p) => p.map((a) => (a._id === appId ? { ...a, status } : a)));
+      setActionId(null);
+      return res.data.application;
+    } catch {
+      toast.error("Failed to update candidate status");
+      setActionId(null);
+      return null;
+    }
+  };
+
+  // Delete Application
+  const handleDeleteApp = async (appId) => {
+    if (!window.confirm("Permanently delete this applicant submission?")) return;
+    setActionId(appId);
+    try {
+      await API.delete(`/careers/applications/${appId}`);
+      setApplications((p) => p.filter((a) => a._id !== appId));
+      toast.success("Application deleted");
+    } catch {
+      toast.error("Failed to delete application");
+    } finally {
+      setActionId(null);
+    }
+  };
+
+  // Stats
+  const totalJobs = positions.length;
+  const activeJobs = positions.filter((p) => p.isOpen).length;
+  const draftJobs = positions.filter((p) => !p.isOpen).length; // Map to draft/closed counts
+  const totalApps = applications.length;
+
+  // New applications in the last 7 days
+  const newAppsCount = applications.filter((app) => {
+    const createdDate = new Date(app.createdAt);
+    const diffTime = Math.abs(new Date() - createdDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays <= 7;
+  }).length;
+
+  const stats = [
+    { label: "Total Jobs", value: totalJobs, icon: FiBriefcase, bgColor: "bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-400" },
+    { label: "Active", value: activeJobs, icon: FiCheck, bgColor: "bg-green-50 text-green-600 dark:bg-green-950/30 dark:text-green-400" },
+    { label: "Drafts", value: draftJobs, icon: FiFileText, bgColor: "bg-yellow-50 text-yellow-600 dark:bg-yellow-950/30 dark:text-yellow-400" },
+    { label: "Total Applications", value: totalApps, icon: FiMail, bgColor: "bg-purple-50 text-purple-600 dark:bg-purple-950/30 dark:text-purple-400" },
+    { label: "New (7 Days)", value: newAppsCount, icon: FiCalendar, bgColor: "bg-indigo-50 text-indigo-600 dark:bg-indigo-950/30 dark:text-indigo-400" }
+  ];
+
+  // Filtering positions
+  const filteredPositions = positions.filter((pos) => {
+    const query = searchTerm.toLowerCase();
+    const matchSearch =
+      pos.title.toLowerCase().includes(query) ||
+      pos.dept.toLowerCase().includes(query) ||
+      pos.type.toLowerCase().includes(query);
+
+    if (statusFilter === "All") return matchSearch;
+    if (statusFilter === "Active") return matchSearch && pos.isOpen;
+    if (statusFilter === "Draft") return matchSearch && !pos.isOpen; // Map drafts to false
+    if (statusFilter === "Closed") return matchSearch && !pos.isOpen; // Map closed to false
+    return matchSearch;
+  });
+
+  const getBadgeStyles = (type) => {
+    const t = type.toLowerCase();
+    if (t.includes("full")) return "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30";
+    if (t.includes("part")) return "bg-sky-50 text-sky-700 dark:bg-sky-950/30 dark:text-sky-400 border border-sky-100 dark:border-sky-900/30";
+    if (t.includes("contract")) return "bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30";
+    return "bg-purple-50 text-purple-700 dark:bg-purple-950/30 dark:text-purple-400 border border-purple-100 dark:border-purple-900/30";
+  };
+
+  const getStatusStyles = (isOpen) => {
+    if (isOpen) return "bg-green-50 text-green-700 border-green-200 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900/30";
+    return "bg-slate-100 text-slate-600 border-slate-200 dark:bg-white/05 dark:text-slate-400 dark:border-white/10";
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h2 className="text-2xl font-extrabold text-slate-800 dark:text-white flex items-center gap-2">
+          <FiBriefcase className="text-[var(--primary)]" /> Careers Management
+        </h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Monitor open roles, configure job settings, and manage applicant files.
+        </p>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        {stats.map((s) => (
+          <div
+            key={s.label}
+            className="bg-white dark:bg-[var(--surface-alt)] rounded-3xl p-5 border border-slate-100 dark:border-white/10 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+          >
+            <div>
+              <p className="text-slate-400 dark:text-slate-500 text-xs font-bold uppercase tracking-wider">{s.label}</p>
+              <p className="text-3xl font-extrabold text-slate-800 dark:text-white mt-1">{s.value}</p>
+            </div>
+            <div className={`w-11 h-11 rounded-2xl flex items-center justify-center ${s.bgColor}`}>
+              <s.icon size={20} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Toolbar */}
+      <div className="bg-white dark:bg-[var(--surface-alt)] p-4 rounded-3xl border border-slate-100 dark:border-white/10 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+        {/* Search */}
+        <div className="relative w-full md:max-w-xs">
+          <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={15} />
+          <input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search jobs..."
+            className="w-full pl-10 pr-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 transition-all"
+          />
+        </div>
+
+        {/* Filter segment + Post Job button */}
+        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-center justify-end">
+          <div className="flex bg-slate-50 dark:bg-white/05 p-1 rounded-2xl border border-slate-100 dark:border-white/10 w-full sm:w-auto">
+            {["All", "Active", "Draft", "Closed"].map((pill) => (
+              <button
+                key={pill}
+                onClick={() => setStatusFilter(pill)}
+                className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-bold tracking-wide uppercase transition-all ${
+                  statusFilter === pill
+                    ? "bg-white dark:bg-slate-800 shadow text-slate-800 dark:text-white"
+                    : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white"
+                }`}
+              >
+                {pill}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setPosModal("new")}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-[var(--primary)] text-white text-sm font-bold rounded-xl hover:opacity-95 shadow-lg shadow-[var(--primary)]/20 hover:-translate-y-[1px] transition-all"
+          >
+            <FiPlus size={16} /> Post New Job
+          </button>
+        </div>
+      </div>
+
+      {/* Main Table */}
+      <div className="bg-white dark:bg-[var(--surface-alt)] rounded-3xl border border-slate-100 dark:border-white/10 shadow-sm overflow-hidden">
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <div className="w-8 h-8 border-3 border-[var(--primary)] border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : filteredPositions.length === 0 ? (
+          <div className="py-20 text-center text-slate-400 dark:text-slate-500">
+            <FiInbox size={56} className="mx-auto mb-4 opacity-30 text-[var(--primary)]" />
+            <h4 className="text-lg font-bold text-slate-800 dark:text-white">No listings found</h4>
+            <p className="text-sm mt-1 max-w-sm mx-auto">Try customizing your filters or post a new job opening to start receiving profile submissions.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-slate-50/70 dark:bg-white/02 border-b border-slate-100 dark:border-white/10 text-[10px] uppercase text-slate-400 font-extrabold tracking-wider">
+                <tr>
+                  <th className="px-6 py-4">Role</th>
+                  <th className="px-6 py-4">Department</th>
+                  <th className="px-6 py-4">Type</th>
+                  <th className="px-6 py-4">Mode</th>
+                  <th className="px-6 py-4">Status</th>
+                  <th className="px-6 py-4 text-center">Applications</th>
+                  <th className="px-6 py-4">Posted</th>
+                  <th className="px-6 py-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-white/05">
+                {filteredPositions.map((pos) => {
+                  const appsCount = applications.filter((app) => app.positionId === pos._id).length;
+
+                  return (
+                    <tr key={pos._id} className="hover:bg-slate-50/40 dark:hover:bg-white/02 transition-colors">
+                      {/* Title/Role */}
+                      <td className="px-6 py-4.5 font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer min-w-[200px]" onClick={() => setAppsModalJob(pos)}>
+                        {pos.title}
+                      </td>
+
+                      {/* Dept */}
+                      <td className="px-6 py-4.5 text-slate-600 dark:text-slate-300 font-semibold">
+                        {pos.dept}
+                      </td>
+
+                      {/* Type Badge */}
+                      <td className="px-6 py-4.5">
+                        <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${getBadgeStyles(pos.type)}`}>
+                          {pos.type}
+                        </span>
+                      </td>
+
+                      {/* Mode / Location */}
+                      <td className="px-6 py-4.5 text-slate-600 dark:text-slate-300 font-medium">
+                        {pos.location}
+                      </td>
+
+                      {/* Status Dropdown */}
+                      <td className="px-6 py-4.5">
+                        <div className="relative inline-block w-28">
+                          <select
+                            disabled={actionId === pos._id}
+                            value={pos.isOpen ? "Active" : "Closed"}
+                            onChange={(e) => handleStatusChange(pos, e.target.value)}
+                            className={`w-full px-3 py-1.5 rounded-xl text-xs font-bold border appearance-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 pr-8 bg-white dark:bg-slate-800 ${getStatusStyles(pos.isOpen)}`}
+                          >
+                            <option value="Active">✓ Active</option>
+                            <option value="Closed">✗ Closed</option>
+                          </select>
+                          <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={12} />
+                        </div>
+                      </td>
+
+                      {/* Applications Button */}
+                      <td className="px-6 py-4.5 text-center">
+                        <button
+                          onClick={() => setAppsModalJob(pos)}
+                          className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+                            appsCount > 0
+                              ? "bg-blue-50/80 text-[var(--primary)] border-blue-200 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-[var(--accent)] dark:border-blue-800/40"
+                              : "bg-slate-50 text-slate-400 border-slate-200 dark:bg-white/02 dark:text-slate-500 dark:border-white/05"
+                          }`}
+                        >
+                          <FiMail size={12} />
+                          <span>{appsCount}</span>
+                        </button>
+                      </td>
+
+                      {/* Date */}
+                      <td className="px-6 py-4.5 text-xs text-slate-400 font-medium">
+                        {new Date(pos.createdAt).toLocaleDateString("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric"
+                        })}
+                      </td>
+
+                      {/* Actions */}
+                      <td className="px-6 py-4.5">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => setPosModal(pos)}
+                            disabled={actionId === pos._id}
+                            className="p-2 bg-slate-50 dark:bg-white/02 text-slate-500 dark:text-slate-400 hover:text-[var(--primary)] dark:hover:text-[var(--accent)] rounded-xl border border-slate-100 dark:border-white/05 hover:shadow-sm transition"
+                            title="Edit Job"
+                          >
+                            <FiEdit2 size={13} />
+                          </button>
+                          <button
+                            onClick={() => setAppsModalJob(pos)}
+                            className="p-2 bg-slate-50 dark:bg-white/02 text-slate-500 dark:text-slate-400 hover:text-green-600 rounded-xl border border-slate-100 dark:border-white/05 hover:shadow-sm transition"
+                            title="Review Applicants"
+                          >
+                            <FiEye size={13} />
+                          </button>
+                          <button
+                            onClick={() => handleDeletePos(pos._id)}
+                            disabled={actionId === pos._id}
+                            className="p-2 bg-slate-50 dark:bg-white/02 text-slate-400 hover:text-red-500 rounded-xl border border-slate-100 dark:border-white/05 hover:shadow-sm transition"
+                            title="Delete"
+                          >
+                            <FiTrash2 size={13} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Job Position Modal (New / Edit) */}
       {posModal && (
         <PositionModal
           initial={posModal === "new" ? null : posModal}
           onClose={() => setPosModal(null)}
           onSave={handlePosSave}
+        />
+      )}
+
+      {/* Review Applicants Modal */}
+      {appsModalJob && (
+        <ApplicantsModal
+          job={appsModalJob}
+          applications={applications}
+          onClose={() => setAppsModalJob(null)}
+          onUpdateStatus={handleUpdateAppStatus}
+          onDeleteApp={handleDeleteApp}
+          actionId={actionId}
         />
       )}
     </div>

@@ -22,7 +22,7 @@ const NAV_ITEMS = [
   { to: "announcements", label: "Announcements", icon: FiBell },
   { to: "lms", label: "LMS Courses", icon: FiLayers },
   { to: "enrollments", label: "Enrollments", icon: FiBookOpen },
-  { to: "careers", label: "Job Applications", icon: FiBriefcase },
+  { to: "careers", label: "Careers", icon: FiBriefcase },
   { to: "blog", label: "Blog Management", icon: FiEdit3 },
 ]
 
