@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { FiSearch, FiFrown } from "react-icons/fi";
 import API from "../services/api";
+import { media } from "../utils/media";
 
 export default function Blog() {
     const [posts, setPosts] = useState([]);
@@ -103,7 +105,7 @@ export default function Blog() {
                             <article key={post._id} className="group flex flex-col bg-white dark:bg-[var(--surface-alt)] rounded-[2.5rem] border border-slate-100 dark:border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-[var(--primary)]/10 transition-all duration-500 hover:-translate-y-2">
                                 <div className="relative h-48 overflow-hidden">
                                     {post.img ? (
-                                        <img src={post.img} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                        <img src={media(post.img)} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                     ) : (
                                         <div className="w-full h-full bg-gradient-to-br from-[var(--primary)]/20 to-indigo-500/20 flex items-center justify-center">
                                             <span className="text-4xl opacity-30">📝</span>
@@ -123,9 +125,9 @@ export default function Blog() {
                                     <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-1">
                                         {post.excerpt}
                                     </p>
-                                    <button className="flex items-center gap-2 text-sm font-bold text-[var(--primary)] hover:gap-3 transition-all">
+                                    <Link to={`/blog/${post._id}`} className="flex items-center gap-2 text-sm font-bold text-[var(--primary)] hover:gap-3 transition-all">
                                         Read Full Article <span>→</span>
-                                    </button>
+                                    </Link>
                                 </div>
                             </article>
                         ))}

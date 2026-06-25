@@ -51,6 +51,7 @@ import ProfessorApply from "./pages/professor/ProfessorApply";
 import ProfessorPaymentPage from "./pages/payment/ProfessorPaymentPage";
 import AboutUs from "./pages/AboutUs";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import FAQ from "./pages/FAQ";
 import Features from "./pages/Features";
 import Pricing from "./pages/Pricing";
@@ -69,6 +70,7 @@ function App() {
             <Route path="/careers" element={<Careers />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/features" element={<Features />} />
             <Route path="/pricing" element={<Pricing />} />
