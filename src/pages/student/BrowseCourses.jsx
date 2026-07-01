@@ -25,7 +25,7 @@ const ENROLL_STATUS = {
   completed: { label: "Completed",           color: "text-blue-600 bg-blue-50/50 border-blue-200 dark:text-blue-400 dark:bg-blue-950/20 dark:border-blue-900/50",     icon: FiStar },
 }
 
-function CourseCard({ course, enrollmentStatus, onApply, applying, onSelect }) {
+function CourseCard({ course, enrollmentStatus, onEnroll, onSelect }) {
   const sc = enrollmentStatus ? ENROLL_STATUS[enrollmentStatus] : null
   const Icon = sc?.icon
 
@@ -81,12 +81,10 @@ function CourseCard({ course, enrollmentStatus, onApply, applying, onSelect }) {
               {sc.label}
             </div>
           ) : (
-            <button onClick={() => onApply(course._id)} disabled={applying === course._id}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 text-white text-sm font-semibold hover:opacity-90 transition flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm shadow-blue-500/10">
-              {applying === course._id
-                ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                : <FiBookOpen size={14} />}
-              {applying === course._id ? "Applying..." : "Apply Now"}
+            <button onClick={() => onEnroll(course._id)}
+              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 text-white text-sm font-semibold hover:opacity-90 transition flex items-center justify-center gap-2 shadow-sm shadow-blue-500/10">
+              <FiBookOpen size={14} />
+              Enroll Now
             </button>
           )}
         </div>
@@ -104,7 +102,6 @@ export default function BrowseCourses() {
   const [search, setSearch] = useState("")
   const [filterLevel, setFilterLevel] = useState("all")
   const [filterCategory, setFilterCategory] = useState("all")
-  const [applying, setApplying] = useState(null)
 
   // Course Details Modal State
   const [selectedCourse, setSelectedCourse] = useState(null)
@@ -129,17 +126,9 @@ export default function BrowseCourses() {
     fetchAll()
   }, [])
 
-  const apply = async (courseId) => {
+  const enroll = (courseId) => {
     if (!user) { navigate("/login"); return }
-    setApplying(courseId)
-    try {
-      await API.post("/lms/enroll", { courseId })
-      toast.success("Application submitted! Waiting for admin approval.")
-      const eRes = await API.get("/lms/enrollments/my")
-      setMyEnrollments(eRes.data.enrollments || [])
-    } catch (e) {
-      toast.error(e.response?.data?.message || "Failed to apply")
-    } finally { setApplying(null) }
+    navigate(`/payment/course/${courseId}`)
   }
 
   const handleSelectCourse = async (course) => {
@@ -327,8 +316,7 @@ export default function BrowseCourses() {
                 key={course._id}
                 course={course}
                 enrollmentStatus={enrollMap[course._id] || null}
-                onApply={apply}
-                applying={applying}
+                onEnroll={enroll}
                 onSelect={handleSelectCourse}
               />
             ))}
@@ -459,17 +447,13 @@ export default function BrowseCourses() {
               ) : (
                 <button 
                   onClick={() => {
-                    apply(selectedCourse._id)
+                    enroll(selectedCourse._id)
                     setSelectedCourse(null)
                   }} 
-                  disabled={applying === selectedCourse._id}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 text-white text-xs font-bold shadow hover:opacity-95 transition flex items-center justify-center gap-1.5 disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 text-white text-xs font-bold shadow hover:opacity-95 transition flex items-center justify-center gap-1.5"
                 >
-                  {applying === selectedCourse._id
-                    ? <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin" />
-                    : <FiBookOpen size={12} />
-                  }
-                  Apply for Course
+                  <FiBookOpen size={12} />
+                  Enroll Now
                 </button>
               )}
             </div>

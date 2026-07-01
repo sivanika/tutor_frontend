@@ -38,6 +38,7 @@ import RegisterProfessor from "./pages/auth/RegisterProfessor";
 import AdminLogin from "./pages/auth/AdminLogin";
 import Careers from "./pages/Careers";
 import PaymentPage from "./pages/payment/PaymentPage";
+import CoursePaymentPage from "./pages/payment/CoursePaymentPage";
 import TutorProfilePage from "./pages/student/TutorProfilePage";
 import LegalHub from "./pages/legal/LegalHub";
 import Terms from "./pages/legal/Terms";
@@ -98,6 +99,14 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
           
           <Route path="/payment" element={<PaymentPage />} />
+          <Route
+            path="/payment/course/:courseId"
+            element={
+              <ProtectedRoute role="student">
+                <CoursePaymentPage />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="/tutor/:id" element={<TutorProfilePage />} />
           <Route path="/student/:id" element={<StudentProfilePage />} />

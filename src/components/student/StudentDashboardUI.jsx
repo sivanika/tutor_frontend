@@ -19,6 +19,7 @@ import CoursesTab from "./tabs/CoursesTab"
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: FiGrid },
+  { id: "courses", label: "My Courses", icon: FiVideo },
   { id: "tutors", label: "Browse Tutors", icon: FiSearch },
   { id: "sessions", label: "My Sessions", icon: FiBook },
   { id: "subjects", label: "My Subjects", icon: FiBookOpen },
@@ -210,6 +211,7 @@ export default function StudentDashboardUI() {
         <main className={`flex-1 overflow-y-auto ${activeTab === "messages" ? "p-4" : "p-4 md:p-6"}`}>
           <div key={activeTab} className={`animate-fadeIn ${activeTab === "messages" ? "h-full" : ""}`}>
             {activeTab === "dashboard" && <DashboardTab />}
+            {activeTab === "courses" && <CoursesTab />}
             {activeTab === "tutors" && <TutorsTab />}
             {activeTab === "sessions" && <SessionsTab />}
             {activeTab === "subjects" && <MySubjectsTab />}
