@@ -34,4 +34,12 @@ API.interceptors.response.use(
   }
 );
 
+export const getFileUrl = (path) => {
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  const base = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  const domain = base.replace(/\/api$/, "");
+  return `${domain}${path.startsWith("/") ? "" : "/"}${path}`;
+};
+
 export default API;

@@ -8,6 +8,7 @@ import {
 import toast from "react-hot-toast"
 
 import { media } from "../../utils/media"
+import AdminLiveClasses from "./AdminLiveClasses"
 
 const STATUS_STYLES = {
   draft:     "bg-yellow-50 text-yellow-700 border-yellow-200",
@@ -17,9 +18,12 @@ const STATUS_STYLES = {
 
 const emptyForm = {
   title: "", description: "", subject: "", instructor: "Admin",
-  duration: "Self-paced", level: "All Levels", price: 0,
+  duration: "Self-paced", level: "All Levels", price: 0, oldPrice: "",
   category: "", tags: "", status: "draft",
-  thumbnailUrl: "", videoUrl: "",
+  students: "", rating: "", reviews: "", bestseller: false,
+  thumbnailUrl: "", videoUrl: "", drm: "Signed URL (expiring)",
+  passScore: 70, attemptPolicy: "unlimited", autoCertificate: true,
+  certIssuer: "Vishidh Academy", certDomain: "vishidhacademy.com"
 }
 
 // ── tiny shared input ───────────────────────────────────────
@@ -203,7 +207,7 @@ function ModuleManager({ courseId }) {
 }
 
 // ── Main Page ───────────────────────────────────────────────
-export default function AdminLMSCourses() {
+function LMSCourseTab() {
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -227,9 +231,12 @@ export default function AdminLMSCourses() {
   const openNew = () => { setForm(emptyForm); setEditId(null); setThumbFile(null); setVideoFile(null); setShowForm(true) }
   const openEdit = (c) => {
     setForm({ title: c.title, description: c.description, subject: c.subject, instructor: c.instructor || "Admin",
-      duration: c.duration || "Self-paced", level: c.level || "All Levels", price: c.price || 0,
+      duration: c.duration || "Self-paced", level: c.level || "All Levels", price: c.price || 0, oldPrice: c.oldPrice || "",
       category: c.category || "", tags: (c.tags || []).join(", "), status: c.status || "draft",
-      thumbnailUrl: c.thumbnailUrl || "", videoUrl: c.videoUrl || "" })
+      students: c.students || "", rating: c.rating || "", reviews: c.reviews || "", bestseller: c.bestseller || false,
+      thumbnailUrl: c.thumbnailUrl || "", videoUrl: c.videoUrl || "", drm: c.drm || "Signed URL (expiring)",
+      passScore: c.passScore || 70, attemptPolicy: c.attemptPolicy || "unlimited", autoCertificate: c.autoCertificate ?? true,
+      certIssuer: c.certIssuer || "Vishidh Academy", certDomain: c.certDomain || "vishidhacademy.com" })
     setEditId(c._id); setThumbFile(null); setVideoFile(null); setShowForm(true)
   }
   const closeForm = () => { setShowForm(false); setEditId(null) }
@@ -406,19 +413,34 @@ export default function AdminLMSCourses() {
               </div>
               <Field label="Description *"><Textarea rows={3} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder="What will students learn?" /></Field>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <Field label="Instructor"><Input value={form.instructor} onChange={e => setForm(f => ({ ...f, instructor: e.target.value }))} /></Field>
-                <Field label="Duration"><Input value={form.duration} onChange={e => setForm(f => ({ ...f, duration: e.target.value }))} placeholder="Self-paced" /></Field>
+                <Field label="Category"><Input value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} placeholder="e.g. Science" /></Field>
                 <Field label="Level">
                   <Select value={form.level} onChange={e => setForm(f => ({ ...f, level: e.target.value }))}>
                     {["All Levels","Beginner","Intermediate","Advanced"].map(l => <option key={l}>{l}</option>)}
                   </Select>
                 </Field>
-                <Field label="Price (₹)"><Input type="number" min={0} value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} /></Field>
+                <Field label="Instructor"><Input value={form.instructor} onChange={e => setForm(f => ({ ...f, instructor: e.target.value }))} /></Field>
+                <Field label="Duration (hours)"><Input value={form.duration} onChange={e => setForm(f => ({ ...f, duration: e.target.value }))} placeholder="e.g. 8.5" /></Field>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Field label="Category"><Input value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} placeholder="e.g. Science" /></Field>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <Field label="Price (₹)"><Input type="number" min={0} value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} /></Field>
+                <Field label="Compare-at price (₹)"><Input type="number" min={0} value={form.oldPrice} onChange={e => setForm(f => ({ ...f, oldPrice: e.target.value }))} placeholder="optional" /></Field>
+                <Field label="Students enrolled"><Input value={form.students} onChange={e => setForm(f => ({ ...f, students: e.target.value }))} placeholder="e.g. 12k" /></Field>
                 <Field label="Tags (comma-separated)"><Input value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} placeholder="tag1, tag2" /></Field>
               </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <Field label="Rating (0-5)"><Input type="number" min={0} max={5} step={0.1} value={form.rating} onChange={e => setForm(f => ({ ...f, rating: e.target.value }))} placeholder="4.8" /></Field>
+                <Field label="Review count"><Input type="number" min={0} value={form.reviews} onChange={e => setForm(f => ({ ...f, reviews: e.target.value }))} placeholder="412" /></Field>
+                <div className="col-span-2 flex items-center h-full pt-4">
+                  <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-gray-700">
+                    <input type="checkbox" checked={form.bestseller} onChange={e => setForm(f => ({ ...f, bestseller: e.target.checked }))} className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
+                    Mark as Bestseller badge
+                  </label>
+                </div>
+              </div>
+
               <Field label="Status">
                 <Select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
                   <option value="draft">Draft</option>
@@ -426,8 +448,48 @@ export default function AdminLMSCourses() {
                   <option value="archived">Archived</option>
                 </Select>
               </Field>
+
               <MediaPicker label="Thumbnail Image" urlVal={form.thumbnailUrl} onUrl={v => setForm(f => ({ ...f, thumbnailUrl: v }))} onFile={setThumbFile} accept="image/*" />
-              <MediaPicker label="Promo Video (optional)" urlVal={form.videoUrl} onUrl={v => setForm(f => ({ ...f, videoUrl: v }))} onFile={setVideoFile} accept="video/*" />
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <MediaPicker label="Video file / stream URL" urlVal={form.videoUrl} onUrl={v => setForm(f => ({ ...f, videoUrl: v }))} onFile={setVideoFile} accept="video/*" />
+                <Field label="DRM / access mode">
+                  <Select value={form.drm} onChange={e => setForm(f => ({ ...f, drm: e.target.value }))}>
+                    <option>Signed URL (expiring)</option>
+                    <option>DRM-protected (Widevine/FairPlay)</option>
+                    <option>Public (not recommended)</option>
+                  </Select>
+                </Field>
+              </div>
+
+              <div className="border border-gray-100 p-4 rounded-xl space-y-4">
+                <h3 className="font-semibold text-sm text-gray-700">Assessment & Certification</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Field label="Passing score required (%)">
+                    <Input type="number" min={0} max={100} value={form.passScore} onChange={e => setForm(f => ({ ...f, passScore: e.target.value }))} />
+                  </Field>
+                  <Field label="Quiz attempts allowed">
+                    <Select value={form.attemptPolicy} onChange={e => setForm(f => ({ ...f, attemptPolicy: e.target.value }))}>
+                      <option value="unlimited">Unlimited — retry until passed</option>
+                      <option value="3">Limited — 3 attempts</option>
+                      <option value="5">Limited — 5 attempts</option>
+                      <option value="1">Single attempt only</option>
+                    </Select>
+                  </Field>
+                </div>
+                <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-gray-700">
+                  <input type="checkbox" checked={form.autoCertificate} onChange={e => setForm(f => ({ ...f, autoCertificate: e.target.checked }))} className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
+                  Auto-issue certificate immediately on course + quiz completion
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Field label="Certificate issuer name">
+                    <Input value={form.certIssuer} onChange={e => setForm(f => ({ ...f, certIssuer: e.target.value }))} />
+                  </Field>
+                  <Field label="Issuer domain (shown on certificate)">
+                    <Input value={form.certDomain} onChange={e => setForm(f => ({ ...f, certDomain: e.target.value }))} />
+                  </Field>
+                </div>
+              </div>
             </div>
 
             <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
@@ -441,6 +503,45 @@ export default function AdminLMSCourses() {
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+export default function AdminLMSCourses() {
+  const [activeTab, setActiveTab] = useState("course")
+
+  return (
+    <div>
+      <div className="bg-[#f5f9fc] dark:bg-[var(--navy-900)] rounded-3xl p-8 mb-6 border border-slate-200 dark:border-white/10">
+        <span className="text-[var(--accent)] font-mono text-xs tracking-widest uppercase mb-2 font-bold flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[var(--accent-2)] shadow-[0_0_0_3px_rgba(242,169,59,0.22)]"></span>
+          Admin panel
+        </span>
+        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white font-display mt-2">Add content to Vishidh Academy</h1>
+        <p className="text-slate-500 dark:text-slate-400 mt-3 max-w-2xl text-sm leading-relaxed">
+          Manage Recorded Courses and Live Batches. Choose a tab below to configure learning materials, pricing, assessment rules, and view existing entries.
+        </p>
+      </div>
+
+      <div className="flex gap-1 p-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-full w-max mb-6">
+        <button 
+          onClick={() => setActiveTab("course")} 
+          className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${activeTab === "course" ? "bg-[var(--accent)] text-white shadow-sm" : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"}`}
+        >
+          📼 Recorded Course
+        </button>
+        <button 
+          onClick={() => setActiveTab("batch")} 
+          className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${activeTab === "batch" ? "bg-[var(--accent)] text-white shadow-sm" : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"}`}
+        >
+          🎥 Live Batch
+        </button>
+      </div>
+
+      <div className="mt-4">
+        {activeTab === "course" && <LMSCourseTab />}
+        {activeTab === "batch" && <AdminLiveClasses />}
+      </div>
     </div>
   )
 }

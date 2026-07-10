@@ -28,9 +28,11 @@ import AdminAnnouncements from "./pages/admin/AdminAnnouncements";
 import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
 import AdminCourses from "./pages/admin/AdminCourses";
 import AdminLMSCourses from "./pages/admin/AdminLMSCourses";
+import AdminLMSContent from "./pages/admin/AdminLMSContent";
 import AdminEnrollments from "./pages/admin/AdminEnrollments";
 import AdminCareers from "./pages/admin/AdminCareers";
 import AdminBlog from "./pages/admin/AdminBlog";
+import AdminLiveClasses from "./pages/admin/AdminLiveClasses";
 import BrowseCourses from "./pages/student/BrowseCourses";
 import CourseLearn from "./pages/student/CourseLearn";
 import RegisterStudent from "./pages/auth/RegisterStudent";
@@ -58,6 +60,7 @@ import Features from "./pages/Features";
 import Pricing from "./pages/Pricing";
 import Contact from "./pages/Contact";
 import HomeLayout from "./components/home/HomeLayout";
+import LiveClasses from "./pages/LiveClasses";
 
 function App() {
   return (
@@ -86,6 +89,7 @@ function App() {
             <Route path="/tutor-agreement" element={<TutorAgreementPage />} />
             <Route path="/institution-agreement" element={<InstitutionAgreement />} />
             <Route path="/courses" element={<BrowseCourses />} />
+            <Route path="/live-classes" element={<LiveClasses />} />
           </Route>
 
           {/* Auth & Other Public */}
@@ -189,9 +193,11 @@ function App() {
             <Route path="announcements" element={<AdminAnnouncements />} />
             <Route path="courses" element={<AdminCourses />} />
             <Route path="lms" element={<AdminLMSCourses />} />
+            <Route path="lms-content" element={<AdminLMSContent />} />
             <Route path="enrollments" element={<AdminEnrollments />} />
             <Route path="careers" element={<AdminCareers />} />
             <Route path="blog" element={<AdminBlog />} />
+            <Route path="live-classes" element={<AdminLiveClasses />} />
           </Route>
 
           {/* Admin professor approval */}

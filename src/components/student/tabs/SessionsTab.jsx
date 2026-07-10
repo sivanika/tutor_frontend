@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+﻿import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import API from "../../../services/api"
 import socket from "../../../services/socket"
@@ -11,7 +11,6 @@ export default function SessionsTab() {
   const [sessions, setSessions] = useState([])
   const [loading, setLoading] = useState(true)
   const [completing, setCompleting] = useState(null)
-  const [cancelling, setCancelling] = useState(null)
   const navigate = useNavigate()
 
   // Calendar state
@@ -44,14 +43,8 @@ export default function SessionsTab() {
   const completed = sessions.filter(s => s.myStatus === "completed")
 
   // Split enrolled into upcoming and needs-completion
-  const upcoming = enrolled.filter(s => {
-    if (s.date === "TBD" || s.time === "TBD") return true;
-    return new Date(`${s.date} ${s.time}`) > new Date();
-  })
-  const needsCompletion = enrolled.filter(s => {
-    if (s.date === "TBD" || s.time === "TBD") return false;
-    return new Date(`${s.date} ${s.time}`) <= new Date();
-  })
+  const upcoming = enrolled.filter(s => new Date(`${s.date} ${s.time}`) > new Date())
+  const needsCompletion = enrolled.filter(s => new Date(`${s.date} ${s.time}`) <= new Date())
 
   // ── Join Session ──
   const handleJoinSession = (meetLink) => {
@@ -74,22 +67,6 @@ export default function SessionsTab() {
       alert("Failed to mark as complete")
     } finally {
       setCompleting(null)
-    }
-  }
-
-  // ── Cancel Enrollment ──
-  const handleCancelEnrollment = async (sessionId) => {
-    if (!window.confirm("Are you sure you want to cancel this booking?")) return;
-    try {
-      setCancelling(sessionId)
-      await API.post(`/sessions/${sessionId}/cancel-enrollment`)
-      socket.emit("dashboard:update")
-      fetchSessions()
-    } catch (err) {
-      console.error(err)
-      alert("Failed to cancel booking")
-    } finally {
-      setCancelling(null)
     }
   }
 
@@ -121,7 +98,7 @@ export default function SessionsTab() {
       {/* LOADING */}
       {loading && (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin w-10 h-10 rounded-full border-4 border-[var(--primary)] border-t-transparent" />
+          <div className="animate-spin w-10 h-10 rounded-full border-4 border-[#6A11CB] border-t-transparent" />
         </div>
       )}
 
@@ -140,25 +117,25 @@ export default function SessionsTab() {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                <FiCalendar className="text-[var(--primary)]" />
+                <FiCalendar className="text-[#6A11CB]" />
                 Session Calendar
               </h3>
               <div className="flex items-center gap-2">
                 <button
                   onClick={prevMonth}
-                  className="w-9 h-9 rounded-full bg-gray-100 hover:bg-[var(--primary)] hover:text-white flex items-center justify-center transition"
+                  className="w-9 h-9 rounded-full bg-gray-100 hover:bg-[#6A11CB] hover:text-white flex items-center justify-center transition"
                 >
                   <FiChevronLeft size={16} />
                 </button>
                 <button
                   onClick={goToday}
-                  className="px-4 py-1.5 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white text-sm font-medium shadow hover:shadow-lg transition"
+                  className="px-4 py-1.5 rounded-full bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white text-sm font-medium shadow hover:shadow-lg transition"
                 >
                   Today
                 </button>
                 <button
                   onClick={nextMonth}
-                  className="w-9 h-9 rounded-full bg-gray-100 hover:bg-[var(--primary)] hover:text-white flex items-center justify-center transition"
+                  className="w-9 h-9 rounded-full bg-gray-100 hover:bg-[#6A11CB] hover:text-white flex items-center justify-center transition"
                 >
                   <FiChevronRight size={16} />
                 </button>
@@ -170,7 +147,7 @@ export default function SessionsTab() {
             {/* Day Headers */}
             <div className="grid grid-cols-7">
               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(d => (
-                <div key={d} className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white text-center py-2 text-xs font-semibold first:rounded-tl-lg last:rounded-tr-lg">
+                <div key={d} className="bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white text-center py-2 text-xs font-semibold first:rounded-tl-lg last:rounded-tr-lg">
                   {d}
                 </div>
               ))}
@@ -187,14 +164,14 @@ export default function SessionsTab() {
               {Array.from({ length: daysInMonth }).map((_, i) => {
                 const day = i + 1
                 const daySessions = getSessionsForDay(day)
-                const todayClass = isToday(day) ? "bg-[var(--primary)]/5 ring-2 ring-[var(--primary)]/20" : ""
+                const todayClass = isToday(day) ? "bg-[#6A11CB]/5 ring-2 ring-[#6A11CB]/20" : ""
 
                 return (
                   <div
                     key={day}
                     className={`min-h-[90px] border border-gray-100 p-1.5 hover:bg-gray-50 transition ${todayClass}`}
                   >
-                    <p className={`text-xs font-semibold mb-1 ${isToday(day) ? "text-[var(--primary)]" : "text-gray-500"}`}>
+                    <p className={`text-xs font-semibold mb-1 ${isToday(day) ? "text-[#6A11CB]" : "text-gray-500"}`}>
                       {day}
                     </p>
 
@@ -210,9 +187,8 @@ export default function SessionsTab() {
                           title={s.myStatus === "completed" ? `${s.title} (Completed)` : `Join: ${s.title}`}
                           className={`${statusColor} text-[10px] rounded px-1.5 py-0.5 mb-0.5 shadow-sm transition-all duration-200 truncate`}
                         >
-                          {s.myStatus === "completed" ? <FiCheckCircle className="inline" /> : <FiClock className="inline" />}{" "}
+                          {s.myStatus === "completed" ? "✓" : "⏰"}{" "}
                           {s.time ? new Date(`2000-01-01 ${s.time}`).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : s.title}
-
                         </div>
                       )
                     })}
@@ -236,10 +212,10 @@ export default function SessionsTab() {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                <FiClock className="text-[var(--primary)]" />
+                <FiClock className="text-[#2575FC]" />
                 Upcoming Sessions
               </h3>
-              <span className="text-xs bg-blue-50 text-[var(--primary)] px-2.5 py-1 rounded-full font-medium">
+              <span className="text-xs bg-blue-50 text-[#2575FC] px-2.5 py-1 rounded-full font-medium">
                 {upcoming.length} scheduled
               </span>
             </div>
@@ -256,7 +232,7 @@ export default function SessionsTab() {
                 <div key={s._id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl border border-gray-100 hover:bg-gray-50 transition">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-                      <FiVideo size={16} className="text-[var(--primary)]" />
+                      <FiVideo size={16} className="text-[#2575FC]" />
                     </div>
                     <div className="min-w-0">
                       <h4 className="font-semibold text-gray-800 text-sm truncate">{s.title}</h4>
@@ -267,17 +243,12 @@ export default function SessionsTab() {
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
-                    <button
-                      onClick={() => handleCancelEnrollment(s._id)}
-                      disabled={cancelling === s._id}
-                      className="px-3 py-1.5 rounded-full border border-red-200 text-red-500 hover:bg-red-50 text-xs font-semibold
-                                 transition flex items-center gap-1 disabled:opacity-50"
-                    >
-                      {cancelling === s._id ? "Cancelling..." : "Cancel"}
-                    </button>
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-[#2575FC]">
+                      Enrolled
+                    </span>
                     <button
                       onClick={() => handleJoinSession(s.meetLink)}
-                      className="px-4 py-1.5 bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] text-white rounded-full text-xs font-semibold
+                      className="px-4 py-1.5 bg-gradient-to-r from-[#6A11CB] to-[#2575FC] text-white rounded-full text-xs font-semibold
                                  hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-1"
                     >
                       <FiExternalLink size={12} />
@@ -285,7 +256,7 @@ export default function SessionsTab() {
                     </button>
                     <button
                       onClick={() => navigate(`/chat/${s._id}`)}
-                      className="p-2 rounded-lg bg-gray-100 hover:bg-purple-100 text-gray-400 hover:text-[var(--primary)] transition"
+                      className="p-2 rounded-lg bg-gray-100 hover:bg-purple-100 text-gray-400 hover:text-[#6A11CB] transition"
                       title="Session Chat"
                     >
                       <FiMessageCircle size={14} />
@@ -331,7 +302,7 @@ export default function SessionsTab() {
                     <div className="flex items-center gap-2 shrink-0">
                       <button
                         onClick={() => navigate(`/chat/${s._id}`)}
-                        className="p-2 rounded-lg bg-gray-100 hover:bg-purple-100 text-gray-400 hover:text-[var(--primary)] transition"
+                        className="p-2 rounded-lg bg-gray-100 hover:bg-purple-100 text-gray-400 hover:text-[#6A11CB] transition"
                         title="Session Chat"
                       >
                         <FiMessageCircle size={14} />
@@ -394,8 +365,7 @@ export default function SessionsTab() {
                     </p>
                   </div>
                   <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-50 text-green-600">
-                    Completed
-
+                    Completed ✓
                   </span>
                 </div>
               ))}

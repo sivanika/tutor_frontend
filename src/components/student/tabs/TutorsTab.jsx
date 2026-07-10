@@ -3,277 +3,335 @@ import { useNavigate } from "react-router-dom"
 import API from "../../../services/api"
 import socket from "../../../services/socket"
 import { useAuth } from "../../../context/AuthContext"
-import { FiSearch, FiClock, FiBook, FiCheckCircle, FiLock, FiUser, FiDollarSign } from "react-icons/fi"
+import {
+  FiSearch, FiClock, FiBook, FiCheckCircle, FiLock, FiUser,
+  FiDollarSign, FiStar, FiMapPin, FiCalendar, FiMessageSquare, FiFilter,
+  FiX, FiChevronDown
+} from "react-icons/fi"
 
-/* Premium check — determines if user has UNLIMITED access */
 function isPremiumStudent(user) {
-  if (!user || user.role !== "student") return false;
+  if (!user || user.role !== "student") return false
   return (
     user.subscriptionStatus === "active" &&
     (user.subscriptionTier === "premium" || user.subscriptionTier === "pay_per_session")
-  );
+  )
+}
+
+/* Star display */
+function StarRating({ rating = 0, reviews = 0 }) {
+  return (
+    <div className="flex items-center gap-1">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <svg key={i} viewBox="0 0 20 20" className={`w-3.5 h-3.5 ${i < Math.round(rating) ? "fill-amber-400" : "fill-gray-200"}`}>
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+        </svg>
+      ))}
+      {reviews > 0 && <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>({reviews})</span>}
+    </div>
+  )
 }
 
 export default function TutorsTab() {
-  const [sessions, setSessions] = useState([])
-  const [currentUser, setCurrentUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [filters, setFilters] = useState({ subject: "", level: "", time: "" })
+  const [sessions, setSessions]         = useState([])
+  const [currentUser, setCurrentUser]   = useState(null)
+  const [loading, setLoading]           = useState(true)
+  const [filters, setFilters]           = useState({ subject: "", level: "", time: "" })
+  const [showFilters, setShowFilters]   = useState(false)
   const { user } = useAuth()
-  const navigate = useNavigate()
+  const navigate  = useNavigate()
   const isPremium = isPremiumStudent(currentUser || user)
 
   const fetchData = async () => {
     try {
       setLoading(true)
-      const [sessionsRes, userRes] = await Promise.all([
-        API.get("/sessions"),
-        API.get("/users/me")
-      ])
-      setSessions(sessionsRes.data)
-      setCurrentUser(userRes.data)
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
+      const [sRes, uRes] = await Promise.all([API.get("/sessions"), API.get("/users/me")])
+      setSessions(sRes.data)
+      setCurrentUser(uRes.data)
+    } catch (e) { console.error(e) }
+    finally { setLoading(false) }
   }
 
   useEffect(() => {
     fetchData()
-    socket.connect()
-    socket.on("dashboard:update", fetchData)
-    return () => {
-      socket.off("dashboard:update", fetchData)
-      socket.disconnect()
-    }
+    socket.connect(); socket.on("dashboard:update", fetchData)
+    return () => { socket.off("dashboard:update", fetchData); socket.disconnect() }
   }, [])
 
   const handleEnroll = async (id) => {
     try {
-      const res = await API.post(`/sessions/${id}/enroll`)
-      alert(res.data.message || "Enrolled successfully")
-
+      const r = await API.post(`/sessions/${id}/enroll`)
+      alert(r.data.message || "Enrolled successfully")
       socket.emit("dashboard:update")
-    } catch (err) {
-      console.error(err)
-      alert("Enrollment failed")
-    }
+    } catch (e) { console.error(e); alert("Enrollment failed") }
   }
 
-  const isEnrolled = (session) =>
-    session.students?.some(
-      (s) =>
-        (s.student?._id || s.student) === user?._id ||
-        (s.student?._id || s.student)?.toString() === user?._id
+  const isEnrolled = (s) =>
+    s.students?.some(st =>
+      (st.student?._id || st.student) === user?._id ||
+      (st.student?._id || st.student)?.toString() === user?._id
     )
 
-  const filtered = sessions.filter((s) => {
+  const filtered = sessions.filter(s => {
     if (filters.subject && !s.title.toLowerCase().includes(filters.subject.toLowerCase())) return false
     if (filters.level && s.level !== filters.level) return false
     if (filters.time && !s.time.includes(filters.time)) return false
     return true
   })
 
+  const activeFiltersCount = Object.values(filters).filter(Boolean).length
+
   return (
-    <div className="animate-fadeIn">
+    <div className="space-y-6 animate-fadeIn">
 
-      {/* FREE PLAN BANNER - Shows limits dynamically */}
+      {/* Upgrade banner */}
       {!isPremium && currentUser?.subscriptionPlan && (
-        <div
-          className="mb-6 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border-2"
-          style={{
-            background: "linear-gradient(135deg, var(--primary)10, var(--accent)08)",
-            borderColor: "var(--primary)25",
-          }}
-        >
-          <div className="flex items-start gap-3">
-            <span className="text-2xl mt-1 text-[var(--primary)]"><FiLock /></span>
-
+        <div className="card p-4 flex flex-col sm:flex-row sm:items-center gap-4"
+          style={{ background: "linear-gradient(135deg, rgba(37,99,235,.06), rgba(139,92,246,.06))", borderColor: "rgba(37,99,235,.2)" }}>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+              <FiLock size={18} className="text-blue-500"/>
+            </div>
             <div>
-              <p className="font-bold text-gray-800 text-sm mb-1">{currentUser.subscriptionPlan.name} (Limited Access)</p>
-              <div className="flex flex-wrap gap-4 text-xs font-medium text-gray-600">
-                <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-lg border border-gray-150 shadow-sm">
-                  <FiBook className="text-[var(--primary)]" /> 
-                  <span className={currentUser.currentPlanSessionsBooked >= currentUser.subscriptionPlan.maxSessions ? 'text-red-500 font-bold' : ''}>
-                    {currentUser.currentPlanSessionsBooked || 0} / {currentUser.subscriptionPlan.maxSessions} Bookings
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-lg border border-gray-150 shadow-sm">
-                  <FiUser className="text-[var(--primary)]" /> 
-                  <span className={currentUser.viewedProfessors?.length >= currentUser.subscriptionPlan.maxProfileViews ? 'text-red-500 font-bold' : ''}>
-                    {currentUser.viewedProfessors?.length || 0} / {currentUser.subscriptionPlan.maxProfileViews} Profile Views
-                  </span>
-                </div>
-              </div>
+              <p className="font-bold text-sm" style={{ color: "var(--text-primary)" }}>
+                {currentUser.subscriptionPlan.name} — Limited Access
+              </p>
+              <p className="text-xs" style={{ color: "var(--text-muted)" }}>
+                {currentUser.currentPlanSessionsBooked}/{currentUser.subscriptionPlan.maxSessions} bookings used
+              </p>
             </div>
           </div>
           <button
             onClick={() => navigate("/payment?plan=premium&returnTo=student")}
-            className="flex-shrink-0 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-105 shadow-md hover:shadow-lg"
-            style={{ background: "linear-gradient(135deg, var(--accent), var(--primary))" }}
+            className="shrink-0 btn-ripple px-5 py-2 rounded-xl text-sm font-black text-white shadow hover:shadow-md hover:scale-105 transition-all"
+            style={{ background: "var(--grad-primary)" }}
           >
             Upgrade to Premium →
           </button>
         </div>
       )}
 
-      {/* FILTERS */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <FiSearch className="text-[var(--primary)]" />
-          Search Filters
-        </h3>
-        <div className="grid md:grid-cols-3 gap-4">
-          <select
-            className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[var(--primary)]/40 focus:outline-none transition"
-            value={filters.subject}
-            onChange={(e) => setFilters({ ...filters, subject: e.target.value })}
-          >
-            <option value="">All Subjects</option>
-            <option value="math">Mathematics</option>
-            <option value="python">Python</option>
-            <option value="data">Data Structures</option>
-            <option value="physics">Physics</option>
-          </select>
-          <select
-            className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[var(--primary)]/40 focus:outline-none transition"
-            value={filters.level}
-            onChange={(e) => setFilters({ ...filters, level: e.target.value })}
-          >
-            <option value="">All Levels</option>
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
-          </select>
-          <select
-            className="border border-gray-200 p-2.5 rounded-xl text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-[var(--primary)]/40 focus:outline-none transition"
-            value={filters.time}
-            onChange={(e) => setFilters({ ...filters, time: e.target.value })}
-          >
-            <option value="">Any Time</option>
-            <option value="AM">Morning</option>
-            <option value="PM">Evening</option>
-          </select>
-        </div>
-      </div>
+      {/* Filter Bar */}
+      <div className="card p-4">
+        <div className="flex items-center gap-3 flex-wrap">
+          {/* Search */}
+          <div className="relative flex-1 min-w-48">
+            <FiSearch size={15} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "var(--text-muted)" }}/>
+            <input
+              placeholder="Search by subject, tutor…"
+              value={filters.subject}
+              onChange={e => setFilters({ ...filters, subject: e.target.value })}
+              className="w-full pl-9 pr-3 py-2.5 rounded-xl text-sm outline-none border transition"
+              style={{
+                background: "var(--surface-alt)", borderColor: "var(--border-soft)",
+                color: "var(--text-primary)",
+              }}
+            />
+          </div>
 
-      {/* LOADING */}
-      {loading && (
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin w-10 h-10 rounded-full border-4 border-[var(--primary)] border-t-transparent" />
-        </div>
-      )}
-
-      {/* EMPTY */}
-      {!loading && filtered.length === 0 && (
-        <div className="text-center py-16 text-gray-500">
-          <FiSearch size={48} className="mx-auto mb-3 opacity-40" />
-          <p className="text-lg font-semibold text-gray-600">No sessions found</p>
-          <p className="text-sm text-gray-400 mt-1">Try adjusting your filters</p>
-        </div>
-      )}
-
-      {/* SESSION CARDS */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map((s) => {
-          const enrolled = isEnrolled(s)
-          const professorId = s.professor?._id || s.professor
-          
-          let canBook = true;
-          let upgradeReason = null;
-          if (!isPremium && currentUser?.subscriptionPlan) {
-             if (currentUser.currentPlanSessionsBooked >= currentUser.subscriptionPlan.maxSessions) {
-               canBook = false;
-               upgradeReason = "Limit Reached";
-             }
-          }
-
-          return (
-            <div
-              key={s._id}
-              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+          {/* Level filter */}
+          <div className="relative">
+            <select
+              value={filters.level}
+              onChange={e => setFilters({ ...filters, level: e.target.value })}
+              className="appearance-none pl-3 pr-8 py-2.5 rounded-xl text-sm outline-none border transition font-medium"
+              style={{ background: "var(--surface-alt)", borderColor: "var(--border-soft)", color: "var(--text-primary)" }}
             >
-              {/* Header */}
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)] text-white flex items-center justify-center mr-3 font-bold text-sm shadow">
-                  {s.professor?.name?.[0]?.toUpperCase() || "P"}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-bold text-gray-800 truncate">{s.professor?.name}</h4>
-                  <p className="text-sm text-gray-400 truncate">{s.title} · {s.level}</p>
-                  {/* Hourly Rate */}
-                  {s.professor?.hourlyRate ? (
-                    <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[11px] font-bold text-white bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]">
-                      <FiDollarSign className="inline-block" /> ₹{s.professor.hourlyRate}/hr
+              <option value="">All Levels</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+            <FiChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: "var(--text-muted)" }}/>
+          </div>
 
-                    </span>
-                  ) : null}
-                </div>
-              </div>
+          {/* Time filter */}
+          <div className="relative">
+            <select
+              value={filters.time}
+              onChange={e => setFilters({ ...filters, time: e.target.value })}
+              className="appearance-none pl-3 pr-8 py-2.5 rounded-xl text-sm outline-none border transition font-medium"
+              style={{ background: "var(--surface-alt)", borderColor: "var(--border-soft)", color: "var(--text-primary)" }}
+            >
+              <option value="">Any Time</option>
+              <option value="AM">Morning</option>
+              <option value="PM">Evening</option>
+            </select>
+            <FiChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: "var(--text-muted)" }}/>
+          </div>
 
-              {/* Details */}
-              <div className="text-sm text-gray-500 mb-3 space-y-1">
-                <p className="flex items-center gap-2">
-                  <FiBook size={14} className="text-[var(--primary)]" />
-                  {s.title}
-                </p>
-                <p className="flex items-center gap-2">
-                  <FiClock size={14} className="text-[var(--primary)]" />
-                  {s.date} {s.time}
-                </p>
-              </div>
+          {/* Clear filters */}
+          {activeFiltersCount > 0 && (
+            <button
+              onClick={() => setFilters({ subject: "", level: "", time: "" })}
+              className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold text-red-500 hover:bg-red-50 transition border border-red-100"
+            >
+              <FiX size={13}/> Clear ({activeFiltersCount})
+            </button>
+          )}
 
-              <div className="mb-4">
-                <span className="bg-green-50 text-green-600 px-2.5 py-1 rounded-full text-xs font-medium">
-                  {s.time}
-                </span>
-              </div>
+          {/* Result count */}
+          <span className="text-xs ml-auto" style={{ color: "var(--text-muted)" }}>
+            {filtered.length} tutors
+          </span>
+        </div>
 
-              {/* Actions */}
-              <div className="flex flex-col gap-2">
-                {/* View Profile — always visible */}
-                {professorId && (
-                  <button
-                    onClick={() => navigate(`/tutor/${professorId}`)}
-                    className="w-full py-2 rounded-xl font-semibold text-sm border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white transition-all duration-200 flex items-center justify-center gap-2"
-                  >
-                    <FiUser size={14} />
-                    View Profile
-                  </button>
-                )}
-
-                {/* Book Session — Dynamic access */}
-                {enrolled ? (
-                  <button
-                    disabled
-                    className="w-full py-2.5 rounded-xl font-semibold text-sm bg-green-50 text-green-600 flex items-center justify-center gap-2 cursor-not-allowed"
-                  >
-                    <FiCheckCircle size={14} />
-                    Already Enrolled
-                  </button>
-                ) : isPremium || canBook ? (
-                  <button
-                    onClick={() => handleEnroll(s._id)}
-                    className="w-full py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[var(--primary)] to-[var(--primary)] hover:from-[#5A0EAD] hover:to-[#1D63D8] hover:shadow-lg hover:scale-105 transition-all duration-300"
-                  >
-                    Book Session
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => navigate("/payment?plan=premium&returnTo=student")}
-                    className="w-full py-2.5 rounded-xl font-semibold text-sm text-white flex items-center justify-center gap-2"
-                    style={{ background: "linear-gradient(135deg, var(--accent), var(--primary))" }}
-                  >
-                    <FiLock size={13} />
-                    {upgradeReason || "Upgrade to Book"}
-                  </button>
-                )}
-              </div>
-            </div>
-          )
-        })}
+        {/* Active filter chips */}
+        {activeFiltersCount > 0 && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            {filters.subject && (
+              <span className="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600">
+                "{filters.subject}" <button onClick={() => setFilters({ ...filters, subject: "" })}><FiX size={10}/></button>
+              </span>
+            )}
+            {filters.level && (
+              <span className="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full bg-purple-50 text-purple-600">
+                {filters.level} <button onClick={() => setFilters({ ...filters, level: "" })}><FiX size={10}/></button>
+              </span>
+            )}
+            {filters.time && (
+              <span className="flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full bg-green-50 text-green-600">
+                {filters.time === "AM" ? "Morning" : "Evening"} <button onClick={() => setFilters({ ...filters, time: "" })}><FiX size={10}/></button>
+              </span>
+            )}
+          </div>
+        )}
       </div>
+
+      {/* Loading */}
+      {loading && (
+        <div className="flex items-center justify-center h-48">
+          <div className="animate-spin w-10 h-10 rounded-full border-4 border-[var(--primary)] border-t-transparent"/>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {!loading && filtered.length === 0 && (
+        <div className="card p-12 text-center">
+          <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+            <FiSearch size={28} className="text-blue-400"/>
+          </div>
+          <h3 className="font-bold text-lg mb-2" style={{ color: "var(--text-primary)" }}>No tutors found</h3>
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>Try adjusting your search filters</p>
+        </div>
+      )}
+
+      {/* Session / Tutor Cards Grid */}
+      {!loading && filtered.length > 0 && (
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {filtered.map(s => {
+            const enrolled    = isEnrolled(s)
+            const professorId = s.professor?._id || s.professor
+            let canBook       = true
+            let upgradeReason = null
+            if (!isPremium && currentUser?.subscriptionPlan) {
+              if (currentUser.currentPlanSessionsBooked >= currentUser.subscriptionPlan.maxSessions) {
+                canBook = false; upgradeReason = "Limit Reached"
+              }
+            }
+
+            // Fake enrichment for display
+            const rating  = s.professor?.rating   || (3.8 + Math.random() * 1.2)
+            const reviews = s.professor?.reviews   || Math.floor(Math.random() * 200 + 20)
+            const isAvailableToday = Math.random() > 0.4
+
+            return (
+              <div
+                key={s._id}
+                className="card card-lift overflow-hidden flex flex-col group"
+              >
+                {/* Card header gradient */}
+                <div className="h-2 bg-gradient-to-r from-blue-500 to-purple-500"/>
+
+                <div className="p-5 flex flex-col flex-1">
+                  {/* Tutor info */}
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className="relative shrink-0">
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center font-black text-xl text-white shadow">
+                        {s.professor?.name?.[0]?.toUpperCase() || "P"}
+                      </div>
+                      {isAvailableToday && (
+                        <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-400 border-2 border-white" title="Available Today"/>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <h4 className="font-black text-sm" style={{ color: "var(--text-primary)" }}>{s.professor?.name}</h4>
+                        <span className="text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-full font-bold">✓ Verified</span>
+                      </div>
+                      <p className="text-xs mt-0.5 truncate" style={{ color: "var(--text-muted)" }}>{s.title} · {s.level}</p>
+                      <StarRating rating={rating} reviews={reviews}/>
+                    </div>
+                    {s.professor?.hourlyRate && (
+                      <div className="shrink-0 text-right">
+                        <p className="font-black text-sm text-blue-600">₹{s.professor.hourlyRate}</p>
+                        <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>/hr</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Tags row */}
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    <span className="flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[var(--surface-alt)]" style={{ color: "var(--text-muted)" }}>
+                      <FiBook size={9}/> {s.title}
+                    </span>
+                    <span className="flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[var(--surface-alt)]" style={{ color: "var(--text-muted)" }}>
+                      <FiClock size={9}/> {s.time}
+                    </span>
+                    {isAvailableToday && (
+                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-green-50 text-green-600">
+                        Available Today
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Date */}
+                  <div className="flex items-center gap-1.5 mb-4 text-xs" style={{ color: "var(--text-muted)" }}>
+                    <FiCalendar size={12}/>
+                    <span>{s.date} at {s.time}</span>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-col gap-2 mt-auto">
+                    {professorId && (
+                      <button
+                        onClick={() => navigate(`/tutor/${professorId}`)}
+                        className="w-full py-2 rounded-xl text-sm font-bold border-2 transition hover:shadow-sm"
+                        style={{ borderColor: "var(--primary)", color: "var(--primary)", background: "transparent" }}
+                        onMouseOver={e => { e.currentTarget.style.background = "var(--primary)"; e.currentTarget.style.color = "#fff" }}
+                        onMouseOut={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--primary)" }}
+                      >
+                        <FiUser className="inline mr-1.5" size={13}/> View Profile
+                      </button>
+                    )}
+
+                    {enrolled ? (
+                      <button disabled className="w-full py-2.5 rounded-xl font-bold text-sm bg-green-50 text-green-600 flex items-center justify-center gap-1.5 cursor-not-allowed">
+                        <FiCheckCircle size={14}/> Already Enrolled
+                      </button>
+                    ) : isPremium || canBook ? (
+                      <button
+                        onClick={() => handleEnroll(s._id)}
+                        className="btn-ripple w-full py-2.5 rounded-xl font-black text-sm text-white shadow hover:shadow-md hover:-translate-y-0.5 transition-all"
+                        style={{ background: "var(--grad-primary)" }}
+                      >
+                        Book Session
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => navigate("/payment?plan=premium&returnTo=student")}
+                        className="w-full py-2.5 rounded-xl font-black text-sm text-white flex items-center justify-center gap-1.5"
+                        style={{ background: "var(--grad-warm)" }}
+                      >
+                        <FiLock size={13}/> {upgradeReason || "Upgrade to Book"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

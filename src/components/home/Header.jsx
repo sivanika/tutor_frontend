@@ -49,6 +49,7 @@ export default function Header() {
   const links = [
     { label: "Home", path: "/" },
     { label: "Courses", path: "/courses" },
+    { label: "Live Classes", path: "/live-classes" },
     { label: "About Us", path: "/about" },
     { label: "Features", path: "/features" },
     { label: "Pricing", path: "/pricing" },
@@ -71,10 +72,10 @@ export default function Header() {
         border-b border-[var(--primary)]/10 dark:border-[var(--primary)]/20
       `}
       >
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-6 py-5 lg:py-6 flex justify-between items-center">
 
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
+          <Link to="/" className="flex items-center gap-2 group z-10">
             <img
               src="/logos/vishidh-logo-768x384.png"
               alt="Vishidh VishidhAcademy"
@@ -83,7 +84,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-6">
+          <nav className="hidden lg:flex flex-1 justify-center items-center gap-8">
             {links.map((item) => {
               const isActive = location.pathname === item.path;
               return item.isHash ? (

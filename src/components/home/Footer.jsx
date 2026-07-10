@@ -31,8 +31,8 @@ export default function Footer() {
   return (
     <footer className="
       relative
-      bg-[var(--surface)] dark:bg-[var(--surface)]
-      border-t border-[var(--primary)]/20
+      bg-[var(--secondary)] dark:bg-[var(--bg)]
+      border-t border-white/10
       pt-16 pb-8 mt-0 overflow-hidden
     ">
       {/* Background glow */}
@@ -44,16 +44,16 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-xl font-extrabold">
+              <span className="text-xl font-extrabold bg-white p-2.5 rounded-2xl inline-block shadow-sm">
                 <img
-                  src="/logos/vishidh-logo-768x384.png"
+                  src="/logos/vishidh-logo-1024x512.webp"
                   alt="VishidhAcademy"
-                  className="h-16 md:h-20 w-auto object-contain"
+                  className="h-12 md:h-14 w-auto object-contain"
                 />
               </span>
             </div>
 
-            <p className="text-[var(--accent)] text-sm leading-relaxed max-w-xs">
+            <p className="text-white/70 text-sm leading-relaxed max-w-xs">
               Connecting students with verified professors through modern
               virtual classrooms and personalized learning experiences.
             </p>
@@ -66,10 +66,10 @@ export default function Footer() {
                   className="
                     w-9 h-9 rounded-xl
                     flex items-center justify-center
-                    bg-[var(--primary)]/20 border border-[var(--primary)]/30
-                    text-[var(--accent)]
-                    hover:bg-[var(--primary)] hover:text-white hover:border-[var(--primary)]
-                    hover:scale-110 hover:shadow-lg hover:shadow-[var(--primary)]/30
+                    bg-white/5 border border-white/10
+                    text-white/70
+                    hover:bg-[var(--accent)] hover:text-white hover:border-[var(--accent)]
+                    hover:scale-110 hover:shadow-lg hover:shadow-[var(--accent)]/30
                     transition-all duration-200
                   "
                 >
@@ -82,7 +82,7 @@ export default function Footer() {
           {/* Link columns */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title}>
-              <h3 className="font-semibold mb-5 text-slate-900 dark:text-white text-sm uppercase tracking-wider">
+              <h3 className="font-semibold mb-5 text-white text-sm uppercase tracking-wider">
                 {title}
               </h3>
               <ul className="space-y-3">
@@ -93,14 +93,14 @@ export default function Footer() {
                       {isObj ? (
                         <Link
                           to={link.to}
-                          className="text-sm text-[var(--accent)] hover:text-[var(--accent)] transition-colors duration-200"
+                          className="text-sm text-white/70 hover:text-[var(--accent)] transition-colors duration-200"
                         >
                           {link.label}
                         </Link>
                       ) : (
                         <a
                           href="#"
-                          className="text-sm text-[var(--accent)] hover:text-[var(--accent)] transition-colors duration-200"
+                          className="text-sm text-white/70 hover:text-[var(--accent)] transition-colors duration-200"
                         >
                           {link}
                         </a>
@@ -114,17 +114,17 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-[var(--primary)]/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-[var(--accent)]/60">
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-white/50">
             © {new Date().getFullYear()} VishidhAcademy. All rights reserved.
           </p>
-          <div className="flex items-center gap-2 text-sm text-[var(--accent)]/60">
+          <div className="flex items-center gap-2 text-sm text-white/50">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
             All systems operational
           </div>
           <div className="flex gap-2">
-            <Link to="/privacy" className="text-xs px-3 py-1 rounded-full border border-[var(--primary)]/30 text-[var(--accent)] hover:text-white hover:border-[var(--primary)] transition-colors">Privacy</Link>
-            <Link to="/terms" className="text-xs px-3 py-1 rounded-full border border-[var(--primary)]/30 text-[var(--accent)] hover:text-white hover:border-[var(--primary)] transition-colors">Terms</Link>
+            <Link to="/privacy" className="text-xs px-3 py-1 rounded-full border border-white/10 text-white/50 hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors">Privacy</Link>
+            <Link to="/terms" className="text-xs px-3 py-1 rounded-full border border-white/10 text-white/50 hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors">Terms</Link>
           </div>
         </div>
       </div>
