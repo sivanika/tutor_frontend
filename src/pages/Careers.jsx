@@ -29,15 +29,30 @@ function ApplicationModal({ position, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!cvFile) {
+      toast.error("Please upload your resume / CV.");
+      return;
+    }
     setSubmitting(true);
     try {
-      // Still calling the existing backend API, using cover letter or default
-      await API.post("/careers/apply", {
-        name: form.name.trim(),
-        email: form.email.trim(),
-        coverLetter: form.cover.trim() || `Applied for ${position.title}. Experience: ${form.experience}yrs.`,
-        positionId: position._id,
-        positionTitle: position.title,
+      const formData = new FormData();
+      formData.append("name", form.name.trim());
+      formData.append("email", form.email.trim());
+      formData.append("phone", form.phone.trim());
+      formData.append("location", form.location.trim());
+      formData.append("experience", form.experience);
+      formData.append("employer", form.employer.trim());
+      formData.append("notice", form.notice.trim());
+      formData.append("linkedin", form.linkedin.trim());
+      formData.append("coverLetter", form.cover.trim());
+      formData.append("positionId", position._id);
+      formData.append("positionTitle", position.title);
+      formData.append("resume", cvFile);
+
+      await API.post("/careers/apply", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       setSent(true);
     } catch (err) {
@@ -177,9 +192,18 @@ function JobDetailsModal({ position, onClose, onApply }) {
     return `${diffDays} days ago`;
   };
 
-  const mode = position.location?.toLowerCase().includes("remote") ? "Remote" 
+  const formatDeadline = (dateStr) => {
+    if (!dateStr) return null;
+    return new Date(dateStr).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    });
+  };
+
+  const mode = position.mode || (position.location?.toLowerCase().includes("remote") ? "Remote" 
     : position.location?.toLowerCase().includes("hybrid") ? "Hybrid" 
-    : "On-site";
+    : "On-site");
 
   return (
     <motion.div 
@@ -194,7 +218,7 @@ function JobDetailsModal({ position, onClose, onApply }) {
         exit={{ scale: 0.95, opacity: 0 }}
         className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden max-h-[90vh] flex flex-col relative"
       >
-        <div className="bg-[#2563EB] px-8 py-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-[#2563EB] px-8 py-6 flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0">
           <div className="pr-8">
             <h3 className="text-white font-bold text-2xl mb-3">{position.title}</h3>
             <div className="flex flex-wrap items-center gap-2">
@@ -212,12 +236,17 @@ function JobDetailsModal({ position, onClose, onApply }) {
           <button onClick={onClose} className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl leading-none transition-colors">&times;</button>
         </div>
 
-        <div className="p-8 overflow-y-auto">
+        <div className="p-8 overflow-y-auto flex-1">
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-slate-500 font-medium font-[Poppins] mb-8 pb-6 border-b border-slate-100">
-            <div className="flex items-center gap-1.5"><FiMapPin className="text-slate-400" /> {position.location}</div>
+            <div className="flex items-center gap-1.5"><FiMapPin className="text-slate-400" /> {position.location || mode}</div>
             <div className="flex items-center gap-1.5"><FiCalendar className="text-slate-400" /> Posted {formatTimeAgo(position.createdAt)}</div>
-            <div className="flex items-center gap-1.5"><FiUsers className="text-slate-400" /> {Math.floor(Math.random() * 3) + 1} Openings</div>
-            <div className="flex items-center gap-1.5"><FiDollarSign className="text-slate-400" /> Competitive</div>
+            <div className="flex items-center gap-1.5"><FiUsers className="text-slate-400" /> {position.openings || 1} Openings</div>
+            <div className="flex items-center gap-1.5"><FiDollarSign className="text-slate-400" /> {position.salary || "Competitive"}</div>
+            {position.deadline && (
+              <div className="flex items-center gap-1.5 bg-red-50 text-red-600 dark:bg-red-950/20 dark:text-red-400 px-2.5 py-1 rounded-lg text-xs font-semibold">
+                <FiCalendar className="text-red-500" /> Deadline: {formatDeadline(position.deadline)}
+              </div>
+            )}
           </div>
 
           <div className="mb-8">
@@ -226,6 +255,28 @@ function JobDetailsModal({ position, onClose, onApply }) {
               {position.description}
             </div>
           </div>
+
+          {position.responsibilities?.length > 0 && (
+            <div className="mb-8">
+              <h4 className="text-lg font-bold text-slate-900 mb-4 font-[Inter]">Key Responsibilities</h4>
+              <ul className="list-disc pl-5 text-slate-600 text-sm space-y-2 font-[Inter]">
+                {position.responsibilities.map((r, i) => (
+                  <li key={i}>{r}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {position.eligibility?.length > 0 && (
+            <div className="mb-8">
+              <h4 className="text-lg font-bold text-slate-900 mb-4 font-[Inter]">Eligibility & Requirements</h4>
+              <ul className="list-disc pl-5 text-slate-600 text-sm space-y-2 font-[Inter]">
+                {position.eligibility.map((req, i) => (
+                  <li key={i}>{req}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {position.skills?.length > 0 && (
             <div className="mb-4">
@@ -241,7 +292,7 @@ function JobDetailsModal({ position, onClose, onApply }) {
           )}
         </div>
 
-        <div className="p-6 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 mt-auto">
+        <div className="p-6 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 shrink-0">
           <button 
             onClick={onClose}
             className="px-6 py-2.5 rounded-xl font-medium text-sm text-slate-600 border border-slate-300 hover:bg-slate-100 transition-colors"
@@ -286,9 +337,9 @@ function JobCard({ pos, onClickApply, onClickDetails }) {
   const hiddenSkillsCount = (pos.skills?.length || 0) - MAX_SKILLS;
 
   // Determine work mode based on location or default to Remote if not specified
-  const mode = pos.location?.toLowerCase().includes("remote") ? "Remote" 
+  const mode = pos.mode || (pos.location?.toLowerCase().includes("remote") ? "Remote" 
     : pos.location?.toLowerCase().includes("hybrid") ? "Hybrid" 
-    : "On-site";
+    : "On-site");
 
   return (
     <motion.div 
@@ -330,10 +381,10 @@ function JobCard({ pos, onClickApply, onClickDetails }) {
 
       {/* Second Row: Metadata Icons */}
       <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-slate-500 font-medium font-[Poppins]">
-        <div className="flex items-center gap-1.5"><FiMapPin className="text-slate-400" /> {pos.location}</div>
+        <div className="flex items-center gap-1.5"><FiMapPin className="text-slate-400" /> {pos.location || mode}</div>
         <div className="flex items-center gap-1.5"><FiCalendar className="text-slate-400" /> Posted {formatTimeAgo(pos.createdAt)}</div>
-        <div className="flex items-center gap-1.5"><FiUsers className="text-slate-400" /> {Math.floor(Math.random() * 3) + 1} Openings</div>
-        <div className="flex items-center gap-1.5"><FiDollarSign className="text-slate-400" /> Competitive</div>
+        <div className="flex items-center gap-1.5"><FiUsers className="text-slate-400" /> {pos.openings || 1} Openings</div>
+        <div className="flex items-center gap-1.5"><FiDollarSign className="text-slate-400" /> {pos.salary || "Competitive"}</div>
       </div>
 
       {/* Third Row: Description */}

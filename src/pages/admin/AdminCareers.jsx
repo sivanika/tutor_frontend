@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import API from "../../services/api";
+import API, { getFileUrl } from "../../services/api";
 import toast from "react-hot-toast";
 import {
   FiBriefcase, FiSearch, FiInbox, FiCheck, FiX, FiEye,
   FiTrash2, FiCalendar, FiMail, FiFileText, FiPlus, FiEdit2,
-  FiToggleLeft, FiToggleRight, FiChevronDown, FiAlertCircle
+  FiToggleLeft, FiToggleRight, FiChevronDown, FiAlertCircle,
+  FiPhone, FiMapPin, FiAward, FiClock, FiLink
 } from "react-icons/fi";
 
 const TYPE_OPTS = ["Full-time", "Part-time", "Contract", "Internship"];
@@ -12,21 +13,77 @@ const TYPE_OPTS = ["Full-time", "Part-time", "Contract", "Internship"];
 const EMPTY_POS = { title: "", type: "Full-time", location: "Remote", dept: "", description: "", skills: "" };
 
 /* ── Position Form Modal ── */
-function PositionModal({ initial, onClose, onSave }) {
-  const [form, setForm] = useState(initial || EMPTY_POS);
+function PositionModal({ initial, departments = [], onClose, onSave }) {
+  const defaultDepts = [
+    "Academics – Mathematics Faculty",
+    "Artificial Intelligence & Product Engineering",
+    "Support",
+    "Quality Assurance"
+  ];
+  const allDepts = Array.from(new Set([...defaultDepts, ...departments]));
+
+  const [form, setForm] = useState(() => {
+    if (initial) {
+      return {
+        title: initial.title || "",
+        type: initial.type || "Full-time",
+        mode: initial.mode || "Remote",
+        location: initial.location || "",
+        dept: initial.dept || "",
+        description: initial.description || "",
+        responsibilities: Array.isArray(initial.responsibilities)
+          ? initial.responsibilities.join("\n")
+          : (initial.responsibilities || ""),
+        eligibility: Array.isArray(initial.eligibility)
+          ? initial.eligibility.join("\n")
+          : (initial.eligibility || ""),
+        skills: Array.isArray(initial.skills)
+          ? initial.skills
+          : typeof initial.skills === "string"
+          ? initial.skills.split(",").map((s) => s.trim()).filter(Boolean)
+          : [],
+        salary: initial.salary || "",
+        openings: initial.openings !== undefined ? initial.openings : 1,
+        deadline: initial.deadline ? new Date(initial.deadline).toISOString().split('T')[0] : "",
+        status: initial.isOpen ? "published" : "draft",
+      };
+    }
+    return {
+      title: "",
+      type: "Full-time",
+      mode: "Remote",
+      location: "",
+      dept: "",
+      description: "",
+      responsibilities: "",
+      eligibility: "",
+      skills: [],
+      salary: "",
+      openings: 1,
+      deadline: "",
+      status: "published",
+    };
+  });
+
   const [saving, setSaving] = useState(false);
+  const [tagInput, setTagInput] = useState("");
+  const [isCustomDept, setIsCustomDept] = useState(false);
   const isEdit = !!initial?._id;
 
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
     try {
+      const payload = {
+        ...form,
+        isOpen: form.status === "published",
+      };
       if (isEdit) {
-        const res = await API.put(`/careers/positions/${initial._id}`, form);
+        const res = await API.put(`/careers/positions/${initial._id}`, payload);
         onSave(res.data.position, "edit");
         toast.success("Position updated successfully");
       } else {
-        const res = await API.post("/careers/positions", form);
+        const res = await API.post("/careers/positions", payload);
         onSave(res.data.position, "add");
         toast.success("Position posted successfully");
       }
@@ -40,49 +97,296 @@ function PositionModal({ initial, onClose, onSave }) {
 
   const f = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
 
+  const handleDeptChange = (e) => {
+    const val = e.target.value;
+    if (val === "__new__") {
+      setIsCustomDept(true);
+      setForm((p) => ({ ...p, dept: "" }));
+    } else {
+      setIsCustomDept(false);
+      setForm((p) => ({ ...p, dept: val }));
+    }
+  };
+
+  const handleTagKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const val = tagInput.trim();
+      if (val && !form.skills.includes(val)) {
+        setForm((p) => ({
+          ...p,
+          skills: [...p.skills, val],
+        }));
+      }
+      setTagInput("");
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    setForm((p) => ({
+      ...p,
+      skills: p.skills.filter((t) => t !== tagToRemove),
+    }));
+  };
+
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-[var(--surface-alt)] rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-100 dark:border-white/10">
-        <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-[var(--primary)] to-indigo-700 text-white">
-          <h3 className="font-bold text-lg">{isEdit ? "Edit Open Position" : "Post New Job"}</h3>
-          <button onClick={onClose} className="text-white/70 hover:text-white text-2xl font-semibold">×</button>
+      <div className="bg-white dark:bg-[var(--surface-alt)] rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-slate-100 dark:border-white/10 flex flex-col max-h-[90vh]">
+        <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-[var(--primary)] to-indigo-700 text-white shrink-0">
+          <h3 className="font-bold text-lg">{isEdit ? "✎ Edit Job Posting" : "✎ Create New Job Posting"}</h3>
+          <button type="button" onClick={onClose} className="text-white/70 hover:text-white text-2xl font-semibold leading-none">×</button>
         </div>
-        <form onSubmit={handleSave} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
-              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Job Title *</label>
-              <input required value={form.title} onChange={f("title")} placeholder="e.g. Senior Technical Support Engineer" className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
+        <form onSubmit={handleSave} className="p-6 space-y-5 overflow-y-auto flex-1 text-slate-800 dark:text-white">
+          {/* Basics */}
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3">Basics</p>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Job title *</label>
+                <input
+                  required
+                  type="text"
+                  value={form.title}
+                  onChange={f("title")}
+                  placeholder="e.g. Senior Mathematics Faculty (CBSE & SSC Board)"
+                  className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Department / category *</label>
+                  {isCustomDept ? (
+                    <div className="mt-1.5 flex gap-2">
+                      <input
+                        required
+                        type="text"
+                        value={form.dept}
+                        onChange={f("dept")}
+                        placeholder="e.g. Science Department"
+                        className="w-full px-3 py-2 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsCustomDept(false);
+                          setForm((p) => ({ ...p, dept: allDepts[0] || "" }));
+                        }}
+                        className="px-2.5 py-1 text-[10px] font-bold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white border border-slate-200 dark:border-white/10 rounded-xl"
+                      >
+                        Choose Predefined
+                      </button>
+                    </div>
+                  ) : (
+                    <select
+                      required
+                      value={form.dept}
+                      onChange={handleDeptChange}
+                      className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40"
+                    >
+                      <option value="">Select…</option>
+                      {allDepts.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
+                      <option value="__new__">+ New category…</option>
+                    </select>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Employment type *</label>
+                  <select
+                    required
+                    value={form.type}
+                    onChange={f("type")}
+                    className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40"
+                  >
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Internship">Internship</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Work mode *</label>
+                  <select
+                    required
+                    value={form.mode}
+                    onChange={f("mode")}
+                    className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40"
+                  >
+                    <option value="Remote">Remote</option>
+                    <option value="On-site">On-site</option>
+                    <option value="Hybrid">Hybrid</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                  Location <span className="text-[10px] lowercase text-slate-400 font-medium">(optional if fully remote)</span>
+                </label>
+                <input
+                  type="text"
+                  value={form.location}
+                  onChange={f("location")}
+                  placeholder="e.g. Pune, Maharashtra"
+                  className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40"
+                />
+              </div>
             </div>
+          </div>
+
+          {/* Description */}
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3">Description</p>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Job description *</label>
+                <textarea
+                  required
+                  rows={4}
+                  value={form.description}
+                  onChange={f("description")}
+                  placeholder="Overview of the role and what the person will do..."
+                  className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 resize-y"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                  Key responsibilities <span className="text-[10px] lowercase text-slate-400 font-medium">(one per line)</span>
+                </label>
+                <textarea
+                  rows={3}
+                  value={form.responsibilities}
+                  onChange={f("responsibilities")}
+                  placeholder="Teach Mathematics for Class 11 & 12&#10;Plan and deliver engaging classroom sessions&#10;Prepare study materials and question banks"
+                  className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 resize-y"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                  Eligibility / requirements <span className="text-[10px] lowercase text-slate-400 font-medium">(one per line)</span>
+                </label>
+                <textarea
+                  rows={3}
+                  value={form.eligibility}
+                  onChange={f("eligibility")}
+                  placeholder="M.Sc. / M.Tech / B.Tech / B.E. in a related field&#10;Minimum 2–5 years of teaching experience&#10;Excellent communication skills"
+                  className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 resize-y"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Skill tags */}
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3">Skill tags</p>
             <div>
-              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Type *</label>
-              <select value={form.type} onChange={f("type")} className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40">
-                {TYPE_OPTS.map((t) => <option key={t} value={t}>{t}</option>)}
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                Tags shown on the job card <span className="text-[10px] lowercase text-slate-400 font-medium">(press Enter to add)</span>
+              </label>
+              
+              <div className="mt-1.5 flex flex-wrap gap-2 p-2 border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/05 rounded-xl focus-within:bg-white dark:focus-within:bg-slate-900 focus-within:border-[var(--primary)]/55 focus-within:ring-2 focus-within:ring-[var(--primary)]/20 transition-all">
+                {form.skills.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400 px-2.5 py-1 rounded-full text-xs font-bold"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveTag(tag)}
+                      className="hover:text-indigo-900 dark:hover:text-indigo-250 text-xs font-bold ml-1 text-indigo-400"
+                    >
+                      ✕
+                    </button>
+                  </span>
+                ))}
+                <input
+                  type="text"
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={handleTagKeyDown}
+                  placeholder="Type a skill and press Enter…"
+                  className="flex-1 min-w-[150px] bg-transparent border-none outline-none text-sm text-slate-800 dark:text-white py-1 px-1.5 focus:ring-0 focus:border-none focus:outline-none"
+                />
+              </div>
+              <p className="mt-1.5 text-[11px] text-slate-400 leading-snug">
+                These render as the lavender tags at the bottom of each job card, e.g. Mathematics, CBSE Curriculum, Problem Solving.
+              </p>
+            </div>
+          </div>
+
+          {/* Compensation & Timeline */}
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3">Compensation &amp; timeline</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                  Salary range (₹/month) <span className="text-[10px] lowercase text-slate-400 font-medium">(optional)</span>
+                </label>
+                <input
+                  type="text"
+                  value={form.salary}
+                  onChange={f("salary")}
+                  placeholder="e.g. 40,000 – 60,000"
+                  className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Openings</label>
+                <input
+                  type="number"
+                  min="1"
+                  value={form.openings}
+                  onChange={f("openings")}
+                  className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                  Application deadline <span className="text-[10px] lowercase text-slate-400 font-medium">(optional)</span>
+                </label>
+                <input
+                  type="date"
+                  value={form.deadline}
+                  onChange={f("deadline")}
+                  className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Visibility */}
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3">Visibility</p>
+            <div>
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Status</label>
+              <select
+                value={form.status}
+                onChange={f("status")}
+                className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40"
+              >
+                <option value="published">Published — visible on Careers page</option>
+                <option value="draft">Draft — hidden from public</option>
               </select>
             </div>
-            <div>
-              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Location/Mode *</label>
-              <input required value={form.location} onChange={f("location")} placeholder="Remote / Hybrid / Onsite" className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
-            </div>
-            <div className="col-span-2">
-              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Department *</label>
-              <input required value={form.dept} onChange={f("dept")} placeholder="e.g. Support, Engineering, QA" className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
-            </div>
-            <div className="col-span-2">
-              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Description *</label>
-              <textarea required rows={4} value={form.description} onChange={f("description")} placeholder="Describe roles, responsibilities, and requirements..." className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40 resize-none" />
-            </div>
-            <div className="col-span-2">
-              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Skills (comma-separated)</label>
-              <input value={form.skills} onChange={f("skills")} placeholder="React, Node.js, Mongoose, Technical Writing" className="mt-1.5 w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-white/05 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/40" />
-            </div>
-          </div>
-          <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-white/10">
-            <button type="button" onClick={onClose} className="px-5 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-white/05 rounded-xl transition">Cancel</button>
-            <button type="submit" disabled={saving} className="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-[var(--primary)] to-indigo-700 rounded-xl hover:opacity-95 disabled:opacity-50 transition shadow-lg shadow-[var(--primary)]/20">
-              {saving ? "Saving..." : isEdit ? "Update Position" : "Post Job"}
-            </button>
           </div>
         </form>
+        <div className="px-6 py-4 border-t border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/02 flex justify-end gap-3 shrink-0">
+          <button type="button" onClick={onClose} className="px-5 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-white/05 rounded-xl transition">Cancel</button>
+          <button type="submit" onClick={handleSave} disabled={saving} className="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-[var(--primary)] to-indigo-700 rounded-xl hover:opacity-95 disabled:opacity-50 transition shadow-lg shadow-[var(--primary)]/20">
+            {saving ? "Saving..." : isEdit ? "Save Job Posting" : "Save Job Posting"}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -163,25 +467,85 @@ function ApplicantsModal({ job, applications, onClose, onUpdateStatus, onDeleteA
           </div>
 
           {/* Details Column */}
-          <div className="w-full md:w-[450px] bg-slate-50/50 dark:bg-black/10 p-6 overflow-y-auto flex flex-col justify-between">
+          <div className="w-full md:w-[450px] bg-slate-50/50 dark:bg-black/10 p-6 overflow-y-auto flex flex-col justify-between border-l border-slate-100 dark:border-white/10">
             {selectedApp ? (
               <div className="space-y-5 h-full flex flex-col justify-between">
                 <div className="space-y-4">
                   <div>
                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Candidate Details</span>
                     <h4 className="font-extrabold text-lg text-slate-800 dark:text-white mt-1">{selectedApp.name}</h4>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
-                      <FiMail size={14} className="text-slate-400" />
-                      <span>{selectedApp.email}</span>
-                    </p>
+                    
+                    <div className="mt-3 space-y-2.5">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 flex items-center gap-2">
+                        <FiMail size={14} className="text-slate-400 shrink-0" />
+                        <span className="font-medium truncate">{selectedApp.email}</span>
+                      </p>
+                      <p className="text-xs text-slate-600 dark:text-slate-300 flex items-center gap-2">
+                        <FiPhone size={14} className="text-slate-400 shrink-0" />
+                        <span className="font-semibold">{selectedApp.phone || "N/A"}</span>
+                      </p>
+                      <p className="text-xs text-slate-600 dark:text-slate-300 flex items-center gap-2">
+                        <FiMapPin size={14} className="text-slate-400 shrink-0" />
+                        <span className="font-medium">{selectedApp.location || "N/A"}</span>
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100 dark:border-white/10 grid grid-cols-2 gap-3 bg-white dark:bg-white/02 p-3 rounded-2xl border border-slate-100 dark:border-white/05 shadow-sm">
+                      <div>
+                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Experience</span>
+                        <span className="text-xs font-extrabold text-slate-800 dark:text-white mt-0.5 flex items-center gap-1">
+                          <FiAward size={13} className="text-slate-400" />
+                          {selectedApp.experience !== undefined ? `${selectedApp.experience} Yrs` : "N/A"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Notice Period</span>
+                        <span className="text-xs font-semibold text-slate-800 dark:text-white mt-0.5 flex items-center gap-1">
+                          <FiClock size={13} className="text-slate-400" />
+                          {selectedApp.notice || "Immediate"}
+                        </span>
+                      </div>
+                      <div className="col-span-2">
+                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Current Employer</span>
+                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-350 mt-0.5 block truncate">
+                          {selectedApp.employer || "N/A"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {selectedApp.linkedin && (
+                      <div className="mt-3.5">
+                        <a
+                          href={selectedApp.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs text-[var(--primary)] dark:text-[var(--accent)] hover:underline font-bold"
+                        >
+                          <FiLink size={12} /> View LinkedIn / Portfolio ↗
+                        </a>
+                      </div>
+                    )}
+
+                    {selectedApp.resumeUrl && (
+                      <div className="mt-4">
+                        <a
+                          href={getFileUrl(selectedApp.resumeUrl)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-blue-50/80 hover:bg-blue-100/90 text-[var(--primary)] dark:bg-blue-900/20 dark:text-[var(--accent)] dark:hover:bg-blue-900/30 rounded-xl text-xs font-extrabold transition border border-blue-100 dark:border-blue-800/40 shadow-sm"
+                        >
+                          <FiFileText size={14} /> View / Download Resume (CV)
+                        </a>
+                      </div>
+                    )}
                   </div>
 
                   <div className="border-t border-slate-100 dark:border-white/10 pt-4">
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                       <FiFileText size={13} /> Cover Letter / Pitch
                     </p>
-                    <div className="p-4 bg-white dark:bg-white/05 border border-slate-100 dark:border-white/10 rounded-2xl max-h-80 overflow-y-auto">
-                      <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">{selectedApp.coverLetter}</p>
+                    <div className="p-4 bg-white dark:bg-white/05 border border-slate-100 dark:border-white/10 rounded-2xl max-h-48 overflow-y-auto">
+                      <p className="text-sm text-slate-755 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">{selectedApp.coverLetter || "No cover letter provided."}</p>
                     </div>
                   </div>
                 </div>
@@ -592,6 +956,7 @@ export default function AdminCareers() {
       {posModal && (
         <PositionModal
           initial={posModal === "new" ? null : posModal}
+          departments={Array.from(new Set(positions.map((p) => p.dept).filter(Boolean)))}
           onClose={() => setPosModal(null)}
           onSave={handlePosSave}
         />
