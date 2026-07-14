@@ -282,20 +282,12 @@ export default function BrowseCourses() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative hidden lg:block"
             >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-100 dark:border-slate-700 aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
-                {/* Abstract Premium Graphic placeholder - replace with actual artwork later */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                   <div className="w-64 h-64 bg-gradient-to-tr from-[#2563EB] to-purple-500 rounded-[40px] rotate-12 opacity-80 blur-lg animate-pulse" />
-                   <div className="absolute inset-0 backdrop-blur-[40px] bg-white/30 dark:bg-slate-900/40" />
-                   <div className="relative bg-white dark:bg-[#1E293B] p-6 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 w-72 transform -rotate-6">
-                      <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mb-4">
-                        <FiTrendingUp className="text-[#2563EB] dark:text-[#60A5FA]" size={24}/>
-                      </div>
-                      <div className="h-4 w-3/4 bg-slate-100 dark:bg-slate-800 rounded mb-2" />
-                      <div className="h-4 w-1/2 bg-slate-100 dark:bg-slate-800 rounded mb-4" />
-                      <div className="h-2 w-full bg-slate-50 dark:bg-slate-800/50 rounded" />
-                   </div>
-                </div>
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 aspect-[4/3] bg-slate-100 dark:bg-slate-900">
+                <img 
+                  src="/course_hero.png" 
+                  alt="Browse Professional Courses Illustration" 
+                  className="w-full h-full object-cover"
+                />
               </div>
             </motion.div>
           </div>

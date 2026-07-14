@@ -465,6 +465,31 @@ export default function Careers() {
   return (
     <div className="bg-[#F8FAFC] min-h-screen font-[Inter,sans-serif]">
       
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-32 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/academic_hero_banner.png" 
+            alt="Banner" 
+            className="w-full h-full object-cover opacity-20 dark:opacity-40 brightness-[0.9] dark:brightness-[0.7]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--surface)]/20 via-[var(--surface)]/80 to-[var(--surface)]" />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--primary)]/10 dark:bg-[var(--primary)]/20 text-[var(--primary)] dark:text-[var(--accent)] text-xs font-bold tracking-wider uppercase mb-6 animate-fadeIn">
+            Work With Us
+          </span>
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight dark:text-white">
+            Build the Future <br />
+            of <span className="grad-text">Education</span>
+          </h1>
+          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Join our remote-friendly team and help us build the next-generation learning platform for students and educators.
+          </p>
+        </div>
+      </section>
+      
       {/* ── Filter & Search Section ── */}
       <div className="bg-white border-b border-slate-200 sticky top-[72px] lg:top-[88px] z-40">
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-6">

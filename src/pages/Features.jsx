@@ -3,7 +3,7 @@ import FeaturesComponent from "../components/home/Features";
 export default function Features() {
   return (
     <div>
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-32 pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="/academic_hero_banner.png" 

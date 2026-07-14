@@ -220,6 +220,203 @@ function LMSCourseTab() {
   const [filterStatus, setFilterStatus] = useState("all")
   const [managingId, setManagingId] = useState(null)
 
+  // Curriculum Chapters state
+  const [chapters, setChapters] = useState([
+    {
+      id: "ch-0",
+      title: "",
+      videoUrl: "",
+      pdfUrl: "",
+      subtopics: [{ id: "sub-0", title: "", videoUrl: "", pdfUrl: "" }],
+      quiz: []
+    }
+  ])
+
+  // Curriculum helper methods
+  const addChapter = () => {
+    setChapters(prev => [
+      ...prev,
+      {
+        id: `ch-new-${Date.now()}`,
+        title: "",
+        videoUrl: "",
+        pdfUrl: "",
+        subtopics: [{ id: `sub-new-${Date.now()}`, title: "", videoUrl: "", pdfUrl: "" }],
+        quiz: []
+      }
+    ])
+  }
+
+  const removeChapter = (chId) => {
+    if (chapters.length === 1) {
+      setChapters([
+        {
+          id: "ch-0",
+          title: "",
+          videoUrl: "",
+          pdfUrl: "",
+          subtopics: [{ id: "sub-0", title: "", videoUrl: "", pdfUrl: "" }],
+          quiz: []
+        }
+      ])
+    } else {
+      setChapters(prev => prev.filter(c => c.id !== chId))
+    }
+  }
+
+  const addSubtopic = (chId) => {
+    setChapters(prev =>
+      prev.map(c =>
+        c.id === chId
+          ? {
+              ...c,
+              subtopics: [
+                ...c.subtopics,
+                { id: `sub-new-${Date.now()}`, title: "", videoUrl: "", pdfUrl: "" }
+              ]
+            }
+          : c
+      )
+    )
+  }
+
+  const removeSubtopic = (chId, subId) => {
+    setChapters(prev =>
+      prev.map(c => {
+        if (c.id === chId) {
+          const filtered = c.subtopics.filter(s => s.id !== subId)
+          return {
+            ...c,
+            subtopics: filtered.length > 0 ? filtered : [{ id: `sub-empty-${Date.now()}`, title: "", videoUrl: "", pdfUrl: "" }]
+          }
+        }
+        return c
+      })
+    )
+  }
+
+  const addQuizQuestion = (chId) => {
+    setChapters(prev =>
+      prev.map(c =>
+        c.id === chId
+          ? {
+              ...c,
+              quiz: [
+                ...c.quiz,
+                {
+                  id: `q-new-${Date.now()}`,
+                  questionText: "",
+                  options: ["", "", "", ""],
+                  correctOption: 0
+                }
+              ]
+            }
+          : c
+      )
+    )
+  }
+
+  const removeQuizQuestion = (chId, qId) => {
+    setChapters(prev =>
+      prev.map(c =>
+        c.id === chId
+          ? { ...c, quiz: c.quiz.filter(q => q.id !== qId) }
+          : c
+      )
+    )
+  }
+
+  const updateChapterField = (chId, field, val) => {
+    setChapters(prev => prev.map(c => c.id === chId ? { ...c, [field]: val } : c))
+  }
+
+  const updateSubtopicField = (chId, subId, field, val) => {
+    setChapters(prev =>
+      prev.map(c =>
+        c.id === chId
+          ? {
+              ...c,
+              subtopics: c.subtopics.map(s => s.id === subId ? { ...s, [field]: val } : s)
+            }
+          : c
+      )
+    )
+  }
+
+  const updateQuizQuestionField = (chId, qId, field, val) => {
+    setChapters(prev =>
+      prev.map(c =>
+        c.id === chId
+          ? {
+              ...c,
+              quiz: c.quiz.map(q => q.id === qId ? { ...q, [field]: val } : q)
+            }
+          : c
+      )
+    )
+  }
+
+  const fillCourseSample = () => {
+    setForm({
+      title: "Vector Databases for Production RAG",
+      description: "Learn how to build high-performance vector search applications using Pinecone, Milvus, and pgvector.",
+      subject: "LLMs",
+      instructor: "Ananya Sharma",
+      duration: "9.5",
+      level: "Intermediate",
+      price: 2499,
+      oldPrice: 3299,
+      students: "3.8k",
+      rating: 4.7,
+      reviews: 88,
+      bestseller: false,
+      category: "LLMs",
+      tags: "vector db, rag, search, semantic",
+      status: "published",
+      thumbnailUrl: "",
+      videoUrl: "https://cdn.vishidhacademy.com/courses/vectordb-rag/master.m3u8",
+      drm: "Signed URL (expiring)",
+      passScore: 70,
+      attemptPolicy: "unlimited",
+      autoCertificate: true,
+      certIssuer: "Vishidh Academy",
+      certDomain: "vishidhacademy.com"
+    })
+
+    setChapters([
+      {
+        id: "ch-sample-1",
+        title: "Why vector search",
+        videoUrl: "https://cdn.vishidhacademy.com/vectordb-rag/ch1.mp4",
+        pdfUrl: "https://cdn.vishidhacademy.com/vectordb-rag/ch1-notes.pdf",
+        subtopics: [
+          { id: "sub-sample-1", title: "Embeddings 101", videoUrl: "https://cdn.vishidhacademy.com/vectordb-rag/ch1-sub1.mp4", pdfUrl: "" },
+          { id: "sub-sample-2", title: "Similarity metrics", videoUrl: "", pdfUrl: "https://cdn.vishidhacademy.com/vectordb-rag/ch1-sub2.pdf" }
+        ],
+        quiz: [
+          {
+            id: "q-sample-1",
+            questionText: "Which metric measures angle-based similarity between vectors?",
+            options: ["Cosine similarity", "Manhattan distance", "Jaccard index", "Hamming distance"],
+            correctOption: 0
+          }
+        ]
+      },
+      {
+        id: "ch-sample-2",
+        title: "Indexing strategies (HNSW, IVF)",
+        videoUrl: "https://cdn.vishidhacademy.com/vectordb-rag/ch2.mp4",
+        pdfUrl: "",
+        subtopics: [
+          { id: "sub-sample-3", title: "HNSW graphs", videoUrl: "", pdfUrl: "" }
+        ],
+        quiz: []
+      }
+    ])
+
+    toast.success("Sample course data loaded! (including dynamic chapters & quiz)")
+  }
+
   const load = async () => {
     setLoading(true)
     try { const r = await API.get("/lms/courses"); setCourses(r.data.courses || []) }
@@ -228,17 +425,100 @@ function LMSCourseTab() {
   }
   useEffect(() => { load() }, [])
 
-  const openNew = () => { setForm(emptyForm); setEditId(null); setThumbFile(null); setVideoFile(null); setShowForm(true) }
-  const openEdit = (c) => {
-    setForm({ title: c.title, description: c.description, subject: c.subject, instructor: c.instructor || "Admin",
-      duration: c.duration || "Self-paced", level: c.level || "All Levels", price: c.price || 0, oldPrice: c.oldPrice || "",
-      category: c.category || "", tags: (c.tags || []).join(", "), status: c.status || "draft",
-      students: c.students || "", rating: c.rating || "", reviews: c.reviews || "", bestseller: c.bestseller || false,
-      thumbnailUrl: c.thumbnailUrl || "", videoUrl: c.videoUrl || "", drm: c.drm || "Signed URL (expiring)",
-      passScore: c.passScore || 70, attemptPolicy: c.attemptPolicy || "unlimited", autoCertificate: c.autoCertificate ?? true,
-      certIssuer: c.certIssuer || "Vishidh Academy", certDomain: c.certDomain || "vishidhacademy.com" })
-    setEditId(c._id); setThumbFile(null); setVideoFile(null); setShowForm(true)
+  const openNew = () => {
+    setForm(emptyForm)
+    setChapters([
+      {
+        id: "ch-0",
+        title: "",
+        videoUrl: "",
+        pdfUrl: "",
+        subtopics: [{ id: "sub-0", title: "", videoUrl: "", pdfUrl: "" }],
+        quiz: []
+      }
+    ])
+    setEditId(null)
+    setThumbFile(null)
+    setVideoFile(null)
+    setShowForm(true)
   }
+
+  const openEdit = async (c) => {
+    const loadToast = toast.loading("Loading course details...")
+    try {
+      const res = await API.get(`/lms/courses/${c._id}`)
+      const fullCourse = res.data.course
+      const fullModules = res.data.modules || []
+
+      setForm({
+        title: fullCourse.title || "",
+        description: fullCourse.description || "",
+        subject: fullCourse.subject || "",
+        instructor: fullCourse.instructor || "Admin",
+        duration: fullCourse.duration || "Self-paced",
+        level: fullCourse.level || "All Levels",
+        price: fullCourse.price || 0,
+        oldPrice: fullCourse.oldPrice || "",
+        category: fullCourse.category || "",
+        tags: (fullCourse.tags || []).join(", "),
+        status: fullCourse.status || "draft",
+        students: fullCourse.students || "",
+        rating: fullCourse.rating || "",
+        reviews: fullCourse.reviews || "",
+        bestseller: fullCourse.bestseller || false,
+        thumbnailUrl: fullCourse.thumbnailUrl || "",
+        videoUrl: fullCourse.videoUrl || "",
+        drm: fullCourse.drm || "Signed URL (expiring)",
+        passScore: fullCourse.passScore || 70,
+        attemptPolicy: fullCourse.attemptPolicy || "unlimited",
+        autoCertificate: fullCourse.autoCertificate ?? true,
+        certIssuer: fullCourse.certIssuer || "Vishidh Academy",
+        certDomain: fullCourse.certDomain || "vishidhacademy.com"
+      })
+
+      const mappedChapters = fullModules.map((m, mIdx) => ({
+        _id: m._id,
+        id: m._id || `ch-loaded-${mIdx}`,
+        title: m.title || "",
+        videoUrl: m.videoUrl || "",
+        pdfUrl: m.pdfUrl || "",
+        subtopics: (m.lessons || []).map((l, lIdx) => ({
+          _id: l._id,
+          id: l._id || `sub-loaded-${lIdx}`,
+          title: l.title || "",
+          videoUrl: l.type === "video" ? l.contentUrl : "",
+          pdfUrl: l.type === "pdf" ? l.contentUrl : ""
+        })),
+        quiz: (m.quiz || []).map((q, qIdx) => ({
+          id: q._id || `q-loaded-${qIdx}`,
+          questionText: q.questionText || "",
+          options: q.options || ["", "", "", ""],
+          correctOption: q.correctOption ?? 0
+        }))
+      }))
+
+      setChapters(mappedChapters.length > 0 ? mappedChapters : [
+        {
+          id: "ch-0",
+          title: "",
+          videoUrl: "",
+          pdfUrl: "",
+          subtopics: [{ id: "sub-0", title: "", videoUrl: "", pdfUrl: "" }],
+          quiz: []
+        }
+      ])
+
+      setEditId(c._id)
+      setThumbFile(null)
+      setVideoFile(null)
+      setShowForm(true)
+    } catch (e) {
+      toast.error("Failed to load course details")
+    } finally {
+      toast.dismiss(loadToast)
+    }
+  }
+
   const closeForm = () => { setShowForm(false); setEditId(null) }
 
   const handleSave = async () => {
@@ -250,11 +530,48 @@ function LMSCourseTab() {
       Object.entries(form).forEach(([k, v]) => fd.append(k, v))
       if (thumbFile) fd.append("thumbnailFile", thumbFile)
       if (videoFile) fd.append("videoFile", videoFile)
-      if (editId) { await API.put(`/lms/courses/${editId}`, fd, { headers: { "Content-Type": "multipart/form-data" } }); toast.success("Course updated!") }
-      else { await API.post("/lms/courses", fd, { headers: { "Content-Type": "multipart/form-data" } }); toast.success("Course created!") }
-      closeForm(); load()
-    } catch (e) { toast.error(e.response?.data?.message || "Failed to save") }
-    finally { setSaving(false) }
+
+      // Sync Dynamic Chapters Builder state
+      const cleanedChapters = chapters.map(ch => {
+        const cleanSubtopics = ch.subtopics.map(sub => ({
+          _id: sub._id,
+          title: sub.title?.trim(),
+          videoUrl: sub.videoUrl?.trim(),
+          pdfUrl: sub.pdfUrl?.trim()
+        })).filter(s => s.title)
+
+        const cleanQuiz = ch.quiz.map(q => ({
+          questionText: q.questionText?.trim(),
+          options: q.options.map(o => o.trim()),
+          correctOption: Number(q.correctOption)
+        })).filter(q => q.questionText)
+
+        return {
+          _id: ch._id,
+          title: ch.title?.trim(),
+          videoUrl: ch.videoUrl?.trim(),
+          pdfUrl: ch.pdfUrl?.trim(),
+          subtopics: cleanSubtopics,
+          quiz: cleanQuiz
+        }
+      }).filter(ch => ch.title)
+
+      fd.append("chapters", JSON.stringify(cleanedChapters))
+
+      if (editId) {
+        await API.put(`/lms/courses/${editId}`, fd, { headers: { "Content-Type": "multipart/form-data" } })
+        toast.success("Course updated!")
+      } else {
+        await API.post("/lms/courses", fd, { headers: { "Content-Type": "multipart/form-data" } })
+        toast.success("Course created!")
+      }
+      closeForm()
+      load()
+    } catch (e) {
+      toast.error(e.response?.data?.message || "Failed to save")
+    } finally {
+      setSaving(false)
+    }
   }
 
   const setStatus = async (id, status) => {
@@ -400,100 +717,340 @@ function LMSCourseTab() {
       {/* Course Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-slideUp">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-slideUp">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
               <h2 className="font-bold text-gray-800 text-lg flex items-center gap-2"><FiBookOpen className="text-[var(--primary)]" /> {editId ? "Edit Course" : "New Course"}</h2>
               <button onClick={closeForm} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 transition"><FiX size={18} /></button>
             </div>
 
-            <div className="p-6 overflow-y-auto space-y-4 flex-1">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Field label="Title *"><Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="Course title" /></Field>
-                <Field label="Subject *"><Input value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} placeholder="e.g. Mathematics" /></Field>
-              </div>
-              <Field label="Description *"><Textarea rows={3} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder="What will students learn?" /></Field>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <Field label="Category"><Input value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} placeholder="e.g. Science" /></Field>
-                <Field label="Level">
-                  <Select value={form.level} onChange={e => setForm(f => ({ ...f, level: e.target.value }))}>
-                    {["All Levels","Beginner","Intermediate","Advanced"].map(l => <option key={l}>{l}</option>)}
-                  </Select>
-                </Field>
-                <Field label="Instructor"><Input value={form.instructor} onChange={e => setForm(f => ({ ...f, instructor: e.target.value }))} /></Field>
-                <Field label="Duration (hours)"><Input value={form.duration} onChange={e => setForm(f => ({ ...f, duration: e.target.value }))} placeholder="e.g. 8.5" /></Field>
-              </div>
-              
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <Field label="Price (₹)"><Input type="number" min={0} value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} /></Field>
-                <Field label="Compare-at price (₹)"><Input type="number" min={0} value={form.oldPrice} onChange={e => setForm(f => ({ ...f, oldPrice: e.target.value }))} placeholder="optional" /></Field>
-                <Field label="Students enrolled"><Input value={form.students} onChange={e => setForm(f => ({ ...f, students: e.target.value }))} placeholder="e.g. 12k" /></Field>
-                <Field label="Tags (comma-separated)"><Input value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} placeholder="tag1, tag2" /></Field>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <Field label="Rating (0-5)"><Input type="number" min={0} max={5} step={0.1} value={form.rating} onChange={e => setForm(f => ({ ...f, rating: e.target.value }))} placeholder="4.8" /></Field>
-                <Field label="Review count"><Input type="number" min={0} value={form.reviews} onChange={e => setForm(f => ({ ...f, reviews: e.target.value }))} placeholder="412" /></Field>
-                <div className="col-span-2 flex items-center h-full pt-4">
-                  <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-gray-700">
-                    <input type="checkbox" checked={form.bestseller} onChange={e => setForm(f => ({ ...f, bestseller: e.target.checked }))} className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
-                    Mark as Bestseller badge
-                  </label>
-                </div>
-              </div>
-
-              <Field label="Status">
-                <Select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
-                  <option value="draft">Draft</option>
-                  <option value="published">Published</option>
-                  <option value="archived">Archived</option>
-                </Select>
-              </Field>
-
-              <MediaPicker label="Thumbnail Image" urlVal={form.thumbnailUrl} onUrl={v => setForm(f => ({ ...f, thumbnailUrl: v }))} onFile={setThumbFile} accept="image/*" />
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <MediaPicker label="Video file / stream URL" urlVal={form.videoUrl} onUrl={v => setForm(f => ({ ...f, videoUrl: v }))} onFile={setVideoFile} accept="video/*" />
-                <Field label="DRM / access mode">
-                  <Select value={form.drm} onChange={e => setForm(f => ({ ...f, drm: e.target.value }))}>
-                    <option>Signed URL (expiring)</option>
-                    <option>DRM-protected (Widevine/FairPlay)</option>
-                    <option>Public (not recommended)</option>
-                  </Select>
-                </Field>
-              </div>
-
-              <div className="border border-gray-100 p-4 rounded-xl space-y-4">
-                <h3 className="font-semibold text-sm text-gray-700">Assessment & Certification</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Field label="Passing score required (%)">
-                    <Input type="number" min={0} max={100} value={form.passScore} onChange={e => setForm(f => ({ ...f, passScore: e.target.value }))} />
+            <div className="p-6 overflow-y-auto flex-1 bg-gray-50/30">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                {/* BASICS CARD */}
+                <div className="bg-white rounded-2xl border border-gray-100 p-5 flex flex-col gap-4 shadow-sm">
+                  <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wider">Basics</h3>
+                  <Field label="Course Title *">
+                    <Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. LLM Foundations: From Tokens to Transformers" />
                   </Field>
-                  <Field label="Quiz attempts allowed">
-                    <Select value={form.attemptPolicy} onChange={e => setForm(f => ({ ...f, attemptPolicy: e.target.value }))}>
-                      <option value="unlimited">Unlimited — retry until passed</option>
-                      <option value="3">Limited — 3 attempts</option>
-                      <option value="5">Limited — 5 attempts</option>
-                      <option value="1">Single attempt only</option>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Field label="Category / Topic *">
+                      <Select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}>
+                        <option value="">Select…</option>
+                        {["LLMs","Generative AI","Agentic AI","Data Analytics","Python","Machine Learning"].map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                      </Select>
+                    </Field>
+                    <Field label="Level *">
+                      <Select value={form.level} onChange={e => setForm(f => ({ ...f, level: e.target.value }))}>
+                        <option value="">Select…</option>
+                        {["Beginner","Intermediate","Advanced"].map(lvl => <option key={lvl} value={lvl}>{lvl}</option>)}
+                      </Select>
+                    </Field>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Field label="Instructor name *">
+                      <Input value={form.instructor} onChange={e => setForm(f => ({ ...f, instructor: e.target.value }))} placeholder="e.g. Dr. Rao" />
+                    </Field>
+                    <Field label="Total duration (hours) *">
+                      <Input type="number" step="0.5" min="0.5" value={form.duration} onChange={e => setForm(f => ({ ...f, duration: e.target.value }))} placeholder="e.g. 8.5" />
+                    </Field>
+                  </div>
+                  <Field label="Subject *">
+                    <Input value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} placeholder="e.g. Mathematics" />
+                  </Field>
+                  <Field label="Description *">
+                    <Textarea rows={3} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder="What will students learn?" />
+                  </Field>
+                  <Field label="Tags (comma-separated)">
+                    <Input value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} placeholder="tag1, tag2" />
+                  </Field>
+                </div>
+
+                {/* PRICING & SOCIAL PROOF */}
+                <div className="bg-white rounded-2xl border border-gray-100 p-5 flex flex-col gap-4 shadow-sm">
+                  <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wider">Pricing & social proof</h3>
+                  <div className="grid grid-cols-3 gap-3">
+                    <Field label="Price (₹) *">
+                      <Input type="number" min={0} value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} placeholder="1999" />
+                    </Field>
+                    <Field label="Compare-at price (₹)">
+                      <Input type="number" min={0} value={form.oldPrice} onChange={e => setForm(f => ({ ...f, oldPrice: e.target.value }))} placeholder="2999" />
+                    </Field>
+                    <Field label="Students enrolled">
+                      <Input value={form.students} onChange={e => setForm(f => ({ ...f, students: e.target.value }))} placeholder="e.g. 12k" />
+                    </Field>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <Field label="Rating (0–5)">
+                      <Input type="number" min={0} max={5} step={0.1} value={form.rating} onChange={e => setForm(f => ({ ...f, rating: e.target.value }))} placeholder="4.8" />
+                    </Field>
+                    <Field label="Review count">
+                      <Input type="number" min={0} value={form.reviews} onChange={e => setForm(f => ({ ...f, reviews: e.target.value }))} placeholder="412" />
+                    </Field>
+                    <div className="flex items-center h-full pt-4">
+                      <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700 select-none">
+                        <input type="checkbox" checked={form.bestseller} onChange={e => setForm(f => ({ ...f, bestseller: e.target.checked }))} className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
+                        Mark as Bestseller badge
+                      </label>
+                    </div>
+                  </div>
+                  <Field label="Status">
+                    <Select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
+                      <option value="draft">Draft</option>
+                      <option value="published">Published</option>
+                      <option value="archived">Archived</option>
                     </Select>
                   </Field>
                 </div>
-                <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-gray-700">
-                  <input type="checkbox" checked={form.autoCertificate} onChange={e => setForm(f => ({ ...f, autoCertificate: e.target.checked }))} className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
-                  Auto-issue certificate immediately on course + quiz completion
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Field label="Certificate issuer name">
-                    <Input value={form.certIssuer} onChange={e => setForm(f => ({ ...f, certIssuer: e.target.value }))} />
-                  </Field>
-                  <Field label="Issuer domain (shown on certificate)">
-                    <Input value={form.certDomain} onChange={e => setForm(f => ({ ...f, certDomain: e.target.value }))} />
+
+                {/* THUMBNAIL */}
+                <div className="bg-white rounded-2xl border border-gray-100 p-5 flex flex-col gap-4 shadow-sm">
+                  <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wider">Thumbnail</h3>
+                  <MediaPicker label="Thumbnail Image" urlVal={form.thumbnailUrl} onUrl={v => setForm(f => ({ ...f, thumbnailUrl: v }))} onFile={setThumbFile} accept="image/*" />
+                  <p className="text-[10px] text-gray-400 -mt-2 leading-relaxed">If left empty, the card auto-generates a brand-colored gradient thumbnail.</p>
+                </div>
+
+                {/* VIDEO SOURCE */}
+                <div className="bg-white rounded-2xl border border-gray-100 p-5 flex flex-col gap-4 shadow-sm">
+                  <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wider">Video source</h3>
+                  <MediaPicker label="Video file / stream URL" urlVal={form.videoUrl} onUrl={v => setForm(f => ({ ...f, videoUrl: v }))} onFile={setVideoFile} accept="video/*" />
+                  <Field label="DRM / access mode">
+                    <Select value={form.drm} onChange={e => setForm(f => ({ ...f, drm: e.target.value }))}>
+                      <option>Signed URL (expiring)</option>
+                      <option>DRM-protected (Widevine/FairPlay)</option>
+                      <option>Public (not recommended)</option>
+                    </Select>
                   </Field>
                 </div>
+
+                {/* CURRICULUM builder */}
+                <div className="md:col-span-2 bg-white rounded-2xl border border-gray-100 p-5 flex flex-col gap-4 shadow-sm">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wider">Curriculum — chapters, sub-topics, materials &amp; quizzes</h3>
+                  </div>
+                  <p className="text-xs text-gray-400 -mt-2">Build the course tree: each chapter can hold optional video/PDF links, nested sub-topics (with their own optional video/PDF), and a chapter quiz. This maps directly to the video player's chapter nav and the student dashboard's progress checklist.</p>
+                  
+                  <div className="space-y-4">
+                    {chapters.map((ch, chIdx) => (
+                      <div key={ch.id} className="border border-gray-200 rounded-2xl bg-gray-50/50 p-4">
+                        <div className="flex gap-3 items-center mb-3">
+                          <span className="w-6 h-6 rounded-lg bg-blue-600 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">
+                            {chIdx + 1}
+                          </span>
+                          <input
+                            type="text"
+                            value={ch.title}
+                            onChange={e => updateChapterField(ch.id, "title", e.target.value)}
+                            placeholder="Chapter title, e.g. Why LLMs, why now"
+                            className="flex-1 px-3 py-1.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white font-semibold"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeChapter(ch.id)}
+                            className="p-1.5 rounded-lg border border-gray-250 text-gray-400 hover:text-red-500 hover:border-red-300 bg-white transition"
+                            title="Remove chapter"
+                          >
+                            <FiX size={15} />
+                          </button>
+                        </div>
+
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 block">Chapter-level materials (optional)</span>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                          <input
+                            type="url"
+                            value={ch.videoUrl}
+                            onChange={e => updateChapterField(ch.id, "videoUrl", e.target.value)}
+                            placeholder="🎬 Video link (optional)"
+                            className="px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                          />
+                          <input
+                            type="url"
+                            value={ch.pdfUrl}
+                            onChange={e => updateChapterField(ch.id, "pdfUrl", e.target.value)}
+                            placeholder="📄 PDF material link (optional)"
+                            className="px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                          />
+                        </div>
+
+                        <div className="mt-4 pt-3 border-t border-dashed border-gray-200">
+                          <h5 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Sub-topics</h5>
+                          <div className="space-y-2 mb-2">
+                            {ch.subtopics.map((sub, sIdx) => (
+                              <div key={sub.id} className="grid grid-cols-12 gap-2 items-center">
+                                <div className="col-span-4">
+                                  <input
+                                    type="text"
+                                    value={sub.title}
+                                    onChange={e => updateSubtopicField(ch.id, sub.id, "title", e.target.value)}
+                                    placeholder="Sub-topic title"
+                                    className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                                  />
+                                </div>
+                                <div className="col-span-4">
+                                  <input
+                                    type="url"
+                                    value={sub.videoUrl}
+                                    onChange={e => updateSubtopicField(ch.id, sub.id, "videoUrl", e.target.value)}
+                                    placeholder="Video link (optional)"
+                                    className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                                  />
+                                </div>
+                                <div className="col-span-3">
+                                  <input
+                                    type="url"
+                                    value={sub.pdfUrl}
+                                    onChange={e => updateSubtopicField(ch.id, sub.id, "pdfUrl", e.target.value)}
+                                    placeholder="PDF link (optional)"
+                                    className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                                  />
+                                </div>
+                                <div className="col-span-1 flex justify-center">
+                                  <button
+                                    type="button"
+                                    onClick={() => removeSubtopic(ch.id, sub.id)}
+                                    className="p-1 rounded-lg text-gray-400 hover:text-red-500 transition"
+                                    title="Remove sub-topic"
+                                  >
+                                    <FiX size={14} />
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => addSubtopic(ch.id)}
+                            className="text-[10px] font-bold text-blue-600 hover:underline flex items-center gap-1 w-fit"
+                          >
+                            + Add sub-topic
+                          </button>
+                        </div>
+
+                        <div className="mt-4 pt-3 border-t border-dashed border-gray-200">
+                          <h5 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Chapter quiz (optional — student must pass to progress)</h5>
+                          <div className="space-y-3 mb-2">
+                            {ch.quiz.map((q, qIdx) => (
+                              <div key={q.id} className="bg-white border border-gray-200 rounded-xl p-3 shadow-sm relative">
+                                <button
+                                  type="button"
+                                  onClick={() => removeQuizQuestion(ch.id, q.id)}
+                                  className="absolute top-2 right-2 p-1 text-gray-400 hover:text-red-500 transition"
+                                  title="Remove question"
+                                >
+                                  <FiX size={14} />
+                                </button>
+                                <div className="mb-2 pr-6">
+                                  <input
+                                    type="text"
+                                    value={q.questionText}
+                                    onChange={e => updateQuizQuestionField(ch.id, q.id, "questionText", e.target.value)}
+                                    placeholder="Question text"
+                                    className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400 font-semibold"
+                                  />
+                                </div>
+                                <div className="space-y-1.5 pl-2">
+                                  {q.options.map((opt, oIdx) => (
+                                    <div key={oIdx} className="flex items-center gap-2">
+                                      <input
+                                        type="radio"
+                                        name={`quiz-correct-${q.id}`}
+                                        checked={Number(q.correctOption) === oIdx}
+                                        onChange={() => updateQuizQuestionField(ch.id, q.id, "correctOption", oIdx)}
+                                        className="accent-teal-600 w-4 h-4 cursor-pointer"
+                                      />
+                                      <input
+                                        type="text"
+                                        value={opt}
+                                        onChange={e => {
+                                          const newOpts = [...q.options]
+                                          newOpts[oIdx] = e.target.value
+                                          updateQuizQuestionField(ch.id, q.id, "options", newOpts)
+                                        }}
+                                        placeholder={`Option ${oIdx + 1}`}
+                                        className="flex-1 px-2.5 py-1 rounded-lg border border-gray-250 text-xs bg-gray-50 focus:outline-none"
+                                      />
+                                      {Number(q.correctOption) === oIdx && (
+                                        <span className="text-[10px] text-teal-600 font-bold">✓ correct</span>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => addQuizQuestion(ch.id)}
+                            className="text-[10px] font-bold text-blue-600 hover:underline flex items-center gap-1 w-fit"
+                          >
+                            + Add quiz question
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={addChapter}
+                    className="px-3 py-1.5 border border-dashed border-gray-300 rounded-xl text-xs text-gray-500 hover:text-blue-600 hover:border-blue-300 bg-white transition w-fit"
+                  >
+                    + Add chapter
+                  </button>
+                </div>
+
+                {/* ASSESSMENT & CERTIFICATION */}
+                <div className="md:col-span-2 bg-white rounded-2xl border border-gray-100 p-5 flex flex-col gap-4 shadow-sm">
+                  <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wider">Assessment & certification</h3>
+                  <p className="text-xs text-gray-400 -mt-2">Controls how quizzes are graded and how the completion certificate is issued.</p>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Field label="Passing score required (%)">
+                      <Input type="number" min={0} max={100} value={form.passScore} onChange={e => setForm(f => ({ ...f, passScore: e.target.value }))} />
+                    </Field>
+                    <Field label="Quiz attempts allowed">
+                      <Select value={form.attemptPolicy} onChange={e => setForm(f => ({ ...f, attemptPolicy: e.target.value }))}>
+                        <option value="unlimited">Unlimited — retry until passed</option>
+                        <option value="3">Limited — 3 attempts</option>
+                        <option value="5">Limited — 5 attempts</option>
+                        <option value="1">Single attempt only</option>
+                      </Select>
+                    </Field>
+                  </div>
+                  
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-gray-700 select-none">
+                    <input type="checkbox" checked={form.autoCertificate} onChange={e => setForm(f => ({ ...f, autoCertificate: e.target.checked }))} className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
+                    Auto-issue certificate immediately on course + quiz completion
+                  </label>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Field label="Certificate issuer name">
+                      <Input value={form.certIssuer} onChange={e => setForm(f => ({ ...f, certIssuer: e.target.value }))} />
+                    </Field>
+                    <Field label="Issuer domain (shown on certificate)">
+                      <Input value={form.certDomain} onChange={e => setForm(f => ({ ...f, certDomain: e.target.value }))} />
+                    </Field>
+                  </div>
+
+                  {/* Certificate preview */}
+                  <div className="border-2 border-dashed border-gray-200 rounded-2xl p-5 text-center bg-gradient-to-br from-blue-50/20 to-indigo-50/20 mt-2">
+                    <div className="w-10 h-10 rounded-full mx-auto mb-2 bg-gradient-to-br from-blue-600 to-sky-500 text-white font-display text-sm font-bold flex items-center justify-center shadow-md">
+                      V
+                    </div>
+                    <p className="font-bold text-gray-800 text-base font-display">Certificate of Completion</p>
+                    <p className="text-xs text-gray-500 max-w-md mx-auto mt-2 leading-relaxed">
+                      This certifies that <strong>[Student Name]</strong> has successfully completed <strong className="text-gray-800">{form.title || "[Course Title]"}</strong>, meeting the required passing score.
+                    </p>
+                    <p className="text-[10px] text-gray-400 mt-4 font-semibold uppercase tracking-wide">
+                      Issued by <strong className="text-gray-700">{form.certIssuer || "Vishidh Academy"}</strong> · <span>{form.certDomain || "vishidhacademy.com"}</span>
+                    </p>
+                  </div>
+                </div>
+
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
-              <button onClick={closeForm} className="px-4 py-2 rounded-xl text-sm text-gray-500 hover:bg-gray-100 transition">Cancel</button>
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl font-[Inter] shrink-0">
+              <button onClick={closeForm} className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-500 hover:bg-gray-150 hover:text-gray-700 transition">Cancel</button>
+              <button onClick={fillCourseSample} className="px-4 py-2 rounded-xl text-sm font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50 transition" type="button">Fill sample data</button>
               <button onClick={handleSave} disabled={saving}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 text-white text-sm font-semibold shadow hover:opacity-95 transition disabled:opacity-50">
                 {saving ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <FiCheck size={15} />}

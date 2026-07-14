@@ -167,7 +167,7 @@ export default function FAQ() {
         <>
         <div>
                 {/* Hero Section */}
-                <section className="relative pt-32 pb-20 overflow-hidden">
+                <section className="relative pt-32 pb-32 overflow-hidden">
                     <div className="absolute inset-0 z-0">
                         <img 
                             src="/academic_hero_banner.png" 
@@ -177,11 +177,16 @@ export default function FAQ() {
                         <div className="absolute inset-0 bg-gradient-to-b from-[var(--surface)]/20 via-[var(--surface)]/80 to-[var(--surface)]" />
                     </div>
                     <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--primary)]/10 dark:bg-[var(--primary)]/20 text-[var(--primary)] dark:text-[var(--accent)] text-xs font-bold tracking-wider uppercase mb-6">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--primary)]/10 dark:bg-[var(--primary)]/20 text-[var(--primary)] dark:text-[var(--accent)] text-xs font-bold tracking-wider uppercase mb-6 animate-fadeIn">
                             Support Center
                         </span>
-                        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 dark:text-white">Frequently Asked <span className="grad-text">Questions</span></h1>
-                        <p className="text-slate-500 dark:text-slate-400">Everything you need to know about VishidhAcademy</p>
+                        <h1 className="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight dark:text-white">
+                            Frequently Asked <br />
+                            <span className="grad-text">Questions</span>
+                        </h1>
+                        <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                            Everything you need to know about VishidhAcademy
+                        </p>
                     </div>
                 </section>
 

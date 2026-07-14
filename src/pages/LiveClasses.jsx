@@ -172,32 +172,41 @@ export default function LiveClasses() {
   return (
     <div className="bg-[#F5F9FC] dark:bg-[#12283B] min-h-screen">
 
-      {/* ── Hero ────────────────────────────────────── */}
-      <section className="bg-[#E8F0F6] dark:bg-[#163049] border-b border-[rgba(18,40,59,0.1)] dark:border-white/10 py-14">
-        <div className="max-w-7xl mx-auto px-6">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold text-[#1E9E8C] border border-[rgba(30,158,140,0.35)] bg-white/60 dark:bg-white/10 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1E9E8C] shadow-[0_0_0_3px_rgba(30,158,140,0.22)]" />
-            LIVE CLASSES
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-32 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/academic_hero_banner.png" 
+            alt="Banner" 
+            className="w-full h-full object-cover opacity-20 dark:opacity-40 brightness-[0.9] dark:brightness-[0.7]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--surface)]/20 via-[var(--surface)]/80 to-[var(--surface)]" />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--primary)]/10 dark:bg-[var(--primary)]/20 text-[var(--primary)] dark:text-[var(--accent)] text-xs font-bold tracking-wider uppercase mb-6 animate-fadeIn">
+            Live Classes
           </span>
-          <h1 className="text-4xl md:text-5xl font-bold font-[Fraunces,serif] tracking-tight mb-4 text-[#12283B] dark:text-white">
-            Learn live, with a mentor and a cohort.
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight dark:text-white">
+            Learn Live, With a <br />
+            <span className="grad-text">Mentor & Cohort</span>
           </h1>
-          <p className="text-[#4C6072] dark:text-[#AFC1D1] text-lg max-w-2xl mb-8">
+          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed mb-12">
             Fixed-schedule batches with weekly sessions, project reviews and direct mentor feedback. Seats are limited — every session is recorded for enrolled students.
           </p>
-          <div className="flex flex-wrap gap-8">
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold font-[Fraunces,serif] text-[#12283B] dark:text-white">{classes.length}</span>
-              <span className="text-sm text-[#7E8FA0]">Cohorts open</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold font-[Fraunces,serif] text-[#12283B] dark:text-white">{totalSeats}</span>
-              <span className="text-sm text-[#7E8FA0]">Seats remaining</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold font-[Fraunces,serif] text-[#12283B] dark:text-white">{avgRating}★</span>
-              <span className="text-sm text-[#7E8FA0]">Average rating</span>
-            </div>
+          
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+            {[
+              { label: "Cohorts open", value: classes.length },
+              { label: "Seats remaining", value: totalSeats },
+              { label: "Average rating", value: `${avgRating}★` },
+            ].map((stat, i) => (
+              <div key={i} className="p-6 rounded-3xl bg-white dark:bg-white/05 border border-slate-100 dark:border-white/10 shadow-sm">
+                <div className="text-3xl font-extrabold grad-text mb-1">{stat.value}</div>
+                <div className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
