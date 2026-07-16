@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FiUsers, FiClock, FiCalendar, FiPlayCircle,
   FiArrowRight, FiStar, FiAlertCircle, FiRefreshCw, FiList
@@ -18,7 +18,7 @@ const GRADIENTS = [
 ];
 
 /* ── Detail Modal ─────────────────────────────────── */
-function DetailModal({ cls, onClose }) {
+function DetailModal({ cls, onClose, onEnrol }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -121,7 +121,7 @@ function DetailModal({ cls, onClose }) {
             </div>
             <button
               className="flex items-center gap-2 px-6 py-3 bg-[#1E9E8C] text-white rounded-xl font-bold text-sm hover:bg-[#2CBBA6] transition-all shadow-lg hover:-translate-y-0.5"
-              onClick={onClose}
+              onClick={() => onEnrol(cls._id)}
             >
               Enrol Now <FiArrowRight />
             </button>
@@ -139,6 +139,7 @@ export default function LiveClasses() {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("All");
   const [selected, setSelected] = useState(null);
+  const navigate = useNavigate();
 
   const fetchClasses = async (silent = false) => {
     try {
@@ -384,7 +385,16 @@ export default function LiveClasses() {
 
       {/* ── Detail Modal ────────────────────────────── */}
       <AnimatePresence>
-        {selected && <DetailModal cls={selected} onClose={() => setSelected(null)} />}
+        {selected && (
+          <DetailModal
+            cls={selected}
+            onClose={() => setSelected(null)}
+            onEnrol={(id) => {
+              setSelected(null);
+              navigate(`/payment/live-class/${id}`);
+            }}
+          />
+        )}
       </AnimatePresence>
 
       <style>{`

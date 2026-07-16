@@ -27,20 +27,20 @@ export default function Hero() {
         style={{ backgroundImage: "linear-gradient(currentColor 1px,transparent 1px),linear-gradient(90deg,currentColor 1px,transparent 1px)", backgroundSize: "48px 48px" }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 py-20 md:py-36 relative z-10 grid md:grid-cols-2 gap-12 md:gap-16 items-center w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-36 relative z-10 grid md:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center w-full">
 
         {/* ── LEFT ── */}
-        <div className="space-y-8 animate-slideUp">
+        <div className="space-y-5 sm:space-y-8 animate-slideUp">
 
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--primary)]/10 dark:bg-white/15 border border-[var(--primary)]/20 dark:border-white/25 backdrop-blur-sm text-sm text-[var(--primary)] dark:text-white font-medium">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[var(--primary)]/10 dark:bg-white/15 border border-[var(--primary)]/20 dark:border-white/25 backdrop-blur-sm text-xs sm:text-sm text-[var(--primary)] dark:text-white font-medium">
             <span className="w-2 h-2 rounded-full bg-[var(--primary)] dark:bg-[var(--accent)] animate-pulse" />
             <SlRocket /> Next-Generation Learning Platform
 
           </div>
 
           {/* Heading */}
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.1] md:leading-[1.05] tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black leading-[1.15] sm:leading-[1.1] md:leading-[1.05] tracking-tight text-slate-900 dark:text-white">
             Learn{" "}
             <span className="relative inline-block">
               Smarter.
@@ -54,7 +54,7 @@ export default function Hero() {
           </h1>
 
           {/* Subtext */}
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-white/70 max-w-xl leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-600 dark:text-white/70 max-w-xl leading-relaxed">
             Connect with verified professors through live virtual classrooms,
             progress tracking, and personalized learning experiences —
             anywhere, anytime.
@@ -65,7 +65,7 @@ export default function Hero() {
             <button
               onClick={() => navigate("/register")}
               className="
-                group relative px-8 py-4 rounded-2xl font-bold text-base text-white overflow-hidden
+                group relative px-5 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold text-sm sm:text-base text-white overflow-hidden
                 bg-[var(--primary)] hover:bg-[var(--primary)]/90
                 shadow-2xl shadow-[var(--primary)]/40
                 hover:scale-105 hover:shadow-[var(--primary)]/50
@@ -83,7 +83,7 @@ export default function Hero() {
             <button
               onClick={() => navigate("/login")}
               className="
-                px-8 py-4 rounded-2xl font-bold text-base text-slate-700 dark:text-white
+                px-5 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold text-sm sm:text-base text-slate-700 dark:text-white
                 bg-[var(--primary)]/10 dark:bg-white/15 border border-[var(--primary)]/20 dark:border-white/30 backdrop-blur-sm
                 hover:bg-[var(--primary)]/20 dark:hover:bg-white/25 hover:scale-105
                 transition-all duration-300
@@ -95,15 +95,15 @@ export default function Hero() {
           </div>
 
           {/* Mini stats */}
-          <div className="flex flex-wrap gap-8 pt-4">
+          <div className="flex flex-wrap gap-5 sm:gap-8 pt-4">
             {[
               { value: "10K+", label: "Students" },
               { value: "500+", label: "Professors" },
               { value: "99%", label: "Success Rate" },
             ].map((s) => (
               <div key={s.label}>
-                <p className="text-3xl font-black text-slate-900 dark:text-white">{s.value}</p>
-                <p className="text-sm text-slate-500 dark:text-white/60 mt-0.5">{s.label}</p>
+                <p className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{s.value}</p>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-white/60 mt-0.5">{s.label}</p>
               </div>
             ))}
           </div>

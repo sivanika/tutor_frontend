@@ -72,14 +72,14 @@ export default function Header() {
         border-b border-[var(--primary)]/10 dark:border-[var(--primary)]/20
       `}
       >
-        <div className="max-w-7xl mx-auto px-6 py-5 lg:py-6 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-5 lg:py-6 flex justify-between items-center">
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group z-10">
             <img
               src="/logos/vishidh-logo-768x384.png"
               alt="Vishidh VishidhAcademy"
-              className="h-16 md:h-20 w-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-sm"
+              className="h-10 sm:h-16 md:h-20 w-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-sm"
             />
           </Link>
 
@@ -222,7 +222,7 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {menuOpen && (
-          <div className="lg:hidden px-6 pb-5 pt-2 bg-white dark:bg-[var(--surface)] border-t border-[var(--primary)]/10 animate-slideUp">
+          <div className="lg:hidden px-4 sm:px-6 pb-5 pt-2 bg-white dark:bg-[var(--surface)] border-t border-[var(--primary)]/10 animate-slideUp">
             {links.map((item) => {
               const isActive = location.pathname === item.path;
               return item.isHash ? (

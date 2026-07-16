@@ -6,7 +6,8 @@ import {
   FiGrid, FiSearch, FiBook, FiTrendingUp, FiLogOut, FiMenu, FiX,
   FiChevronRight, FiBell, FiMessageSquare, FiBookOpen, FiVideo,
   FiSettings, FiMoon, FiSun, FiUser, FiChevronLeft, FiZap,
-  FiAward, FiCalendar, FiStar, FiClipboard, FiCreditCard, FiDownload
+  FiAward, FiCalendar, FiStar, FiClipboard, FiCreditCard, FiDownload,
+  FiTv
 } from "react-icons/fi"
 import ChatTab from "../../components/chat/ChatTab"
 import socket from "../../services/socket"
@@ -18,6 +19,7 @@ import ProgressTab from "./tabs/ProgressTab"
 import TutorsTab from "./tabs/TutorsTab"
 import MySubjectsTab from "./tabs/MySubjectsTab"
 import CoursesTab from "./tabs/CoursesTab"
+import MyLiveClassesTab from "./tabs/MyLiveClassesTab"
 import CertificatesTab from "./tabs/CertificatesTab"
 import AssignmentsTab from "./tabs/AssignmentsTab"
 import QuizzesTab from "./tabs/QuizzesTab"
@@ -28,7 +30,8 @@ import DownloadsTab from "./tabs/DownloadsTab"
 /* ── Constants ── */
 const NAV_ITEMS = [
   { id: "dashboard",    label: "Dashboard",       icon: FiGrid,          badge: null, group: "main" },
-  { id: "courses",      label: "My Courses",      icon: FiVideo,         badge: null, group: "main" },
+  { id: "courses",      label: "My Courses",      icon: FiBookOpen,      badge: null, group: "main" },
+  { id: "live-classes",  label: "My Live Classes",  icon: FiTv,            badge: null, group: "main" },
   { id: "certificates", label: "Certificates",    icon: FiAward,         badge: null, group: "main" },
   { id: "assignments",  label: "Assignments",     icon: FiClipboard,     badge: null, group: "main" },
   { id: "quizzes",      label: "Quizzes",         icon: FiZap,           badge: null, group: "main" },
@@ -524,6 +527,7 @@ export default function StudentDashboardUI() {
           >
             {activeTab === "dashboard"    && <DashboardTab onTabChange={handleTabChange}/>}
             {activeTab === "courses"      && <CoursesTab/>}
+            {activeTab === "live-classes" && <MyLiveClassesTab/>}
             {activeTab === "certificates" && <CertificatesTab/>}
             {activeTab === "assignments"  && <AssignmentsTab/>}
             {activeTab === "quizzes"      && <QuizzesTab/>}

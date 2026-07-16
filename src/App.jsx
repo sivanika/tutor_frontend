@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { Toaster } from "react-hot-toast";
+import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import Login from "./pages/auth/Login"
 import Register from "./pages/auth/Register"
@@ -41,6 +42,7 @@ import AdminLogin from "./pages/auth/AdminLogin";
 import Careers from "./pages/Careers";
 import PaymentPage from "./pages/payment/PaymentPage";
 import CoursePaymentPage from "./pages/payment/CoursePaymentPage";
+import LiveClassPaymentPage from "./pages/payment/LiveClassPaymentPage";
 import TutorProfilePage from "./pages/student/TutorProfilePage";
 import LegalHub from "./pages/legal/LegalHub";
 import Terms from "./pages/legal/Terms";
@@ -66,6 +68,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <ScrollToTop />
         <Toaster position="top-right" />
         <Routes>
           {/* Public with HomeLayout */}
@@ -108,6 +111,14 @@ function App() {
             element={
               <ProtectedRoute role="student">
                 <CoursePaymentPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/payment/live-class/:liveClassId"
+            element={
+              <ProtectedRoute role="student">
+                <LiveClassPaymentPage />
               </ProtectedRoute>
             }
           />
