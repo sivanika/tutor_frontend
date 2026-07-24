@@ -5,19 +5,11 @@ import Footer from "./Footer";
 export default function HomeLayout() {
   return (
     <div
-      className="
-        min-h-screen
-        bg-white
-        text-[var(--text-primary)]
-        dark:bg-[var(--surface)]
-        dark:text-[var(--text-primary)]
-        selection:bg-[var(--primary)]
-        selection:text-white
-        transition-colors duration-500
-      "
+      className="min-h-screen selection:bg-[var(--accent)]/30 selection:text-white"
+      style={{ background: "var(--bg)", color: "var(--text-primary)" }}
     >
       <Header />
-      <main className="space-y-0">
+      <main>
         <Outlet />
       </main>
       <Footer />

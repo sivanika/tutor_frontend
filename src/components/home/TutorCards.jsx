@@ -1,20 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
-import { FiBookOpen, FiDollarSign, FiStar, FiChevronLeft, FiChevronRight } from "react-icons/fi";
-
-
+import { FiBookOpen, FiDollarSign, FiStar, FiChevronLeft, FiChevronRight, FiLinkedin, FiCalendar } from "react-icons/fi";
+import { media } from "../../utils/media";
 
 const GRADIENTS = [
-  { from: "var(--primary)", to: "var(--primary)" },
-  { from: "var(--accent)", to: "var(--primary)" },
-  { from: "var(--primary)", to: "var(--accent)" },
-  { from: "#38BDF8", to: "#2563EB" }, // Sky to Blue
-  { from: "#A78BFA", to: "#6366F1" }, // Purple to Indigo
-  { from: "#60A5FA", to: "#3B82F6" }, // Blue variants
+  { from: "#3B82F6", to: "#06B6D4" },
+  { from: "#8B5CF6", to: "#3B82F6" },
+  { from: "#06B6D4", to: "#10B981" },
+  { from: "#F59E0B", to: "#EF4444" },
+  { from: "#A78BFA", to: "#8B5CF6" },
+  { from: "#F472B6", to: "#A78BFA" },
 ];
-
-import { media } from "../../utils/media";
 
 export default function TutorCards() {
   const navigate = useNavigate();
@@ -33,7 +30,6 @@ export default function TutorCards() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Watch scroll position to highlight the active dot
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -50,39 +46,46 @@ export default function TutorCards() {
     const track = trackRef.current;
     if (!track) return;
     const cardWidth = track.querySelector("[data-card]")?.offsetWidth ?? 320;
-    track.scrollBy({ left: dir * (cardWidth + 32), behavior: "smooth" });
+    track.scrollBy({ left: dir * (cardWidth + 28), behavior: "smooth" });
   };
 
   return (
-    <section className="py-20 bg-[var(--surface-alt)] dark:bg-[var(--surface)] transition-colors duration-500 overflow-hidden relative">
-      {/* Ambient blobs */}
-      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[var(--primary)]/06 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-[var(--accent)]/05 blur-3xl pointer-events-none" />
+    <section
+      className="py-24 overflow-hidden relative"
+      style={{ background: "var(--section-bg)" }}
+    >
+      {/* Orbs */}
+      <div className="absolute top-0 right-0 w-96 h-96 orb-purple opacity-20 dark:opacity-30" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 orb-cyan opacity-15 dark:opacity-25" />
+
+      {/* Glow top divider */}
+      <div className="absolute top-0 left-0 right-0 h-px glow-divider" />
 
       <div className="relative z-10">
         {/* Heading */}
         <div className="text-center mb-12 px-6">
-          <p className="text-sm font-semibold uppercase tracking-widest text-[var(--primary)] dark:text-[var(--accent)] mb-2">
-            Our educators
-          </p>
-          <h2 className="text-3xl md:text-4xl font-black text-[var(--text-primary)] dark:text-white">
-            Recommended <span className="grad-text">Tutors</span>
+          <div className="section-pill mx-auto w-fit mb-4">Meet Our Educators</div>
+          <h2 className="text-4xl md:text-5xl font-black text-[var(--text-primary)] mb-4">
+            Learn from the{" "}
+            <span className="grad-text">Best Professors</span>
           </h2>
+          <p className="text-[var(--text-muted)] max-w-xl mx-auto">
+            Verified PhD scholars, industry experts, and passionate educators — ready for you.
+          </p>
         </div>
 
         {/* Loading */}
         {loading && (
           <div className="flex justify-center items-center py-16">
-            <div className="w-10 h-10 border-4 border-[var(--primary)]/30 border-t-[var(--primary)] rounded-full animate-spin" />
+            <div className="w-10 h-10 border-2 border-[var(--accent)]/20 border-t-[var(--accent)] rounded-full animate-spin" />
           </div>
         )}
 
         {/* Empty */}
         {!loading && tutors.length === 0 && (
-          <div className="text-center py-16 text-[var(--text-muted)] dark:text-[var(--accent)]">
-            <p className="text-2xl mb-2 flex justify-center text-[var(--primary)]"><FiBookOpen /></p>
-
-            <p className="text-lg font-semibold">No tutors available yet</p>
+          <div className="text-center py-16 text-[var(--text-light)]">
+            <FiBookOpen className="text-4xl mx-auto mb-3 text-[var(--accent)]/30" />
+            <p className="text-lg font-semibold text-[var(--text-muted)]">No tutors available yet</p>
             <p className="text-sm mt-1">Check back soon — we're growing!</p>
           </div>
         )}
@@ -90,178 +93,160 @@ export default function TutorCards() {
         {/* Carousel */}
         {!loading && tutors.length > 0 && (
           <div className="relative">
-            {/* Prev button */}
+            {/* Prev */}
             {activeIndex > 0 && (
               <button
                 onClick={() => scrollTo(-1)}
                 aria-label="Scroll left"
                 className="
                   hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20
-                  w-10 h-10 rounded-full bg-white dark:bg-[var(--surface-alt)]
-                  border border-[var(--primary)]/20 shadow-lg
-                  items-center justify-center
-                  text-[var(--primary)] dark:text-[var(--accent)]
-                  hover:scale-110 transition-transform duration-200
+                  w-10 h-10 rounded-full
+                  border border-white/10 bg-white/05
+                  items-center justify-center text-white/60
+                  hover:bg-[var(--accent)]/10 hover:border-[var(--accent)]/30 hover:text-[var(--accent)]
+                  hover:scale-110 transition-all duration-200 backdrop-blur-sm
                 "
               >
                 <FiChevronLeft />
-
               </button>
             )}
-            {/* Next button */}
+            {/* Next */}
             {activeIndex < tutors.length - 1 && (
               <button
                 onClick={() => scrollTo(1)}
                 aria-label="Scroll right"
                 className="
                   hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20
-                  w-10 h-10 rounded-full bg-white dark:bg-[var(--surface-alt)]
-                  border border-[var(--primary)]/20 shadow-lg
-                  items-center justify-center
-                  text-[var(--primary)] dark:text-[var(--accent)]
-                  hover:scale-110 transition-transform duration-200
+                  w-10 h-10 rounded-full
+                  border border-white/10 bg-white/05
+                  items-center justify-center text-white/60
+                  hover:bg-[var(--accent)]/10 hover:border-[var(--accent)]/30 hover:text-[var(--accent)]
+                  hover:scale-110 transition-all duration-200 backdrop-blur-sm
                 "
               >
                 <FiChevronRight />
-
               </button>
             )}
 
             {/* Scroll track */}
             <div
               ref={trackRef}
-              className="flex gap-6 md:gap-8 overflow-x-auto pb-6 px-6 md:px-16 scrollbar-hide"
-              style={{
-                scrollSnapType: "x mandatory",
-                WebkitOverflowScrolling: "touch",
-                scrollBehavior: "smooth",
-              }}
+              className="flex gap-5 sm:gap-7 overflow-x-auto pb-6 px-6 md:px-16 scrollbar-hide"
+              style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
             >
               {tutors.map((t, i) => {
                 const grad = GRADIENTS[i % GRADIENTS.length];
-                const gradientStyle = `linear-gradient(135deg, ${grad.from}, ${grad.to})`;
-                const photoUrl = t.profilePhoto
-                  ? media(t.profilePhoto)
-                  : null;
+                const gradStyle = `linear-gradient(135deg, ${grad.from}, ${grad.to})`;
+                const photoUrl = t.profilePhoto ? media(t.profilePhoto) : null;
                 const displayName = t.name || "Tutor";
-                const initials = displayName
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")
-                  .substring(0, 2)
-                  .toUpperCase();
-                const ratingLabel =
-                  t.avgRating != null ? t.avgRating.toFixed(1) : "New";
-                const sessionLabel =
-                  t.sessionCount > 0
-                    ? `${t.sessionCount} sessions`
-                    : "New tutor";
+                const initials = displayName.split(" ").map((n) => n[0]).join("").substring(0, 2).toUpperCase();
+                const ratingLabel = t.avgRating != null ? t.avgRating.toFixed(1) : "New";
+                const sessionLabel = t.sessionCount > 0 ? `${t.sessionCount} sessions` : "New tutor";
 
                 return (
                   <div
                     key={t._id}
                     data-card
                     className="
-                      group relative p-6 md:p-7 rounded-2xl overflow-hidden flex-shrink-0
-                      w-[82vw] sm:w-72 md:w-80
-                      bg-white dark:bg-[var(--surface-alt)]
-                      border border-[var(--primary)]/10 dark:border-[var(--primary)]/20
-                      shadow-md dark:shadow-[var(--primary)]/05
-                      hover:-translate-y-2 hover:shadow-xl hover:shadow-[var(--primary)]/15
-                      transition-all duration-300
+                      group relative flex-shrink-0 rounded-3xl overflow-hidden
+                      w-[82vw] sm:w-72 md:w-76
+                      transition-all duration-350 hover:-translate-y-2
                       will-change-transform
                     "
-                    style={{ scrollSnapAlign: "start" }}
+                    style={{
+                      scrollSnapAlign: "start",
+                      background: "var(--card-bg)",
+                      border: "1px solid var(--card-border)",
+                      backdropFilter: "blur(16px)",
+                    }}
                   >
-                    {/* Top gradient border */}
+                    {/* Top gradient strip */}
+                    <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background: gradStyle }} />
+
+                    {/* Hover glow */}
                     <div
-                      className="absolute top-0 left-0 w-full h-1 rounded-t-2xl"
-                      style={{ background: gradientStyle }}
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
+                      style={{ background: `radial-gradient(ellipse at 30% 20%, ${grad.from}10, transparent 60%)` }}
                     />
 
-                    {/* Avatar */}
-                    {photoUrl ? (
-                      <img
-                        src={photoUrl}
-                        alt={displayName}
-                        loading="lazy"
-                        decoding="async"
-                        width={64}
-                        height={64}
-                        className="w-16 h-16 mb-5 rounded-2xl object-cover shadow-lg transition-transform duration-300 group-hover:scale-110"
-                        onError={(e) => {
-                          e.target.style.display = "none";
-                          e.target.nextSibling.style.display = "flex";
+                    <div className="relative p-6">
+                      {/* Avatar row */}
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="relative flex-shrink-0">
+                          {photoUrl ? (
+                            <img
+                              src={photoUrl}
+                              alt={displayName}
+                              loading="lazy"
+                              width={56}
+                              height={56}
+                              className="w-14 h-14 rounded-2xl object-cover shadow-lg transition-transform duration-300 group-hover:scale-105"
+                              onError={(e) => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
+                            />
+                          ) : null}
+                          <div
+                            className="w-14 h-14 rounded-2xl items-center justify-center font-black text-xl text-white shadow-lg transition-transform duration-300 group-hover:scale-105"
+                            style={{
+                              background: gradStyle,
+                              boxShadow: `0 6px 20px ${grad.from}40`,
+                              display: photoUrl ? "none" : "flex",
+                            }}
+                          >
+                            {initials}
+                          </div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-[var(--text-primary)] truncate">{displayName}</h3>
+                          <p className="text-[var(--text-muted)] text-sm mt-0.5 truncate">{t.subjects || "General Tutoring"}</p>
+                          <div className="flex items-center gap-1 mt-1">
+                            {[...Array(5)].map((_, si) => (
+                              <FiStar key={si} size={10} className={si < Math.round(t.avgRating || 4.5) ? "text-[#F59E0B] fill-current" : "text-[var(--text-light)]"} />
+                            ))}
+                            <span className="text-[var(--text-muted)] text-xs ml-1">{ratingLabel}</span>
+                          </div>
+                        </div>
+                        {/* LinkedIn icon placeholder */}
+                        <button className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-light)] border border-[var(--border-soft)] hover:border-[#0A66C2]/40 hover:text-[#0A66C2] transition-all duration-200 flex-shrink-0">
+                          <FiLinkedin size={13} />
+                        </button>
+                      </div>
+
+                      {/* Rate + sessions */}
+                      <div className="flex items-center justify-between mb-4">
+                        {t.hourlyRate ? (
+                          <span
+                            className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-white"
+                            style={{ background: gradStyle, boxShadow: `0 2px 12px ${grad.from}30` }}
+                          >
+                            <FiDollarSign size={10} /> ₹{t.hourlyRate}/hr
+                          </span>
+                        ) : (
+                          <span className="text-xs text-[var(--text-light)] font-medium">Contact for price</span>
+                        )}
+                        <span className="text-xs text-[var(--text-muted)] flex items-center gap-1">
+                          <FiCalendar size={10} /> {sessionLabel}
+                        </span>
+                      </div>
+
+                      {/* Book button */}
+                      <button
+                        onClick={() => navigate(`/tutor/${t._id}`)}
+                        className="w-full py-2.5 rounded-2xl font-semibold text-sm text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                        style={{
+                          background: gradStyle,
+                          boxShadow: `0 4px 16px ${grad.from}25`,
                         }}
-                      />
-                    ) : null}
-
-                    {/* Initials fallback */}
-                    <div
-                      className="w-16 h-16 mb-5 rounded-2xl items-center justify-center font-black text-2xl text-white shadow-lg transition-transform duration-300 group-hover:scale-110"
-                      style={{
-                        background: gradientStyle,
-                        boxShadow: `0 8px 20px ${grad.from}40`,
-                        display: photoUrl ? "none" : "flex",
-                      }}
-                    >
-                      {initials}
-                    </div>
-
-                    <h3 className="text-lg font-bold text-[var(--text-primary)] dark:text-white truncate">
-                      {displayName}
-                    </h3>
-                    <p className="text-[var(--text-muted)] dark:text-[var(--accent)] text-sm mt-1 truncate">
-                      {t.subjects || "General Tutoring"}
-                    </p>
-
-                    {/* Hourly Rate Badge */}
-                    <div className="mt-3">
-                      {t.hourlyRate ? (
-                        <span
-                          className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-white"
-                          style={{ background: gradientStyle }}
-                        >
-                          <FiDollarSign className="inline-block" /> ₹{t.hourlyRate}/hr
-
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-[var(--text-muted)] dark:text-[var(--accent)] bg-gray-100 dark:bg-[var(--text-primary)]">
-                          Contact for price
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-4 mt-3">
-                      <span
-                        className="text-sm font-semibold"
-                        style={{ color: grad.from }}
                       >
-                        <FiStar className="inline-block" /> {ratingLabel}
-
-                      </span>
-                      <span className="text-xs text-[var(--text-muted)] dark:text-[var(--accent)]">
-                        {sessionLabel}
-                      </span>
+                        Book a Session →
+                      </button>
                     </div>
-
-                    <button
-                      onClick={() => navigate(`/tutor/${t._id}`)}
-                      className="mt-5 w-full py-2.5 rounded-xl font-semibold text-sm text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                      style={{
-                        background: gradientStyle,
-                        boxShadow: `0 4px 16px ${grad.from}30`,
-                      }}
-                    >
-                      View Profile →
-                    </button>
                   </div>
                 );
               })}
             </div>
 
             {/* Dot indicators */}
-            <div className="flex justify-center gap-2 mt-2">
+            <div className="flex justify-center gap-2 mt-4">
               {tutors.map((_, i) => (
                 <button
                   key={i}
@@ -271,17 +256,15 @@ export default function TutorCards() {
                     if (!track) return;
                     const card = track.querySelector("[data-card]");
                     if (!card) return;
-                    track.scrollTo({
-                      left: i * (card.offsetWidth + 32),
-                      behavior: "smooth",
-                    });
+                    track.scrollTo({ left: i * (card.offsetWidth + 28), behavior: "smooth" });
                   }}
                   className="rounded-full transition-all duration-300"
-                    style={{
-                    width: i === activeIndex ? "24px" : "8px",
+                  style={{
+                    width: i === activeIndex ? "28px" : "8px",
                     height: "8px",
-                    background:
-                      i === activeIndex ? "var(--primary)" : "var(--primary)/25",
+                    background: i === activeIndex
+                      ? "linear-gradient(90deg, #3B82F6, #06B6D4)"
+                      : "var(--border-soft)",
                   }}
                 />
               ))}

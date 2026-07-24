@@ -1,44 +1,37 @@
 import FeaturesComponent from "../components/home/Features";
+import CourseCategories from "../components/home/CourseCategories";
+import LearningRoadmap from "../components/home/LearningRoadmap";
+import CTA from "../components/home/CTA";
+import { FiZap } from "react-icons/fi";
 
 export default function Features() {
   return (
-    <div>
-      <section className="relative pt-32 pb-32 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/academic_hero_banner.png" 
-            alt="Banner" 
-            className="w-full h-full object-cover opacity-20 dark:opacity-40 brightness-[0.9] dark:brightness-[0.7]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[var(--surface)]/20 via-[var(--surface)]/80 to-[var(--surface)]" />
-        </div>
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--primary)]/10 dark:bg-[var(--primary)]/20 text-[var(--primary)] dark:text-[var(--accent)] text-xs font-bold tracking-wider uppercase mb-6">
-            Platform Capabilities
-          </span>
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight dark:text-white">
+    <div style={{ background: "var(--bg)" }}>
+      {/* ── Hero ── */}
+      <section className="relative pt-36 pb-24 overflow-hidden" style={{ background: "radial-gradient(ellipse 80% 60% at 50% -20%, rgba(139,92,246,0.3) 0%, rgba(59,130,246,0.15) 40%, transparent 70%), var(--hero-section)" }}>
+        <div className="absolute -top-20 right-1/4 w-96 h-96 orb-purple opacity-20 dark:opacity-30" />
+        <div className="absolute top-1/2 -left-20 w-80 h-80 orb-cyan opacity-15 dark:opacity-20" />
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
+
+        <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
+          <div className="section-pill mx-auto w-fit mb-6 animate-fadeIn">
+            <FiZap size={12} /> Platform Capabilities
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-[var(--text-primary)] leading-tight animate-slideUp">
             Powerful Tools for <span className="grad-text">Modern</span> <br />
-            Learning & Teaching
+            Learning &amp; Teaching
           </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Discover the next-generation features designed to connect verified professors with students in a seamless, secure, and highly interactive environment.
+          <p className="text-xl text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed animate-slideUp delay-200">
+            Discover the next-generation features designed to connect verified professors with students
+            in a seamless, secure, and highly interactive environment.
           </p>
         </div>
       </section>
-      
+
       <FeaturesComponent />
-      
-      {/* Additional feature details could go here */}
-      <section className="py-24 bg-slate-50 dark:bg-[var(--surface-alt)]">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-6 dark:text-white">Ready to experience these features?</h2>
-          <div className="flex justify-center gap-4">
-            <button className="px-8 py-3 rounded-xl grad-bg text-white font-bold shadow-lg hover:scale-105 transition-all">
-              Get Started Free
-            </button>
-          </div>
-        </div>
-      </section>
+      <CourseCategories />
+      <LearningRoadmap />
+      <CTA />
     </div>
   );
 }

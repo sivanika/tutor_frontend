@@ -2,19 +2,19 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FiUsers, FiClock, FiCalendar, FiPlayCircle,
-  FiArrowRight, FiStar, FiAlertCircle, FiRefreshCw, FiList
+  FiArrowRight, FiStar, FiAlertCircle, FiRefreshCw, FiList, FiZap
 } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import API from "../services/api";
 
 /* ── Gradient CSS map ─────────────────────────────── */
 const GRADIENTS = [
-  "linear-gradient(135deg, #1E9E8C, #12283B)",
-  "linear-gradient(135deg, #2A4D6E, #F2A93B)",
-  "linear-gradient(135deg, #F2A93B, #1B3A54)",
-  "linear-gradient(135deg, #1E9E8C, #2A4D6E)",
-  "linear-gradient(135deg, #3A6389, #E86A5C)",
-  "linear-gradient(135deg, #12283B, #4F7CA3)",
+  "linear-gradient(135deg, #3B82F6, #06B6D4)",
+  "linear-gradient(135deg, #8B5CF6, #3B82F6)",
+  "linear-gradient(135deg, #06B6D4, #10B981)",
+  "linear-gradient(135deg, #F59E0B, #EF4444)",
+  "linear-gradient(135deg, #A78BFA, #8B5CF6)",
+  "linear-gradient(135deg, #F472B6, #A78BFA)",
 ];
 
 /* ── Detail Modal ─────────────────────────────────── */
@@ -24,14 +24,15 @@ function DetailModal({ cls, onClose, onEnrol }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[60] bg-[rgba(4,6,14,0.7)] backdrop-blur-sm flex items-start justify-center p-4 overflow-y-auto"
+      className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
       onClick={e => e.target === e.currentTarget && onClose()}
     >
       <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 20, opacity: 0 }}
-        className="bg-white dark:bg-[#1B3A54] rounded-[22px] w-full max-w-3xl shadow-2xl overflow-hidden my-4"
+        initial={{ y: 20, opacity: 0, scale: 0.95 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        exit={{ y: 20, opacity: 0, scale: 0.95 }}
+        className="rounded-3xl w-full max-w-3xl overflow-hidden my-4 border border-[var(--card-border)] shadow-2xl relative"
+        style={{ background: "var(--modal-bg)" }}
       >
         {/* Colored Hero */}
         <div
@@ -42,37 +43,37 @@ function DetailModal({ cls, onClose, onEnrol }) {
             onClick={onClose}
             className="absolute top-4 right-5 text-white/70 hover:text-white text-3xl leading-none"
           >×</button>
-          <span className="inline-flex items-center gap-1.5 bg-white/20 px-3 py-1 rounded-full text-xs font-bold mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1E9E8C] shadow-[0_0_0_3px_rgba(30,158,140,0.4)]" />
+          <span className="inline-flex items-center gap-1.5 bg-black/30 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold mb-3 border border-white/10">
+            <span className="live-dot" style={{ width: 6, height: 6 }} />
             {cls.category} · {cls.level}
           </span>
-          <h2 className="text-2xl font-bold font-[Fraunces,serif] leading-tight mb-3">{cls.title}</h2>
-          <p className="text-white/85 max-w-xl text-sm">{cls.longDesc || cls.shortDesc}</p>
-          <div className="flex flex-wrap gap-5 mt-5 text-sm text-white/90">
+          <h2 className="text-2xl font-black leading-tight mb-3 text-white">{cls.title}</h2>
+          <p className="text-white/90 max-w-xl text-sm leading-relaxed">{cls.longDesc || cls.shortDesc}</p>
+          <div className="flex flex-wrap gap-5 mt-5 text-xs font-semibold text-white/90">
             <span className="flex items-center gap-1.5"><FiCalendar size={14}/> Starts {cls.startDate}</span>
             <span className="flex items-center gap-1.5"><FiClock size={14}/> {cls.durationWeeks} weeks</span>
             <span className="flex items-center gap-1.5"><FiUsers size={14}/> {cls.seatsLeft} seats left</span>
             {cls.rating > 0 && (
-              <span className="flex items-center gap-1.5"><FiStar size={14}/> {cls.rating}★ ({cls.ratingCount})</span>
+              <span className="flex items-center gap-1.5"><FiStar size={14} className="fill-current text-yellow-300"/> {cls.rating}★ ({cls.ratingCount})</span>
             )}
           </div>
         </div>
 
-        {/* Tabs Body */}
+        {/* Modal Body */}
         <div className="p-7 space-y-6">
           {/* Schedule */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-[#7E8FA0] mb-2">Schedule</h4>
-            <p className="text-sm font-semibold text-[#142838] dark:text-[#EEF4F9]">{cls.schedule}</p>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-2">Schedule</h4>
+            <p className="text-sm font-semibold text-white">{cls.schedule}</p>
           </div>
 
           {/* Prerequisites */}
           {cls.prerequisites?.length > 0 && (
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[#7E8FA0] mb-2">Prerequisites</h4>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-2">Prerequisites</h4>
               <ul className="space-y-1">
                 {cls.prerequisites.map((p, i) => (
-                  <li key={i} className="text-sm text-[#4C6072] dark:text-[#AFC1D1] pl-4 relative before:absolute before:left-0 before:content-['•'] before:text-[#F2A93B]">
+                  <li key={i} className="text-sm text-white/70 pl-4 relative before:absolute before:left-0 before:content-['•'] before:text-[var(--accent)]">
                     {p}
                   </li>
                 ))}
@@ -83,14 +84,14 @@ function DetailModal({ cls, onClose, onEnrol }) {
           {/* Syllabus */}
           {cls.syllabus?.length > 0 && (
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[#7E8FA0] mb-3">Week-by-week Syllabus</h4>
-              <div className="divide-y divide-[rgba(18,40,59,0.1)]">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">Week-by-week Syllabus</h4>
+              <div className="divide-y divide-white/06">
                 {cls.syllabus.map((week) => (
                   <div key={week.week} className="flex gap-4 py-3">
-                    <span className="font-mono text-xs font-bold text-[#2A4D6E] w-16 shrink-0 pt-0.5">WK {week.week}</span>
+                    <span className="font-mono text-xs font-bold text-[var(--accent)] w-16 shrink-0 pt-0.5">WK {week.week}</span>
                     <div>
-                      <p className="text-sm font-bold text-[#142838] dark:text-white">{week.topic}</p>
-                      {week.details && <p className="text-xs text-[#4C6072] dark:text-[#AFC1D1] mt-0.5">{week.details}</p>}
+                      <p className="text-sm font-bold text-white">{week.topic}</p>
+                      {week.details && <p className="text-xs text-white/40 mt-0.5">{week.details}</p>}
                     </div>
                   </div>
                 ))}
@@ -99,28 +100,29 @@ function DetailModal({ cls, onClose, onEnrol }) {
           )}
 
           {/* Instructor */}
-          <div className="flex gap-4 items-center p-4 bg-[#E8F0F6] dark:bg-[#12283B] rounded-xl">
-            <div className="w-12 h-12 rounded-full bg-[#2A4D6E] text-white font-bold flex items-center justify-center text-lg font-[Fraunces,serif]">
+          <div className="flex gap-4 items-center p-4 rounded-2xl" style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)" }}>
+            <div className="w-12 h-12 rounded-xl bg-[var(--accent)]/20 border border-[var(--accent)]/30 text-[var(--accent)] font-black flex items-center justify-center text-lg">
               {cls.instructor?.charAt(0)}
             </div>
             <div>
-              <p className="font-bold text-[#142838] dark:text-white">{cls.instructor}</p>
-              <p className="text-xs text-[#4C6072] dark:text-[#AFC1D1]">{cls.instructorRole}</p>
+              <p className="font-bold text-[var(--text-primary)] text-sm">{cls.instructor}</p>
+              <p className="text-xs text-[var(--text-muted)]">{cls.instructorRole}</p>
             </div>
           </div>
 
           {/* Footer CTA */}
-          <div className="flex items-center justify-between pt-2">
+          <div className="flex items-center justify-between pt-2 border-t border-[var(--card-border)]">
             <div>
-              <p className="text-2xl font-bold font-[Fraunces,serif] text-[#142838] dark:text-white">
+              <p className="text-2xl font-black text-[var(--text-primary)]">
                 ₹{cls.price?.toLocaleString("en-IN")}
               </p>
               {cls.mrp > cls.price && (
-                <s className="text-xs text-[#7E8FA0]">₹{cls.mrp?.toLocaleString("en-IN")}</s>
+                <s className="text-xs text-[var(--text-muted)]">₹{cls.mrp?.toLocaleString("en-IN")}</s>
               )}
             </div>
             <button
-              className="flex items-center gap-2 px-6 py-3 bg-[#1E9E8C] text-white rounded-xl font-bold text-sm hover:bg-[#2CBBA6] transition-all shadow-lg hover:-translate-y-0.5"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-white transition-all duration-300 hover:scale-105"
+              style={{ background: "linear-gradient(135deg, #3B82F6, #06B6D4)", boxShadow: "0 4px 20px rgba(6,182,212,0.3)" }}
               onClick={() => onEnrol(cls._id)}
             >
               Enrol Now <FiArrowRight />
@@ -171,41 +173,35 @@ export default function LiveClasses() {
     : "—";
 
   return (
-    <div className="bg-[#F5F9FC] dark:bg-[#12283B] min-h-screen">
+    <div style={{ background: "var(--bg)" }}>
+      {/* ── Hero ── */}
+      <section className="relative pt-36 pb-24 overflow-hidden" style={{ background: "radial-gradient(ellipse 80% 60% at 50% -20%, rgba(42,77,110,0.4) 0%, rgba(6,182,212,0.1) 50%, transparent 70%), var(--hero-section)" }}>
+        <div className="absolute -top-20 left-1/4 w-96 h-96 orb-blue opacity-20 dark:opacity-30" />
+        <div className="absolute top-1/2 right-0 w-80 h-80 orb-purple opacity-15 dark:opacity-20" />
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-32 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/academic_hero_banner.png" 
-            alt="Banner" 
-            className="w-full h-full object-cover opacity-20 dark:opacity-40 brightness-[0.9] dark:brightness-[0.7]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[var(--surface)]/20 via-[var(--surface)]/80 to-[var(--surface)]" />
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--primary)]/10 dark:bg-[var(--primary)]/20 text-[var(--primary)] dark:text-[var(--accent)] text-xs font-bold tracking-wider uppercase mb-6 animate-fadeIn">
-            Live Classes
-          </span>
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight dark:text-white">
+        <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
+          <div className="section-pill mx-auto w-fit mb-6 animate-fadeIn">
+            <span className="live-dot" style={{ width: 6, height: 6 }} /> Live Classes
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-[var(--text-primary)] leading-tight animate-slideUp">
             Learn Live, With a <br />
-            <span className="grad-text">Mentor & Cohort</span>
+            <span className="grad-text">Mentor &amp; Cohort</span>
           </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed mb-12">
+          <p className="text-xl text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed mb-12 animate-slideUp delay-200">
             Fixed-schedule batches with weekly sessions, project reviews and direct mentor feedback. Seats are limited — every session is recorded for enrolled students.
           </p>
-          
+
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto animate-slideUp delay-300">
             {[
-              { label: "Cohorts open", value: classes.length },
-              { label: "Seats remaining", value: totalSeats },
-              { label: "Average rating", value: `${avgRating}★` },
+              { label: "Cohorts open", value: classes.length, color: "#3B82F6" },
+              { label: "Seats remaining", value: totalSeats, color: "#06B6D4" },
+              { label: "Average rating", value: `${avgRating}★`, color: "#F59E0B" },
             ].map((stat, i) => (
-              <div key={i} className="p-6 rounded-3xl bg-white dark:bg-white/05 border border-slate-100 dark:border-white/10 shadow-sm">
-                <div className="text-3xl font-extrabold grad-text mb-1">{stat.value}</div>
-                <div className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">{stat.label}</div>
+              <div key={i} className="p-6 rounded-3xl text-center" style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)", backdropFilter: "blur(16px)" }}>
+                <div className="text-3xl font-black mb-1" style={{ color: stat.color }}>{stat.value}</div>
+                <div className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -213,38 +209,40 @@ export default function LiveClasses() {
       </section>
 
       {/* ── Filter Bar ──────────────────────────────── */}
-      <div className="sticky top-[72px] lg:top-[88px] z-40 bg-[#F5F9FC] dark:bg-[#12283B] border-b border-[rgba(18,40,59,0.1)] dark:border-white/10 py-4">
+      <div className="sticky top-[68px] z-40 py-4 border-b border-[var(--card-border)] backdrop-blur-2xl" style={{ background: "var(--overlay-bg)" }}>
         <div className="max-w-7xl mx-auto px-6 flex flex-wrap items-center justify-between gap-3">
           <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
             {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold border transition-all
-                  ${filter === cat
-                    ? "bg-[#2A4D6E] text-white border-[#2A4D6E] shadow-md"
-                    : "bg-white dark:bg-white/10 border-[rgba(18,40,59,0.18)] dark:border-white/20 text-[#4C6072] dark:text-[#AFC1D1] hover:text-[#2A4D6E] dark:hover:text-white hover:border-[#2A4D6E]"}`}
+                className={`whitespace-nowrap px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  filter === cat
+                    ? "bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] text-white shadow-lg shadow-[var(--accent)]/20"
+                    : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                }`}
+                style={filter !== cat ? { background: "var(--card-bg)", border: "1px solid var(--card-border)" } : {}}
               >
                 {cat}
               </button>
             ))}
           </div>
-          <span className="text-xs text-[#7E8FA0] font-medium flex items-center gap-1.5">
-            <FiRefreshCw size={12} className="animate-spin" style={{ animationDuration: '3s' }} />
+          <span className="text-xs text-[var(--text-muted)] font-medium flex items-center gap-1.5">
+            <FiRefreshCw size={12} className="animate-spin text-[var(--accent)]" style={{ animationDuration: '3s' }} />
             Live data
           </span>
         </div>
       </div>
 
       {/* ── Content ─────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-6 py-10 pb-20">
+      <div className="max-w-7xl mx-auto px-6 py-12 pb-24">
 
         {/* Error State */}
         {error && (
-          <div className="flex flex-col items-center py-20 text-center text-[#4C6072]">
-            <FiAlertCircle size={40} className="text-[#E86A5C] mb-3" />
+          <div className="flex flex-col items-center py-20 text-center text-[var(--text-muted)]">
+            <FiAlertCircle size={40} className="text-red-400 mb-3" />
             <p className="font-semibold mb-2">{error}</p>
-            <button onClick={() => fetchClasses()} className="mt-2 px-5 py-2 rounded-xl bg-[#2A4D6E] text-white text-sm font-bold">
+            <button onClick={() => fetchClasses()} className="mt-2 px-5 py-2 rounded-xl bg-[var(--accent)] text-white text-sm font-bold">
               Retry
             </button>
           </div>
@@ -252,15 +250,12 @@ export default function LiveClasses() {
 
         {/* Loading State */}
         {loading && !error && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="bg-white dark:bg-[#1B3A54] rounded-[22px] overflow-hidden animate-pulse">
-                <div className="h-40 bg-[#D0DCE8] dark:bg-[#2A4D6E]" />
-                <div className="p-5 space-y-3">
-                  <div className="h-5 bg-[#E8F0F6] dark:bg-[#2A4D6E] rounded-lg" />
-                  <div className="h-4 bg-[#E8F0F6] dark:bg-[#2A4D6E] rounded-lg w-3/4" />
-                  <div className="h-4 bg-[#E8F0F6] dark:bg-[#2A4D6E] rounded-lg w-1/2" />
-                </div>
+              <div key={i} className="rounded-3xl p-6 animate-pulse space-y-4" style={{ border: "1px solid var(--card-border)", background: "var(--card-bg)" }}>
+                <div className="h-40 rounded-2xl" style={{ background: "var(--surface-alt)" }} />
+                <div className="h-5 rounded-lg w-3/4" style={{ background: "var(--surface-alt)" }} />
+                <div className="h-4 rounded-lg w-1/2" style={{ background: "var(--surface-alt)" }} />
               </div>
             ))}
           </div>
@@ -268,16 +263,16 @@ export default function LiveClasses() {
 
         {/* Empty State */}
         {!loading && !error && visible.length === 0 && (
-          <div className="text-center py-20">
-            <FiList size={48} className="text-[#D0DCE8] mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-[#142838] dark:text-white mb-2">
+          <div className="text-center py-24 rounded-3xl" style={{ border: "1px dashed var(--card-border)", background: "var(--card-bg)" }}>
+            <FiList size={48} className="text-[var(--text-muted)] mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">
               {filter === "All" ? "No live classes available right now" : `No live classes in "${filter}"`}
             </h3>
-            <p className="text-[#4C6072] dark:text-[#AFC1D1] text-sm mb-5">
+            <p className="text-[var(--text-muted)] text-sm mb-6">
               {filter !== "All" ? "Try a different category." : "New cohorts are added regularly. Check back soon!"}
             </p>
             {filter !== "All" && (
-              <button onClick={() => setFilter("All")} className="px-5 py-2.5 rounded-xl bg-[#2A4D6E] text-white text-sm font-bold">
+              <button onClick={() => setFilter("All")} className="px-5 py-2.5 rounded-xl bg-[var(--accent)] text-white text-sm font-bold">
                 View All Cohorts
               </button>
             )}
@@ -286,7 +281,7 @@ export default function LiveClasses() {
 
         {/* Cards Grid */}
         {!loading && !error && visible.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
               {visible.map((cls, idx) => (
                 <motion.div
@@ -294,66 +289,67 @@ export default function LiveClasses() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ delay: idx * 0.07 }}
-                  className="bg-white dark:bg-[#1B3A54] rounded-[22px] border border-[rgba(18,40,59,0.08)] dark:border-white/10 overflow-hidden flex flex-col hover:-translate-y-1.5 hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+                  transition={{ delay: idx * 0.05 }}
+                  className="rounded-3xl overflow-hidden flex flex-col hover:-translate-y-2 transition-all duration-350 cursor-pointer group"
+                  style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)", backdropFilter: "blur(16px)" }}
                   onClick={() => setSelected(cls)}
                 >
                   {/* Thumb */}
                   <div
-                    className="h-40 flex items-center justify-center relative"
+                    className="h-44 flex items-center justify-center relative overflow-hidden"
                     style={{ background: cls.gradient || GRADIENTS[idx % GRADIENTS.length] }}
                   >
-                    <span className="absolute top-3 left-3 bg-white/92 text-[#1B3A54] text-xs font-bold px-3 py-1 rounded-full">
+                    <span className="absolute top-3 left-3 bg-black/40 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full border border-white/10">
                       {cls.category}
                     </span>
-                    <span className="absolute top-3 right-3 bg-[#12283B]/60 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    <span className="absolute top-3 right-3 bg-black/40 backdrop-blur-md text-white/80 text-xs font-bold px-3 py-1 rounded-full border border-white/10">
                       {cls.level}
                     </span>
-                    <FiPlayCircle className="text-white/90 text-5xl group-hover:scale-110 transition-transform" />
+                    <FiPlayCircle className="text-white/80 text-5xl group-hover:scale-110 transition-transform duration-300 drop-shadow-lg" />
                   </div>
 
                   {/* Body */}
-                  <div className="p-5 flex flex-col flex-1 gap-3">
-                    <h3 className="font-bold font-[Fraunces,serif] text-xl leading-tight text-[#142838] dark:text-white">
+                  <div className="p-6 flex flex-col flex-1 gap-3">
+                    <h3 className="font-bold text-lg leading-tight text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
                       {cls.title}
                     </h3>
-                    <p className="text-sm text-[#4C6072] dark:text-[#AFC1D1] leading-relaxed">
+                    <p className="text-xs text-[var(--text-muted)] leading-relaxed line-clamp-2">
                       {cls.shortDesc}
                     </p>
 
-                    <div className="flex flex-wrap gap-3 text-xs text-[#7E8FA0] font-medium mt-1">
-                      <span className="flex items-center gap-1.5"><FiCalendar size={11} /> Starts {cls.startDate}</span>
-                      <span className="flex items-center gap-1.5"><FiClock size={11} /> {cls.durationWeeks} weeks</span>
+                    <div className="flex flex-wrap gap-3 text-xs text-[var(--text-muted)] font-medium mt-1">
+                      <span className="flex items-center gap-1.5"><FiCalendar size={11} className="text-[var(--accent)]" /> Starts {cls.startDate}</span>
+                      <span className="flex items-center gap-1.5"><FiClock size={11} className="text-[var(--accent)]" /> {cls.durationWeeks} weeks</span>
                     </div>
 
-                    <div className="flex items-center gap-2.5 text-sm text-[#4C6072] dark:text-[#AFC1D1]">
-                      <div className="w-7 h-7 rounded-full bg-[#2A4D6E] text-white font-bold flex items-center justify-center text-xs font-[Fraunces,serif] shrink-0">
+                    <div className="flex items-center gap-2.5 text-xs text-[var(--text-muted)] pt-2 border-t border-[var(--card-border)]">
+                      <div className="w-7 h-7 rounded-lg bg-[var(--accent)]/20 border border-[var(--accent)]/30 text-[var(--accent)] font-bold flex items-center justify-center text-xs shrink-0">
                         {cls.instructor?.charAt(0)}
                       </div>
                       <div>
-                        <span className="font-semibold text-[#142838] dark:text-white">{cls.instructor}</span>
+                        <span className="font-semibold text-[var(--text-primary)]">{cls.instructor}</span>
                         {cls.instructorRole && (
-                          <p className="text-[11px] text-[#7E8FA0] leading-none">{cls.instructorRole}</p>
+                          <p className="text-[10px] text-[var(--text-muted)] leading-none">{cls.instructorRole}</p>
                         )}
                       </div>
                     </div>
 
                     {/* Footer */}
-                    <div className="mt-auto pt-4 border-t border-[rgba(18,40,59,0.08)] dark:border-white/10 flex items-center justify-between">
+                    <div className="mt-auto pt-4 border-t border-[var(--card-border)] flex items-center justify-between">
                       <div className="flex items-baseline gap-1.5">
-                        <strong className="font-bold font-[Fraunces,serif] text-xl text-[#142838] dark:text-white">
+                        <strong className="font-black text-xl text-[var(--text-primary)]">
                           ₹{cls.price?.toLocaleString("en-IN")}
                         </strong>
                         {cls.mrp > cls.price && (
-                          <s className="text-xs text-[#7E8FA0]">₹{cls.mrp?.toLocaleString("en-IN")}</s>
+                          <s className="text-xs text-[var(--text-muted)]">₹{cls.mrp?.toLocaleString("en-IN")}</s>
                         )}
                       </div>
                       <div className="flex flex-col items-end gap-1">
-                        <span className={`text-xs font-bold ${cls.seatsLeft <= 5 ? "text-[#E86A5C]" : cls.seatsLeft <= 15 ? "text-[#F2A93B]" : "text-[#1E9E8C]"}`}>
+                        <span className={`text-xs font-bold ${cls.seatsLeft <= 5 ? "text-red-400" : cls.seatsLeft <= 15 ? "text-amber-400" : "text-emerald-400"}`}>
                           {cls.seatsLeft} seats left
                         </span>
                         {cls.rating > 0 && (
-                          <span className="text-[11px] text-[#F2A93B] font-bold">{cls.rating}★ ({cls.ratingCount})</span>
+                          <span className="text-[11px] text-amber-400 font-bold">{cls.rating}★ ({cls.ratingCount})</span>
                         )}
                       </div>
                     </div>
@@ -366,19 +362,20 @@ export default function LiveClasses() {
       </div>
 
       {/* ── CTA Band ────────────────────────────────── */}
-      <section className="bg-white dark:bg-[#1B3A54] border-t border-[rgba(18,40,59,0.1)] dark:border-white/10 py-16">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="font-bold font-[Fraunces,serif] text-3xl mb-4 text-[#12283B] dark:text-white">
+      <section className="py-20 border-t border-[var(--card-border)]" style={{ background: "var(--section-bg-alt)" }}>
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="font-black text-3xl mb-3 text-[var(--text-primary)]">
             Prefer to learn at your own pace?
           </h2>
-          <p className="text-[#4C6072] dark:text-[#AFC1D1] text-lg max-w-2xl mx-auto mb-8">
+          <p className="text-[var(--text-muted)] text-base max-w-xl mx-auto mb-8">
             Every live subject here is also available as a self-paced recorded course.
           </p>
           <Link
             to="/courses"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold bg-[#2A4D6E] text-white hover:bg-[#3A6389] transition-all shadow-lg hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl font-bold text-white text-sm transition-all duration-300 hover:scale-105"
+            style={{ background: "linear-gradient(135deg, #3B82F6, #06B6D4)", boxShadow: "0 8px 24px rgba(6,182,212,0.25)" }}
           >
-            Browse Recorded Courses
+            Browse Recorded Courses →
           </Link>
         </div>
       </section>
@@ -396,11 +393,6 @@ export default function LiveClasses() {
           />
         )}
       </AnimatePresence>
-
-      <style>{`
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
     </div>
   );
 }
