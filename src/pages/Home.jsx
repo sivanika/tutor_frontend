@@ -2,6 +2,7 @@ import Hero from "../components/home/Hero";
 import Stats from "../components/home/Stats";
 import NoticeBoard from "../components/home/NoticeBoard";
 import CourseCategories from "../components/home/CourseCategories";
+import HomeLiveClasses from "../components/home/HomeLiveClasses";
 import Features from "../components/home/Features";
 import LearningRoadmap from "../components/home/LearningRoadmap";
 import WhyChooseUs from "../components/home/WhyChooseUs";
@@ -16,13 +17,14 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Stats />
+      {/* <Stats /> */}
       <NoticeBoard />
+      <TutorCards />
       <CourseCategories />
+      <HomeLiveClasses />
       <Features />
       <LearningRoadmap />
-      <WhyChooseUs />
-      <TutorCards />
+      {/* <WhyChooseUs /> */}
       <Testimonials />
       <Pricing />
       <FAQ />

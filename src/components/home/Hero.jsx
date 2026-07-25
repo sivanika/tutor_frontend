@@ -276,40 +276,40 @@ export default function Hero() {
               style={{ fontFamily: "Inter, sans-serif" }}
             >
               {/* Item 1 */}
-              {/* <div className="border-r border-[var(--border)] pr-2 sm:pr-3">
+              <div className="border-r border-[var(--border)] pr-2 sm:pr-3">
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#3B82F6]" />
                   <span className="text-[17px] sm:text-[24px] font-extrabold text-[var(--text-primary)]">{countStudents}K+</span>
                 </div>
                 <p className="text-[11px] sm:text-[12px] text-[var(--text-muted)] font-medium">Active Students</p>
-              </div> */}
+              </div>
 
               {/* Item 2 */}
-              {/* <div className="sm:border-r border-[var(--border)] pr-2 sm:pr-3">
+              <div className="sm:border-r border-[var(--border)] pr-2 sm:pr-3">
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#A855F7]" />
                   <span className="text-[17px] sm:text-[24px] font-extrabold text-[var(--text-primary)]">{countCourses}+</span>
                 </div>
                 <p className="text-[11px] sm:text-[12px] text-[var(--text-muted)] font-medium">Skill Courses</p>
-              </div> */}
+              </div>
 
               {/* Item 3 */}
-              {/* <div className="border-r border-[var(--border)] pr-2 sm:pr-3">
+              <div className="border-r border-[var(--border)] pr-2 sm:pr-3">
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <Video className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#06D6FF]" />
                   <span className="text-[17px] sm:text-[24px] font-extrabold text-[var(--text-primary)]">{countClasses}+</span>
                 </div>
                 <p className="text-[11px] sm:text-[12px] text-[var(--text-muted)] font-medium">Live Classes</p>
-              </div> */}
+              </div>
 
               {/* Item 4 */}
-              {/* <div className="pl-1 sm:pl-0">
+              <div className="pl-1 sm:pl-0">
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#10B981]" />
                   <span className="text-[17px] sm:text-[24px] font-extrabold text-[var(--text-primary)]">{countPlacement}%</span>
                 </div>
                 <p className="text-[11px] sm:text-[12px] text-[var(--text-muted)] font-medium">Placement Rate</p>
-              </div> */}
+              </div>
             </motion.div>
 
           </div>
@@ -350,7 +350,7 @@ export default function Hero() {
               {/* Inner Circle Frame */}
               <div className="w-full h-full rounded-full border-4 border-white/10 shadow-2xl overflow-hidden relative bg-[#0B132B]">
                 <img
-                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=80"
+                  src="/logos/hero.png"
                   alt="Student Visual"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 opacity-95"
                 />

@@ -24,14 +24,15 @@ function DetailModal({ cls, onClose, onEnrol }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+      className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-md flex items-start justify-center overflow-y-auto"
+      style={{ padding: "80px 16px 32px" }}
       onClick={e => e.target === e.currentTarget && onClose()}
     >
       <motion.div
-        initial={{ y: 20, opacity: 0, scale: 0.95 }}
+        initial={{ y: 30, opacity: 0, scale: 0.96 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
-        exit={{ y: 20, opacity: 0, scale: 0.95 }}
-        className="rounded-3xl w-full max-w-3xl overflow-hidden my-4 border border-[var(--card-border)] shadow-2xl relative"
+        exit={{ y: 30, opacity: 0, scale: 0.96 }}
+        className="rounded-3xl w-full max-w-3xl overflow-hidden border border-[var(--card-border)] shadow-2xl relative mx-auto"
         style={{ background: "var(--modal-bg)" }}
       >
         {/* Colored Hero */}
@@ -63,17 +64,17 @@ function DetailModal({ cls, onClose, onEnrol }) {
         <div className="p-7 space-y-6">
           {/* Schedule */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-2">Schedule</h4>
-            <p className="text-sm font-semibold text-white">{cls.schedule}</p>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--text-light)] mb-2">Schedule</h4>
+            <p className="text-sm font-semibold text-[var(--text-primary)]">{cls.schedule}</p>
           </div>
 
           {/* Prerequisites */}
           {cls.prerequisites?.length > 0 && (
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-2">Prerequisites</h4>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--text-light)] mb-2">Prerequisites</h4>
               <ul className="space-y-1">
                 {cls.prerequisites.map((p, i) => (
-                  <li key={i} className="text-sm text-white/70 pl-4 relative before:absolute before:left-0 before:content-['•'] before:text-[var(--accent)]">
+                  <li key={i} className="text-sm text-[var(--text-muted)] pl-4 relative before:absolute before:left-0 before:content-['•'] before:text-[var(--accent)]">
                     {p}
                   </li>
                 ))}
@@ -84,14 +85,14 @@ function DetailModal({ cls, onClose, onEnrol }) {
           {/* Syllabus */}
           {cls.syllabus?.length > 0 && (
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">Week-by-week Syllabus</h4>
-              <div className="divide-y divide-white/06">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--text-light)] mb-3">Week-by-week Syllabus</h4>
+              <div className="divide-y divide-[var(--card-border)]">
                 {cls.syllabus.map((week) => (
                   <div key={week.week} className="flex gap-4 py-3">
                     <span className="font-mono text-xs font-bold text-[var(--accent)] w-16 shrink-0 pt-0.5">WK {week.week}</span>
                     <div>
-                      <p className="text-sm font-bold text-white">{week.topic}</p>
-                      {week.details && <p className="text-xs text-white/40 mt-0.5">{week.details}</p>}
+                      <p className="text-sm font-bold text-[var(--text-primary)]">{week.topic}</p>
+                      {week.details && <p className="text-xs text-[var(--text-muted)] mt-0.5">{week.details}</p>}
                     </div>
                   </div>
                 ))}

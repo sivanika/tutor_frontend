@@ -60,7 +60,7 @@ export default function Footer() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-80 rounded-full opacity-15" style={{ background: "radial-gradient(ellipse, rgba(59,130,246,0.3), transparent 70%)", filter: "blur(60px)" }} />
 
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-8 relative z-10">
-        <div
+        {/* <div
           className="rounded-3xl p-6 sm:p-10 mb-14 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6"
           style={{
             background: "linear-gradient(135deg, #0d1e3d 0%, #060e1c 100%)",
@@ -98,7 +98,7 @@ export default function Footer() {
               </>
             )}
           </form>
-        </div>
+        </div> */}
 
         {/* Main footer grid */}
         <div className="grid md:grid-cols-5 gap-10 mb-12">
