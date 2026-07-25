@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { FiChevronDown } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import { FiChevronDown, FiArrowRight } from "react-icons/fi";
 
 const faqs = [
   {
@@ -38,6 +39,7 @@ const faqs = [
 
 export default function FAQ() {
   const [open, setOpen] = useState(null);
+  const homeFaqs = faqs.slice(0, 4);
 
   return (
     <section
@@ -67,7 +69,7 @@ export default function FAQ() {
 
         {/* Accordion */}
         <div className="space-y-3">
-          {faqs.map((faq, i) => {
+          {homeFaqs.map((faq, i) => {
             const isOpen = open === i;
             return (
               <div
@@ -122,20 +124,31 @@ export default function FAQ() {
           })}
         </div>
 
-        {/* Contact CTA */}
-        <div className="text-center mt-12 p-6 rounded-3xl" style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)" }}>
-          <p className="text-[var(--text-muted)] text-sm mb-3">Still have questions? We're here to help.</p>
-          <a
-            href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 hover:scale-105"
-            style={{
-              background: "rgba(6,182,212,0.08)",
-              border: "1px solid rgba(6,182,212,0.2)",
-              color: "#06B6D4",
-            }}
-          >
-            Contact Support →
-          </a>
+        {/* CTA section */}
+        <div className="text-center mt-10 p-6 sm:p-8 rounded-3xl" style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)" }}>
+          <p className="text-[var(--text-primary)] font-bold text-base mb-1">Have more questions?</p>
+          <p className="text-[var(--text-muted)] text-xs sm:text-sm mb-5">Explore our complete knowledge base or get in touch with our team.</p>
+          
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link
+              to="/faq"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm text-white transition-all duration-300 hover:scale-105"
+              style={{ background: "linear-gradient(135deg, #3B82F6, #06B6D4)", boxShadow: "0 4px 20px rgba(6,182,212,0.3)" }}
+            >
+              Know More / View All FAQs <FiArrowRight size={14} />
+            </Link>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold text-sm transition-all duration-200 hover:scale-105"
+              style={{
+                background: "var(--surface-alt)",
+                border: "1px solid var(--card-border)",
+                color: "var(--text-primary)",
+              }}
+            >
+              Contact Support →
+            </Link>
+          </div>
         </div>
       </div>
     </section>

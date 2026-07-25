@@ -27,7 +27,7 @@ function getIcon(icon) {
 }
 
 
-const empty = { title: "", text: "", icon: "📢", priority: false, active: true }
+const empty = { title: "", text: "", icon: "📢", priority: false, active: true, link: "" }
 
 export default function AdminAnnouncements() {
   const [items, setItems]       = useState([])
@@ -48,7 +48,7 @@ export default function AdminAnnouncements() {
 
   const openNew = () => { setForm(empty); setEditId(null); setShowForm(true) }
   const openEdit = (item) => {
-    setForm({ title: item.title, text: item.text, icon: item.icon, priority: item.priority, active: item.active })
+    setForm({ title: item.title, text: item.text, icon: item.icon, priority: item.priority, active: item.active, link: item.link || "" })
     setEditId(item._id); setShowForm(true)
   }
   const closeForm = () => { setShowForm(false); setEditId(null); setForm(empty) }
@@ -230,6 +230,18 @@ export default function AdminAnnouncements() {
                 <textarea value={form.text} onChange={e => setForm(f => ({ ...f, text: e.target.value }))}
                   placeholder="Brief description of the announcement…" rows={3} maxLength={300}
                   className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none" />
+              </div>
+
+              {/* Link / Redirect */}
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 mb-1.5">Redirect Link <span className="font-normal text-gray-400">(optional)</span></label>
+                <input
+                  value={form.link}
+                  onChange={e => setForm(f => ({ ...f, link: e.target.value }))}
+                  placeholder="e.g. /live-classes or /courses or https://..."
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                />
+                <p className="text-[11px] text-gray-400 mt-1">When set, clicking the announcement card will navigate to this page.</p>
               </div>
 
               {/* Toggles */}

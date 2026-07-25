@@ -51,7 +51,7 @@ export default function TutorCards() {
 
   return (
     <section
-      className="py-24 overflow-hidden relative"
+      className="pt-16 pb-8 overflow-hidden relative"
       style={{ background: "var(--section-bg)" }}
     >
       {/* Orbs */}
