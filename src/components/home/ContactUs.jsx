@@ -11,7 +11,12 @@ export default function ContactUs() {
     setLoading(true);
     
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL/send-email, {
+      let rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+        rawApiUrl = "http://localhost:5000/api";
+      }
+      const baseUrl = rawApiUrl.replace(/\/api$/, "");
+      const res = await fetch(`${baseUrl}/send-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
